@@ -6,10 +6,11 @@
     "examples",
     "scripts",
     "src",
-    "node_modules/@dydxprotocol/v4-proto/**/**.ts"
+    // "node_modules/@dydxprotocol/v4-proto/**/**.ts"
   ],
   "compilerOptions": {
     "noFallthroughCasesInSwitch": false,
-    "target": "ES2019"
+    "target": "ES2019",
+    "skipLibCheck": true  
   }
 }
