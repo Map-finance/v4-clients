@@ -366,3 +366,11 @@ export class Network {
     return this.env;
   }
 }
+
+/**
+ * @description 市场类型
+ */
+export enum MarketType {
+  PERPETUAL = 'PERPETUAL',
+  SPOT = 'SPOT',
+}

@@ -5,6 +5,7 @@ import {
   PositionStatus,
   TickerType,
   TradingRewardAggregationPeriod,
+  MarketType,
 } from '../constants';
 import { Data } from '../types';
 import RestClient from './rest';
@@ -143,6 +144,7 @@ export default class AccountClient extends RestClient {
     goodTilBlockBeforeOrAt?: number | null,
     goodTilBlockTimeBeforeOrAt?: string | null,
     returnLatestOrders?: boolean | null,
+    marketType?: MarketType | null,
   ): Promise<Data> {
     const uri = '/v4/orders';
     return this.get(uri, {
@@ -157,6 +159,7 @@ export default class AccountClient extends RestClient {
       goodTilBlockBeforeOrAt,
       goodTilBlockTimeBeforeOrAt,
       returnLatestOrders,
+      marketType,
     });
   }
 
@@ -171,6 +174,7 @@ export default class AccountClient extends RestClient {
     goodTilBlockBeforeOrAt?: number | null,
     goodTilBlockTimeBeforeOrAt?: string | null,
     returnLatestOrders?: boolean | null,
+    marketType?: MarketType | null,
   ): Promise<Data> {
     const uri = '/v4/orders/parentSubaccountNumber';
     return this.get(uri, {
@@ -184,6 +188,7 @@ export default class AccountClient extends RestClient {
       goodTilBlockBeforeOrAt,
       goodTilBlockTimeBeforeOrAt,
       returnLatestOrders,
+      marketType,
     });
   }
 
@@ -193,6 +198,11 @@ export default class AccountClient extends RestClient {
   }
 
   // ------ Fills ------ //
+  /**
+   * @description 获取子账户成交记录（支持现货和永续）
+   * @param market - 可选，交易对标识
+   * @param marketType - 可选，市场类型: PERPETUAL 或 SPOT
+   */
 
   async getSubaccountFills(
     address: string,
@@ -203,6 +213,8 @@ export default class AccountClient extends RestClient {
     createdBeforeOrAtHeight?: number | null,
     createdBeforeOrAt?: string | null,
     page?: number | null,
+    market?: string | null,
+    marketType?: MarketType | null,
   ): Promise<Data> {
     const uri = '/v4/fills';
     return this.get(uri, {
@@ -214,9 +226,15 @@ export default class AccountClient extends RestClient {
       createdBeforeOrAtHeight,
       createdBeforeOrAt,
       page,
+      market,
+      marketType,
     });
   }
 
+  /**
+   * @description 获取父账户成交记录（支持现货和永续）
+   * 注意：此方法不支持 market/marketType 筛选，但返回数据包含 marketType 字段
+   */
   async getParentSubaccountNumberFills(
     address: string,
     parentSubaccountNumber: number,
