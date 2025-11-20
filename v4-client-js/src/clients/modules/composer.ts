@@ -7,7 +7,10 @@ import {
   MsgDelegate,
   MsgUndelegate,
 } from '@dydxprotocol/v4-proto/src/codegen/cosmos/staking/v1beta1/tx';
-import { MsgAddAuthenticator, MsgRemoveAuthenticator } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
+import {
+  MsgAddAuthenticator,
+  MsgRemoveAuthenticator,
+} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
 import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/affiliates/tx';
 import { ClobPair_Status } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/clob_pair';
 import {
@@ -97,7 +100,7 @@ export class Composer {
     conditionalOrderTriggerSubticks: Long = Long.fromInt(0),
     twapParameters?: ITwapParameters,
     builderCodeParameters?: IBuilderCodeParameters,
-    orderRouterAddress: string = "",
+    orderRouterAddress: string = '',
   ): EncodeObject {
     this.validateGoodTilBlockAndTime(orderFlags, goodTilBlock, goodTilBlockTime);
 
@@ -577,13 +580,13 @@ export class Composer {
 
     const msg: MsgCreateMarketPermissionless = {
       ticker,
-      subaccountId
+      subaccountId,
     };
 
     return {
       typeUrl: TYPE_URL_MSG_CREATE_MARKET_PERMISSIONLESS,
       value: msg,
-    }
+    };
   }
 
   // ----------- x/accountplus --------
@@ -597,27 +600,24 @@ export class Composer {
       sender: address,
       authenticatorType,
       data,
-    }
+    };
 
     return {
       typeUrl: TYPE_URL_MSG_ADD_AUTHENTICATOR,
       value: msg,
-    }
+    };
   }
 
-  public composeMsgRemoveAuthenticator(
-    address: string,
-    id: Long,
-  ): EncodeObject {
+  public composeMsgRemoveAuthenticator(address: string, id: Long): EncodeObject {
     const msg: MsgRemoveAuthenticator = {
       sender: address,
       id,
-    }
+    };
 
     return {
       typeUrl: TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
       value: msg,
-    }
+    };
   }
 
   // ------------ util ------------
