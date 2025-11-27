@@ -1071,28 +1071,20 @@ export class CompositeClient {
       throw new Error('validatorClient not set');
     }
 
-    // 使用 atomicResolution 计算 quantums，与转账功能保持一致
-    // 公式：quantums = amount * 10^(-atomicResolution)
-    // 例如：atomicResolution = -6 表示 10^6 quantums = 1 USDC
-    const amountNum = parseFloat(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      throw new Error('amount must be a positive number');
-    }
+    // 将 atomicResolution（负数）转换为 decimals（正数）
+    // 例如：atomicResolution = -6 → decimals = 6
+    //      atomicResolution = -18 → decimals = 18
+    const decimals = -atomicResolution;
 
-    const quantums = Math.round(amountNum * Math.pow(10, -atomicResolution));
-
-    if (quantums > Number(Long.MAX_VALUE)) {
-      throw new Error('amount too large');
-    }
-    if (quantums <= 0) {
-      throw new Error('calculated quantums must be positive');
-    }
+    // 使用 parseUnits 处理大整数，支持任意精度（包括 18 位）
+    // parseUnits 返回 BigInt，可以安全处理 10^18 这样的超大整数
+    const quantums = parseUnits(amount, decimals);
 
     return this.validatorClient.post.composer.composeMsgBridgeTransfer(
       subaccount.address,
       subaccount.subaccountNumber,
       assetId,
-      Long.fromNumber(quantums),
+      Long.fromString(quantums.toString()), // 将 BigInt 转换为字符串，然后转换为 Long
       destinationChainId,
       receiveAddress,
     );
