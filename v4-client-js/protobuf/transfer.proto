@@ -84,7 +84,7 @@ message MsgSendFromModuleToAccount {
   cosmos.base.v1beta1.Coin coin = 4 [ (gogoproto.nullable) = false ];
 }
 
-// MsgCreateBridgeTransfer represents a cross-chain bridge transfer
+
 message MsgCreateBridgeTransfer {
   option (cosmos.msg.v1.signer) = "sender_address";
 

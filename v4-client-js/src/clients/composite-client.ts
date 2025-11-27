@@ -999,6 +999,106 @@ export class CompositeClient {
   }
 
   /**
+   * @description Bridge transfer (cross-chain transfer) from subaccount to another chain
+   *
+   * @param subaccount The subaccount to transfer from
+   * @param destinationChainId The destination chain ID (e.g., 'ethereum-1', 'arbitrum-1')
+   * @param receiveAddress The receiving address on the destination chain
+   * @param amount The amount to transfer (human readable, e.g., "100.50")
+   * @param assetId The asset ID to transfer (required)
+   * @param atomicResolution The atomic resolution for quantums conversion (required, e.g., -6 for USDC, -8 for most other assets)
+   * @param memo Optional memo for the transaction
+   * @param broadcastMode Broadcast mode (default: BroadcastTxCommit)
+   *
+   * @throws UnexpectedClientError if a malformed response is returned with no GRPC error
+   * @returns The transaction response
+   */
+  async bridgeTransfer(
+    subaccount: SubaccountInfo,
+    destinationChainId: string,
+    receiveAddress: string,
+    amount: string,
+    assetId: number,
+    atomicResolution: number,
+    memo?: string,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
+      const msg = this.bridgeTransferMessage(
+        subaccount,
+        destinationChainId,
+        receiveAddress,
+        amount,
+        assetId,
+        atomicResolution,
+      );
+      resolve([msg]);
+    });
+    return this.send(
+      subaccount,
+      () => msgs,
+      false,
+      undefined,
+      memo,
+      broadcastMode ?? Method.BroadcastTxCommit,
+    );
+  }
+
+  /**
+   * @description Create message for bridge transfer (cross-chain transfer)
+   *
+   * @param subaccount The subaccount to transfer from
+   * @param destinationChainId The destination chain ID
+   * @param receiveAddress The receiving address on the destination chain
+   * @param amount The amount to transfer (human readable)
+   * @param assetId The asset ID to transfer (required)
+   * @param atomicResolution The atomic resolution for quantums conversion (required, e.g., -6 for USDC, -8 for most other assets)
+   *                         Example: atomicResolution = -6 means 10^6 quantums = 1 unit
+   *
+   * @throws Error if validatorClient is not set or amount is invalid
+   * @returns The encoded message
+   */
+  bridgeTransferMessage(
+    subaccount: SubaccountInfo,
+    destinationChainId: string,
+    receiveAddress: string,
+    amount: string,
+    assetId: number,
+    atomicResolution: number,
+  ): EncodeObject {
+    const validatorClient = this._validatorClient;
+    if (validatorClient === undefined) {
+      throw new Error('validatorClient not set');
+    }
+
+    // 使用 atomicResolution 计算 quantums，与转账功能保持一致
+    // 公式：quantums = amount * 10^(-atomicResolution)
+    // 例如：atomicResolution = -6 表示 10^6 quantums = 1 USDC
+    const amountNum = parseFloat(amount);
+    if (isNaN(amountNum) || amountNum <= 0) {
+      throw new Error('amount must be a positive number');
+    }
+
+    const quantums = Math.round(amountNum * Math.pow(10, -atomicResolution));
+
+    if (quantums > Number(Long.MAX_VALUE)) {
+      throw new Error('amount too large');
+    }
+    if (quantums <= 0) {
+      throw new Error('calculated quantums must be positive');
+    }
+
+    return this.validatorClient.post.composer.composeMsgBridgeTransfer(
+      subaccount.address,
+      subaccount.subaccountNumber,
+      assetId,
+      Long.fromNumber(quantums),
+      destinationChainId,
+      receiveAddress,
+    );
+  }
+
+  /**
    * @description Create message to send chain token from subaccount to wallet
    * with human readable input.
    *

@@ -102,6 +102,9 @@ export const TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT =
   '/dydxprotocol.sending.MsgWithdrawFromSubaccount';
 export const TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT = '/dydxprotocol.sending.MsgDepositToSubaccount';
 
+// x/bridge (cross-chain transfer)
+export const TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER = '/dydxprotocol.sending.MsgCreateBridgeTransfer';
+
 // x/affiliates
 export const TYPE_URL_MSG_REGISTER_AFFILIATE = '/dydxprotocol.affiliates.MsgRegisterAffiliate';
 

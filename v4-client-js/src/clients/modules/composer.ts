@@ -48,6 +48,7 @@ import {
   TYPE_URL_MSG_CREATE_TRANSFER,
   TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT,
   TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT,
+  TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
   TYPE_URL_MSG_DELEGATE,
   TYPE_URL_MSG_UNDELEGATE,
   TYPE_URL_MSG_WITHDRAW_DELEGATOR_REWARD,
@@ -79,6 +80,17 @@ import {
 
 protobuf.util.Long = Long;
 protobuf.configure();
+
+// Manual type definition for MsgCreateBridgeTransfer
+// This will be replaced when the proto file is generated
+export interface MsgCreateBridgeTransfer {
+  senderAddress: string;
+  sender: SubaccountId;
+  assetId: number;
+  quantums: Long;
+  chainId: string;
+  receiveAddress: string;
+}
 
 export class Composer {
   // ------------ x/clob ------------
@@ -335,6 +347,45 @@ export class Composer {
 
     return {
       typeUrl: TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT,
+      value: msg,
+    };
+  }
+
+  /**
+   * Compose a message to create a bridge transfer (cross-chain transfer)
+   *
+   * @param senderAddress - The sender's address
+   * @param subaccountNumber - The sender's subaccount number
+   * @param assetId - The asset ID to transfer (0 for USDC)
+   * @param quantums - The amount in quantums
+   * @param chainId - The destination chain ID
+   * @param receiveAddress - The receiving address on the destination chain
+   * @returns EncodeObject ready to be sent
+   */
+  public composeMsgBridgeTransfer(
+    senderAddress: string,
+    subaccountNumber: number,
+    assetId: number,
+    quantums: Long,
+    chainId: string,
+    receiveAddress: string,
+  ): EncodeObject {
+    const sender: SubaccountId = {
+      owner: senderAddress,
+      number: subaccountNumber,
+    };
+
+    const msg: MsgCreateBridgeTransfer = {
+      senderAddress,
+      sender,
+      assetId,
+      quantums,
+      chainId,
+      receiveAddress,
+    };
+
+    return {
+      typeUrl: TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
       value: msg,
     };
   }

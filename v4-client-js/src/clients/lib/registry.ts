@@ -1,6 +1,9 @@
 import { GeneratedType, Registry } from '@cosmjs/proto-signing';
 import { defaultRegistryTypes } from '@cosmjs/stargate';
-import { MsgAddAuthenticator, MsgRemoveAuthenticator } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
+import {
+  MsgAddAuthenticator,
+  MsgRemoveAuthenticator,
+} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
 import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/affiliates/tx';
 import {
   MsgPlaceOrder,
@@ -17,12 +20,13 @@ import {
   MsgWithdrawFromSubaccount,
   MsgDepositToSubaccount,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
+import { MsgCreateBridgeTransfer } from '../modules/composer';
 import { MsgCreateTransfer } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/tx';
 import {
   MsgDepositToMegavault,
   MsgWithdrawFromMegavault,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/vault/tx';
-
+import { BinaryWriter } from 'cosmjs-types/binary';
 import {
   TYPE_URL_MSG_PLACE_ORDER,
   TYPE_URL_MSG_CANCEL_ORDER,
@@ -41,9 +45,71 @@ import {
   TYPE_URL_MSG_CREATE_MARKET_PERMISSIONLESS,
   TYPE_URL_MSG_ADD_AUTHENTICATOR,
   TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
+  TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
 } from '../constants';
+import Long from 'long';
 
 export const registry: ReadonlyArray<[string, GeneratedType]> = [];
+
+const MsgCreateBridgeTransferCodec = {
+  encode(
+    message: MsgCreateBridgeTransfer,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 senderAddress (field 1, string)
+    if (message.senderAddress) {
+      writer.uint32(10).string(message.senderAddress);
+    }
+
+    // 编码 sender (field 2, SubaccountId)
+    if (message.sender) {
+      const senderWriter = writer.uint32(18).fork();
+      if (message.sender.owner) {
+        senderWriter.uint32(10).string(message.sender.owner);
+      }
+      if (message.sender.number !== undefined) {
+        senderWriter.uint32(16).uint32(message.sender.number);
+      }
+      senderWriter.ldelim();
+    }
+
+    // 编码 assetId (field 3, int32)
+    if (message.assetId !== undefined) {
+      writer.uint32(24).int32(message.assetId);
+    }
+
+    // 编码 quantums (field 4, uint64)
+    if (message.quantums) {
+      const quantumsValue =
+        typeof message.quantums === 'object' && 'toNumber' in message.quantums
+          ? message.quantums.toNumber()
+          : Number(message.quantums);
+      writer.uint32(32).uint64(quantumsValue);
+    }
+
+    // 编码 chainId (field 5, string)
+    if (message.chainId) {
+      writer.uint32(42).string(message.chainId);
+    }
+
+    // 编码 receiveAddress (field 6, string)
+    if (message.receiveAddress) {
+      writer.uint32(50).string(message.receiveAddress);
+    }
+
+    return writer; // 返回 writer，有 finish() 方法
+  },
+  decode: (input: any) => input as MsgCreateBridgeTransfer,
+  fromPartial: (object: Partial<MsgCreateBridgeTransfer>) => ({
+    senderAddress: object.senderAddress ?? '',
+    sender: object.sender ?? { owner: '', number: 0 },
+    assetId: object.assetId ?? 0,
+    quantums: object.quantums ?? Long.fromInt(0),
+    chainId: object.chainId ?? '',
+    receiveAddress: object.receiveAddress ?? '',
+  }),
+} as any;
+
 export function generateRegistry(): Registry {
   return new Registry([
     // clob
@@ -73,10 +139,10 @@ export function generateRegistry(): Registry {
     [TYPE_URL_MSG_CREATE_TRANSFER, MsgCreateTransfer as GeneratedType],
     [TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT, MsgWithdrawFromSubaccount as GeneratedType],
     [TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT, MsgDepositToSubaccount as GeneratedType],
+    [TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER, MsgCreateBridgeTransferCodec as GeneratedType],
 
     // affiliates
     [TYPE_URL_MSG_REGISTER_AFFILIATE, MsgRegisterAffiliate as GeneratedType],
-
 
     // authentication
     [TYPE_URL_MSG_ADD_AUTHENTICATOR, MsgAddAuthenticator as GeneratedType],

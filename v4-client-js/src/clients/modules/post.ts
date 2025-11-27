@@ -275,6 +275,7 @@ export class Post {
       chainId: this.chainId,
       authenticators: subaccount.authenticators,
     };
+
     // Generate signed transaction.
     return subaccount.signingWallet.signTransaction(messages, txOptions, fee, memo);
   }
