@@ -72,14 +72,27 @@ import {
   MsgCancelOrder,
   SubaccountId,
   MsgCreateMarketPermissionless,
-  MsgCreateTransfer,
-  Transfer,
   MsgDepositToSubaccount,
   MsgWithdrawFromSubaccount,
 } from './proto-includes';
+import { bigIntToBytes } from '../../lib/helpers';
 
 protobuf.util.Long = Long;
 protobuf.configure();
+
+// Manual type definition for Transfer
+// This will be used instead of the generated type from proto
+export interface Transfer {
+  sender: SubaccountId;
+  recipient: SubaccountId;
+  assetId: number;
+  amount: Uint8Array; // Changed from Long to Uint8Array (bytes)
+}
+
+// Manual type definition for MsgCreateTransfer
+export interface MsgCreateTransfer {
+  transfer: Transfer;
+}
 
 // Manual type definition for MsgCreateBridgeTransfer
 // This will be replaced when the proto file is generated
@@ -274,7 +287,7 @@ export class Composer {
     recipientAddress: string,
     recipientSubaccountNumber: number,
     assetId: number,
-    amount: Long,
+    amount: Long, // Keep input parameter as Long, convert internally
   ): EncodeObject {
     const sender: SubaccountId = {
       owner: address,
@@ -285,11 +298,15 @@ export class Composer {
       number: recipientSubaccountNumber,
     };
 
+    // Convert Long to bigint, then to bytes using SerializableInt format
+    const amountBigInt = BigInt(amount.toString());
+    const amountBytes = bigIntToBytes(amountBigInt);
+
     const transfer: Transfer = {
       sender,
       recipient,
       assetId,
-      amount,
+      amount: amountBytes, // Use Uint8Array
     };
 
     const msg: MsgCreateTransfer = {

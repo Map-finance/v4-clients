@@ -22,8 +22,13 @@ message Transfer {
   // Id of the asset to transfer.
   uint32 asset_id = 3;
 
-  // The amount of asset to transfer
-  uint64 amount = 4;
+  // The amount of asset to transfer (in quantums)
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+  bytes amount = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgDepositToSubaccount represents a single transfer from an `x/bank`
@@ -84,7 +89,7 @@ message MsgSendFromModuleToAccount {
   cosmos.base.v1beta1.Coin coin = 4 [ (gogoproto.nullable) = false ];
 }
 
-// MsgCreateBridgeTransfer represents a cross-chain bridge transfer
+
 message MsgCreateBridgeTransfer {
   option (cosmos.msg.v1.signer) = "sender_address";
 

@@ -25,7 +25,13 @@ export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/prices/tx';
 export * from '@dydxprotocol/v4-proto/src/codegen/google/protobuf/any';
 export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/subaccounts/subaccount';
 export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/tx';
-export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
+// Transfer and MsgCreateTransfer are manually defined in composer.ts with amount as Uint8Array
+// Export other types from transfer but not Transfer and MsgCreateTransfer
+export {
+  MsgDepositToSubaccount,
+  MsgWithdrawFromSubaccount,
+  MsgSendFromModuleToAccount,
+} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
 export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/assets/genesis';
 export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/assets/asset';
 export * from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/listing/tx';

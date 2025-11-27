@@ -3,12 +3,13 @@ import Long from 'long';
 
 import { MAX_SUBACCOUNT_NUMBER, MAX_UINT_32 } from '../clients/constants';
 import {
-  Transfer,
   OrderFlags,
   ICancelOrder,
   IPlaceOrder,
   IBatchCancelOrder,
 } from '../clients/types';
+import { Transfer } from '../clients/modules/composer';
+import { bytesToLong } from './helpers';
 import { UserError } from './errors';
 
 /**
@@ -134,8 +135,11 @@ export function validateTransferMessage(transfer: Transfer): UserError | undefin
   if (transfer.assetId !== 0) {
     return new UserError(`asset id: ${transfer.assetId} not supported`);
   }
-  if (transfer.amount.lessThanOrEqual(Long.ZERO)) {
-    return new UserError(`amount: ${transfer.amount} cannot be <= 0`);
+  
+  // Convert bytes to Long for validation
+  const amountLong = bytesToLong(transfer.amount);
+  if (amountLong.lessThanOrEqual(Long.ZERO)) {
+    return new UserError(`amount: cannot be <= 0`);
   }
 
   const addressError: Error | undefined = verifyIsBech32(transfer.recipient!!.owner);

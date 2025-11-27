@@ -20,8 +20,7 @@ import {
   MsgWithdrawFromSubaccount,
   MsgDepositToSubaccount,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
-import { MsgCreateBridgeTransfer } from '../modules/composer';
-import { MsgCreateTransfer } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/tx';
+import { MsgCreateBridgeTransfer, Transfer, MsgCreateTransfer } from '../modules/composer';
 import {
   MsgDepositToMegavault,
   MsgWithdrawFromMegavault,
@@ -50,6 +49,80 @@ import {
 import Long from 'long';
 
 export const registry: ReadonlyArray<[string, GeneratedType]> = [];
+
+// Transfer 编码解码器
+const TransferCodec = {
+  encode(
+    message: Transfer,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 sender (field 1, SubaccountId)
+    if (message.sender) {
+      const senderWriter = writer.uint32(10).fork();
+      if (message.sender.owner) {
+        senderWriter.uint32(10).string(message.sender.owner);
+      }
+      if (message.sender.number !== undefined) {
+        senderWriter.uint32(16).uint32(message.sender.number);
+      }
+      senderWriter.ldelim();
+    }
+
+    // 编码 recipient (field 2, SubaccountId)
+    if (message.recipient) {
+      const recipientWriter = writer.uint32(18).fork();
+      if (message.recipient.owner) {
+        recipientWriter.uint32(10).string(message.recipient.owner);
+      }
+      if (message.recipient.number !== undefined) {
+        recipientWriter.uint32(16).uint32(message.recipient.number);
+      }
+      recipientWriter.ldelim();
+    }
+
+    // 编码 assetId (field 3, uint32)
+    if (message.assetId !== undefined) {
+      writer.uint32(24).uint32(message.assetId);
+    }
+
+    // 编码 amount (field 4, bytes) - 使用 SerializableInt 格式
+    if (message.amount && message.amount.length > 0) {
+      writer.uint32(34).bytes(message.amount);
+    }
+
+    return writer;
+  },
+  decode: (input: any) => input as Transfer,
+  fromPartial: (object: Partial<Transfer>) => ({
+    sender: object.sender ?? { owner: '', number: 0 },
+    recipient: object.recipient ?? { owner: '', number: 0 },
+    assetId: object.assetId ?? 0,
+    amount: object.amount ?? new Uint8Array(),
+  }),
+} as any;
+
+// MsgCreateTransfer 编码解码器
+const MsgCreateTransferCodec = {
+  encode(
+    message: MsgCreateTransfer,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 transfer (field 1, Transfer)
+    if (message.transfer) {
+      const transferWriter = writer.uint32(10).fork();
+      TransferCodec.encode(message.transfer, transferWriter);
+      transferWriter.ldelim();
+    }
+
+    return writer;
+  },
+  decode: (input: any) => input as MsgCreateTransfer,
+  fromPartial: (object: Partial<MsgCreateTransfer>) => ({
+    transfer: object.transfer
+      ? TransferCodec.fromPartial(object.transfer)
+      : TransferCodec.fromPartial({}),
+  }),
+} as any;
 
 const MsgCreateBridgeTransferCodec = {
   encode(
@@ -135,8 +208,8 @@ export function generateRegistry(): Registry {
     [TYPE_URL_MSG_DEPOSIT_TO_MEGAVAULT, MsgDepositToMegavault as GeneratedType],
     [TYPE_URL_MSG_WITHDRAW_FROM_MEGAVAULT, MsgWithdrawFromMegavault as GeneratedType],
 
-    // sending
-    [TYPE_URL_MSG_CREATE_TRANSFER, MsgCreateTransfer as GeneratedType],
+    // sending - 使用手动编码的版本
+    [TYPE_URL_MSG_CREATE_TRANSFER, MsgCreateTransferCodec as GeneratedType],
     [TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT, MsgWithdrawFromSubaccount as GeneratedType],
     [TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT, MsgDepositToSubaccount as GeneratedType],
     [TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER, MsgCreateBridgeTransferCodec as GeneratedType],

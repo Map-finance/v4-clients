@@ -1,6 +1,7 @@
 import Long from 'long';
 
 import { generateRandomClientId } from '../../src/lib/utils';
+import { bigIntToBytes } from '../../src/lib/helpers';
 import {
   ClobPairId,
   TransactionOptions,
@@ -99,7 +100,7 @@ export const defaultTransfer: Transfer = {
     number: 0,
   },
   assetId: 0,
-  amount: Long.fromNumber(1000),
+  amount: bigIntToBytes(BigInt(1000)),
 };
 
 // ------ Onboarding Constants ------ //

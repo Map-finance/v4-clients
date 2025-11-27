@@ -59,6 +59,31 @@ export function bigIntToBytes(value: bigint): Uint8Array {
   return signedBytes;
 }
 
+/**
+ * @description Convert bytes (SerializableInt format) to Long
+ * SerializableInt format: first byte is sign (2=positive, 3=negative), followed by big-endian number bytes
+ */
+export function bytesToLong(bytes: Uint8Array): Long {
+  if (bytes.length === 0) {
+    return Long.ZERO;
+  }
+
+  // SerializableInt 格式：第一个字节是符号（2=正数，3=负数），后面是 big-endian 的数值
+  const isNegative = bytes[0] === 3;
+  const numberBytes = bytes.slice(1);
+
+  if (numberBytes.length === 0) {
+    return Long.ZERO;
+  }
+
+  // 转换为 hex 字符串
+  const hex = Buffer.from(numberBytes).toString('hex');
+  const value = BigInt(`0x${hex}`);
+  const longValue = Long.fromString(value.toString());
+
+  return isNegative ? longValue.neg() : longValue;
+}
+
 export enum ByteArrayEncoding {
   HEX = 'hex',
   BIGINT = 'bigint',

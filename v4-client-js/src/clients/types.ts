@@ -189,3 +189,5 @@ export type GovAddNewMarketParams = {
 };
 
 export * from './modules/proto-includes';
+// Export manual Transfer and MsgCreateTransfer types from composer
+export { Transfer, MsgCreateTransfer } from './modules/composer';

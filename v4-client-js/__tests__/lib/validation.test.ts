@@ -8,6 +8,7 @@ import {
 } from '../../src/types';
 import { MAX_SUBACCOUNT_NUMBER, MAX_UINT_32 } from '../../src/lib/constants';
 import { UserError } from '../../src/lib/errors';
+import { bigIntToBytes } from '../../src/lib/helpers';
 import {
   isValidAddress,
   validateBatchCancelOrderMessage,
@@ -244,8 +245,8 @@ describe('Validations', () => {
     ],
     [
       '0 amount',
-      { ...defaultTransfer, amount: Long.ZERO },
-      new UserError(`amount: ${0} cannot be <= 0`),
+      { ...defaultTransfer, amount: bigIntToBytes(BigInt(0)) },
+      new UserError(`amount: cannot be <= 0`),
     ],
     [
       'too short recipientAddress',
