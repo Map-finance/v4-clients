@@ -287,7 +287,7 @@ export class Composer {
     recipientAddress: string,
     recipientSubaccountNumber: number,
     assetId: number,
-    amount: Long, // Keep input parameter as Long, convert internally
+    amount: Long | bigint | string, // Support Long, BigInt, or string for large values
   ): EncodeObject {
     const sender: SubaccountId = {
       owner: address,
@@ -298,8 +298,17 @@ export class Composer {
       number: recipientSubaccountNumber,
     };
 
-    // Convert Long to bigint, then to bytes using SerializableInt format
-    const amountBigInt = BigInt(amount.toString());
+    // Convert to bigint, then to bytes using SerializableInt format
+    // Support multiple input types to avoid Long overflow for large values
+    let amountBigInt: bigint;
+    if (typeof amount === 'bigint') {
+      amountBigInt = amount;
+    } else if (typeof amount === 'string') {
+      amountBigInt = BigInt(amount);
+    } else {
+      // Long type - convert to string first to avoid precision loss
+      amountBigInt = BigInt(amount.toString());
+    }
     const amountBytes = bigIntToBytes(amountBigInt);
 
     const transfer: Transfer = {

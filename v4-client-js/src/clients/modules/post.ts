@@ -661,7 +661,7 @@ export class Post {
     recipientAddress: string,
     recipientSubaccountNumber: number,
     assetId: number,
-    amount: Long,
+    amount: Long | bigint | string, // Support Long, BigInt, or string for large values
   ): Promise<EncodeObject> {
     return new Promise((resolve) => {
       const msg = this.composer.composeMsgTransfer(

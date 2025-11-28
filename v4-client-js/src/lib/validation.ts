@@ -2,12 +2,7 @@ import { decode } from 'bech32';
 import Long from 'long';
 
 import { MAX_SUBACCOUNT_NUMBER, MAX_UINT_32 } from '../clients/constants';
-import {
-  OrderFlags,
-  ICancelOrder,
-  IPlaceOrder,
-  IBatchCancelOrder,
-} from '../clients/types';
+import { OrderFlags, ICancelOrder, IPlaceOrder, IBatchCancelOrder } from '../clients/types';
 import { Transfer } from '../clients/modules/composer';
 import { bytesToLong } from './helpers';
 import { UserError } from './errors';
@@ -135,7 +130,7 @@ export function validateTransferMessage(transfer: Transfer): UserError | undefin
   if (transfer.assetId !== 0) {
     return new UserError(`asset id: ${transfer.assetId} not supported`);
   }
-  
+
   // Convert bytes to Long for validation
   const amountLong = bytesToLong(transfer.amount);
   if (amountLong.lessThanOrEqual(Long.ZERO)) {

@@ -866,20 +866,21 @@ export class CompositeClient {
       throw new Error('validatorClient not set');
     }
     const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
-    if (quantums > BigInt(Long.MAX_VALUE.toString())) {
-      throw new Error('amount to large');
-    }
+    
+    // Remove Long.MAX_VALUE check - Uint8Array can represent arbitrarily large integers
+    // This allows support for tokens with high decimal places (e.g., 18 decimals)
     if (quantums < 0) {
       throw new Error('amount must be positive');
     }
 
+    // Directly pass BigInt to avoid Long overflow for large values
     return this.validatorClient.post.composer.composeMsgTransfer(
       subaccount.address,
       subaccount.subaccountNumber,
       recipientAddress,
       recipientSubaccountNumber,
       0,
-      Long.fromString(quantums.toString()),
+      quantums, // Pass BigInt directly instead of converting to Long
     );
   }
 
