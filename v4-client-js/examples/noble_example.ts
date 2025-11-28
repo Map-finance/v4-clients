@@ -1,5 +1,5 @@
 import { EncodeObject } from '@cosmjs/proto-signing';
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { SubaccountInfo } from '../src';
 import { Network } from '../src/clients/constants';

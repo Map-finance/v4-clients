@@ -1,4 +1,4 @@
-import Long from 'long';
+import { Long } from '../src/lib/long';
 import protobuf from 'protobufjs';
 
 import { BECH32_PREFIX } from '../src';

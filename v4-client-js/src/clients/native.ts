@@ -12,7 +12,7 @@ import {
   Order_TimeInForce,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
 import * as AuthModule from 'cosmjs-types/cosmos/auth/v1beta1/query';
-import Long from 'long';
+import { Long } from '../lib/long';
 
 import { BECH32_PREFIX, GAS_MULTIPLIER, NOBLE_BECH32_PREFIX } from '../lib/constants';
 import { UserError } from '../lib/errors';

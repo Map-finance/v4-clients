@@ -1,4 +1,4 @@
-import Long from 'long';
+import { Long } from '../lib/long';
 
 import { MAX_SUBACCOUNT_NUMBER } from './constants';
 import LocalWallet from './modules/local-wallet';

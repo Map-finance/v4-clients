@@ -1,5 +1,5 @@
 import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/perpetual';
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { GovAddNewMarketParams, LocalWallet, ProposalStatus } from '../src';
 import { CompositeClient } from '../src/clients/composite-client';

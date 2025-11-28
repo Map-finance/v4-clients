@@ -1,4 +1,4 @@
-import Long from 'long';
+import { Long } from '../../src/lib/long';
 
 import { generateRandomClientId } from '../../src/lib/utils';
 import { bigIntToBytes } from '../../src/lib/helpers';

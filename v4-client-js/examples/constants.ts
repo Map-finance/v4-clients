@@ -2,7 +2,7 @@ import {
   Order_Side,
   Order_TimeInForce,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { IPlaceOrder, OrderFlags } from '../src/clients/types';
 
@@ -23,8 +23,8 @@ export const DYDX_TEST_MNEMONIC_3 = 'crane poverty boil edit response weasel qui
 export const MARKET_BTC_USD: string = 'BTC-USD';
 export const PERPETUAL_PAIR_BTC_USD: number = 0;
 
-const quantums: Long = new Long(1_000_000_000);
-const subticks: Long = new Long(1_000_000_000);
+const quantums: Long = Long.fromInt(1_000_000_000);
+const subticks: Long = Long.fromInt(1_000_000_000);
 
 export const MAX_CLIENT_ID = 2 ** 32 - 1;
 

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import Long from 'long';
+import { Long } from '../../../lib/long';
 
 import { OrderType, OrderSide, OrderTimeInForce, OrderExecution } from '../constants';
 import { Order_ConditionType, Order_Side, Order_TimeInForce } from '../modules/proto-includes';

@@ -30,7 +30,7 @@ import {
 import { MsgSend } from 'cosmjs-types/cosmos/bank/v1beta1/tx';
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin';
 import { Any } from 'cosmjs-types/google/protobuf/any';
-import Long from 'long';
+import { Long } from '../../lib/long';
 import protobuf from 'protobufjs';
 
 import {

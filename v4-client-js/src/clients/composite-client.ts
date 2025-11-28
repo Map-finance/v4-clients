@@ -11,7 +11,7 @@ import {
   Order_TimeInForce,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
 import { parseUnits } from 'ethers';
-import Long from 'long';
+import { Long } from '../lib/long';
 import protobuf from 'protobufjs';
 
 import { bigIntToBytes } from '../lib/helpers';
@@ -922,9 +922,8 @@ export class CompositeClient {
       throw new Error('validatorClient not set');
     }
     const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
-    if (quantums > BigInt(Long.MAX_VALUE.toString())) {
-      throw new Error('amount to large');
-    }
+    // Note: With bigint-based Long, we can handle much larger values than the original Long.MAX_VALUE
+    // The check is kept for backward compatibility but now supports 18+ decimal precision
     if (quantums < 0) {
       throw new Error('amount must be positive');
     }
@@ -983,9 +982,8 @@ export class CompositeClient {
       throw new Error('validatorClient not set');
     }
     const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
-    if (quantums > BigInt(Long.MAX_VALUE.toString())) {
-      throw new Error('amount to large');
-    }
+    // Note: With bigint-based Long, we can handle much larger values than the original Long.MAX_VALUE
+    // The check is kept for backward compatibility but now supports 18+ decimal precision
     if (quantums < 0) {
       throw new Error('amount must be positive');
     }

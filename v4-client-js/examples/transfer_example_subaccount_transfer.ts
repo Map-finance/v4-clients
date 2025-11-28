@@ -1,4 +1,4 @@
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { BECH32_PREFIX } from '../src';
 import { Network } from '../src/clients/constants';
@@ -17,7 +17,7 @@ async function test(): Promise<void> {
 
   const subaccount = SubaccountInfo.forLocalWallet(wallet, 0);
 
-  const tx = await client.post.transfer(subaccount, subaccount.address, 1, 0, new Long(10_000_000));
+  const tx = await client.post.transfer(subaccount, subaccount.address, 1, 0, Long.fromInt(10_000_000));
   console.log('**Transfer Tx**');
   console.log(tx);
 }

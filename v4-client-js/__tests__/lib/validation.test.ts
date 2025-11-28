@@ -23,7 +23,7 @@ import {
   defaultOrder,
   defaultTransfer,
 } from '../helpers/constants';
-import Long from 'long';
+import { Long } from '../../src/lib/long';
 
 const MAX_UINT_32_PLUS_1: number = MAX_UINT_32 + 1;
 const MAX_SUBACCOUNT_NUMBER_PLUS_1: number = MAX_SUBACCOUNT_NUMBER + 1;

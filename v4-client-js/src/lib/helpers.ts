@@ -1,6 +1,6 @@
 import { toHex } from '@cosmjs/encoding';
 import BigNumber from 'bignumber.js';
-import Long from 'long';
+import { Long } from './long';
 
 import { PartialTransactionOptions, TransactionOptions } from '../types';
 import { DEFAULT_SEQUENCE } from './constants';

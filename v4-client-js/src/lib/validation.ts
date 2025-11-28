@@ -1,5 +1,5 @@
 import { decode } from 'bech32';
-import Long from 'long';
+import { Long } from './long';
 
 import { MAX_SUBACCOUNT_NUMBER, MAX_UINT_32 } from '../clients/constants';
 import { OrderFlags, ICancelOrder, IPlaceOrder, IBatchCancelOrder } from '../clients/types';

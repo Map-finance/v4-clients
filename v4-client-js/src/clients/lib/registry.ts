@@ -46,7 +46,7 @@ import {
   TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
   TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
 } from '../constants';
-import Long from 'long';
+import { Long } from '../../lib/long';
 
 export const registry: ReadonlyArray<[string, GeneratedType]> = [];
 

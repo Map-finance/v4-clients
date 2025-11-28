@@ -8,7 +8,7 @@ import {
   OfflineSigner,
 } from '@cosmjs/proto-signing';
 import { SigningStargateClient } from '@cosmjs/stargate';
-import Long from 'long';
+import { Long } from '../../lib/long';
 import protobuf from 'protobufjs';
 
 import { stripHexPrefix } from '../../lib/helpers';

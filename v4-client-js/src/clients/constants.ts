@@ -1,6 +1,6 @@
 import { PageRequest } from '@dydxprotocol/v4-proto/src/codegen/cosmos/base/query/v1beta1/pagination';
 import { AxiosProxyConfig } from 'axios';
-import Long from 'long';
+import { Long } from '../lib/long';
 
 import { BroadcastOptions, DenomConfig } from './types';
 

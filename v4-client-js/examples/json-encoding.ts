@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { encodeJson } from '../src/lib/helpers';
 

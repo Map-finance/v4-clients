@@ -13,7 +13,7 @@ import { SigningStargateClient, StdFee } from '@cosmjs/stargate';
 import { TxExtension } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
 import { TxBody, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import { Any } from 'cosmjs-types/google/protobuf/any';
-import Long from 'long';
+import { Long } from '../../lib/long';
 import protobuf from 'protobufjs';
 
 import { generateRegistry } from '../lib/registry';

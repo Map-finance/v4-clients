@@ -1,4 +1,4 @@
-import Long from "long";
+import { Long } from '../../../lib/long';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function generateQueryPath(url: string, params: {}): string {

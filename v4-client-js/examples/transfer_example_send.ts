@@ -1,6 +1,6 @@
 import { EncodeObject } from '@cosmjs/proto-signing';
 import { Method } from '@cosmjs/tendermint-rpc';
-import Long from 'long';
+import { Long } from '../src/lib/long';
 
 import { TEST_RECIPIENT_ADDRESS } from '../__tests__/helpers/constants';
 import { BECH32_PREFIX } from '../src';
@@ -20,7 +20,7 @@ async function test(): Promise<void> {
 
   const subaccount = SubaccountInfo.forLocalWallet(wallet, 0);
 
-  const amount = new Long(100_000_000);
+  const amount = Long.fromInt(100_000_000);
 
   const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
     const msg = client.post.composer.composeMsgSendToken(

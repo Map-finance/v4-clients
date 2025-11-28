@@ -11,7 +11,7 @@ import { GetAuthenticatorsRequest, GetAuthenticatorsResponse } from '@dydxprotoc
 import * as AuthModule from 'cosmjs-types/cosmos/auth/v1beta1/query';
 import * as BankModule from 'cosmjs-types/cosmos/bank/v1beta1/query';
 import { Any } from 'cosmjs-types/google/protobuf/any';
-import Long from 'long';
+import { Long } from '../../lib/long';
 import protobuf from 'protobufjs';
 
 import { bigIntToBytes } from '../../lib/helpers';

@@ -1,6 +1,6 @@
 import { QueryClient, TxExtension, setupTxExtension } from '@cosmjs/stargate';
 import { Tendermint37Client } from '@cosmjs/tendermint-rpc';
-import Long from 'long';
+import { Long } from '../lib/long';
 import protobuf from 'protobufjs';
 
 import {

@@ -7,7 +7,7 @@ import {
   BroadcastTxAsyncResponse,
   BroadcastTxSyncResponse,
 } from '@cosmjs/tendermint-rpc/build/tendermint37';
-import Long from 'long';
+import { Long } from '../../lib/long';
 import protobuf from 'protobufjs';
 
 import { AuthenticatorType, GAS_MULTIPLIER, SelectedGasDenom } from '../constants';

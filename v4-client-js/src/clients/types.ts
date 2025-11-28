@@ -7,7 +7,7 @@ import {
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
 import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/perpetual';
 import BigNumber from 'bignumber.js';
-import Long from 'long';
+import { Long } from '../lib/long';
 
 export type Integer = BigNumber;
 
