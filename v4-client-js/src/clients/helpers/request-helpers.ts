@@ -1,4 +1,4 @@
-import { Long } from '../../../lib/long';
+import { Long } from '../../lib/long';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function generateQueryPath(url: string, params: {}): string {
@@ -26,7 +26,7 @@ export function parseToPrimitives<T>(x: T): T {
   }
 
   if (Long.isLong(x)) {
-    return x.toString() as T;
+    return (x as any).toString() as T;
   }
 
   if (x instanceof Uint8Array) {

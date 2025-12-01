@@ -238,8 +238,8 @@ export const SHORT_BLOCK_FORWARD: number = 15;
 // Querying
 export const PAGE_REQUEST: PageRequest = {
   key: new Uint8Array(),
-  offset: Long.UZERO,
-  limit: Long.MAX_UNSIGNED_VALUE,
+  offset: Long.UZERO as any,
+  limit: Long.MAX_UNSIGNED_VALUE as any,
   countTotal: true,
   reverse: false,
 };

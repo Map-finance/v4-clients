@@ -17,7 +17,7 @@ import { TransactionOptions } from '../types';
 import { TransactionSigner } from './signer';
 
 // Required for encoding and decoding queries that are of type Long.
-protobuf.util.Long = Long;
+protobuf.util.Long = Long as any;
 protobuf.configure();
 
 export default class LocalWallet {

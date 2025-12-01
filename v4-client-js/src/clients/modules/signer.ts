@@ -23,7 +23,7 @@ import { TransactionOptions } from '../types';
 // Must be done once but since the individal modules should be usable
 // - must be set in each module that encounters encoding/decoding Longs.
 // Reference: https://github.com/protobufjs/protobuf.js/issues/921
-protobuf.util.Long = Long;
+protobuf.util.Long = Long as any;
 protobuf.configure();
 
 export class TransactionSigner {
@@ -66,7 +66,7 @@ export class TransactionSigner {
 
     // Encode the TxExtension message
     const txExtension = TxExtension.encode({
-      selectedAuthenticators: transactionOptions.authenticators ?? [],
+      selectedAuthenticators: (transactionOptions.authenticators ?? []) as any,
     }).finish();
 
     // Create the non-critical extension message

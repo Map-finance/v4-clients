@@ -40,7 +40,7 @@ import { TendermintClient } from './tendermintClient';
 // Must be done once but since the individal modules should be usable without
 // dYdXClient - must be set in each module that encounters encoding/decoding Longs.
 // Reference: https://github.com/protobufjs/protobuf.js/issues/921
-protobuf.util.Long = Long;
+protobuf.util.Long = Long as any;
 protobuf.configure();
 
 export class Get {
@@ -124,7 +124,7 @@ export class Get {
       '/dydxprotocol.stats.Query/UserStats',
       requestData,
     );
-    return StatsModule.QueryUserStatsResponse.decode(data).stats;
+    return StatsModule.QueryUserStatsResponse.decode(data).stats as { takerNotional: Long; makerNotional: Long } | undefined;
   }
 
   /**

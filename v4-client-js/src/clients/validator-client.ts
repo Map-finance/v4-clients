@@ -17,7 +17,7 @@ import { TendermintClient } from './modules/tendermintClient';
 // Must be done once but since the individal modules should be usable
 // - must be set in each module that encounters encoding/decoding Longs.
 // Reference: https://github.com/protobufjs/protobuf.js/issues/921
-protobuf.util.Long = Long;
+protobuf.util.Long = Long as any;
 protobuf.configure();
 
 export class ValidatorClient {

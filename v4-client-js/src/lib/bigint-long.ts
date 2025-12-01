@@ -5,7 +5,7 @@
 
 export class BigIntLong {
   private readonly value: bigint;
-  private readonly unsigned: boolean;
+  public readonly unsigned: boolean;
 
   constructor(value: bigint | string | number, unsigned: boolean = false) {
     if (typeof value === 'bigint') {
@@ -35,7 +35,7 @@ export class BigIntLong {
 
   static fromBytes(bytes: number[] | Uint8Array, unsigned: boolean = false, le: boolean = true): BigIntLong {
     const bytesArray = Array.from(bytes);
-    let value = 0n;
+    let value = BigInt(0);
     
     if (le) {
       // Little-endian: bytes[0] is least significant
@@ -45,7 +45,7 @@ export class BigIntLong {
     } else {
       // Big-endian: bytes[0] is most significant
       for (let i = 0; i < bytesArray.length; i++) {
-        value = (value << 8n) + BigInt(bytesArray[i]);
+        value = (value << BigInt(8)) + BigInt(bytesArray[i]);
       }
     }
 
@@ -55,8 +55,8 @@ export class BigIntLong {
       const highByte = le ? bytesArray[7] : bytesArray[0];
       if (highByte & 0x80) {
         // Negative number - convert from two's complement
-        const maxValue = 0xffffffffffffffffn;
-        value = value - (maxValue + 1n);
+        const maxValue = BigInt('0xffffffffffffffff');
+        value = value - (maxValue + BigInt(1));
       }
     }
 
@@ -111,7 +111,7 @@ export class BigIntLong {
   }
 
   abs(): BigIntLong {
-    return new BigIntLong(this.value < 0n ? -this.value : this.value, this.unsigned);
+    return new BigIntLong(this.value < BigInt(0) ? -this.value : this.value, this.unsigned);
   }
 
   add(other: BigIntLong | string | number | bigint): BigIntLong {
@@ -173,6 +173,11 @@ export class BigIntLong {
     return this.value >= otherValue;
   }
 
+  // Check if value is zero
+  isZero(): boolean {
+    return this.value === BigInt(0);
+  }
+
   // Protobuf.js compatibility methods
   toInt(): number {
     return this.toNumber();
@@ -191,18 +196,19 @@ export class BigIntLong {
   toBytes(le: boolean = false): number[] {
     const bytes: number[] = [];
     let val = this.value;
-    const isNegative = val < 0n;
+    const isNegative = val < BigInt(0);
     
     // Handle negative numbers using two's complement
     if (isNegative) {
       // Convert to two's complement: invert bits and add 1
-      val = (~val + 1n) & 0xffffffffffffffffn;
+      const mask = BigInt('0xffffffffffffffff');
+      val = (~val + BigInt(1)) & mask;
     }
 
     // Convert to bytes (little-endian by default for protobuf)
     for (let i = 0; i < 8; i++) {
-      bytes.push(Number(val & 0xffn));
-      val = val >> 8n;
+      bytes.push(Number(val & BigInt(0xff)));
+      val = val >> BigInt(8);
     }
 
     if (le) {
@@ -235,13 +241,15 @@ export class BigIntLong {
   // For negative numbers, we need to handle two's complement correctly
   get low(): number {
     // Convert to unsigned 32-bit integer (low 32 bits)
-    return Number(this.value & 0xffffffffn) >>> 0;
+    const mask = BigInt('0xffffffff');
+    return Number(this.value & mask) >>> 0;
   }
 
   get high(): number {
     // Convert to signed 32-bit integer (high 32 bits)
     // For proper sign extension with negative numbers
-    const highBits = Number((this.value >> 32n) & 0xffffffffn);
+    const mask = BigInt('0xffffffff');
+    const highBits = Number((this.value >> BigInt(32)) & mask);
     // If the value is negative, we need to ensure sign extension
     // JavaScript bitwise operations automatically handle sign extension
     return highBits | 0; // Force to signed 32-bit integer

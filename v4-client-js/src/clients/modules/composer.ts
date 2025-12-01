@@ -77,7 +77,7 @@ import {
 } from './proto-includes';
 import { bigIntToBytes } from '../../lib/helpers';
 
-protobuf.util.Long = Long;
+protobuf.util.Long = Long as any;
 protobuf.configure();
 
 // Manual type definition for Transfer
@@ -144,15 +144,15 @@ export class Composer {
     const order: Order = {
       orderId,
       side,
-      quantums,
-      subticks,
+      quantums: quantums as any,
+      subticks: subticks as any,
       goodTilBlock: goodTilBlock === 0 ? undefined : goodTilBlock,
       goodTilBlockTime: goodTilBlock === 0 ? goodTilBlockTime : undefined,
       timeInForce,
       reduceOnly,
       clientMetadata: clientMetadata ?? 0,
       conditionType,
-      conditionalOrderTriggerSubticks,
+      conditionalOrderTriggerSubticks: conditionalOrderTriggerSubticks as any,
       twapParameters,
       builderCodeParameters,
       orderRouterAddress,
@@ -240,7 +240,7 @@ export class Composer {
           perpetualId,
         },
         quantumConversionExponent,
-        stepBaseQuantums,
+        stepBaseQuantums: stepBaseQuantums as any,
         subticksPerTick,
         status: ClobPair_Status.STATUS_INITIALIZING,
       },
@@ -268,7 +268,7 @@ export class Composer {
           perpetualId,
         },
         quantumConversionExponent,
-        stepBaseQuantums,
+        stepBaseQuantums: stepBaseQuantums as any,
         subticksPerTick,
         status: ClobPair_Status.STATUS_ACTIVE,
       },
@@ -343,7 +343,7 @@ export class Composer {
       sender: address,
       recipient,
       assetId,
-      quantums,
+      quantums: quantums as any,
     };
 
     return {
@@ -368,7 +368,7 @@ export class Composer {
       sender,
       recipient,
       assetId,
-      quantums,
+      quantums: quantums as any,
     };
 
     return {
@@ -688,7 +688,7 @@ export class Composer {
   public composeMsgRemoveAuthenticator(address: string, id: Long): EncodeObject {
     const msg: MsgRemoveAuthenticator = {
       sender: address,
-      id,
+      id: id as any,
     };
 
     return {
