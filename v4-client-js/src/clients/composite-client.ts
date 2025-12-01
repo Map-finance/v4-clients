@@ -1023,6 +1023,13 @@ export class CompositeClient {
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
+      console.log('bridgeTransferMessage',{ subaccount,
+        destinationChainId,
+        receiveAddress,
+        amount,
+        assetId,
+        atomicResolution,});
+      
       const msg = this.bridgeTransferMessage(
         subaccount,
         destinationChainId,
@@ -1031,6 +1038,9 @@ export class CompositeClient {
         assetId,
         atomicResolution,
       );
+
+      console.log('bridgeTransferMessage',msg);
+      
       resolve([msg]);
     });
     return this.send(
