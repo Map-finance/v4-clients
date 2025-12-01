@@ -152,11 +152,12 @@ const MsgCreateBridgeTransferCodec = {
     }
 
     // 编码 quantums (field 4, uint64)
+    // 使用 toString() 保持 18+ 位精度，protobuf uint64 支持字符串参数
     if (message.quantums) {
       const quantumsValue =
-        typeof message.quantums === 'object' && 'toNumber' in message.quantums
-          ? message.quantums.toNumber()
-          : Number(message.quantums);
+        typeof message.quantums === 'object' && 'toString' in message.quantums
+          ? message.quantums.toString()
+          : String(message.quantums);
       writer.uint32(32).uint64(quantumsValue);
     }
 

@@ -12,6 +12,7 @@ import {
   Order_TimeInForce,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
 import * as AuthModule from 'cosmjs-types/cosmos/auth/v1beta1/query';
+import BigNumber from 'bignumber.js';
 import { Long } from '../lib/long';
 
 import { BECH32_PREFIX, GAS_MULTIPLIER, NOBLE_BECH32_PREFIX } from '../lib/constants';
@@ -1097,15 +1098,16 @@ export async function sendNobleIBC(squidPayload: string): Promise<String> {
     }
 
     // take out fee from amount before sweeping
-    const amount =
-      parseInt(ibcMsg.value.token.amount, 10) -
-      Math.floor(parseInt(fee.amount[0].amount, 10) * GAS_MULTIPLIER);
+    // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
+    const amountBN = BigNumber(ibcMsg.value.token.amount).minus(
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+    );
 
-    if (amount <= 0) {
+    if (amountBN.isLessThanOrEqualTo(0)) {
       throw new UserError('noble balance does not cover fees');
     }
 
-    ibcMsg.value.token = createCoin(amount.toString(), ibcMsg.value.token.denom);
+    ibcMsg.value.token = createCoin(amountBN.toFixed(0, BigNumber.ROUND_FLOOR), ibcMsg.value.token.denom);
     const tx = await client.IBCTransfer(ibcMsg);
     return encodeJson(tx);
   } catch (error) {
@@ -1133,9 +1135,10 @@ export async function withdrawToNobleIBC(payload: string): Promise<String> {
     const parsedIbcPayload: SquidIBCPayload = JSON.parse(decoded);
 
     const subaccount = SubaccountInfo.forLocalWallet(wallet, subaccountNumber);
+    // 使用 BigNumber 避免 parseFloat 精度丢失（支持 18+ 位精度）
     const msg = client.withdrawFromSubaccountMessage(
       subaccount,
-      parseFloat(amount).toFixed(client.validatorClient.config.denoms.USDC_DECIMALS),
+      BigNumber(amount).toFixed(client.validatorClient.config.denoms.USDC_DECIMALS, BigNumber.ROUND_FLOOR),
     );
     const ibcMsg: MsgTransferEncodeObject = {
       typeUrl: parsedIbcPayload.msgTypeUrl,
@@ -1174,15 +1177,16 @@ export async function cctpWithdraw(squidPayload: string): Promise<String> {
     const fee = await client.simulateTransaction([ibcMsg]);
 
     // take out fee from amount before sweeping
-    const amount =
-      parseInt(ibcMsg.value.amount, 10) -
-      Math.floor(parseInt(fee.amount[0].amount, 10) * GAS_MULTIPLIER);
+    // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
+    const amountBN = BigNumber(ibcMsg.value.amount).minus(
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+    );
 
-    if (amount <= 0) {
+    if (amountBN.isLessThanOrEqualTo(0)) {
       throw new Error('noble balance does not cover fees');
     }
 
-    ibcMsg.value.amount = amount.toString();
+    ibcMsg.value.amount = amountBN.toFixed(0, BigNumber.ROUND_FLOOR);
 
     const tx = await client.send([ibcMsg]);
 
@@ -1207,15 +1211,16 @@ export async function cctpMultiMsgWithdraw(cosmosPayload: string): Promise<strin
     const fee = await client.simulateTransaction(ibcMsgs);
 
     // take out fee from amount before sweeping
-    const amount =
-      parseInt(ibcMsgs[0].value.amount, 10) -
-      Math.floor(parseInt(fee.amount[0].amount, 10) * GAS_MULTIPLIER);
+    // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
+    const amountBN = BigNumber(ibcMsgs[0].value.amount).minus(
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+    );
 
-    if (amount <= 0) {
+    if (amountBN.isLessThanOrEqualTo(0)) {
       throw new Error('noble balance does not cover fees');
     }
 
-    ibcMsgs[0].value.amount = amount.toString();
+    ibcMsgs[0].value.amount = amountBN.toFixed(0, BigNumber.ROUND_FLOOR);
 
     const tx = await client.send(ibcMsgs);
 
@@ -1295,7 +1300,7 @@ export async function subaccountTransfer(payload: string): Promise<string> {
       subaccount,
       destinationAddress,
       destinationSubaccountNumber,
-      parseFloat(amount).toFixed(6),
+      BigNumber(amount).toFixed(6, BigNumber.ROUND_FLOOR),
       Method.BroadcastTxCommit,
     );
     return encodeJson(tx);
