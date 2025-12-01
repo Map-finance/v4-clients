@@ -17,7 +17,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.channel.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ibc channel submodule's genesis state. */
+/**
+ * GenesisState defines the ibc channel submodule's genesis state.
+ * @name GenesisStateAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   channels?: IdentifiedChannelAmino[];
   acknowledgements?: PacketStateAmino[];
@@ -26,7 +31,9 @@ export interface GenesisStateAmino {
   send_sequences?: PacketSequenceAmino[];
   recv_sequences?: PacketSequenceAmino[];
   ack_sequences?: PacketSequenceAmino[];
-  /** the sequence for the next generated channel identifier */
+  /**
+   * the sequence for the next generated channel identifier
+   */
   next_channel_sequence?: string;
 }
 export interface GenesisStateAminoMsg {
@@ -60,6 +67,9 @@ export interface PacketSequenceProtoMsg {
 /**
  * PacketSequence defines the genesis type necessary to retrieve and store
  * next send and receive sequences.
+ * @name PacketSequenceAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.PacketSequence
  */
 export interface PacketSequenceAmino {
   port_id?: string;
@@ -221,7 +231,7 @@ export const GenesisState = {
     } else {
       obj.ack_sequences = message.ackSequences;
     }
-    obj.next_channel_sequence = message.nextChannelSequence !== BigInt(0) ? message.nextChannelSequence.toString() : undefined;
+    obj.next_channel_sequence = message.nextChannelSequence !== BigInt(0) ? message.nextChannelSequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
@@ -314,7 +324,7 @@ export const PacketSequence = {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: PacketSequenceAminoMsg): PacketSequence {

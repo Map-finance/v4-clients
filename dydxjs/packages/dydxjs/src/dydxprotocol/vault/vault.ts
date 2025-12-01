@@ -102,11 +102,20 @@ export interface VaultIdProtoMsg {
   typeUrl: "/dydxprotocol.vault.VaultId";
   value: Uint8Array;
 }
-/** VaultId uniquely identifies a vault by its type and number. */
+/**
+ * VaultId uniquely identifies a vault by its type and number.
+ * @name VaultIdAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.VaultId
+ */
 export interface VaultIdAmino {
-  /** Type of the vault. */
+  /**
+   * Type of the vault.
+   */
   type?: VaultType;
-  /** Unique ID of the vault within above type. */
+  /**
+   * Unique ID of the vault within above type.
+   */
   number?: number;
 }
 export interface VaultIdAminoMsg {

@@ -29,12 +29,19 @@ export interface StreamSubaccountUpdateProtoMsg {
 /**
  * StreamSubaccountUpdate provides information on a subaccount update. Used in
  * the full node GRPC stream.
+ * @name StreamSubaccountUpdateAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.StreamSubaccountUpdate
  */
 export interface StreamSubaccountUpdateAmino {
   subaccount_id?: SubaccountIdAmino;
-  /** updated_perpetual_positions will each be for unique perpetuals. */
+  /**
+   * updated_perpetual_positions will each be for unique perpetuals.
+   */
   updated_perpetual_positions?: SubaccountPerpetualPositionAmino[];
-  /** updated_asset_positions will each be for unique assets. */
+  /**
+   * updated_asset_positions will each be for unique assets.
+   */
   updated_asset_positions?: SubaccountAssetPositionAmino[];
   /**
    * Snapshot indicates if the response is from a snapshot of the subaccount.
@@ -78,11 +85,18 @@ export interface SubaccountPerpetualPositionProtoMsg {
 /**
  * SubaccountPerpetualPosition provides information on a subaccount's updated
  * perpetual positions.
+ * @name SubaccountPerpetualPositionAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.SubaccountPerpetualPosition
  */
 export interface SubaccountPerpetualPositionAmino {
-  /** The `Id` of the `Perpetual`. */
+  /**
+   * The `Id` of the `Perpetual`.
+   */
   perpetual_id?: number;
-  /** The size of the position in base quantums. */
+  /**
+   * The size of the position in base quantums.
+   */
   quantums?: string;
 }
 export interface SubaccountPerpetualPositionAminoMsg {
@@ -114,11 +128,18 @@ export interface SubaccountAssetPositionProtoMsg {
 /**
  * SubaccountAssetPosition provides information on a subaccount's updated asset
  * positions.
+ * @name SubaccountAssetPositionAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.SubaccountAssetPosition
  */
 export interface SubaccountAssetPositionAmino {
-  /** The `Id` of the `Asset`. */
+  /**
+   * The `Id` of the `Asset`.
+   */
   asset_id?: number;
-  /** The absolute size of the position in base quantums. */
+  /**
+   * The absolute size of the position in base quantums.
+   */
   quantums?: string;
 }
 export interface SubaccountAssetPositionAminoMsg {
@@ -292,7 +313,7 @@ export const SubaccountPerpetualPosition = {
   toAmino(message: SubaccountPerpetualPosition): SubaccountPerpetualPositionAmino {
     const obj: any = {};
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums.toString() : undefined;
+    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountPerpetualPositionAminoMsg): SubaccountPerpetualPosition {
@@ -367,7 +388,7 @@ export const SubaccountAssetPosition = {
   toAmino(message: SubaccountAssetPosition): SubaccountAssetPositionAmino {
     const obj: any = {};
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums.toString() : undefined;
+    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountAssetPositionAminoMsg): SubaccountAssetPosition {

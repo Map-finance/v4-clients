@@ -9,7 +9,12 @@ export interface ListLimitParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.ListLimitParamsRequest";
   value: Uint8Array;
 }
-/** ListLimitParamsRequest is a request type of the ListLimitParams RPC method. */
+/**
+ * ListLimitParamsRequest is a request type of the ListLimitParams RPC method.
+ * @name ListLimitParamsRequestAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.ListLimitParamsRequest
+ */
 export interface ListLimitParamsRequestAmino {}
 export interface ListLimitParamsRequestAminoMsg {
   type: "/dydxprotocol.ratelimit.ListLimitParamsRequest";
@@ -25,7 +30,12 @@ export interface ListLimitParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.ListLimitParamsResponse";
   value: Uint8Array;
 }
-/** ListLimitParamsResponse is a response type of the ListLimitParams RPC method. */
+/**
+ * ListLimitParamsResponse is a response type of the ListLimitParams RPC method.
+ * @name ListLimitParamsResponseAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.ListLimitParamsResponse
+ */
 export interface ListLimitParamsResponseAmino {
   limit_params_list?: LimitParamsAmino[];
 }
@@ -51,6 +61,9 @@ export interface QueryCapacityByDenomRequestProtoMsg {
 /**
  * QueryCapacityByDenomRequest is a request type for the CapacityByDenom RPC
  * method.
+ * @name QueryCapacityByDenomRequestAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.QueryCapacityByDenomRequest
  */
 export interface QueryCapacityByDenomRequestAmino {
   denom?: string;
@@ -80,6 +93,9 @@ export interface QueryCapacityByDenomResponseProtoMsg {
 /**
  * QueryCapacityByDenomResponse is a response type of the CapacityByDenom RPC
  * method.
+ * @name QueryCapacityByDenomResponseAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.QueryCapacityByDenomResponse
  */
 export interface QueryCapacityByDenomResponseAmino {
   limiter_capacity_list?: LimiterCapacityAmino[];
@@ -107,6 +123,9 @@ export interface QueryAllPendingSendPacketsRequestProtoMsg {
 /**
  * QueryAllPendingSendPacketsRequest is a request type for the
  * AllPendingSendPackets RPC
+ * @name QueryAllPendingSendPacketsRequestAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.QueryAllPendingSendPacketsRequest
  */
 export interface QueryAllPendingSendPacketsRequestAmino {}
 export interface QueryAllPendingSendPacketsRequestAminoMsg {
@@ -132,6 +151,9 @@ export interface QueryAllPendingSendPacketsResponseProtoMsg {
 /**
  * QueryAllPendingSendPacketsResponse is a response type of the
  * AllPendingSendPackets RPC
+ * @name QueryAllPendingSendPacketsResponseAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.QueryAllPendingSendPacketsResponse
  */
 export interface QueryAllPendingSendPacketsResponseAmino {
   pending_send_packets?: PendingSendPacketAmino[];

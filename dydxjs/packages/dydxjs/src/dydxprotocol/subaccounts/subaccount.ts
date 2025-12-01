@@ -16,9 +16,16 @@ export interface SubaccountIdProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.SubaccountId";
   value: Uint8Array;
 }
-/** SubaccountId defines a unique identifier for a Subaccount. */
+/**
+ * SubaccountId defines a unique identifier for a Subaccount.
+ * @name SubaccountIdAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.SubaccountId
+ */
 export interface SubaccountIdAmino {
-  /** The address of the wallet that owns this subaccount. */
+  /**
+   * The address of the wallet that owns this subaccount.
+   */
   owner?: string;
   /**
    * The unique number of this subaccount for the owner.
@@ -65,9 +72,14 @@ export interface SubaccountProtoMsg {
 /**
  * Subaccount defines a single sub-account for a given address.
  * Subaccounts are uniquely indexed by a subaccountNumber/owner pair.
+ * @name SubaccountAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.Subaccount
  */
 export interface SubaccountAmino {
-  /** The Id of the Subaccount */
+  /**
+   * The Id of the Subaccount
+   */
   id?: SubaccountIdAmino;
   /**
    * All `AssetPosition`s associated with this subaccount.

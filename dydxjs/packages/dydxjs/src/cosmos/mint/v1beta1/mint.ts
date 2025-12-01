@@ -12,11 +12,20 @@ export interface MinterProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.Minter";
   value: Uint8Array;
 }
-/** Minter represents the minting state. */
+/**
+ * Minter represents the minting state.
+ * @name MinterAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.Minter
+ */
 export interface MinterAmino {
-  /** current annual inflation rate */
+  /**
+   * current annual inflation rate
+   */
   inflation?: string;
-  /** current annual expected provisions */
+  /**
+   * current annual expected provisions
+   */
   annual_provisions?: string;
 }
 export interface MinterAminoMsg {
@@ -47,19 +56,36 @@ export interface ParamsProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.Params";
   value: Uint8Array;
 }
-/** Params holds parameters for the mint module. */
+/**
+ * Params holds parameters for the mint module.
+ * @name ParamsAmino
+ * @package cosmos.mint.v1beta1
+ * @see proto type: cosmos.mint.v1beta1.Params
+ */
 export interface ParamsAmino {
-  /** type of coin to mint */
+  /**
+   * type of coin to mint
+   */
   mint_denom?: string;
-  /** maximum annual change in inflation rate */
+  /**
+   * maximum annual change in inflation rate
+   */
   inflation_rate_change?: string;
-  /** maximum inflation rate */
+  /**
+   * maximum inflation rate
+   */
   inflation_max?: string;
-  /** minimum inflation rate */
+  /**
+   * minimum inflation rate
+   */
   inflation_min?: string;
-  /** goal of percent bonded atoms */
+  /**
+   * goal of percent bonded atoms
+   */
   goal_bonded?: string;
-  /** expected blocks per year */
+  /**
+   * expected blocks per year
+   */
   blocks_per_year?: string;
 }
 export interface ParamsAminoMsg {
@@ -260,7 +286,7 @@ export const Params = {
     obj.inflation_max = message.inflationMax === "" ? undefined : message.inflationMax;
     obj.inflation_min = message.inflationMin === "" ? undefined : message.inflationMin;
     obj.goal_bonded = message.goalBonded === "" ? undefined : message.goalBonded;
-    obj.blocks_per_year = message.blocksPerYear !== BigInt(0) ? message.blocksPerYear.toString() : undefined;
+    obj.blocks_per_year = message.blocksPerYear !== BigInt(0) ? message.blocksPerYear?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

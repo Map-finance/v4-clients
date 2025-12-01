@@ -144,11 +144,18 @@ export interface OrderPlaceV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.off_chain_updates.OrderPlaceV1";
   value: Uint8Array;
 }
-/** OrderPlace messages contain the order placed/replaced. */
+/**
+ * OrderPlace messages contain the order placed/replaced.
+ * @name OrderPlaceV1Amino
+ * @package dydxprotocol.indexer.off_chain_updates
+ * @see proto type: dydxprotocol.indexer.off_chain_updates.OrderPlaceV1
+ */
 export interface OrderPlaceV1Amino {
   order?: IndexerOrderAmino;
   placement_status?: OrderPlaceV1_OrderPlacementStatus;
-  /** The timestamp of the order placement. */
+  /**
+   * The timestamp of the order placement.
+   */
   time_stamp?: string;
 }
 export interface OrderPlaceV1AminoMsg {
@@ -179,12 +186,17 @@ export interface OrderRemoveV1ProtoMsg {
 /**
  * OrderRemove messages contain the id of the order removed, the reason for the
  * removal and the resulting status from the removal.
+ * @name OrderRemoveV1Amino
+ * @package dydxprotocol.indexer.off_chain_updates
+ * @see proto type: dydxprotocol.indexer.off_chain_updates.OrderRemoveV1
  */
 export interface OrderRemoveV1Amino {
   removed_order_id?: IndexerOrderIdAmino;
   reason?: OrderRemovalReason;
   removal_status?: OrderRemoveV1_OrderRemovalStatus;
-  /** The timestamp of the order removal. */
+  /**
+   * The timestamp of the order removal.
+   */
   time_stamp?: string;
 }
 export interface OrderRemoveV1AminoMsg {
@@ -216,6 +228,9 @@ export interface OrderUpdateV1ProtoMsg {
 /**
  * OrderUpdate messages contain the id of the order being updated, and the
  * updated total filled quantums of the order.
+ * @name OrderUpdateV1Amino
+ * @package dydxprotocol.indexer.off_chain_updates
+ * @see proto type: dydxprotocol.indexer.off_chain_updates.OrderUpdateV1
  */
 export interface OrderUpdateV1Amino {
   order_id?: IndexerOrderIdAmino;
@@ -245,9 +260,16 @@ export interface OrderReplaceV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.off_chain_updates.OrderReplaceV1";
   value: Uint8Array;
 }
-/** OrderReplace messages contain the old order ID and the replacement order. */
+/**
+ * OrderReplace messages contain the old order ID and the replacement order.
+ * @name OrderReplaceV1Amino
+ * @package dydxprotocol.indexer.off_chain_updates
+ * @see proto type: dydxprotocol.indexer.off_chain_updates.OrderReplaceV1
+ */
 export interface OrderReplaceV1Amino {
-  /** vault replaces orders with a different order ID */
+  /**
+   * vault replaces orders with a different order ID
+   */
   old_order_id?: IndexerOrderIdAmino;
   order?: IndexerOrderAmino;
   placement_status?: OrderPlaceV1_OrderPlacementStatus;
@@ -281,6 +303,9 @@ export interface OffChainUpdateV1ProtoMsg {
 /**
  * An OffChainUpdate message is the message type which will be sent on Kafka to
  * the Indexer.
+ * @name OffChainUpdateV1Amino
+ * @package dydxprotocol.indexer.off_chain_updates
+ * @see proto type: dydxprotocol.indexer.off_chain_updates.OffChainUpdateV1
  */
 export interface OffChainUpdateV1Amino {
   order_place?: OrderPlaceV1Amino;
@@ -544,7 +569,7 @@ export const OrderUpdateV1 = {
   toAmino(message: OrderUpdateV1): OrderUpdateV1Amino {
     const obj: any = {};
     obj.order_id = message.orderId ? IndexerOrderId.toAmino(message.orderId) : undefined;
-    obj.total_filled_quantums = message.totalFilledQuantums !== BigInt(0) ? message.totalFilledQuantums.toString() : undefined;
+    obj.total_filled_quantums = message.totalFilledQuantums !== BigInt(0) ? message.totalFilledQuantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: OrderUpdateV1AminoMsg): OrderUpdateV1 {

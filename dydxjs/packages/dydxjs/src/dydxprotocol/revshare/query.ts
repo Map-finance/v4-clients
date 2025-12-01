@@ -8,7 +8,12 @@ export interface QueryMarketMapperRevenueShareParamsProtoMsg {
   typeUrl: "/dydxprotocol.revshare.QueryMarketMapperRevenueShareParams";
   value: Uint8Array;
 }
-/** Queries for the default market mapper revenue share params */
+/**
+ * Queries for the default market mapper revenue share params
+ * @name QueryMarketMapperRevenueShareParamsAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryMarketMapperRevenueShareParams
+ */
 export interface QueryMarketMapperRevenueShareParamsAmino {}
 export interface QueryMarketMapperRevenueShareParamsAminoMsg {
   type: "/dydxprotocol.revshare.QueryMarketMapperRevenueShareParams";
@@ -24,7 +29,12 @@ export interface QueryMarketMapperRevenueShareParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.revshare.QueryMarketMapperRevenueShareParamsResponse";
   value: Uint8Array;
 }
-/** Response type for QueryMarketMapperRevenueShareParams */
+/**
+ * Response type for QueryMarketMapperRevenueShareParams
+ * @name QueryMarketMapperRevenueShareParamsResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryMarketMapperRevenueShareParamsResponse
+ */
 export interface QueryMarketMapperRevenueShareParamsResponseAmino {
   params?: MarketMapperRevenueShareParamsAmino;
 }
@@ -44,7 +54,12 @@ export interface QueryMarketMapperRevShareDetailsProtoMsg {
   typeUrl: "/dydxprotocol.revshare.QueryMarketMapperRevShareDetails";
   value: Uint8Array;
 }
-/** Queries market mapper revenue share details for a specific market */
+/**
+ * Queries market mapper revenue share details for a specific market
+ * @name QueryMarketMapperRevShareDetailsAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryMarketMapperRevShareDetails
+ */
 export interface QueryMarketMapperRevShareDetailsAmino {
   market_id?: number;
 }
@@ -64,7 +79,12 @@ export interface QueryMarketMapperRevShareDetailsResponseProtoMsg {
   typeUrl: "/dydxprotocol.revshare.QueryMarketMapperRevShareDetailsResponse";
   value: Uint8Array;
 }
-/** Response type for QueryMarketMapperRevShareDetails */
+/**
+ * Response type for QueryMarketMapperRevShareDetails
+ * @name QueryMarketMapperRevShareDetailsResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryMarketMapperRevShareDetailsResponse
+ */
 export interface QueryMarketMapperRevShareDetailsResponseAmino {
   details?: MarketMapperRevShareDetailsAmino;
 }

@@ -26,16 +26,23 @@ export interface ValidatorAlertIncentiveProtoMsg {
  * ValidatorAlertIncentive defines the incentive strategy to be executed for a
  * validator that has been confirmed to have at fault for an x/alerts alert.
  * This strategy is expected to slash half of the validator's stake.
+ * @name ValidatorAlertIncentiveAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.ValidatorAlertIncentive
  */
 export interface ValidatorAlertIncentiveAmino {
-  /** The validator that has been confirmed to have been at fault for an alert. */
+  /**
+   * The validator that has been confirmed to have been at fault for an alert.
+   */
   validator?: ValidatorAmino;
   /**
    * AlertSigner is the signer of the alert referenced by the conclusion that
    * created this incentive.
    */
   alert_signer?: string;
-  /** AlertHeight is the height at which the infraction occurred */
+  /**
+   * AlertHeight is the height at which the infraction occurred
+   */
   alert_height?: string;
 }
 export interface ValidatorAlertIncentiveAminoMsg {
@@ -122,7 +129,7 @@ export const ValidatorAlertIncentive = {
     const obj: any = {};
     obj.validator = message.validator ? Validator.toAmino(message.validator) : undefined;
     obj.alert_signer = message.alertSigner === "" ? undefined : message.alertSigner;
-    obj.alert_height = message.alertHeight !== BigInt(0) ? message.alertHeight.toString() : undefined;
+    obj.alert_height = message.alertHeight !== BigInt(0) ? message.alertHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorAlertIncentiveAminoMsg): ValidatorAlertIncentive {

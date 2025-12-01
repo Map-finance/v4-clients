@@ -25,6 +25,9 @@ export interface MsgUpsertMarketsProtoMsg {
 /**
  * MsgUpsertMarkets defines a message carrying a payload for performing market
  * upserts (update or create if does not exist) in the x/marketmap module.
+ * @name MsgUpsertMarketsAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgUpsertMarkets
  */
 export interface MsgUpsertMarketsAmino {
   /**
@@ -58,6 +61,11 @@ export interface MsgUpsertMarketsResponse_MarketUpdatesEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
 }
+/**
+ * @name MsgUpsertMarketsResponse_MarketUpdatesEntryAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgUpsertMarketsResponse_MarketUpdatesEntry
+ */
 export interface MsgUpsertMarketsResponse_MarketUpdatesEntryAmino {
   key?: string;
   value?: boolean;
@@ -92,14 +100,17 @@ export interface MsgUpsertMarketsResponseProtoMsg {
 /**
  * MsgUpsertMarketsResponse is the response from the UpsertMarkets API in the
  * x/marketmap module.
+ * @name MsgUpsertMarketsResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgUpsertMarketsResponse
  */
 export interface MsgUpsertMarketsResponseAmino {
   /**
    * UpdatedMarkets is a map between the ticker and whether the market was
    * updated.
    * Deprecated: This field will be empty in all responses.
+   * @deprecated
    */
-  /** @deprecated */
   market_updates?: {
     [key: string]: boolean;
   };
@@ -141,6 +152,9 @@ export interface MsgCreateMarketsProtoMsg {
 /**
  * MsgCreateMarkets defines a message carrying a payload for creating markets in
  * the x/marketmap module.
+ * @name MsgCreateMarketsAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgCreateMarkets
  */
 export interface MsgCreateMarketsAmino {
   /**
@@ -172,7 +186,12 @@ export interface MsgCreateMarketsResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MsgCreateMarketsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateMarketMapResponse is the response message for MsgUpdateMarketMap. */
+/**
+ * MsgUpdateMarketMapResponse is the response message for MsgUpdateMarketMap.
+ * @name MsgCreateMarketsResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgCreateMarketsResponse
+ */
 export interface MsgCreateMarketsResponseAmino {}
 export interface MsgCreateMarketsResponseAminoMsg {
   type: "/slinky.marketmap.v1.MsgCreateMarketsResponse";
@@ -203,6 +222,9 @@ export interface MsgUpdateMarketsProtoMsg {
 /**
  * MsgUpdateMarkets defines a message carrying a payload for updating the
  * x/marketmap module.
+ * @name MsgUpdateMarketsAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgUpdateMarkets
  */
 export interface MsgUpdateMarketsAmino {
   /**
@@ -234,7 +256,12 @@ export interface MsgUpdateMarketsResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MsgUpdateMarketsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateMarketsResponse is the response message for MsgUpdateMarkets. */
+/**
+ * MsgUpdateMarketsResponse is the response message for MsgUpdateMarkets.
+ * @name MsgUpdateMarketsResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgUpdateMarketsResponse
+ */
 export interface MsgUpdateMarketsResponseAmino {}
 export interface MsgUpdateMarketsResponseAminoMsg {
   type: "/slinky.marketmap.v1.MsgUpdateMarketsResponse";
@@ -262,9 +289,14 @@ export interface MsgParamsProtoMsg {
 /**
  * MsgParams defines the Msg/Params request type. It contains the
  * new parameters for the x/marketmap module.
+ * @name MsgParamsAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgParams
  */
 export interface MsgParamsAmino {
-  /** Params defines the new parameters for the x/marketmap module. */
+  /**
+   * Params defines the new parameters for the x/marketmap module.
+   */
   params?: ParamsAmino;
   /**
    * Authority defines the authority that is updating the x/marketmap module
@@ -290,7 +322,12 @@ export interface MsgParamsResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MsgParamsResponse";
   value: Uint8Array;
 }
-/** MsgParamsResponse defines the Msg/Params response type. */
+/**
+ * MsgParamsResponse defines the Msg/Params response type.
+ * @name MsgParamsResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgParamsResponse
+ */
 export interface MsgParamsResponseAmino {}
 export interface MsgParamsResponseAminoMsg {
   type: "/slinky.marketmap.v1.MsgParamsResponse";
@@ -320,9 +357,14 @@ export interface MsgRemoveMarketAuthoritiesProtoMsg {
  * MsgRemoveMarketAuthorities defines the Msg/RemoveMarketAuthoritiesResponse
  * request type. It contains the new addresses to remove from the list of
  * authorities
+ * @name MsgRemoveMarketAuthoritiesAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgRemoveMarketAuthorities
  */
 export interface MsgRemoveMarketAuthoritiesAmino {
-  /** RemoveAddresses is the list of addresses to remove. */
+  /**
+   * RemoveAddresses is the list of addresses to remove.
+   */
   remove_addresses?: string[];
   /**
    * Admin defines the authority that is the x/marketmap
@@ -355,6 +397,9 @@ export interface MsgRemoveMarketAuthoritiesResponseProtoMsg {
 /**
  * MsgRemoveMarketAuthoritiesResponse defines the
  * Msg/RemoveMarketAuthoritiesResponse response type.
+ * @name MsgRemoveMarketAuthoritiesResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MsgRemoveMarketAuthoritiesResponse
  */
 export interface MsgRemoveMarketAuthoritiesResponseAmino {}
 export interface MsgRemoveMarketAuthoritiesResponseAminoMsg {

@@ -20,13 +20,22 @@ export interface EventParamsProtoMsg {
 /**
  * EventParams stores parameters about which events to recognize and which
  * tokens to mint.
+ * @name EventParamsAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.EventParams
  */
 export interface EventParamsAmino {
-  /** The denom of the token to mint. */
+  /**
+   * The denom of the token to mint.
+   */
   denom?: string;
-  /** The numerical chain ID of the Ethereum chain to query. */
+  /**
+   * The numerical chain ID of the Ethereum chain to query.
+   */
   eth_chain_id?: string;
-  /** The address of the Ethereum contract to monitor for logs. */
+  /**
+   * The address of the Ethereum contract to monitor for logs.
+   */
   eth_address?: string;
 }
 export interface EventParamsAminoMsg {
@@ -73,7 +82,12 @@ export interface ProposeParamsProtoMsg {
   typeUrl: "/dydxprotocol.bridge.ProposeParams";
   value: Uint8Array;
 }
-/** ProposeParams stores parameters for proposing to the module. */
+/**
+ * ProposeParams stores parameters for proposing to the module.
+ * @name ProposeParamsAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.ProposeParams
+ */
 export interface ProposeParamsAmino {
   /**
    * The maximum number of bridge events to propose per block.
@@ -125,9 +139,16 @@ export interface SafetyParamsProtoMsg {
   typeUrl: "/dydxprotocol.bridge.SafetyParams";
   value: Uint8Array;
 }
-/** SafetyParams stores safety parameters for the module. */
+/**
+ * SafetyParams stores safety parameters for the module.
+ * @name SafetyParamsAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.SafetyParams
+ */
 export interface SafetyParamsAmino {
-  /** True if bridging is disabled. */
+  /**
+   * True if bridging is disabled.
+   */
   is_disabled?: boolean;
   /**
    * The number of blocks that bridges accepted in-consensus will be pending
@@ -211,7 +232,7 @@ export const EventParams = {
   toAmino(message: EventParams): EventParamsAmino {
     const obj: any = {};
     obj.denom = message.denom === "" ? undefined : message.denom;
-    obj.eth_chain_id = message.ethChainId !== BigInt(0) ? message.ethChainId.toString() : undefined;
+    obj.eth_chain_id = message.ethChainId !== BigInt(0) ? message.ethChainId?.toString() : undefined;
     obj.eth_address = message.ethAddress === "" ? undefined : message.ethAddress;
     return obj;
   },

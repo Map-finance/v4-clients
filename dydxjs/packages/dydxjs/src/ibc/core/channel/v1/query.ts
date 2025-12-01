@@ -16,11 +16,20 @@ export interface QueryChannelRequestProtoMsg {
   typeUrl: "/ibc.core.channel.v1.QueryChannelRequest";
   value: Uint8Array;
 }
-/** QueryChannelRequest is the request type for the Query/Channel RPC method */
+/**
+ * QueryChannelRequest is the request type for the Query/Channel RPC method
+ * @name QueryChannelRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelRequest
+ */
 export interface QueryChannelRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
 }
 export interface QueryChannelRequestAminoMsg {
@@ -53,13 +62,22 @@ export interface QueryChannelResponseProtoMsg {
  * QueryChannelResponse is the response type for the Query/Channel RPC method.
  * Besides the Channel end, it includes a proof and the height from which the
  * proof was retrieved.
+ * @name QueryChannelResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelResponse
  */
 export interface QueryChannelResponseAmino {
-  /** channel associated with the request identifiers */
+  /**
+   * channel associated with the request identifiers
+   */
   channel?: ChannelAmino;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryChannelResponseAminoMsg {
@@ -85,9 +103,16 @@ export interface QueryChannelsRequestProtoMsg {
   typeUrl: "/ibc.core.channel.v1.QueryChannelsRequest";
   value: Uint8Array;
 }
-/** QueryChannelsRequest is the request type for the Query/Channels RPC method */
+/**
+ * QueryChannelsRequest is the request type for the Query/Channels RPC method
+ * @name QueryChannelsRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelsRequest
+ */
 export interface QueryChannelsRequestAmino {
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino;
 }
 export interface QueryChannelsRequestAminoMsg {
@@ -111,13 +136,24 @@ export interface QueryChannelsResponseProtoMsg {
   typeUrl: "/ibc.core.channel.v1.QueryChannelsResponse";
   value: Uint8Array;
 }
-/** QueryChannelsResponse is the response type for the Query/Channels RPC method. */
+/**
+ * QueryChannelsResponse is the response type for the Query/Channels RPC method.
+ * @name QueryChannelsResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelsResponse
+ */
 export interface QueryChannelsResponseAmino {
-  /** list of stored channels of the chain. */
+  /**
+   * list of stored channels of the chain.
+   */
   channels?: IdentifiedChannelAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino;
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryChannelsResponseAminoMsg {
@@ -147,11 +183,18 @@ export interface QueryConnectionChannelsRequestProtoMsg {
 /**
  * QueryConnectionChannelsRequest is the request type for the
  * Query/QueryConnectionChannels RPC method
+ * @name QueryConnectionChannelsRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryConnectionChannelsRequest
  */
 export interface QueryConnectionChannelsRequestAmino {
-  /** connection unique identifier */
+  /**
+   * connection unique identifier
+   */
   connection?: string;
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino;
 }
 export interface QueryConnectionChannelsRequestAminoMsg {
@@ -185,13 +228,22 @@ export interface QueryConnectionChannelsResponseProtoMsg {
 /**
  * QueryConnectionChannelsResponse is the Response type for the
  * Query/QueryConnectionChannels RPC method
+ * @name QueryConnectionChannelsResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryConnectionChannelsResponse
  */
 export interface QueryConnectionChannelsResponseAmino {
-  /** list of channels associated with a connection. */
+  /**
+   * list of channels associated with a connection.
+   */
   channels?: IdentifiedChannelAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino;
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryConnectionChannelsResponseAminoMsg {
@@ -224,11 +276,18 @@ export interface QueryChannelClientStateRequestProtoMsg {
 /**
  * QueryChannelClientStateRequest is the request type for the Query/ClientState
  * RPC method
+ * @name QueryChannelClientStateRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelClientStateRequest
  */
 export interface QueryChannelClientStateRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
 }
 export interface QueryChannelClientStateRequestAminoMsg {
@@ -262,13 +321,22 @@ export interface QueryChannelClientStateResponseProtoMsg {
 /**
  * QueryChannelClientStateResponse is the Response type for the
  * Query/QueryChannelClientState RPC method
+ * @name QueryChannelClientStateResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelClientStateResponse
  */
 export interface QueryChannelClientStateResponseAmino {
-  /** client state associated with the channel */
+  /**
+   * client state associated with the channel
+   */
   identified_client_state?: IdentifiedClientStateAmino;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryChannelClientStateResponseAminoMsg {
@@ -305,15 +373,26 @@ export interface QueryChannelConsensusStateRequestProtoMsg {
 /**
  * QueryChannelConsensusStateRequest is the request type for the
  * Query/ConsensusState RPC method
+ * @name QueryChannelConsensusStateRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelConsensusStateRequest
  */
 export interface QueryChannelConsensusStateRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** revision number of the consensus state */
+  /**
+   * revision number of the consensus state
+   */
   revision_number?: string;
-  /** revision height of the consensus state */
+  /**
+   * revision height of the consensus state
+   */
   revision_height?: string;
 }
 export interface QueryChannelConsensusStateRequestAminoMsg {
@@ -351,15 +430,26 @@ export interface QueryChannelConsensusStateResponseProtoMsg {
 /**
  * QueryChannelClientStateResponse is the Response type for the
  * Query/QueryChannelClientState RPC method
+ * @name QueryChannelConsensusStateResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryChannelConsensusStateResponse
  */
 export interface QueryChannelConsensusStateResponseAmino {
-  /** consensus state associated with the channel */
+  /**
+   * consensus state associated with the channel
+   */
   consensus_state?: AnyAmino;
-  /** client ID associated with the consensus state */
+  /**
+   * client ID associated with the consensus state
+   */
   client_id?: string;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryChannelConsensusStateResponseAminoMsg {
@@ -395,13 +485,22 @@ export interface QueryPacketCommitmentRequestProtoMsg {
 /**
  * QueryPacketCommitmentRequest is the request type for the
  * Query/PacketCommitment RPC method
+ * @name QueryPacketCommitmentRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketCommitmentRequest
  */
 export interface QueryPacketCommitmentRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** packet sequence */
+  /**
+   * packet sequence
+   */
   sequence?: string;
 }
 export interface QueryPacketCommitmentRequestAminoMsg {
@@ -438,13 +537,22 @@ export interface QueryPacketCommitmentResponseProtoMsg {
  * QueryPacketCommitmentResponse defines the client query response for a packet
  * which also includes a proof and the height from which the proof was
  * retrieved
+ * @name QueryPacketCommitmentResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketCommitmentResponse
  */
 export interface QueryPacketCommitmentResponseAmino {
-  /** packet associated with the request fields */
+  /**
+   * packet associated with the request fields
+   */
   commitment?: string;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryPacketCommitmentResponseAminoMsg {
@@ -480,13 +588,22 @@ export interface QueryPacketCommitmentsRequestProtoMsg {
 /**
  * QueryPacketCommitmentsRequest is the request type for the
  * Query/QueryPacketCommitments RPC method
+ * @name QueryPacketCommitmentsRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketCommitmentsRequest
  */
 export interface QueryPacketCommitmentsRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino;
 }
 export interface QueryPacketCommitmentsRequestAminoMsg {
@@ -520,12 +637,19 @@ export interface QueryPacketCommitmentsResponseProtoMsg {
 /**
  * QueryPacketCommitmentsResponse is the request type for the
  * Query/QueryPacketCommitments RPC method
+ * @name QueryPacketCommitmentsResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketCommitmentsResponse
  */
 export interface QueryPacketCommitmentsResponseAmino {
   commitments?: PacketStateAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino;
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryPacketCommitmentsResponseAminoMsg {
@@ -560,13 +684,22 @@ export interface QueryPacketReceiptRequestProtoMsg {
 /**
  * QueryPacketReceiptRequest is the request type for the
  * Query/PacketReceipt RPC method
+ * @name QueryPacketReceiptRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketReceiptRequest
  */
 export interface QueryPacketReceiptRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** packet sequence */
+  /**
+   * packet sequence
+   */
   sequence?: string;
 }
 export interface QueryPacketReceiptRequestAminoMsg {
@@ -603,13 +736,22 @@ export interface QueryPacketReceiptResponseProtoMsg {
  * QueryPacketReceiptResponse defines the client query response for a packet
  * receipt which also includes a proof, and the height from which the proof was
  * retrieved
+ * @name QueryPacketReceiptResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketReceiptResponse
  */
 export interface QueryPacketReceiptResponseAmino {
-  /** success flag for if receipt exists */
+  /**
+   * success flag for if receipt exists
+   */
   received?: boolean;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryPacketReceiptResponseAminoMsg {
@@ -645,13 +787,22 @@ export interface QueryPacketAcknowledgementRequestProtoMsg {
 /**
  * QueryPacketAcknowledgementRequest is the request type for the
  * Query/PacketAcknowledgement RPC method
+ * @name QueryPacketAcknowledgementRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketAcknowledgementRequest
  */
 export interface QueryPacketAcknowledgementRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** packet sequence */
+  /**
+   * packet sequence
+   */
   sequence?: string;
 }
 export interface QueryPacketAcknowledgementRequestAminoMsg {
@@ -688,13 +839,22 @@ export interface QueryPacketAcknowledgementResponseProtoMsg {
  * QueryPacketAcknowledgementResponse defines the client query response for a
  * packet which also includes a proof and the height from which the
  * proof was retrieved
+ * @name QueryPacketAcknowledgementResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketAcknowledgementResponse
  */
 export interface QueryPacketAcknowledgementResponseAmino {
-  /** packet associated with the request fields */
+  /**
+   * packet associated with the request fields
+   */
   acknowledgement?: string;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryPacketAcknowledgementResponseAminoMsg {
@@ -732,15 +892,26 @@ export interface QueryPacketAcknowledgementsRequestProtoMsg {
 /**
  * QueryPacketAcknowledgementsRequest is the request type for the
  * Query/QueryPacketCommitments RPC method
+ * @name QueryPacketAcknowledgementsRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketAcknowledgementsRequest
  */
 export interface QueryPacketAcknowledgementsRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** pagination request */
+  /**
+   * pagination request
+   */
   pagination?: PageRequestAmino;
-  /** list of packet sequences */
+  /**
+   * list of packet sequences
+   */
   packet_commitment_sequences?: string[];
 }
 export interface QueryPacketAcknowledgementsRequestAminoMsg {
@@ -775,12 +946,19 @@ export interface QueryPacketAcknowledgementsResponseProtoMsg {
 /**
  * QueryPacketAcknowledgemetsResponse is the request type for the
  * Query/QueryPacketAcknowledgements RPC method
+ * @name QueryPacketAcknowledgementsResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryPacketAcknowledgementsResponse
  */
 export interface QueryPacketAcknowledgementsResponseAmino {
   acknowledgements?: PacketStateAmino[];
-  /** pagination response */
+  /**
+   * pagination response
+   */
   pagination?: PageResponseAmino;
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryPacketAcknowledgementsResponseAminoMsg {
@@ -815,13 +993,22 @@ export interface QueryUnreceivedPacketsRequestProtoMsg {
 /**
  * QueryUnreceivedPacketsRequest is the request type for the
  * Query/UnreceivedPackets RPC method
+ * @name QueryUnreceivedPacketsRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryUnreceivedPacketsRequest
  */
 export interface QueryUnreceivedPacketsRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** list of packet sequences */
+  /**
+   * list of packet sequences
+   */
   packet_commitment_sequences?: string[];
 }
 export interface QueryUnreceivedPacketsRequestAminoMsg {
@@ -854,11 +1041,18 @@ export interface QueryUnreceivedPacketsResponseProtoMsg {
 /**
  * QueryUnreceivedPacketsResponse is the response type for the
  * Query/UnreceivedPacketCommitments RPC method
+ * @name QueryUnreceivedPacketsResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryUnreceivedPacketsResponse
  */
 export interface QueryUnreceivedPacketsResponseAmino {
-  /** list of unreceived packet sequences */
+  /**
+   * list of unreceived packet sequences
+   */
   sequences?: string[];
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryUnreceivedPacketsResponseAminoMsg {
@@ -892,13 +1086,22 @@ export interface QueryUnreceivedAcksRequestProtoMsg {
 /**
  * QueryUnreceivedAcks is the request type for the
  * Query/UnreceivedAcks RPC method
+ * @name QueryUnreceivedAcksRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryUnreceivedAcksRequest
  */
 export interface QueryUnreceivedAcksRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
-  /** list of acknowledgement sequences */
+  /**
+   * list of acknowledgement sequences
+   */
   packet_ack_sequences?: string[];
 }
 export interface QueryUnreceivedAcksRequestAminoMsg {
@@ -931,11 +1134,18 @@ export interface QueryUnreceivedAcksResponseProtoMsg {
 /**
  * QueryUnreceivedAcksResponse is the response type for the
  * Query/UnreceivedAcks RPC method
+ * @name QueryUnreceivedAcksResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryUnreceivedAcksResponse
  */
 export interface QueryUnreceivedAcksResponseAmino {
-  /** list of unreceived acknowledgement sequences */
+  /**
+   * list of unreceived acknowledgement sequences
+   */
   sequences?: string[];
-  /** query block height */
+  /**
+   * query block height
+   */
   height?: HeightAmino;
 }
 export interface QueryUnreceivedAcksResponseAminoMsg {
@@ -967,11 +1177,18 @@ export interface QueryNextSequenceReceiveRequestProtoMsg {
 /**
  * QueryNextSequenceReceiveRequest is the request type for the
  * Query/QueryNextSequenceReceiveRequest RPC method
+ * @name QueryNextSequenceReceiveRequestAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryNextSequenceReceiveRequest
  */
 export interface QueryNextSequenceReceiveRequestAmino {
-  /** port unique identifier */
+  /**
+   * port unique identifier
+   */
   port_id?: string;
-  /** channel unique identifier */
+  /**
+   * channel unique identifier
+   */
   channel_id?: string;
 }
 export interface QueryNextSequenceReceiveRequestAminoMsg {
@@ -1005,13 +1222,22 @@ export interface QueryNextSequenceReceiveResponseProtoMsg {
 /**
  * QuerySequenceResponse is the request type for the
  * Query/QueryNextSequenceReceiveResponse RPC method
+ * @name QueryNextSequenceReceiveResponseAmino
+ * @package ibc.core.channel.v1
+ * @see proto type: ibc.core.channel.v1.QueryNextSequenceReceiveResponse
  */
 export interface QueryNextSequenceReceiveResponseAmino {
-  /** next sequence receive number */
+  /**
+   * next sequence receive number
+   */
   next_sequence_receive?: string;
-  /** merkle proof of existence */
+  /**
+   * merkle proof of existence
+   */
   proof?: string;
-  /** height at which the proof was retrieved */
+  /**
+   * height at which the proof was retrieved
+   */
   proof_height?: HeightAmino;
 }
 export interface QueryNextSequenceReceiveResponseAminoMsg {
@@ -1794,8 +2020,8 @@ export const QueryChannelConsensusStateRequest = {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.revision_number = message.revisionNumber !== BigInt(0) ? message.revisionNumber.toString() : undefined;
-    obj.revision_height = message.revisionHeight !== BigInt(0) ? message.revisionHeight.toString() : undefined;
+    obj.revision_number = message.revisionNumber !== BigInt(0) ? message.revisionNumber?.toString() : undefined;
+    obj.revision_height = message.revisionHeight !== BigInt(0) ? message.revisionHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryChannelConsensusStateRequestAminoMsg): QueryChannelConsensusStateRequest {
@@ -1993,7 +2219,7 @@ export const QueryPacketCommitmentRequest = {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryPacketCommitmentRequestAminoMsg): QueryPacketCommitmentRequest {
@@ -2367,7 +2593,7 @@ export const QueryPacketReceiptRequest = {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryPacketReceiptRequestAminoMsg): QueryPacketReceiptRequest {
@@ -2553,7 +2779,7 @@ export const QueryPacketAcknowledgementRequest = {
     const obj: any = {};
     obj.port_id = message.portId === "" ? undefined : message.portId;
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryPacketAcknowledgementRequestAminoMsg): QueryPacketAcknowledgementRequest {
@@ -3421,7 +3647,7 @@ export const QueryNextSequenceReceiveResponse = {
   },
   toAmino(message: QueryNextSequenceReceiveResponse): QueryNextSequenceReceiveResponseAmino {
     const obj: any = {};
-    obj.next_sequence_receive = message.nextSequenceReceive !== BigInt(0) ? message.nextSequenceReceive.toString() : undefined;
+    obj.next_sequence_receive = message.nextSequenceReceive !== BigInt(0) ? message.nextSequenceReceive?.toString() : undefined;
     obj.proof = message.proof ? base64FromBytes(message.proof) : undefined;
     obj.proof_height = message.proofHeight ? Height.toAmino(message.proofHeight) : {};
     return obj;

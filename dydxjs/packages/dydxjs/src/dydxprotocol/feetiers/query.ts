@@ -13,6 +13,9 @@ export interface QueryPerpetualFeeParamsRequestProtoMsg {
 /**
  * QueryPerpetualFeeParamsRequest is a request type for the PerpetualFeeParams
  * RPC method.
+ * @name QueryPerpetualFeeParamsRequestAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.QueryPerpetualFeeParamsRequest
  */
 export interface QueryPerpetualFeeParamsRequestAmino {}
 export interface QueryPerpetualFeeParamsRequestAminoMsg {
@@ -38,6 +41,9 @@ export interface QueryPerpetualFeeParamsResponseProtoMsg {
 /**
  * QueryPerpetualFeeParamsResponse is a response type for the PerpetualFeeParams
  * RPC method.
+ * @name QueryPerpetualFeeParamsResponseAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.QueryPerpetualFeeParamsResponse
  */
 export interface QueryPerpetualFeeParamsResponseAmino {
   params?: PerpetualFeeParamsAmino;
@@ -61,7 +67,12 @@ export interface QueryUserFeeTierRequestProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.QueryUserFeeTierRequest";
   value: Uint8Array;
 }
-/** QueryUserFeeTierRequest is a request type for the UserFeeTier RPC method. */
+/**
+ * QueryUserFeeTierRequest is a request type for the UserFeeTier RPC method.
+ * @name QueryUserFeeTierRequestAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.QueryUserFeeTierRequest
+ */
 export interface QueryUserFeeTierRequestAmino {
   user?: string;
 }
@@ -83,9 +94,16 @@ export interface QueryUserFeeTierResponseProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.QueryUserFeeTierResponse";
   value: Uint8Array;
 }
-/** QueryUserFeeTierResponse is a request type for the UserFeeTier RPC method. */
+/**
+ * QueryUserFeeTierResponse is a request type for the UserFeeTier RPC method.
+ * @name QueryUserFeeTierResponseAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.QueryUserFeeTierResponse
+ */
 export interface QueryUserFeeTierResponseAmino {
-  /** Index of the fee tier in the list queried from PerpetualFeeParams. */
+  /**
+   * Index of the fee tier in the list queried from PerpetualFeeParams.
+   */
   index?: number;
   tier?: PerpetualFeeTierAmino;
 }

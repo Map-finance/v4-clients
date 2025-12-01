@@ -15,6 +15,9 @@ export interface PendingSendPacketProtoMsg {
 /**
  * PendingSendPacket contains the channel_id and sequence pair to identify a
  * pending packet
+ * @name PendingSendPacketAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.PendingSendPacket
  */
 export interface PendingSendPacketAmino {
   channel_id?: string;
@@ -88,7 +91,7 @@ export const PendingSendPacket = {
   toAmino(message: PendingSendPacket): PendingSendPacketAmino {
     const obj: any = {};
     obj.channel_id = message.channelId === "" ? undefined : message.channelId;
-    obj.sequence = message.sequence !== BigInt(0) ? message.sequence.toString() : undefined;
+    obj.sequence = message.sequence !== BigInt(0) ? message.sequence?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: PendingSendPacketAminoMsg): PendingSendPacket {

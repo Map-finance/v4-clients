@@ -12,7 +12,12 @@ export interface BlockInfoProtoMsg {
   typeUrl: "/dydxprotocol.blocktime.BlockInfo";
   value: Uint8Array;
 }
-/** BlockInfo stores information about a block */
+/**
+ * BlockInfo stores information about a block
+ * @name BlockInfoAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.BlockInfo
+ */
 export interface BlockInfoAmino {
   height?: number;
   timestamp?: string;
@@ -38,7 +43,12 @@ export interface AllDowntimeInfoProtoMsg {
   typeUrl: "/dydxprotocol.blocktime.AllDowntimeInfo";
   value: Uint8Array;
 }
-/** AllDowntimeInfo stores information for all downtime durations. */
+/**
+ * AllDowntimeInfo stores information for all downtime durations.
+ * @name AllDowntimeInfoAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.AllDowntimeInfo
+ */
 export interface AllDowntimeInfoAmino {
   /**
    * The downtime information for each tracked duration. Sorted by duration,
@@ -69,6 +79,9 @@ export interface AllDowntimeInfo_DowntimeInfoProtoMsg {
 /**
  * Stores information about downtime. block_info corresponds to the most
  * recent block at which a downtime occurred.
+ * @name AllDowntimeInfo_DowntimeInfoAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.AllDowntimeInfo_DowntimeInfo
  */
 export interface AllDowntimeInfo_DowntimeInfoAmino {
   duration?: DurationAmino;

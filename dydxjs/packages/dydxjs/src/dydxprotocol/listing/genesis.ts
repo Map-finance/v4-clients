@@ -12,7 +12,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.listing.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines `x/listing`'s genesis state. */
+/**
+ * GenesisState defines `x/listing`'s genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.GenesisState
+ */
 export interface GenesisStateAmino {
   /**
    * hard_cap_for_markets is the hard cap for the number of markets that can be

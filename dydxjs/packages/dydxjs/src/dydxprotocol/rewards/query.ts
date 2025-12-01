@@ -7,7 +7,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.rewards.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is a request type for the Params RPC method. */
+/**
+ * QueryParamsRequest is a request type for the Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package dydxprotocol.rewards
+ * @see proto type: dydxprotocol.rewards.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/dydxprotocol.rewards.QueryParamsRequest";
@@ -23,7 +28,12 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.rewards.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is a response type for the Params RPC method. */
+/**
+ * QueryParamsResponse is a response type for the Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package dydxprotocol.rewards
+ * @see proto type: dydxprotocol.rewards.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
   params?: ParamsAmino;
 }

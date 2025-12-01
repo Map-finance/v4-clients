@@ -58,6 +58,8 @@ export const dydxprotocolAminoConverters = {
 export const dydxprotocolProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...dydxprotocolAffiliatesTxRegistry.registry, ...dydxprotocolBlocktimeTxRegistry.registry, ...dydxprotocolBridgeTxRegistry.registry, ...dydxprotocolClobTxRegistry.registry, ...dydxprotocolDelaymsgTxRegistry.registry, ...dydxprotocolFeetiersTxRegistry.registry, ...dydxprotocolGovplusTxRegistry.registry, ...dydxprotocolListingTxRegistry.registry, ...dydxprotocolPerpetualsTxRegistry.registry, ...dydxprotocolPricesTxRegistry.registry, ...dydxprotocolRatelimitTxRegistry.registry, ...dydxprotocolRevshareTxRegistry.registry, ...dydxprotocolRewardsTxRegistry.registry, ...dydxprotocolSendingTxRegistry.registry, ...dydxprotocolStatsTxRegistry.registry, ...dydxprotocolVaultTxRegistry.registry, ...dydxprotocolVestTxRegistry.registry];
 export const getSigningDydxprotocolClientOptions = ({
   defaultTypes = defaultRegistryTypes
+}: {
+  defaultTypes?: ReadonlyArray<[string, GeneratedType]>;
 } = {}): {
   registry: Registry;
   aminoTypes: AminoTypes;

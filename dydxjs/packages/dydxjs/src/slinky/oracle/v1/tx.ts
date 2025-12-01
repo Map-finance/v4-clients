@@ -28,6 +28,9 @@ export interface MsgAddCurrencyPairsProtoMsg {
  * check to see that the authority has permissions to update the set of
  * CurrencyPairs tracked in the oracle, and add the given CurrencyPairs to be
  * tracked in each VoteExtension
+ * @name MsgAddCurrencyPairsAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.MsgAddCurrencyPairs
  */
 export interface MsgAddCurrencyPairsAmino {
   /**
@@ -60,6 +63,11 @@ export interface MsgAddCurrencyPairsResponseProtoMsg {
   typeUrl: "/slinky.oracle.v1.MsgAddCurrencyPairsResponse";
   value: Uint8Array;
 }
+/**
+ * @name MsgAddCurrencyPairsResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.MsgAddCurrencyPairsResponse
+ */
 export interface MsgAddCurrencyPairsResponseAmino {}
 export interface MsgAddCurrencyPairsResponseAminoMsg {
   type: "/slinky.oracle.v1.MsgAddCurrencyPairsResponse";
@@ -95,6 +103,9 @@ export interface MsgRemoveCurrencyPairsProtoMsg {
  * CurrencyPairID in the request from state. Notice, if a given currency-pair
  * does not exist in state, the module ignores that currency-pair and continues
  * removing the rest.
+ * @name MsgRemoveCurrencyPairsAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.MsgRemoveCurrencyPairs
  */
 export interface MsgRemoveCurrencyPairsAmino {
   /**
@@ -128,6 +139,11 @@ export interface MsgRemoveCurrencyPairsResponseProtoMsg {
   typeUrl: "/slinky.oracle.v1.MsgRemoveCurrencyPairsResponse";
   value: Uint8Array;
 }
+/**
+ * @name MsgRemoveCurrencyPairsResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.MsgRemoveCurrencyPairsResponse
+ */
 export interface MsgRemoveCurrencyPairsResponseAmino {}
 export interface MsgRemoveCurrencyPairsResponseAminoMsg {
   type: "/slinky.oracle.v1.MsgRemoveCurrencyPairsResponse";

@@ -10,9 +10,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the feetiers module's genesis state. */
+/**
+ * GenesisState defines the feetiers module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** The parameters for perpetual fees. */
+  /**
+   * The parameters for perpetual fees.
+   */
   params?: PerpetualFeeParamsAmino;
 }
 export interface GenesisStateAminoMsg {

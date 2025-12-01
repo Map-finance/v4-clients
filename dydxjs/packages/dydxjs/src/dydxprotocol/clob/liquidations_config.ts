@@ -27,7 +27,12 @@ export interface LiquidationsConfigProtoMsg {
   typeUrl: "/dydxprotocol.clob.LiquidationsConfig";
   value: Uint8Array;
 }
-/** LiquidationsConfig stores all configurable fields related to liquidations. */
+/**
+ * LiquidationsConfig stores all configurable fields related to liquidations.
+ * @name LiquidationsConfigAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.LiquidationsConfig
+ */
 export interface LiquidationsConfigAmino {
   /**
    * The maximum liquidation fee (in parts-per-million). This fee goes
@@ -85,6 +90,9 @@ export interface PositionBlockLimitsProtoMsg {
 /**
  * PositionBlockLimits stores all configurable fields related to limits
  * around how much of a single position can be liquidated within a single block.
+ * @name PositionBlockLimitsAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.PositionBlockLimits
  */
 export interface PositionBlockLimitsAmino {
   /**
@@ -136,6 +144,9 @@ export interface SubaccountBlockLimitsProtoMsg {
  * SubaccountBlockLimits stores all configurable fields related to limits
  * around how many quote quantums from a single subaccount can
  * be liquidated within a single block.
+ * @name SubaccountBlockLimitsAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.SubaccountBlockLimits
  */
 export interface SubaccountBlockLimitsAmino {
   /**
@@ -182,9 +193,14 @@ export interface FillablePriceConfigProtoMsg {
 /**
  * FillablePriceConfig stores all configurable fields related to calculating
  * the fillable price for liquidating a position.
+ * @name FillablePriceConfigAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.FillablePriceConfig
  */
 export interface FillablePriceConfigAmino {
-  /** The rate at which the Adjusted Bankruptcy Rating increases. */
+  /**
+   * The rate at which the Adjusted Bankruptcy Rating increases.
+   */
   bankruptcy_adjustment_ppm?: number;
   /**
    * The maximum value that the liquidation spread can take, as
@@ -358,7 +374,7 @@ export const PositionBlockLimits = {
   },
   toAmino(message: PositionBlockLimits): PositionBlockLimitsAmino {
     const obj: any = {};
-    obj.min_position_notional_liquidated = message.minPositionNotionalLiquidated !== BigInt(0) ? message.minPositionNotionalLiquidated.toString() : undefined;
+    obj.min_position_notional_liquidated = message.minPositionNotionalLiquidated !== BigInt(0) ? message.minPositionNotionalLiquidated?.toString() : undefined;
     obj.max_position_portion_liquidated_ppm = message.maxPositionPortionLiquidatedPpm === 0 ? undefined : message.maxPositionPortionLiquidatedPpm;
     return obj;
   },
@@ -433,8 +449,8 @@ export const SubaccountBlockLimits = {
   },
   toAmino(message: SubaccountBlockLimits): SubaccountBlockLimitsAmino {
     const obj: any = {};
-    obj.max_notional_liquidated = message.maxNotionalLiquidated !== BigInt(0) ? message.maxNotionalLiquidated.toString() : undefined;
-    obj.max_quantums_insurance_lost = message.maxQuantumsInsuranceLost !== BigInt(0) ? message.maxQuantumsInsuranceLost.toString() : undefined;
+    obj.max_notional_liquidated = message.maxNotionalLiquidated !== BigInt(0) ? message.maxNotionalLiquidated?.toString() : undefined;
+    obj.max_quantums_insurance_lost = message.maxQuantumsInsuranceLost !== BigInt(0) ? message.maxQuantumsInsuranceLost?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountBlockLimitsAminoMsg): SubaccountBlockLimits {

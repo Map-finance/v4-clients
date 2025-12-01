@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.accountplus.GenesisState";
   value: Uint8Array;
 }
-/** Module genesis state */
+/**
+ * Module genesis state
+ * @name GenesisStateAmino
+ * @package dydxprotocol.accountplus
+ * @see proto type: dydxprotocol.accountplus.GenesisState
+ */
 export interface GenesisStateAmino {
   accounts?: AccountStateAmino[];
 }

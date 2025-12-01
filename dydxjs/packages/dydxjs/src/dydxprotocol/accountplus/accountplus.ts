@@ -9,7 +9,12 @@ export interface AccountStateProtoMsg {
   typeUrl: "/dydxprotocol.accountplus.AccountState";
   value: Uint8Array;
 }
-/** Account State */
+/**
+ * Account State
+ * @name AccountStateAmino
+ * @package dydxprotocol.accountplus
+ * @see proto type: dydxprotocol.accountplus.AccountState
+ */
 export interface AccountStateAmino {
   address?: string;
   timestamp_nonce_details?: TimestampNonceDetailsAmino;
@@ -34,11 +39,20 @@ export interface TimestampNonceDetailsProtoMsg {
   typeUrl: "/dydxprotocol.accountplus.TimestampNonceDetails";
   value: Uint8Array;
 }
-/** Timestamp nonce details */
+/**
+ * Timestamp nonce details
+ * @name TimestampNonceDetailsAmino
+ * @package dydxprotocol.accountplus
+ * @see proto type: dydxprotocol.accountplus.TimestampNonceDetails
+ */
 export interface TimestampNonceDetailsAmino {
-  /** unsorted list of n most recent timestamp nonces */
+  /**
+   * unsorted list of n most recent timestamp nonces
+   */
   timestamp_nonces?: string[];
-  /** max timestamp nonce that was ejected from list above */
+  /**
+   * max timestamp nonce that was ejected from list above
+   */
   max_ejected_nonce?: string;
 }
 export interface TimestampNonceDetailsAminoMsg {
@@ -192,7 +206,7 @@ export const TimestampNonceDetails = {
     } else {
       obj.timestamp_nonces = message.timestampNonces;
     }
-    obj.max_ejected_nonce = message.maxEjectedNonce !== BigInt(0) ? message.maxEjectedNonce.toString() : undefined;
+    obj.max_ejected_nonce = message.maxEjectedNonce !== BigInt(0) ? message.maxEjectedNonce?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: TimestampNonceDetailsAminoMsg): TimestampNonceDetails {

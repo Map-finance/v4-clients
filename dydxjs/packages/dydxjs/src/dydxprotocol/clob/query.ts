@@ -19,7 +19,12 @@ export interface QueryGetClobPairRequestProtoMsg {
   typeUrl: "/dydxprotocol.clob.QueryGetClobPairRequest";
   value: Uint8Array;
 }
-/** QueryGetClobPairRequest is request type for the ClobPair method. */
+/**
+ * QueryGetClobPairRequest is request type for the ClobPair method.
+ * @name QueryGetClobPairRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryGetClobPairRequest
+ */
 export interface QueryGetClobPairRequestAmino {
   id?: number;
 }
@@ -39,7 +44,12 @@ export interface QueryClobPairResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.QueryClobPairResponse";
   value: Uint8Array;
 }
-/** QueryClobPairResponse is response type for the ClobPair method. */
+/**
+ * QueryClobPairResponse is response type for the ClobPair method.
+ * @name QueryClobPairResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryClobPairResponse
+ */
 export interface QueryClobPairResponseAmino {
   clob_pair?: ClobPairAmino;
 }
@@ -59,7 +69,12 @@ export interface QueryAllClobPairRequestProtoMsg {
   typeUrl: "/dydxprotocol.clob.QueryAllClobPairRequest";
   value: Uint8Array;
 }
-/** QueryAllClobPairRequest is request type for the ClobPairAll method. */
+/**
+ * QueryAllClobPairRequest is request type for the ClobPairAll method.
+ * @name QueryAllClobPairRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryAllClobPairRequest
+ */
 export interface QueryAllClobPairRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -80,7 +95,12 @@ export interface QueryClobPairAllResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.QueryClobPairAllResponse";
   value: Uint8Array;
 }
-/** QueryClobPairAllResponse is response type for the ClobPairAll method. */
+/**
+ * QueryClobPairAllResponse is response type for the ClobPairAll method.
+ * @name QueryClobPairAllResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryClobPairAllResponse
+ */
 export interface QueryClobPairAllResponseAmino {
   clob_pair?: ClobPairAmino[];
   pagination?: PageResponseAmino;
@@ -116,6 +136,9 @@ export interface MevNodeToNodeCalculationRequestProtoMsg {
 /**
  * MevNodeToNodeCalculationRequest is a request message used to run the
  * MEV node <> node calculation.
+ * @name MevNodeToNodeCalculationRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MevNodeToNodeCalculationRequest
  */
 export interface MevNodeToNodeCalculationRequestAmino {
   /**
@@ -125,7 +148,9 @@ export interface MevNodeToNodeCalculationRequestAmino {
    * proposer" matches.
    */
   block_proposer_matches?: ValidatorMevMatchesAmino;
-  /** Represents the matches and mid-prices on the validator. */
+  /**
+   * Represents the matches and mid-prices on the validator.
+   */
   validator_mev_metrics?: MevNodeToNodeMetricsAmino;
 }
 export interface MevNodeToNodeCalculationRequestAminoMsg {
@@ -154,6 +179,9 @@ export interface MevNodeToNodeCalculationResponseProtoMsg {
 /**
  * MevNodeToNodeCalculationResponse is a response message that contains the
  * MEV node <> node calculation result.
+ * @name MevNodeToNodeCalculationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MevNodeToNodeCalculationResponse
  */
 export interface MevNodeToNodeCalculationResponseAmino {
   results?: MevNodeToNodeCalculationResponse_MevAndVolumePerClobAmino[];
@@ -179,7 +207,12 @@ export interface MevNodeToNodeCalculationResponse_MevAndVolumePerClobProtoMsg {
   typeUrl: "/dydxprotocol.clob.MevAndVolumePerClob";
   value: Uint8Array;
 }
-/** MevAndVolumePerClob contains information about the MEV and volume per CLOB. */
+/**
+ * MevAndVolumePerClob contains information about the MEV and volume per CLOB.
+ * @name MevNodeToNodeCalculationResponse_MevAndVolumePerClobAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MevNodeToNodeCalculationResponse_MevAndVolumePerClob
+ */
 export interface MevNodeToNodeCalculationResponse_MevAndVolumePerClobAmino {
   clob_pair_id?: number;
   mev?: number;
@@ -207,6 +240,9 @@ export interface QueryEquityTierLimitConfigurationRequestProtoMsg {
 /**
  * QueryEquityTierLimitConfigurationRequest is a request message for
  * EquityTierLimitConfiguration.
+ * @name QueryEquityTierLimitConfigurationRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryEquityTierLimitConfigurationRequest
  */
 export interface QueryEquityTierLimitConfigurationRequestAmino {}
 export interface QueryEquityTierLimitConfigurationRequestAminoMsg {
@@ -232,6 +268,9 @@ export interface QueryEquityTierLimitConfigurationResponseProtoMsg {
 /**
  * QueryEquityTierLimitConfigurationResponse is a response message that contains
  * the EquityTierLimitConfiguration.
+ * @name QueryEquityTierLimitConfigurationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryEquityTierLimitConfigurationResponse
  */
 export interface QueryEquityTierLimitConfigurationResponseAmino {
   equity_tier_limit_config?: EquityTierLimitConfigurationAmino;
@@ -259,6 +298,9 @@ export interface QueryBlockRateLimitConfigurationRequestProtoMsg {
 /**
  * QueryBlockRateLimitConfigurationRequest is a request message for
  * BlockRateLimitConfiguration.
+ * @name QueryBlockRateLimitConfigurationRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryBlockRateLimitConfigurationRequest
  */
 export interface QueryBlockRateLimitConfigurationRequestAmino {}
 export interface QueryBlockRateLimitConfigurationRequestAminoMsg {
@@ -284,6 +326,9 @@ export interface QueryBlockRateLimitConfigurationResponseProtoMsg {
 /**
  * QueryBlockRateLimitConfigurationResponse is a response message that contains
  * the BlockRateLimitConfiguration.
+ * @name QueryBlockRateLimitConfigurationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryBlockRateLimitConfigurationResponse
  */
 export interface QueryBlockRateLimitConfigurationResponseAmino {
   block_rate_limit_config?: BlockRateLimitConfigurationAmino;
@@ -308,9 +353,16 @@ export interface QueryStatefulOrderRequestProtoMsg {
   typeUrl: "/dydxprotocol.clob.QueryStatefulOrderRequest";
   value: Uint8Array;
 }
-/** QueryStatefulOrderRequest is a request message for StatefulOrder. */
+/**
+ * QueryStatefulOrderRequest is a request message for StatefulOrder.
+ * @name QueryStatefulOrderRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryStatefulOrderRequest
+ */
 export interface QueryStatefulOrderRequestAmino {
-  /** Order id to query. */
+  /**
+   * Order id to query.
+   */
   order_id?: OrderIdAmino;
 }
 export interface QueryStatefulOrderRequestAminoMsg {
@@ -340,13 +392,22 @@ export interface QueryStatefulOrderResponseProtoMsg {
 /**
  * QueryStatefulOrderResponse is a response message that contains the stateful
  * order.
+ * @name QueryStatefulOrderResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryStatefulOrderResponse
  */
 export interface QueryStatefulOrderResponseAmino {
-  /** Stateful order placement. */
+  /**
+   * Stateful order placement.
+   */
   order_placement?: LongTermOrderPlacementAmino;
-  /** Fill amounts. */
+  /**
+   * Fill amounts.
+   */
   fill_amount?: string;
-  /** Triggered status. */
+  /**
+   * Triggered status.
+   */
   triggered?: boolean;
 }
 export interface QueryStatefulOrderResponseAminoMsg {
@@ -374,6 +435,9 @@ export interface QueryLiquidationsConfigurationRequestProtoMsg {
 /**
  * QueryLiquidationsConfigurationRequest is a request message for
  * LiquidationsConfiguration.
+ * @name QueryLiquidationsConfigurationRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryLiquidationsConfigurationRequest
  */
 export interface QueryLiquidationsConfigurationRequestAmino {}
 export interface QueryLiquidationsConfigurationRequestAminoMsg {
@@ -399,6 +463,9 @@ export interface QueryLiquidationsConfigurationResponseProtoMsg {
 /**
  * QueryLiquidationsConfigurationResponse is a response message that contains
  * the LiquidationsConfiguration.
+ * @name QueryLiquidationsConfigurationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.QueryLiquidationsConfigurationResponse
  */
 export interface QueryLiquidationsConfigurationResponseAmino {
   liquidations_config?: LiquidationsConfigAmino;
@@ -431,11 +498,18 @@ export interface StreamOrderbookUpdatesRequestProtoMsg {
 /**
  * StreamOrderbookUpdatesRequest is a request message for the
  * StreamOrderbookUpdates method.
+ * @name StreamOrderbookUpdatesRequestAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamOrderbookUpdatesRequest
  */
 export interface StreamOrderbookUpdatesRequestAmino {
-  /** Clob pair ids to stream orderbook updates for. */
+  /**
+   * Clob pair ids to stream orderbook updates for.
+   */
   clob_pair_id?: number[];
-  /** Subaccount ids to stream subaccount updates for. */
+  /**
+   * Subaccount ids to stream subaccount updates for.
+   */
   subaccount_ids?: SubaccountIdAmino[];
 }
 export interface StreamOrderbookUpdatesRequestAminoMsg {
@@ -465,9 +539,14 @@ export interface StreamOrderbookUpdatesResponseProtoMsg {
 /**
  * StreamOrderbookUpdatesResponse is a response message for the
  * StreamOrderbookUpdates method.
+ * @name StreamOrderbookUpdatesResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamOrderbookUpdatesResponse
  */
 export interface StreamOrderbookUpdatesResponseAmino {
-  /** Batch of updates for the clob pair. */
+  /**
+   * Batch of updates for the clob pair.
+   */
   updates?: StreamUpdateAmino[];
 }
 export interface StreamOrderbookUpdatesResponseAminoMsg {
@@ -502,15 +581,22 @@ export interface StreamUpdateProtoMsg {
 /**
  * StreamUpdate is an update that will be pushed through the
  * GRPC stream.
+ * @name StreamUpdateAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamUpdate
  */
 export interface StreamUpdateAmino {
   orderbook_update?: StreamOrderbookUpdateAmino;
   order_fill?: StreamOrderbookFillAmino;
   taker_order?: StreamTakerOrderAmino;
   subaccount_update?: StreamSubaccountUpdateAmino;
-  /** Block height of the update. */
+  /**
+   * Block height of the update.
+   */
   block_height?: number;
-  /** Exec mode of the update. */
+  /**
+   * Exec mode of the update.
+   */
   exec_mode?: number;
 }
 export interface StreamUpdateAminoMsg {
@@ -554,6 +640,9 @@ export interface StreamOrderbookUpdateProtoMsg {
 /**
  * StreamOrderbookUpdate provides information on an orderbook update. Used in
  * the full node GRPC stream.
+ * @name StreamOrderbookUpdateAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamOrderbookUpdate
  */
 export interface StreamOrderbookUpdateAmino {
   /**
@@ -606,6 +695,9 @@ export interface StreamOrderbookFillProtoMsg {
 /**
  * StreamOrderbookFill provides information on an orderbook fill. Used in
  * the full node GRPC stream.
+ * @name StreamOrderbookFillAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamOrderbookFill
  */
 export interface StreamOrderbookFillAmino {
   /**
@@ -618,7 +710,9 @@ export interface StreamOrderbookFillAmino {
    * price of a match through a given maker order id.
    */
   orders?: OrderAmino[];
-  /** Resulting fill amounts for each order in the orders array. */
+  /**
+   * Resulting fill amounts for each order in the orders array.
+   */
   fill_amounts?: string[];
 }
 export interface StreamOrderbookFillAminoMsg {
@@ -656,6 +750,9 @@ export interface StreamTakerOrderProtoMsg {
  * StreamTakerOrder provides information on a taker order that was attempted
  * to be matched on the orderbook.
  * It is intended to be used only in full node streaming.
+ * @name StreamTakerOrderAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamTakerOrder
  */
 export interface StreamTakerOrderAmino {
   order?: OrderAmino;
@@ -711,6 +808,9 @@ export interface StreamTakerOrderStatusProtoMsg {
  * StreamTakerOrderStatus is a representation of a taker order
  * after it is attempted to be matched on the orderbook.
  * It is intended to be used only in full node streaming.
+ * @name StreamTakerOrderStatusAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamTakerOrderStatus
  */
 export interface StreamTakerOrderStatusAmino {
   /**
@@ -719,7 +819,9 @@ export interface StreamTakerOrderStatusAmino {
    * https://github.com/dydxprotocol/v4-chain/blob/main/protocol/x/clob/types/orderbook.go#L105
    */
   order_status?: number;
-  /** The amount of remaining (non-matched) base quantums of this taker order. */
+  /**
+   * The amount of remaining (non-matched) base quantums of this taker order.
+   */
   remaining_quantums?: string;
   /**
    * The amount of base quantums that were *optimistically* filled for this
@@ -1218,7 +1320,7 @@ export const MevNodeToNodeCalculationResponse_MevAndVolumePerClob = {
     const obj: any = {};
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.mev = message.mev === 0 ? undefined : message.mev;
-    obj.volume = message.volume !== BigInt(0) ? message.volume.toString() : undefined;
+    obj.volume = message.volume !== BigInt(0) ? message.volume?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MevNodeToNodeCalculationResponse_MevAndVolumePerClobAminoMsg): MevNodeToNodeCalculationResponse_MevAndVolumePerClob {
@@ -1593,7 +1695,7 @@ export const QueryStatefulOrderResponse = {
   toAmino(message: QueryStatefulOrderResponse): QueryStatefulOrderResponseAmino {
     const obj: any = {};
     obj.order_placement = message.orderPlacement ? LongTermOrderPlacement.toAmino(message.orderPlacement) : undefined;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     obj.triggered = message.triggered === false ? undefined : message.triggered;
     return obj;
   },
@@ -2333,8 +2435,8 @@ export const StreamTakerOrderStatus = {
   toAmino(message: StreamTakerOrderStatus): StreamTakerOrderStatusAmino {
     const obj: any = {};
     obj.order_status = message.orderStatus === 0 ? undefined : message.orderStatus;
-    obj.remaining_quantums = message.remainingQuantums !== BigInt(0) ? message.remainingQuantums.toString() : undefined;
-    obj.optimistically_filled_quantums = message.optimisticallyFilledQuantums !== BigInt(0) ? message.optimisticallyFilledQuantums.toString() : undefined;
+    obj.remaining_quantums = message.remainingQuantums !== BigInt(0) ? message.remainingQuantums?.toString() : undefined;
+    obj.optimistically_filled_quantums = message.optimisticallyFilledQuantums !== BigInt(0) ? message.optimisticallyFilledQuantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: StreamTakerOrderStatusAminoMsg): StreamTakerOrderStatus {

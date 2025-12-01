@@ -19,7 +19,12 @@ export interface LimitParamsProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.LimitParams";
   value: Uint8Array;
 }
-/** LimitParams defines rate limit params on a denom. */
+/**
+ * LimitParams defines rate limit params on a denom.
+ * @name LimitParamsAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.LimitParams
+ */
 export interface LimitParamsAmino {
   /**
    * denom is the denomination of the token being rate limited.
@@ -65,7 +70,12 @@ export interface LimiterProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.Limiter";
   value: Uint8Array;
 }
-/** Limiter defines one rate-limiter on a specfic denom. */
+/**
+ * Limiter defines one rate-limiter on a specfic denom.
+ * @name LimiterAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.Limiter
+ */
 export interface LimiterAmino {
   /**
    * period is the rolling time period for which the limit applies

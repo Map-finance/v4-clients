@@ -1,6 +1,6 @@
 {
-  "name": "dydxjs",
-  "version": "0.0.1",
+  "name": "@h2-v4-proto/dydxjs",
+  "version": "1.0.0",
   "author": "jared vu <jared@dydx.exchange>",
   "description": "dydx client library",
   "main": "index.js",
@@ -21,17 +21,19 @@
   },
   "scripts": {
     "copy": "copyfiles -f ../../LICENSE README.md package.json dist",
-    "clean": "rimraf dist/**",
+    "clean": "rimraf dist",
     "prepare": "npm run build",
     "codegen": "ts-node scripts/codegen.ts",
-    "build": "npm run clean; tsc; tsc -p tsconfig.esm.json; npm run copy",
+    "build": "npm run clean && tsc && tsc -p tsconfig.esm.json && npm run copy",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@cosmology/telescope": "^1.0.1",
-    "@types/jest": "^29.5.12"
+    "@types/jest": "^29.5.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@cosmjs/amino": "0.32.3",

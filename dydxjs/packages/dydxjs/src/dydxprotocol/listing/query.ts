@@ -7,7 +7,12 @@ export interface QueryMarketsHardCapProtoMsg {
   typeUrl: "/dydxprotocol.listing.QueryMarketsHardCap";
   value: Uint8Array;
 }
-/** Queries for the hard cap on listed markets */
+/**
+ * Queries for the hard cap on listed markets
+ * @name QueryMarketsHardCapAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.QueryMarketsHardCap
+ */
 export interface QueryMarketsHardCapAmino {}
 export interface QueryMarketsHardCapAminoMsg {
   type: "/dydxprotocol.listing.QueryMarketsHardCap";
@@ -23,7 +28,12 @@ export interface QueryMarketsHardCapResponseProtoMsg {
   typeUrl: "/dydxprotocol.listing.QueryMarketsHardCapResponse";
   value: Uint8Array;
 }
-/** Response type indicating the hard cap on listed markets */
+/**
+ * Response type indicating the hard cap on listed markets
+ * @name QueryMarketsHardCapResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.QueryMarketsHardCapResponse
+ */
 export interface QueryMarketsHardCapResponseAmino {
   hard_cap?: number;
 }
@@ -41,7 +51,12 @@ export interface QueryListingVaultDepositParamsProtoMsg {
   typeUrl: "/dydxprotocol.listing.QueryListingVaultDepositParams";
   value: Uint8Array;
 }
-/** Queries the listing vault deposit params */
+/**
+ * Queries the listing vault deposit params
+ * @name QueryListingVaultDepositParamsAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.QueryListingVaultDepositParams
+ */
 export interface QueryListingVaultDepositParamsAmino {}
 export interface QueryListingVaultDepositParamsAminoMsg {
   type: "/dydxprotocol.listing.QueryListingVaultDepositParams";
@@ -57,7 +72,12 @@ export interface QueryListingVaultDepositParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.listing.QueryListingVaultDepositParamsResponse";
   value: Uint8Array;
 }
-/** Response type for QueryListingVaultDepositParams */
+/**
+ * Response type for QueryListingVaultDepositParams
+ * @name QueryListingVaultDepositParamsResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.QueryListingVaultDepositParamsResponse
+ */
 export interface QueryListingVaultDepositParamsResponseAmino {
   params?: ListingVaultDepositParamsAmino;
 }

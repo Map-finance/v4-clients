@@ -11,10 +11,17 @@ export interface MsgUpdateDowntimeParamsProtoMsg {
   typeUrl: "/dydxprotocol.blocktime.MsgUpdateDowntimeParams";
   value: Uint8Array;
 }
-/** MsgUpdateDowntimeParams is the Msg/UpdateDowntimeParams request type. */
+/**
+ * MsgUpdateDowntimeParams is the Msg/UpdateDowntimeParams request type.
+ * @name MsgUpdateDowntimeParamsAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.MsgUpdateDowntimeParams
+ */
 export interface MsgUpdateDowntimeParamsAmino {
   authority?: string;
-  /** Defines the parameters to update. All parameters must be supplied. */
+  /**
+   * Defines the parameters to update. All parameters must be supplied.
+   */
   params?: DowntimeParamsAmino;
 }
 export interface MsgUpdateDowntimeParamsAminoMsg {
@@ -38,6 +45,9 @@ export interface MsgUpdateDowntimeParamsResponseProtoMsg {
 /**
  * MsgUpdateDowntimeParamsResponse is the Msg/UpdateDowntimeParams response
  * type.
+ * @name MsgUpdateDowntimeParamsResponseAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.MsgUpdateDowntimeParamsResponse
  */
 export interface MsgUpdateDowntimeParamsResponseAmino {}
 export interface MsgUpdateDowntimeParamsResponseAminoMsg {

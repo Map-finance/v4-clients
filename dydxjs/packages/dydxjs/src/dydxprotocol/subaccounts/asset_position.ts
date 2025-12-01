@@ -24,11 +24,18 @@ export interface AssetPositionProtoMsg {
 /**
  * AssetPositions define an account’s positions of an `Asset`.
  * Therefore they hold any information needed to trade on Spot and Margin.
+ * @name AssetPositionAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.AssetPosition
  */
 export interface AssetPositionAmino {
-  /** The `Id` of the `Asset`. */
+  /**
+   * The `Id` of the `Asset`.
+   */
   asset_id?: number;
-  /** The absolute size of the position in base quantums. */
+  /**
+   * The absolute size of the position in base quantums.
+   */
   quantums?: string;
   /**
    * The `Index` (either `LongIndex` or `ShortIndex`) of the `Asset` the last
@@ -118,7 +125,7 @@ export const AssetPosition = {
     const obj: any = {};
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
     obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
-    obj.index = message.index !== BigInt(0) ? message.index.toString() : undefined;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: AssetPositionAminoMsg): AssetPosition {

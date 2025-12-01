@@ -25,6 +25,9 @@ export interface QuotePriceProtoMsg {
 /**
  * QuotePrice is the representation of the aggregated prices for a CurrencyPair,
  * where price represents the price of Base in terms of Quote
+ * @name QuotePriceAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.QuotePrice
  */
 export interface QuotePriceAmino {
   price?: string;
@@ -34,7 +37,9 @@ export interface QuotePriceAmino {
    * contracts and applications are not utilizing stale oracle prices
    */
   block_timestamp?: string;
-  /** BlockHeight is height of block mentioned above */
+  /**
+   * BlockHeight is height of block mentioned above
+   */
   block_height?: string;
 }
 export interface QuotePriceAminoMsg {
@@ -72,6 +77,9 @@ export interface CurrencyPairStateProtoMsg {
 /**
  * CurrencyPairState represents the stateful information tracked by the x/oracle
  * module per-currency-pair.
+ * @name CurrencyPairStateAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.CurrencyPairState
  */
 export interface CurrencyPairStateAmino {
   /**
@@ -79,9 +87,13 @@ export interface CurrencyPairStateAmino {
    * be null in the case that no price exists for the currency-pair
    */
   price?: QuotePriceAmino;
-  /** Nonce is the number of updates this currency-pair has received */
+  /**
+   * Nonce is the number of updates this currency-pair has received
+   */
   nonce?: string;
-  /** ID is the ID of the CurrencyPair */
+  /**
+   * ID is the ID of the CurrencyPair
+   */
   id?: string;
 }
 export interface CurrencyPairStateAminoMsg {
@@ -124,9 +136,14 @@ export interface CurrencyPairGenesisProtoMsg {
 /**
  * CurrencyPairGenesis is the information necessary for initialization of a
  * CurrencyPair.
+ * @name CurrencyPairGenesisAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.CurrencyPairGenesis
  */
 export interface CurrencyPairGenesisAmino {
-  /** The CurrencyPair to be added to module state */
+  /**
+   * The CurrencyPair to be added to module state
+   */
   currency_pair?: CurrencyPairAmino;
   /**
    * A genesis price if one exists (note this will be empty, unless it results
@@ -138,7 +155,9 @@ export interface CurrencyPairGenesisAmino {
    * likely 0 unless it results from fork of module)
    */
   nonce?: string;
-  /** id is the ID of the CurrencyPair */
+  /**
+   * id is the ID of the CurrencyPair
+   */
   id?: string;
 }
 export interface CurrencyPairGenesisAminoMsg {
@@ -176,6 +195,9 @@ export interface GenesisStateProtoMsg {
 /**
  * GenesisState is the genesis-state for the x/oracle module, it takes a set of
  * predefined CurrencyPairGeneses
+ * @name GenesisStateAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GenesisState
  */
 export interface GenesisStateAmino {
   /**
@@ -184,7 +206,9 @@ export interface GenesisStateAmino {
    * their latest update.
    */
   currency_pair_genesis?: CurrencyPairGenesisAmino[];
-  /** NextID is the next ID to be used for a CurrencyPair */
+  /**
+   * NextID is the next ID to be used for a CurrencyPair
+   */
   next_id?: string;
 }
 export interface GenesisStateAminoMsg {
@@ -267,7 +291,7 @@ export const QuotePrice = {
     const obj: any = {};
     obj.price = message.price === "" ? undefined : message.price;
     obj.block_timestamp = message.blockTimestamp ? Timestamp.toAmino(toTimestamp(message.blockTimestamp)) : undefined;
-    obj.block_height = message.blockHeight !== BigInt(0) ? message.blockHeight.toString() : undefined;
+    obj.block_height = message.blockHeight !== BigInt(0) ? message.blockHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: QuotePriceAminoMsg): QuotePrice {
@@ -353,8 +377,8 @@ export const CurrencyPairState = {
   toAmino(message: CurrencyPairState): CurrencyPairStateAmino {
     const obj: any = {};
     obj.price = message.price ? QuotePrice.toAmino(message.price) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce?.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: CurrencyPairStateAminoMsg): CurrencyPairState {
@@ -452,8 +476,8 @@ export const CurrencyPairGenesis = {
     const obj: any = {};
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
     obj.currency_pair_price = message.currencyPairPrice ? QuotePrice.toAmino(message.currencyPairPrice) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce?.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: CurrencyPairGenesisAminoMsg): CurrencyPairGenesis {
@@ -530,7 +554,7 @@ export const GenesisState = {
     } else {
       obj.currency_pair_genesis = message.currencyPairGenesis;
     }
-    obj.next_id = message.nextId !== BigInt(0) ? message.nextId.toString() : undefined;
+    obj.next_id = message.nextId !== BigInt(0) ? message.nextId?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

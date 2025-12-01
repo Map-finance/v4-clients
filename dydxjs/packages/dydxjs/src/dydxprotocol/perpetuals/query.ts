@@ -11,7 +11,12 @@ export interface QueryPerpetualRequestProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryPerpetualRequest";
   value: Uint8Array;
 }
-/** Queries a Perpetual by id. */
+/**
+ * Queries a Perpetual by id.
+ * @name QueryPerpetualRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPerpetualRequest
+ */
 export interface QueryPerpetualRequestAmino {
   id?: number;
 }
@@ -31,7 +36,12 @@ export interface QueryPerpetualResponseProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryPerpetualResponse";
   value: Uint8Array;
 }
-/** QueryPerpetualResponse is response type for the Perpetual RPC method. */
+/**
+ * QueryPerpetualResponse is response type for the Perpetual RPC method.
+ * @name QueryPerpetualResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPerpetualResponse
+ */
 export interface QueryPerpetualResponseAmino {
   perpetual?: PerpetualAmino;
 }
@@ -51,7 +61,12 @@ export interface QueryAllPerpetualsRequestProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryAllPerpetualsRequest";
   value: Uint8Array;
 }
-/** Queries a list of Perpetual items. */
+/**
+ * Queries a list of Perpetual items.
+ * @name QueryAllPerpetualsRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryAllPerpetualsRequest
+ */
 export interface QueryAllPerpetualsRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -72,7 +87,12 @@ export interface QueryAllPerpetualsResponseProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryAllPerpetualsResponse";
   value: Uint8Array;
 }
-/** QueryAllPerpetualsResponse is response type for the AllPerpetuals RPC method. */
+/**
+ * QueryAllPerpetualsResponse is response type for the AllPerpetuals RPC method.
+ * @name QueryAllPerpetualsResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryAllPerpetualsResponse
+ */
 export interface QueryAllPerpetualsResponseAmino {
   perpetual?: PerpetualAmino[];
   pagination?: PageResponseAmino;
@@ -94,7 +114,12 @@ export interface QueryAllLiquidityTiersRequestProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryAllLiquidityTiersRequest";
   value: Uint8Array;
 }
-/** Queries a list of LiquidityTier items. */
+/**
+ * Queries a list of LiquidityTier items.
+ * @name QueryAllLiquidityTiersRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryAllLiquidityTiersRequest
+ */
 export interface QueryAllLiquidityTiersRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -121,6 +146,9 @@ export interface QueryAllLiquidityTiersResponseProtoMsg {
 /**
  * QueryAllLiquidityTiersResponse is response type for the AllLiquidityTiers RPC
  * method.
+ * @name QueryAllLiquidityTiersResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryAllLiquidityTiersResponse
  */
 export interface QueryAllLiquidityTiersResponseAmino {
   liquidity_tiers?: LiquidityTierAmino[];
@@ -144,7 +172,12 @@ export interface QueryPremiumVotesRequestProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryPremiumVotesRequest";
   value: Uint8Array;
 }
-/** QueryPremiumVotesRequest is the request type for the PremiumVotes RPC method. */
+/**
+ * QueryPremiumVotesRequest is the request type for the PremiumVotes RPC method.
+ * @name QueryPremiumVotesRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPremiumVotesRequest
+ */
 export interface QueryPremiumVotesRequestAmino {}
 export interface QueryPremiumVotesRequestAminoMsg {
   type: "/dydxprotocol.perpetuals.QueryPremiumVotesRequest";
@@ -166,6 +199,9 @@ export interface QueryPremiumVotesResponseProtoMsg {
 /**
  * QueryPremiumVotesResponse is the response type for the PremiumVotes RPC
  * method.
+ * @name QueryPremiumVotesResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPremiumVotesResponse
  */
 export interface QueryPremiumVotesResponseAmino {
   premium_votes?: PremiumStoreAmino;
@@ -193,6 +229,9 @@ export interface QueryPremiumSamplesRequestProtoMsg {
 /**
  * QueryPremiumSamplesRequest is the request type for the PremiumSamples RPC
  * method.
+ * @name QueryPremiumSamplesRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPremiumSamplesRequest
  */
 export interface QueryPremiumSamplesRequestAmino {}
 export interface QueryPremiumSamplesRequestAminoMsg {
@@ -218,6 +257,9 @@ export interface QueryPremiumSamplesResponseProtoMsg {
 /**
  * QueryPremiumSamplesResponse is the response type for the PremiumSamples RPC
  * method.
+ * @name QueryPremiumSamplesResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryPremiumSamplesResponse
  */
 export interface QueryPremiumSamplesResponseAmino {
   premium_samples?: PremiumStoreAmino;
@@ -239,7 +281,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/dydxprotocol.perpetuals.QueryParamsRequest";
@@ -255,7 +302,12 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
   params?: ParamsAmino;
 }

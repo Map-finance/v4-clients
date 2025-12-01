@@ -9,7 +9,12 @@ export interface MsgCreateTransferProtoMsg {
   typeUrl: "/dydxprotocol.sending.MsgCreateTransfer";
   value: Uint8Array;
 }
-/** MsgCreateTransfer is a request type used for initiating new transfers. */
+/**
+ * MsgCreateTransfer is a request type used for initiating new transfers.
+ * @name MsgCreateTransferAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgCreateTransfer
+ */
 export interface MsgCreateTransferAmino {
   transfer?: TransferAmino;
 }
@@ -27,7 +32,12 @@ export interface MsgCreateTransferResponseProtoMsg {
   typeUrl: "/dydxprotocol.sending.MsgCreateTransferResponse";
   value: Uint8Array;
 }
-/** MsgCreateTransferResponse is a response type used for new transfers. */
+/**
+ * MsgCreateTransferResponse is a response type used for new transfers.
+ * @name MsgCreateTransferResponseAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgCreateTransferResponse
+ */
 export interface MsgCreateTransferResponseAmino {}
 export interface MsgCreateTransferResponseAminoMsg {
   type: "/dydxprotocol.sending.MsgCreateTransferResponse";
@@ -47,6 +57,9 @@ export interface MsgDepositToSubaccountResponseProtoMsg {
 /**
  * MsgDepositToSubaccountResponse is a response type used for new
  * account-to-subaccount transfers.
+ * @name MsgDepositToSubaccountResponseAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgDepositToSubaccountResponse
  */
 export interface MsgDepositToSubaccountResponseAmino {}
 export interface MsgDepositToSubaccountResponseAminoMsg {
@@ -70,6 +83,9 @@ export interface MsgWithdrawFromSubaccountResponseProtoMsg {
 /**
  * MsgWithdrawFromSubaccountResponse is a response type used for new
  * subaccount-to-account transfers.
+ * @name MsgWithdrawFromSubaccountResponseAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgWithdrawFromSubaccountResponse
  */
 export interface MsgWithdrawFromSubaccountResponseAmino {}
 export interface MsgWithdrawFromSubaccountResponseAminoMsg {
@@ -93,6 +109,9 @@ export interface MsgSendFromModuleToAccountResponseProtoMsg {
 /**
  * MsgSendFromModuleToAccountResponse is a response type used for new
  * module-to-account transfers.
+ * @name MsgSendFromModuleToAccountResponseAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgSendFromModuleToAccountResponse
  */
 export interface MsgSendFromModuleToAccountResponseAmino {}
 export interface MsgSendFromModuleToAccountResponseAminoMsg {
@@ -104,6 +123,25 @@ export interface MsgSendFromModuleToAccountResponseAminoMsg {
  * module-to-account transfers.
  */
 export interface MsgSendFromModuleToAccountResponseSDKType {}
+/** MsgCreateBridgeTransferResponse is a response type used for new bridge transfers. */
+export interface MsgCreateBridgeTransferResponse {}
+export interface MsgCreateBridgeTransferResponseProtoMsg {
+  typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse";
+  value: Uint8Array;
+}
+/**
+ * MsgCreateBridgeTransferResponse is a response type used for new bridge transfers.
+ * @name MsgCreateBridgeTransferResponseAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.MsgCreateBridgeTransferResponse
+ */
+export interface MsgCreateBridgeTransferResponseAmino {}
+export interface MsgCreateBridgeTransferResponseAminoMsg {
+  type: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse";
+  value: MsgCreateBridgeTransferResponseAmino;
+}
+/** MsgCreateBridgeTransferResponse is a response type used for new bridge transfers. */
+export interface MsgCreateBridgeTransferResponseSDKType {}
 function createBaseMsgCreateTransfer(): MsgCreateTransfer {
   return {
     transfer: undefined
@@ -364,6 +402,56 @@ export const MsgSendFromModuleToAccountResponse = {
     return {
       typeUrl: "/dydxprotocol.sending.MsgSendFromModuleToAccountResponse",
       value: MsgSendFromModuleToAccountResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCreateBridgeTransferResponse(): MsgCreateBridgeTransferResponse {
+  return {};
+}
+export const MsgCreateBridgeTransferResponse = {
+  typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse",
+  encode(_: MsgCreateBridgeTransferResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateBridgeTransferResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateBridgeTransferResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgCreateBridgeTransferResponse>): MsgCreateBridgeTransferResponse {
+    const message = createBaseMsgCreateBridgeTransferResponse();
+    return message;
+  },
+  fromAmino(_: MsgCreateBridgeTransferResponseAmino): MsgCreateBridgeTransferResponse {
+    const message = createBaseMsgCreateBridgeTransferResponse();
+    return message;
+  },
+  toAmino(_: MsgCreateBridgeTransferResponse): MsgCreateBridgeTransferResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateBridgeTransferResponseAminoMsg): MsgCreateBridgeTransferResponse {
+    return MsgCreateBridgeTransferResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateBridgeTransferResponseProtoMsg): MsgCreateBridgeTransferResponse {
+    return MsgCreateBridgeTransferResponse.decode(message.value);
+  },
+  toProto(message: MsgCreateBridgeTransferResponse): Uint8Array {
+    return MsgCreateBridgeTransferResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateBridgeTransferResponse): MsgCreateBridgeTransferResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse",
+      value: MsgCreateBridgeTransferResponse.encode(message).finish()
     };
   }
 };

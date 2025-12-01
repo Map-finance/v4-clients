@@ -11,7 +11,12 @@ export interface QueryGetSubaccountRequestProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.QueryGetSubaccountRequest";
   value: Uint8Array;
 }
-/** QueryGetSubaccountRequest is request type for the Query RPC method. */
+/**
+ * QueryGetSubaccountRequest is request type for the Query RPC method.
+ * @name QueryGetSubaccountRequestAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryGetSubaccountRequest
+ */
 export interface QueryGetSubaccountRequestAmino {
   owner?: string;
   number?: number;
@@ -33,7 +38,12 @@ export interface QuerySubaccountResponseProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.QuerySubaccountResponse";
   value: Uint8Array;
 }
-/** QuerySubaccountResponse is response type for the Query RPC method. */
+/**
+ * QuerySubaccountResponse is response type for the Query RPC method.
+ * @name QuerySubaccountResponseAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QuerySubaccountResponse
+ */
 export interface QuerySubaccountResponseAmino {
   subaccount?: SubaccountAmino;
 }
@@ -53,7 +63,12 @@ export interface QueryAllSubaccountRequestProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.QueryAllSubaccountRequest";
   value: Uint8Array;
 }
-/** QueryAllSubaccountRequest is request type for the Query RPC method. */
+/**
+ * QueryAllSubaccountRequest is request type for the Query RPC method.
+ * @name QueryAllSubaccountRequestAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryAllSubaccountRequest
+ */
 export interface QueryAllSubaccountRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -74,7 +89,12 @@ export interface QuerySubaccountAllResponseProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.QuerySubaccountAllResponse";
   value: Uint8Array;
 }
-/** QuerySubaccountAllResponse is response type for the Query RPC method. */
+/**
+ * QuerySubaccountAllResponse is response type for the Query RPC method.
+ * @name QuerySubaccountAllResponseAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QuerySubaccountAllResponse
+ */
 export interface QuerySubaccountAllResponseAmino {
   subaccount?: SubaccountAmino[];
   pagination?: PageResponseAmino;
@@ -104,6 +124,9 @@ export interface QueryGetWithdrawalAndTransfersBlockedInfoRequestProtoMsg {
  * QueryGetWithdrawalAndTransfersBlockedInfoRequest is a request type for
  * fetching information about whether withdrawals and transfers are blocked for
  * a collateral pool associated with the passed in perpetual id.
+ * @name QueryGetWithdrawalAndTransfersBlockedInfoRequestAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryGetWithdrawalAndTransfersBlockedInfoRequest
  */
 export interface QueryGetWithdrawalAndTransfersBlockedInfoRequestAmino {
   perpetual_id?: number;
@@ -136,6 +159,9 @@ export interface QueryGetWithdrawalAndTransfersBlockedInfoResponseProtoMsg {
 /**
  * QueryGetWithdrawalAndTransfersBlockedInfoRequest is a response type for
  * fetching information about whether withdrawals and transfers are blocked.
+ * @name QueryGetWithdrawalAndTransfersBlockedInfoResponseAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryGetWithdrawalAndTransfersBlockedInfoResponse
  */
 export interface QueryGetWithdrawalAndTransfersBlockedInfoResponseAmino {
   negative_tnc_subaccount_seen_at_block?: number;
@@ -171,6 +197,9 @@ export interface QueryCollateralPoolAddressRequestProtoMsg {
  * QueryCollateralPoolAddressRequest is the request type for fetching the
  * account address of the collateral pool associated with the passed in
  * perpetual id.
+ * @name QueryCollateralPoolAddressRequestAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryCollateralPoolAddressRequest
  */
 export interface QueryCollateralPoolAddressRequestAmino {
   perpetual_id?: number;
@@ -203,6 +232,9 @@ export interface QueryCollateralPoolAddressResponseProtoMsg {
  * QueryCollateralPoolAddressResponse is a response type for fetching the
  * account address of the collateral pool associated with the passed in
  * perpetual id.
+ * @name QueryCollateralPoolAddressResponseAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.QueryCollateralPoolAddressResponse
  */
 export interface QueryCollateralPoolAddressResponseAmino {
   collateral_pool_address?: string;

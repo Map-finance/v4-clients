@@ -12,11 +12,20 @@ export interface MsgRegisterAffiliateProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.MsgRegisterAffiliate";
   value: Uint8Array;
 }
-/** Message to register a referee-affiliate relationship */
+/**
+ * Message to register a referee-affiliate relationship
+ * @name MsgRegisterAffiliateAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.MsgRegisterAffiliate
+ */
 export interface MsgRegisterAffiliateAmino {
-  /** Address of the referee */
+  /**
+   * Address of the referee
+   */
   referee?: string;
-  /** Address of the affiliate */
+  /**
+   * Address of the affiliate
+   */
   affiliate?: string;
 }
 export interface MsgRegisterAffiliateAminoMsg {
@@ -34,7 +43,12 @@ export interface MsgRegisterAffiliateResponseProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.MsgRegisterAffiliateResponse";
   value: Uint8Array;
 }
-/** Response to MsgRegisterAffiliate */
+/**
+ * Response to MsgRegisterAffiliate
+ * @name MsgRegisterAffiliateResponseAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.MsgRegisterAffiliateResponse
+ */
 export interface MsgRegisterAffiliateResponseAmino {}
 export interface MsgRegisterAffiliateResponseAminoMsg {
   type: "/dydxprotocol.affiliates.MsgRegisterAffiliateResponse";
@@ -53,11 +67,20 @@ export interface MsgUpdateAffiliateTiersProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.MsgUpdateAffiliateTiers";
   value: Uint8Array;
 }
-/** Message to update affiliate tiers */
+/**
+ * Message to update affiliate tiers
+ * @name MsgUpdateAffiliateTiersAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.MsgUpdateAffiliateTiers
+ */
 export interface MsgUpdateAffiliateTiersAmino {
-  /** Authority sending this message. Will be sent by gov */
+  /**
+   * Authority sending this message. Will be sent by gov
+   */
   authority?: string;
-  /** Updated affiliate tiers information */
+  /**
+   * Updated affiliate tiers information
+   */
   tiers?: AffiliateTiersAmino;
 }
 export interface MsgUpdateAffiliateTiersAminoMsg {
@@ -75,7 +98,12 @@ export interface MsgUpdateAffiliateTiersResponseProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.MsgUpdateAffiliateTiersResponse";
   value: Uint8Array;
 }
-/** Response to MsgUpdateAffiliateTiers */
+/**
+ * Response to MsgUpdateAffiliateTiers
+ * @name MsgUpdateAffiliateTiersResponseAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.MsgUpdateAffiliateTiersResponse
+ */
 export interface MsgUpdateAffiliateTiersResponseAmino {}
 export interface MsgUpdateAffiliateTiersResponseAminoMsg {
   type: "/dydxprotocol.affiliates.MsgUpdateAffiliateTiersResponse";

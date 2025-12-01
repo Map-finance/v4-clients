@@ -15,6 +15,9 @@ export interface AddBridgeEventsRequestProtoMsg {
 /**
  * AddBridgeEventsRequest is a request message that contains a list of new
  * bridge events. The events should be contiguous and sorted by (unique) id.
+ * @name AddBridgeEventsRequestAmino
+ * @package dydxprotocol.daemons.bridge
+ * @see proto type: dydxprotocol.daemons.bridge.AddBridgeEventsRequest
  */
 export interface AddBridgeEventsRequestAmino {
   bridge_events?: BridgeEventAmino[];
@@ -36,7 +39,12 @@ export interface AddBridgeEventsResponseProtoMsg {
   typeUrl: "/dydxprotocol.daemons.bridge.AddBridgeEventsResponse";
   value: Uint8Array;
 }
-/** AddBridgeEventsResponse is a response message for BridgeEventRequest. */
+/**
+ * AddBridgeEventsResponse is a response message for BridgeEventRequest.
+ * @name AddBridgeEventsResponseAmino
+ * @package dydxprotocol.daemons.bridge
+ * @see proto type: dydxprotocol.daemons.bridge.AddBridgeEventsResponse
+ */
 export interface AddBridgeEventsResponseAmino {}
 export interface AddBridgeEventsResponseAminoMsg {
   type: "/dydxprotocol.daemons.bridge.AddBridgeEventsResponse";

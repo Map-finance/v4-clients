@@ -25,11 +25,20 @@ export interface ParamsProtoMsg {
   typeUrl: "/dydxprotocol.rewards.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for x/rewards module. */
+/**
+ * Params defines the parameters for x/rewards module.
+ * @name ParamsAmino
+ * @package dydxprotocol.rewards
+ * @see proto type: dydxprotocol.rewards.Params
+ */
 export interface ParamsAmino {
-  /** The module account to distribute rewards from. */
+  /**
+   * The module account to distribute rewards from.
+   */
   treasury_account?: string;
-  /** The denom of the rewards token. */
+  /**
+   * The denom of the rewards token.
+   */
   denom?: string;
   /**
    * The exponent of converting one unit of `denom` to a full coin.
@@ -38,7 +47,9 @@ export interface ParamsAmino {
    * `market_id` retrieves the price of a full coin of the reward token.
    */
   denom_exponent?: number;
-  /** The id of the market that has the price of the rewards token. */
+  /**
+   * The id of the market that has the price of the rewards token.
+   */
   market_id?: number;
   /**
    * The amount (in ppm) that fees are multiplied by to get

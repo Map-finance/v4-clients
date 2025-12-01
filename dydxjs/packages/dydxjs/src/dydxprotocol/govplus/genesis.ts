@@ -6,7 +6,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.govplus.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the govplus module's genesis state. */
+/**
+ * GenesisState defines the govplus module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.govplus
+ * @see proto type: dydxprotocol.govplus.GenesisState
+ */
 export interface GenesisStateAmino {}
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.govplus.GenesisState";

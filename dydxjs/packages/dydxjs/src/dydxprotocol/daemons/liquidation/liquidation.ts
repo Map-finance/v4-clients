@@ -26,13 +26,22 @@ export interface LiquidateSubaccountsRequestProtoMsg {
  * subaccount ids that potentially need to be liquidated. The list of subaccount
  * ids should not contain duplicates. The application should re-verify these
  * subaccount ids against current state before liquidating their positions.
+ * @name LiquidateSubaccountsRequestAmino
+ * @package dydxprotocol.daemons.liquidation
+ * @see proto type: dydxprotocol.daemons.liquidation.LiquidateSubaccountsRequest
  */
 export interface LiquidateSubaccountsRequestAmino {
-  /** The block height at which the liquidation daemon is processing. */
+  /**
+   * The block height at which the liquidation daemon is processing.
+   */
   block_height?: number;
-  /** The list of liquidatable subaccount ids. */
+  /**
+   * The list of liquidatable subaccount ids.
+   */
   liquidatable_subaccount_ids?: SubaccountIdAmino[];
-  /** The list of subaccount ids with negative total net collateral. */
+  /**
+   * The list of subaccount ids with negative total net collateral.
+   */
   negative_tnc_subaccount_ids?: SubaccountIdAmino[];
   subaccount_open_position_info?: SubaccountOpenPositionInfoAmino[];
 }
@@ -64,6 +73,9 @@ export interface LiquidateSubaccountsResponseProtoMsg {
 /**
  * LiquidateSubaccountsResponse is a response message for
  * LiquidateSubaccountsRequest.
+ * @name LiquidateSubaccountsResponseAmino
+ * @package dydxprotocol.daemons.liquidation
+ * @see proto type: dydxprotocol.daemons.liquidation.LiquidateSubaccountsResponse
  */
 export interface LiquidateSubaccountsResponseAmino {}
 export interface LiquidateSubaccountsResponseAminoMsg {

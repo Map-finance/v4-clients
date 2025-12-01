@@ -10,7 +10,12 @@ export interface QueryGetEpochInfoRequestProtoMsg {
   typeUrl: "/dydxprotocol.epochs.QueryGetEpochInfoRequest";
   value: Uint8Array;
 }
-/** QueryGetEpochInfoRequest is request type for the GetEpochInfo RPC method. */
+/**
+ * QueryGetEpochInfoRequest is request type for the GetEpochInfo RPC method.
+ * @name QueryGetEpochInfoRequestAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.QueryGetEpochInfoRequest
+ */
 export interface QueryGetEpochInfoRequestAmino {
   name?: string;
 }
@@ -30,7 +35,12 @@ export interface QueryEpochInfoResponseProtoMsg {
   typeUrl: "/dydxprotocol.epochs.QueryEpochInfoResponse";
   value: Uint8Array;
 }
-/** QueryEpochInfoResponse is response type for the GetEpochInfo RPC method. */
+/**
+ * QueryEpochInfoResponse is response type for the GetEpochInfo RPC method.
+ * @name QueryEpochInfoResponseAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.QueryEpochInfoResponse
+ */
 export interface QueryEpochInfoResponseAmino {
   epoch_info?: EpochInfoAmino;
 }
@@ -50,7 +60,12 @@ export interface QueryAllEpochInfoRequestProtoMsg {
   typeUrl: "/dydxprotocol.epochs.QueryAllEpochInfoRequest";
   value: Uint8Array;
 }
-/** QueryAllEpochInfoRequest is request type for the AllEpochInfo RPC method. */
+/**
+ * QueryAllEpochInfoRequest is request type for the AllEpochInfo RPC method.
+ * @name QueryAllEpochInfoRequestAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.QueryAllEpochInfoRequest
+ */
 export interface QueryAllEpochInfoRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -71,7 +86,12 @@ export interface QueryEpochInfoAllResponseProtoMsg {
   typeUrl: "/dydxprotocol.epochs.QueryEpochInfoAllResponse";
   value: Uint8Array;
 }
-/** QueryEpochInfoAllResponse is response type for the AllEpochInfo RPC method. */
+/**
+ * QueryEpochInfoAllResponse is response type for the AllEpochInfo RPC method.
+ * @name QueryEpochInfoAllResponseAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.QueryEpochInfoAllResponse
+ */
 export interface QueryEpochInfoAllResponseAmino {
   epoch_info?: EpochInfoAmino[];
   pagination?: PageResponseAmino;

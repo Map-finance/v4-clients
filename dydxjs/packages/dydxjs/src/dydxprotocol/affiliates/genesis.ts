@@ -6,7 +6,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines generis state of `x/affiliates` */
+/**
+ * GenesisState defines generis state of `x/affiliates`
+ * @name GenesisStateAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.GenesisState
+ */
 export interface GenesisStateAmino {}
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.affiliates.GenesisState";

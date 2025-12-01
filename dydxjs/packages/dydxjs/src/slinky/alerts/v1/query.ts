@@ -60,6 +60,9 @@ export interface AlertsRequestProtoMsg {
  * AlertsRequest is the request type for the Query.Alerts RPC method, the status
  * field indicates whether the request should return only Unconcluded /
  * Concluded Alerts, or all Alerts.
+ * @name AlertsRequestAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.AlertsRequest
  */
 export interface AlertsRequestAmino {
   status?: AlertStatusID;
@@ -90,6 +93,9 @@ export interface AlertsResponseProtoMsg {
 /**
  * AlertsResponse is the response type for the Query.Alerts RPC method, it
  * contains the list of Alerts that are being tracked by the alerts module.
+ * @name AlertsResponseAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.AlertsResponse
  */
 export interface AlertsResponseAmino {
   alerts?: AlertAmino[];
@@ -111,7 +117,12 @@ export interface ParamsRequestProtoMsg {
   typeUrl: "/slinky.alerts.v1.ParamsRequest";
   value: Uint8Array;
 }
-/** ParamsRequest is the request type for the Query.Params RPC method. */
+/**
+ * ParamsRequest is the request type for the Query.Params RPC method.
+ * @name ParamsRequestAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.ParamsRequest
+ */
 export interface ParamsRequestAmino {}
 export interface ParamsRequestAminoMsg {
   type: "/slinky.alerts.v1.ParamsRequest";
@@ -133,6 +144,9 @@ export interface ParamsResponseProtoMsg {
 /**
  * ParamsResponse is the response type for the Query.Params RPC method, it
  * contains the Params of the module.
+ * @name ParamsResponseAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.ParamsResponse
  */
 export interface ParamsResponseAmino {
   params?: ParamsAmino;

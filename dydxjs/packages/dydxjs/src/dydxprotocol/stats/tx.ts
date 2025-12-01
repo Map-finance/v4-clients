@@ -11,10 +11,17 @@ export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/dydxprotocol.stats.MsgUpdateParams";
   value: Uint8Array;
 }
-/** MsgUpdateParams is the Msg/UpdateParams request type. */
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * @name MsgUpdateParamsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.MsgUpdateParams
+ */
 export interface MsgUpdateParamsAmino {
   authority?: string;
-  /** The parameters to update. Each field must be set. */
+  /**
+   * The parameters to update. Each field must be set.
+   */
   params?: ParamsAmino;
 }
 export interface MsgUpdateParamsAminoMsg {
@@ -32,7 +39,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.stats.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse is the Msg/UpdateParams response type. */
+/**
+ * MsgUpdateParamsResponse is the Msg/UpdateParams response type.
+ * @name MsgUpdateParamsResponseAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "/dydxprotocol.stats.MsgUpdateParamsResponse";

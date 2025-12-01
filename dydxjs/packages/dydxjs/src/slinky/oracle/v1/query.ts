@@ -7,6 +7,11 @@ export interface GetAllCurrencyPairsRequestProtoMsg {
   typeUrl: "/slinky.oracle.v1.GetAllCurrencyPairsRequest";
   value: Uint8Array;
 }
+/**
+ * @name GetAllCurrencyPairsRequestAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetAllCurrencyPairsRequest
+ */
 export interface GetAllCurrencyPairsRequestAmino {}
 export interface GetAllCurrencyPairsRequestAminoMsg {
   type: "/slinky.oracle.v1.GetAllCurrencyPairsRequest";
@@ -27,6 +32,9 @@ export interface GetAllCurrencyPairsResponseProtoMsg {
 /**
  * GetAllCurrencyPairsResponse returns all CurrencyPairs that the module is
  * currently tracking.
+ * @name GetAllCurrencyPairsResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetAllCurrencyPairsResponse
  */
 export interface GetAllCurrencyPairsResponseAmino {
   currency_pairs?: CurrencyPairAmino[];
@@ -57,9 +65,14 @@ export interface GetPriceRequestProtoMsg {
 /**
  * GetPriceRequest either takes a CurrencyPair, or an identifier for the
  * CurrencyPair in the format base/quote.
+ * @name GetPriceRequestAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetPriceRequest
  */
 export interface GetPriceRequestAmino {
-  /** CurrencyPair represents the pair that the user wishes to query. */
+  /**
+   * CurrencyPair represents the pair that the user wishes to query.
+   */
   currency_pair?: CurrencyPairAmino;
 }
 export interface GetPriceRequestAminoMsg {
@@ -101,6 +114,9 @@ export interface GetPriceResponseProtoMsg {
 /**
  * GetPriceResponse is the response from the GetPrice grpc method exposed from
  * the x/oracle query service.
+ * @name GetPriceResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetPriceResponse
  */
 export interface GetPriceResponseAmino {
   /**
@@ -108,7 +124,9 @@ export interface GetPriceResponseAmino {
    * GetPriceRequest (possibly nil if no update has been made)
    */
   price?: QuotePriceAmino;
-  /** nonce represents the nonce for the CurrencyPair if it exists in state */
+  /**
+   * nonce represents the nonce for the CurrencyPair if it exists in state
+   */
   nonce?: string;
   /**
    * decimals represents the number of decimals that the quote-price is
@@ -116,7 +134,9 @@ export interface GetPriceResponseAmino {
    * otherwise it will be 8.
    */
   decimals?: string;
-  /** ID represents the identifier for the CurrencyPair. */
+  /**
+   * ID represents the identifier for the CurrencyPair.
+   */
   id?: string;
 }
 export interface GetPriceResponseAminoMsg {
@@ -147,6 +167,9 @@ export interface GetPricesRequestProtoMsg {
 /**
  * GetPricesRequest takes an identifier for the CurrencyPair
  * in the format base/quote.
+ * @name GetPricesRequestAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetPricesRequest
  */
 export interface GetPricesRequestAmino {
   currency_pair_ids?: string[];
@@ -176,6 +199,9 @@ export interface GetPricesResponseProtoMsg {
 /**
  * GetPricesResponse is the response from the GetPrices grpc method exposed from
  * the x/oracle query service.
+ * @name GetPricesResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetPricesResponse
  */
 export interface GetPricesResponseAmino {
   prices?: GetPriceResponseAmino[];
@@ -197,7 +223,12 @@ export interface GetCurrencyPairMappingRequestProtoMsg {
   typeUrl: "/slinky.oracle.v1.GetCurrencyPairMappingRequest";
   value: Uint8Array;
 }
-/** GetCurrencyPairMappingRequest is the GetCurrencyPairMapping request type. */
+/**
+ * GetCurrencyPairMappingRequest is the GetCurrencyPairMapping request type.
+ * @name GetCurrencyPairMappingRequestAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetCurrencyPairMappingRequest
+ */
 export interface GetCurrencyPairMappingRequestAmino {}
 export interface GetCurrencyPairMappingRequestAminoMsg {
   type: "/slinky.oracle.v1.GetCurrencyPairMappingRequest";
@@ -213,6 +244,11 @@ export interface GetCurrencyPairMappingResponse_CurrencyPairMappingEntryProtoMsg
   typeUrl: string;
   value: Uint8Array;
 }
+/**
+ * @name GetCurrencyPairMappingResponse_CurrencyPairMappingEntryAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetCurrencyPairMappingResponse_CurrencyPairMappingEntry
+ */
 export interface GetCurrencyPairMappingResponse_CurrencyPairMappingEntryAmino {
   key?: string;
   value?: CurrencyPairAmino;
@@ -239,7 +275,12 @@ export interface GetCurrencyPairMappingResponseProtoMsg {
   typeUrl: "/slinky.oracle.v1.GetCurrencyPairMappingResponse";
   value: Uint8Array;
 }
-/** GetCurrencyPairMappingResponse is the GetCurrencyPairMapping response type. */
+/**
+ * GetCurrencyPairMappingResponse is the GetCurrencyPairMapping response type.
+ * @name GetCurrencyPairMappingResponseAmino
+ * @package slinky.oracle.v1
+ * @see proto type: slinky.oracle.v1.GetCurrencyPairMappingResponse
+ */
 export interface GetCurrencyPairMappingResponseAmino {
   /**
    * currency_pair_mapping is a mapping of the id representing the currency pair
@@ -515,9 +556,9 @@ export const GetPriceResponse = {
   toAmino(message: GetPriceResponse): GetPriceResponseAmino {
     const obj: any = {};
     obj.price = message.price ? QuotePrice.toAmino(message.price) : undefined;
-    obj.nonce = message.nonce !== BigInt(0) ? message.nonce.toString() : undefined;
-    obj.decimals = message.decimals !== BigInt(0) ? message.decimals.toString() : undefined;
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.nonce = message.nonce !== BigInt(0) ? message.nonce?.toString() : undefined;
+    obj.decimals = message.decimals !== BigInt(0) ? message.decimals?.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GetPriceResponseAminoMsg): GetPriceResponse {
@@ -770,7 +811,7 @@ export const GetCurrencyPairMappingResponse_CurrencyPairMappingEntry = {
   },
   toAmino(message: GetCurrencyPairMappingResponse_CurrencyPairMappingEntry): GetCurrencyPairMappingResponse_CurrencyPairMappingEntryAmino {
     const obj: any = {};
-    obj.key = message.key !== BigInt(0) ? message.key.toString() : undefined;
+    obj.key = message.key !== BigInt(0) ? message.key?.toString() : undefined;
     obj.value = message.value ? CurrencyPair.toAmino(message.value) : undefined;
     return obj;
   },

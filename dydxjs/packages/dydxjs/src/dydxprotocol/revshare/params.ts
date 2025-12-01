@@ -20,9 +20,16 @@ export interface MarketMapperRevenueShareParamsProtoMsg {
   typeUrl: "/dydxprotocol.revshare.MarketMapperRevenueShareParams";
   value: Uint8Array;
 }
-/** MarketMappeRevenueShareParams represents params for the above message */
+/**
+ * MarketMappeRevenueShareParams represents params for the above message
+ * @name MarketMapperRevenueShareParamsAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MarketMapperRevenueShareParams
+ */
 export interface MarketMapperRevenueShareParamsAmino {
-  /** The address which will receive the revenue share payouts */
+  /**
+   * The address which will receive the revenue share payouts
+   */
   address?: string;
   /**
    * The fraction of the fees which will go to the above mentioned address.

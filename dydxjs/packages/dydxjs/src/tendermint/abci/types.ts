@@ -221,6 +221,11 @@ export interface RequestProtoMsg {
   typeUrl: "/tendermint.abci.Request";
   value: Uint8Array;
 }
+/**
+ * @name RequestAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Request
+ */
 export interface RequestAmino {
   echo?: RequestEchoAmino;
   flush?: RequestFlushAmino;
@@ -266,6 +271,11 @@ export interface RequestEchoProtoMsg {
   typeUrl: "/tendermint.abci.RequestEcho";
   value: Uint8Array;
 }
+/**
+ * @name RequestEchoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestEcho
+ */
 export interface RequestEchoAmino {
   message?: string;
 }
@@ -281,6 +291,11 @@ export interface RequestFlushProtoMsg {
   typeUrl: "/tendermint.abci.RequestFlush";
   value: Uint8Array;
 }
+/**
+ * @name RequestFlushAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestFlush
+ */
 export interface RequestFlushAmino {}
 export interface RequestFlushAminoMsg {
   type: "/tendermint.abci.RequestFlush";
@@ -296,6 +311,11 @@ export interface RequestInfoProtoMsg {
   typeUrl: "/tendermint.abci.RequestInfo";
   value: Uint8Array;
 }
+/**
+ * @name RequestInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestInfo
+ */
 export interface RequestInfoAmino {
   version?: string;
   block_version?: string;
@@ -319,7 +339,12 @@ export interface RequestSetOptionProtoMsg {
   typeUrl: "/tendermint.abci.RequestSetOption";
   value: Uint8Array;
 }
-/** nondeterministic */
+/**
+ * nondeterministic
+ * @name RequestSetOptionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestSetOption
+ */
 export interface RequestSetOptionAmino {
   key?: string;
   value?: string;
@@ -345,6 +370,11 @@ export interface RequestInitChainProtoMsg {
   typeUrl: "/tendermint.abci.RequestInitChain";
   value: Uint8Array;
 }
+/**
+ * @name RequestInitChainAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestInitChain
+ */
 export interface RequestInitChainAmino {
   time?: string;
   chain_id?: string;
@@ -375,6 +405,11 @@ export interface RequestQueryProtoMsg {
   typeUrl: "/tendermint.abci.RequestQuery";
   value: Uint8Array;
 }
+/**
+ * @name RequestQueryAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestQuery
+ */
 export interface RequestQueryAmino {
   data?: string;
   path?: string;
@@ -401,6 +436,11 @@ export interface RequestBeginBlockProtoMsg {
   typeUrl: "/tendermint.abci.RequestBeginBlock";
   value: Uint8Array;
 }
+/**
+ * @name RequestBeginBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestBeginBlock
+ */
 export interface RequestBeginBlockAmino {
   hash?: string;
   header?: HeaderAmino;
@@ -425,6 +465,11 @@ export interface RequestCheckTxProtoMsg {
   typeUrl: "/tendermint.abci.RequestCheckTx";
   value: Uint8Array;
 }
+/**
+ * @name RequestCheckTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestCheckTx
+ */
 export interface RequestCheckTxAmino {
   tx?: string;
   type?: CheckTxType;
@@ -444,6 +489,11 @@ export interface RequestDeliverTxProtoMsg {
   typeUrl: "/tendermint.abci.RequestDeliverTx";
   value: Uint8Array;
 }
+/**
+ * @name RequestDeliverTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestDeliverTx
+ */
 export interface RequestDeliverTxAmino {
   tx?: string;
 }
@@ -461,6 +511,11 @@ export interface RequestEndBlockProtoMsg {
   typeUrl: "/tendermint.abci.RequestEndBlock";
   value: Uint8Array;
 }
+/**
+ * @name RequestEndBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestEndBlock
+ */
 export interface RequestEndBlockAmino {
   height?: string;
 }
@@ -476,6 +531,11 @@ export interface RequestCommitProtoMsg {
   typeUrl: "/tendermint.abci.RequestCommit";
   value: Uint8Array;
 }
+/**
+ * @name RequestCommitAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestCommit
+ */
 export interface RequestCommitAmino {}
 export interface RequestCommitAminoMsg {
   type: "/tendermint.abci.RequestCommit";
@@ -488,7 +548,12 @@ export interface RequestListSnapshotsProtoMsg {
   typeUrl: "/tendermint.abci.RequestListSnapshots";
   value: Uint8Array;
 }
-/** lists available snapshots */
+/**
+ * lists available snapshots
+ * @name RequestListSnapshotsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestListSnapshots
+ */
 export interface RequestListSnapshotsAmino {}
 export interface RequestListSnapshotsAminoMsg {
   type: "/tendermint.abci.RequestListSnapshots";
@@ -507,11 +572,20 @@ export interface RequestOfferSnapshotProtoMsg {
   typeUrl: "/tendermint.abci.RequestOfferSnapshot";
   value: Uint8Array;
 }
-/** offers a snapshot to the application */
+/**
+ * offers a snapshot to the application
+ * @name RequestOfferSnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestOfferSnapshot
+ */
 export interface RequestOfferSnapshotAmino {
-  /** snapshot offered by peers */
+  /**
+   * snapshot offered by peers
+   */
   snapshot?: SnapshotAmino;
-  /** light client-verified app hash for snapshot height */
+  /**
+   * light client-verified app hash for snapshot height
+   */
   app_hash?: string;
 }
 export interface RequestOfferSnapshotAminoMsg {
@@ -533,7 +607,12 @@ export interface RequestLoadSnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.RequestLoadSnapshotChunk";
   value: Uint8Array;
 }
-/** loads a snapshot chunk */
+/**
+ * loads a snapshot chunk
+ * @name RequestLoadSnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestLoadSnapshotChunk
+ */
 export interface RequestLoadSnapshotChunkAmino {
   height?: string;
   format?: number;
@@ -559,7 +638,12 @@ export interface RequestApplySnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.RequestApplySnapshotChunk";
   value: Uint8Array;
 }
-/** Applies a snapshot chunk */
+/**
+ * Applies a snapshot chunk
+ * @name RequestApplySnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.RequestApplySnapshotChunk
+ */
 export interface RequestApplySnapshotChunkAmino {
   index?: number;
   chunk?: string;
@@ -597,6 +681,11 @@ export interface ResponseProtoMsg {
   typeUrl: "/tendermint.abci.Response";
   value: Uint8Array;
 }
+/**
+ * @name ResponseAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Response
+ */
 export interface ResponseAmino {
   exception?: ResponseExceptionAmino;
   echo?: ResponseEchoAmino;
@@ -645,7 +734,12 @@ export interface ResponseExceptionProtoMsg {
   typeUrl: "/tendermint.abci.ResponseException";
   value: Uint8Array;
 }
-/** nondeterministic */
+/**
+ * nondeterministic
+ * @name ResponseExceptionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseException
+ */
 export interface ResponseExceptionAmino {
   error?: string;
 }
@@ -664,6 +758,11 @@ export interface ResponseEchoProtoMsg {
   typeUrl: "/tendermint.abci.ResponseEcho";
   value: Uint8Array;
 }
+/**
+ * @name ResponseEchoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseEcho
+ */
 export interface ResponseEchoAmino {
   message?: string;
 }
@@ -679,6 +778,11 @@ export interface ResponseFlushProtoMsg {
   typeUrl: "/tendermint.abci.ResponseFlush";
   value: Uint8Array;
 }
+/**
+ * @name ResponseFlushAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseFlush
+ */
 export interface ResponseFlushAmino {}
 export interface ResponseFlushAminoMsg {
   type: "/tendermint.abci.ResponseFlush";
@@ -696,6 +800,11 @@ export interface ResponseInfoProtoMsg {
   typeUrl: "/tendermint.abci.ResponseInfo";
   value: Uint8Array;
 }
+/**
+ * @name ResponseInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseInfo
+ */
 export interface ResponseInfoAmino {
   data?: string;
   version?: string;
@@ -725,10 +834,17 @@ export interface ResponseSetOptionProtoMsg {
   typeUrl: "/tendermint.abci.ResponseSetOption";
   value: Uint8Array;
 }
-/** nondeterministic */
+/**
+ * nondeterministic
+ * @name ResponseSetOptionAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseSetOption
+ */
 export interface ResponseSetOptionAmino {
   code?: number;
-  /** bytes data = 2; */
+  /**
+   * bytes data = 2;
+   */
   log?: string;
   info?: string;
 }
@@ -751,6 +867,11 @@ export interface ResponseInitChainProtoMsg {
   typeUrl: "/tendermint.abci.ResponseInitChain";
   value: Uint8Array;
 }
+/**
+ * @name ResponseInitChainAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseInitChain
+ */
 export interface ResponseInitChainAmino {
   consensus_params?: ConsensusParamsAmino;
   validators?: ValidatorUpdateAmino[];
@@ -782,11 +903,20 @@ export interface ResponseQueryProtoMsg {
   typeUrl: "/tendermint.abci.ResponseQuery";
   value: Uint8Array;
 }
+/**
+ * @name ResponseQueryAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseQuery
+ */
 export interface ResponseQueryAmino {
   code?: number;
-  /** bytes data = 2; // use "value" instead. */
+  /**
+   * bytes data = 2; // use "value" instead.
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   index?: string;
   key?: string;
@@ -817,6 +947,11 @@ export interface ResponseBeginBlockProtoMsg {
   typeUrl: "/tendermint.abci.ResponseBeginBlock";
   value: Uint8Array;
 }
+/**
+ * @name ResponseBeginBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseBeginBlock
+ */
 export interface ResponseBeginBlockAmino {
   events?: EventAmino[];
 }
@@ -843,12 +978,21 @@ export interface ResponseCheckTxProtoMsg {
   typeUrl: "/tendermint.abci.ResponseCheckTx";
   value: Uint8Array;
 }
+/**
+ * @name ResponseCheckTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseCheckTx
+ */
 export interface ResponseCheckTxAmino {
   code?: number;
   data?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   gas_wanted?: string;
   gas_used?: string;
@@ -885,12 +1029,21 @@ export interface ResponseDeliverTxProtoMsg {
   typeUrl: "/tendermint.abci.ResponseDeliverTx";
   value: Uint8Array;
 }
+/**
+ * @name ResponseDeliverTxAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseDeliverTx
+ */
 export interface ResponseDeliverTxAmino {
   code?: number;
   data?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   log?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   info?: string;
   gas_wanted?: string;
   gas_used?: string;
@@ -920,6 +1073,11 @@ export interface ResponseEndBlockProtoMsg {
   typeUrl: "/tendermint.abci.ResponseEndBlock";
   value: Uint8Array;
 }
+/**
+ * @name ResponseEndBlockAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseEndBlock
+ */
 export interface ResponseEndBlockAmino {
   validator_updates?: ValidatorUpdateAmino[];
   consensus_param_updates?: ConsensusParamsAmino;
@@ -943,8 +1101,15 @@ export interface ResponseCommitProtoMsg {
   typeUrl: "/tendermint.abci.ResponseCommit";
   value: Uint8Array;
 }
+/**
+ * @name ResponseCommitAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseCommit
+ */
 export interface ResponseCommitAmino {
-  /** reserve 1 */
+  /**
+   * reserve 1
+   */
   data?: string;
   retain_height?: string;
 }
@@ -963,6 +1128,11 @@ export interface ResponseListSnapshotsProtoMsg {
   typeUrl: "/tendermint.abci.ResponseListSnapshots";
   value: Uint8Array;
 }
+/**
+ * @name ResponseListSnapshotsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseListSnapshots
+ */
 export interface ResponseListSnapshotsAmino {
   snapshots?: SnapshotAmino[];
 }
@@ -980,6 +1150,11 @@ export interface ResponseOfferSnapshotProtoMsg {
   typeUrl: "/tendermint.abci.ResponseOfferSnapshot";
   value: Uint8Array;
 }
+/**
+ * @name ResponseOfferSnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseOfferSnapshot
+ */
 export interface ResponseOfferSnapshotAmino {
   result?: ResponseOfferSnapshot_Result;
 }
@@ -997,6 +1172,11 @@ export interface ResponseLoadSnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.ResponseLoadSnapshotChunk";
   value: Uint8Array;
 }
+/**
+ * @name ResponseLoadSnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseLoadSnapshotChunk
+ */
 export interface ResponseLoadSnapshotChunkAmino {
   chunk?: string;
 }
@@ -1018,11 +1198,20 @@ export interface ResponseApplySnapshotChunkProtoMsg {
   typeUrl: "/tendermint.abci.ResponseApplySnapshotChunk";
   value: Uint8Array;
 }
+/**
+ * @name ResponseApplySnapshotChunkAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ResponseApplySnapshotChunk
+ */
 export interface ResponseApplySnapshotChunkAmino {
   result?: ResponseApplySnapshotChunk_Result;
-  /** Chunks to refetch and reapply */
+  /**
+   * Chunks to refetch and reapply
+   */
   refetch_chunks?: number[];
-  /** Chunk senders to reject and ban */
+  /**
+   * Chunk senders to reject and ban
+   */
   reject_senders?: string[];
 }
 export interface ResponseApplySnapshotChunkAminoMsg {
@@ -1051,6 +1240,9 @@ export interface ConsensusParamsProtoMsg {
 /**
  * ConsensusParams contains all consensus-relevant parameters
  * that can be adjusted by the abci app
+ * @name ConsensusParamsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ConsensusParams
  */
 export interface ConsensusParamsAmino {
   block?: BlockParamsAmino;
@@ -1083,11 +1275,20 @@ export interface BlockParamsProtoMsg {
   typeUrl: "/tendermint.abci.BlockParams";
   value: Uint8Array;
 }
-/** BlockParams contains limits on the block size. */
+/**
+ * BlockParams contains limits on the block size.
+ * @name BlockParamsAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.BlockParams
+ */
 export interface BlockParamsAmino {
-  /** Note: must be greater than 0 */
+  /**
+   * Note: must be greater than 0
+   */
   max_bytes?: string;
-  /** Note: must be greater or equal to -1 */
+  /**
+   * Note: must be greater or equal to -1
+   */
   max_gas?: string;
 }
 export interface BlockParamsAminoMsg {
@@ -1107,6 +1308,11 @@ export interface LastCommitInfoProtoMsg {
   typeUrl: "/tendermint.abci.LastCommitInfo";
   value: Uint8Array;
 }
+/**
+ * @name LastCommitInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.LastCommitInfo
+ */
 export interface LastCommitInfoAmino {
   round?: number;
   votes?: VoteInfoAmino[];
@@ -1136,6 +1342,9 @@ export interface EventProtoMsg {
  * Event allows application developers to attach additional information to
  * ResponseBeginBlock, ResponseEndBlock, ResponseCheckTx and ResponseDeliverTx.
  * Later, transactions may be queried using these events.
+ * @name EventAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Event
  */
 export interface EventAmino {
   type?: string;
@@ -1165,11 +1374,18 @@ export interface EventAttributeProtoMsg {
   typeUrl: "/tendermint.abci.EventAttribute";
   value: Uint8Array;
 }
-/** EventAttribute is a single key-value pair, associated with an event. */
+/**
+ * EventAttribute is a single key-value pair, associated with an event.
+ * @name EventAttributeAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.EventAttribute
+ */
 export interface EventAttributeAmino {
   key?: string;
   value?: string;
-  /** nondeterministic */
+  /**
+   * nondeterministic
+   */
   index?: boolean;
 }
 export interface EventAttributeAminoMsg {
@@ -1201,6 +1417,9 @@ export interface TxResultProtoMsg {
  * TxResult contains results of executing the transaction.
  * 
  * One usage is indexing transaction results.
+ * @name TxResultAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.TxResult
  */
 export interface TxResultAmino {
   height?: string;
@@ -1234,11 +1453,20 @@ export interface ValidatorProtoMsg {
   typeUrl: "/tendermint.abci.Validator";
   value: Uint8Array;
 }
-/** Validator */
+/**
+ * Validator
+ * @name ValidatorAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Validator
+ */
 export interface ValidatorAmino {
-  /** The first 20 bytes of SHA256(public key) */
+  /**
+   * The first 20 bytes of SHA256(public key)
+   */
   address?: string;
-  /** PubKey pub_key = 2 [(gogoproto.nullable)=false]; */
+  /**
+   * PubKey pub_key = 2 [(gogoproto.nullable)=false];
+   */
   power?: string;
 }
 export interface ValidatorAminoMsg {
@@ -1259,7 +1487,12 @@ export interface ValidatorUpdateProtoMsg {
   typeUrl: "/tendermint.abci.ValidatorUpdate";
   value: Uint8Array;
 }
-/** ValidatorUpdate */
+/**
+ * ValidatorUpdate
+ * @name ValidatorUpdateAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.ValidatorUpdate
+ */
 export interface ValidatorUpdateAmino {
   pub_key?: PublicKeyAmino;
   power?: string;
@@ -1282,7 +1515,12 @@ export interface VoteInfoProtoMsg {
   typeUrl: "/tendermint.abci.VoteInfo";
   value: Uint8Array;
 }
-/** VoteInfo */
+/**
+ * VoteInfo
+ * @name VoteInfoAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.VoteInfo
+ */
 export interface VoteInfoAmino {
   validator?: ValidatorAmino;
   signed_last_block?: boolean;
@@ -1315,13 +1553,24 @@ export interface EvidenceProtoMsg {
   typeUrl: "/tendermint.abci.Evidence";
   value: Uint8Array;
 }
+/**
+ * @name EvidenceAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Evidence
+ */
 export interface EvidenceAmino {
   type?: EvidenceType;
-  /** The offending validator */
+  /**
+   * The offending validator
+   */
   validator?: ValidatorAmino;
-  /** The height when the offense occurred */
+  /**
+   * The height when the offense occurred
+   */
   height?: string;
-  /** The corresponding time where the offense occurred */
+  /**
+   * The corresponding time where the offense occurred
+   */
   time?: string;
   /**
    * Total voting power of the validator set in case the ABCI application does
@@ -1357,16 +1606,31 @@ export interface SnapshotProtoMsg {
   typeUrl: "/tendermint.abci.Snapshot";
   value: Uint8Array;
 }
+/**
+ * @name SnapshotAmino
+ * @package tendermint.abci
+ * @see proto type: tendermint.abci.Snapshot
+ */
 export interface SnapshotAmino {
-  /** The height at which the snapshot was taken */
+  /**
+   * The height at which the snapshot was taken
+   */
   height?: string;
-  /** The application-specific snapshot format */
+  /**
+   * The application-specific snapshot format
+   */
   format?: number;
-  /** Number of chunks in the snapshot */
+  /**
+   * Number of chunks in the snapshot
+   */
   chunks?: number;
-  /** Arbitrary snapshot hash, equal only if identical */
+  /**
+   * Arbitrary snapshot hash, equal only if identical
+   */
   hash?: string;
-  /** Arbitrary application metadata */
+  /**
+   * Arbitrary application metadata
+   */
   metadata?: string;
 }
 export interface SnapshotAminoMsg {
@@ -1791,8 +2055,8 @@ export const RequestInfo = {
   toAmino(message: RequestInfo): RequestInfoAmino {
     const obj: any = {};
     obj.version = message.version === "" ? undefined : message.version;
-    obj.block_version = message.blockVersion !== BigInt(0) ? message.blockVersion.toString() : undefined;
-    obj.p2p_version = message.p2pVersion !== BigInt(0) ? message.p2pVersion.toString() : undefined;
+    obj.block_version = message.blockVersion !== BigInt(0) ? message.blockVersion?.toString() : undefined;
+    obj.p2p_version = message.p2pVersion !== BigInt(0) ? message.p2pVersion?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: RequestInfoAminoMsg): RequestInfo {
@@ -1992,7 +2256,7 @@ export const RequestInitChain = {
       obj.validators = message.validators;
     }
     obj.app_state_bytes = message.appStateBytes ? base64FromBytes(message.appStateBytes) : undefined;
-    obj.initial_height = message.initialHeight !== BigInt(0) ? message.initialHeight.toString() : undefined;
+    obj.initial_height = message.initialHeight !== BigInt(0) ? message.initialHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: RequestInitChainAminoMsg): RequestInitChain {
@@ -2090,7 +2354,7 @@ export const RequestQuery = {
     const obj: any = {};
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     obj.path = message.path === "" ? undefined : message.path;
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.prove = message.prove === false ? undefined : message.prove;
     return obj;
   },
@@ -2393,7 +2657,7 @@ export const RequestEndBlock = {
   },
   toAmino(message: RequestEndBlock): RequestEndBlockAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: RequestEndBlockAminoMsg): RequestEndBlock {
@@ -2653,7 +2917,7 @@ export const RequestLoadSnapshotChunk = {
   },
   toAmino(message: RequestLoadSnapshotChunk): RequestLoadSnapshotChunkAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.format = message.format === 0 ? undefined : message.format;
     obj.chunk = message.chunk === 0 ? undefined : message.chunk;
     return obj;
@@ -3270,8 +3534,8 @@ export const ResponseInfo = {
     const obj: any = {};
     obj.data = message.data === "" ? undefined : message.data;
     obj.version = message.version === "" ? undefined : message.version;
-    obj.app_version = message.appVersion !== BigInt(0) ? message.appVersion.toString() : undefined;
-    obj.last_block_height = message.lastBlockHeight !== BigInt(0) ? message.lastBlockHeight.toString() : undefined;
+    obj.app_version = message.appVersion !== BigInt(0) ? message.appVersion?.toString() : undefined;
+    obj.last_block_height = message.lastBlockHeight !== BigInt(0) ? message.lastBlockHeight?.toString() : undefined;
     obj.last_block_app_hash = message.lastBlockAppHash ? base64FromBytes(message.lastBlockAppHash) : undefined;
     return obj;
   },
@@ -3602,11 +3866,11 @@ export const ResponseQuery = {
     obj.code = message.code === 0 ? undefined : message.code;
     obj.log = message.log === "" ? undefined : message.log;
     obj.info = message.info === "" ? undefined : message.info;
-    obj.index = message.index !== BigInt(0) ? message.index.toString() : undefined;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     obj.key = message.key ? base64FromBytes(message.key) : undefined;
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
     obj.proof_ops = message.proofOps ? ProofOps.toAmino(message.proofOps) : undefined;
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.codespace = message.codespace === "" ? undefined : message.codespace;
     return obj;
   },
@@ -3814,8 +4078,8 @@ export const ResponseCheckTx = {
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     obj.log = message.log === "" ? undefined : message.log;
     obj.info = message.info === "" ? undefined : message.info;
-    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed.toString() : undefined;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     if (message.events) {
       obj.events = message.events.map(e => e ? Event.toAmino(e) : undefined);
     } else {
@@ -3963,8 +4227,8 @@ export const ResponseDeliverTx = {
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
     obj.log = message.log === "" ? undefined : message.log;
     obj.info = message.info === "" ? undefined : message.info;
-    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted.toString() : undefined;
-    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed.toString() : undefined;
+    obj.gas_wanted = message.gasWanted !== BigInt(0) ? message.gasWanted?.toString() : undefined;
+    obj.gas_used = message.gasUsed !== BigInt(0) ? message.gasUsed?.toString() : undefined;
     if (message.events) {
       obj.events = message.events.map(e => e ? Event.toAmino(e) : undefined);
     } else {
@@ -4136,7 +4400,7 @@ export const ResponseCommit = {
   toAmino(message: ResponseCommit): ResponseCommitAmino {
     const obj: any = {};
     obj.data = message.data ? base64FromBytes(message.data) : undefined;
-    obj.retain_height = message.retainHeight !== BigInt(0) ? message.retainHeight.toString() : undefined;
+    obj.retain_height = message.retainHeight !== BigInt(0) ? message.retainHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ResponseCommitAminoMsg): ResponseCommit {
@@ -4600,8 +4864,8 @@ export const BlockParams = {
   },
   toAmino(message: BlockParams): BlockParamsAmino {
     const obj: any = {};
-    obj.max_bytes = message.maxBytes !== BigInt(0) ? message.maxBytes.toString() : undefined;
-    obj.max_gas = message.maxGas !== BigInt(0) ? message.maxGas.toString() : undefined;
+    obj.max_bytes = message.maxBytes !== BigInt(0) ? message.maxBytes?.toString() : undefined;
+    obj.max_gas = message.maxGas !== BigInt(0) ? message.maxGas?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: BlockParamsAminoMsg): BlockParams {
@@ -4938,7 +5202,7 @@ export const TxResult = {
   },
   toAmino(message: TxResult): TxResultAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.index = message.index === 0 ? undefined : message.index;
     obj.tx = message.tx ? base64FromBytes(message.tx) : undefined;
     obj.result = message.result ? ResponseDeliverTx.toAmino(message.result) : undefined;
@@ -5016,7 +5280,7 @@ export const Validator = {
   toAmino(message: Validator): ValidatorAmino {
     const obj: any = {};
     obj.address = message.address ? base64FromBytes(message.address) : undefined;
-    obj.power = message.power !== BigInt(0) ? message.power.toString() : undefined;
+    obj.power = message.power !== BigInt(0) ? message.power?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorAminoMsg): Validator {
@@ -5091,7 +5355,7 @@ export const ValidatorUpdate = {
   toAmino(message: ValidatorUpdate): ValidatorUpdateAmino {
     const obj: any = {};
     obj.pub_key = message.pubKey ? PublicKey.toAmino(message.pubKey) : undefined;
-    obj.power = message.power !== BigInt(0) ? message.power.toString() : undefined;
+    obj.power = message.power !== BigInt(0) ? message.power?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ValidatorUpdateAminoMsg): ValidatorUpdate {
@@ -5275,9 +5539,9 @@ export const Evidence = {
     const obj: any = {};
     obj.type = message.type === 0 ? undefined : message.type;
     obj.validator = message.validator ? Validator.toAmino(message.validator) : undefined;
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.time = message.time ? Timestamp.toAmino(toTimestamp(message.time)) : undefined;
-    obj.total_voting_power = message.totalVotingPower !== BigInt(0) ? message.totalVotingPower.toString() : undefined;
+    obj.total_voting_power = message.totalVotingPower !== BigInt(0) ? message.totalVotingPower?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: EvidenceAminoMsg): Evidence {
@@ -5384,7 +5648,7 @@ export const Snapshot = {
   },
   toAmino(message: Snapshot): SnapshotAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.format = message.format === 0 ? undefined : message.format;
     obj.chunks = message.chunks === 0 ? undefined : message.chunks;
     obj.hash = message.hash ? base64FromBytes(message.hash) : undefined;

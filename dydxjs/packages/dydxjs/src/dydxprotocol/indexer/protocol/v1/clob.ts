@@ -303,7 +303,12 @@ export interface IndexerOrderIdProtoMsg {
   typeUrl: "/dydxprotocol.indexer.protocol.v1.IndexerOrderId";
   value: Uint8Array;
 }
-/** IndexerOrderId refers to a single order belonging to a Subaccount. */
+/**
+ * IndexerOrderId refers to a single order belonging to a Subaccount.
+ * @name IndexerOrderIdAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.IndexerOrderId
+ */
 export interface IndexerOrderIdAmino {
   /**
    * The subaccount ID that opened this order.
@@ -335,7 +340,9 @@ export interface IndexerOrderIdAmino {
    * ID is invalid.
    */
   order_flags?: number;
-  /** ID of the CLOB the order is created for. */
+  /**
+   * ID of the CLOB the order is created for.
+   */
   clob_pair_id?: number;
 }
 export interface IndexerOrderIdAminoMsg {
@@ -417,9 +424,14 @@ export interface IndexerOrderProtoMsg {
 /**
  * IndexerOrderV1 represents a single order belonging to a `Subaccount`
  * for a particular `ClobPair`.
+ * @name IndexerOrderAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.IndexerOrder
  */
 export interface IndexerOrderAmino {
-  /** The unique ID of this order. Meant to be unique across all orders. */
+  /**
+   * The unique ID of this order. Meant to be unique across all orders.
+   */
   order_id?: IndexerOrderIdAmino;
   side?: IndexerOrder_Side;
   /**
@@ -448,7 +460,9 @@ export interface IndexerOrderAmino {
    * conditional order.
    */
   good_til_block_time?: number;
-  /** The time in force of this order. */
+  /**
+   * The time in force of this order.
+   */
   time_in_force?: IndexerOrder_TimeInForce;
   /**
    * Enforces that the order can only reduce the size of an existing position.
@@ -751,15 +765,15 @@ export const IndexerOrder = {
     const obj: any = {};
     obj.order_id = message.orderId ? IndexerOrderId.toAmino(message.orderId) : undefined;
     obj.side = message.side === 0 ? undefined : message.side;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks.toString() : undefined;
+    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
     obj.good_til_block = message.goodTilBlock === null ? undefined : message.goodTilBlock;
     obj.good_til_block_time = message.goodTilBlockTime === null ? undefined : message.goodTilBlockTime;
     obj.time_in_force = message.timeInForce === 0 ? undefined : message.timeInForce;
     obj.reduce_only = message.reduceOnly === false ? undefined : message.reduceOnly;
     obj.client_metadata = message.clientMetadata === 0 ? undefined : message.clientMetadata;
     obj.condition_type = message.conditionType === 0 ? undefined : message.conditionType;
-    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks.toString() : undefined;
+    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IndexerOrderAminoMsg): IndexerOrder {

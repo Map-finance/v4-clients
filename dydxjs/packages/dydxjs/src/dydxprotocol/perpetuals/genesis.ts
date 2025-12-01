@@ -12,7 +12,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the perpetuals module's genesis state. */
+/**
+ * GenesisState defines the perpetuals module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.GenesisState
+ */
 export interface GenesisStateAmino {
   perpetuals?: PerpetualAmino[];
   liquidity_tiers?: LiquidityTierAmino[];

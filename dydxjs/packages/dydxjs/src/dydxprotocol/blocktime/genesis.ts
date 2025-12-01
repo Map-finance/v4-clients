@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.blocktime.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the blocktime module's genesis state. */
+/**
+ * GenesisState defines the blocktime module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.GenesisState
+ */
 export interface GenesisStateAmino {
   params?: DowntimeParamsAmino;
 }

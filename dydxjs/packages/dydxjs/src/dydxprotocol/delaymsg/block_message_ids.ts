@@ -18,6 +18,9 @@ export interface BlockMessageIdsProtoMsg {
 /**
  * BlockMessageIds stores the id of each message that should be processed at a
  * given block height.
+ * @name BlockMessageIdsAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.BlockMessageIds
  */
 export interface BlockMessageIdsAmino {
   /**

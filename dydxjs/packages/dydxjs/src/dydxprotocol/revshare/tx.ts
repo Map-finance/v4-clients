@@ -12,10 +12,17 @@ export interface MsgSetMarketMapperRevenueShareProtoMsg {
   typeUrl: "/dydxprotocol.revshare.MsgSetMarketMapperRevenueShare";
   value: Uint8Array;
 }
-/** Message to set the market mapper revenue share */
+/**
+ * Message to set the market mapper revenue share
+ * @name MsgSetMarketMapperRevenueShareAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetMarketMapperRevenueShare
+ */
 export interface MsgSetMarketMapperRevenueShareAmino {
   authority?: string;
-  /** Parameters for the revenue share */
+  /**
+   * Parameters for the revenue share
+   */
   params?: MarketMapperRevenueShareParamsAmino;
 }
 export interface MsgSetMarketMapperRevenueShareAminoMsg {
@@ -33,7 +40,12 @@ export interface MsgSetMarketMapperRevenueShareResponseProtoMsg {
   typeUrl: "/dydxprotocol.revshare.MsgSetMarketMapperRevenueShareResponse";
   value: Uint8Array;
 }
-/** Response to a MsgSetMarketMapperRevenueShare */
+/**
+ * Response to a MsgSetMarketMapperRevenueShare
+ * @name MsgSetMarketMapperRevenueShareResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetMarketMapperRevenueShareResponse
+ */
 export interface MsgSetMarketMapperRevenueShareResponseAmino {}
 export interface MsgSetMarketMapperRevenueShareResponseAminoMsg {
   type: "/dydxprotocol.revshare.MsgSetMarketMapperRevenueShareResponse";
@@ -61,12 +73,19 @@ export interface MsgSetMarketMapperRevShareDetailsForMarketProtoMsg {
  * Msg to set market mapper revenue share details (e.g. expiration timestamp)
  * for a specific market. To be used as an override for existing revenue share
  * settings set by the MsgSetMarketMapperRevenueShare msg
+ * @name MsgSetMarketMapperRevShareDetailsForMarketAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetMarketMapperRevShareDetailsForMarket
  */
 export interface MsgSetMarketMapperRevShareDetailsForMarketAmino {
   authority?: string;
-  /** The market ID for which to set the revenue share details */
+  /**
+   * The market ID for which to set the revenue share details
+   */
   market_id?: number;
-  /** Parameters for the revenue share details */
+  /**
+   * Parameters for the revenue share details
+   */
   params?: MarketMapperRevShareDetailsAmino;
 }
 export interface MsgSetMarketMapperRevShareDetailsForMarketAminoMsg {
@@ -89,7 +108,12 @@ export interface MsgSetMarketMapperRevShareDetailsForMarketResponseProtoMsg {
   typeUrl: "/dydxprotocol.revshare.MsgSetMarketMapperRevShareDetailsForMarketResponse";
   value: Uint8Array;
 }
-/** Response to a MsgSetMarketMapperRevShareDetailsForMarket */
+/**
+ * Response to a MsgSetMarketMapperRevShareDetailsForMarket
+ * @name MsgSetMarketMapperRevShareDetailsForMarketResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetMarketMapperRevShareDetailsForMarketResponse
+ */
 export interface MsgSetMarketMapperRevShareDetailsForMarketResponseAmino {}
 export interface MsgSetMarketMapperRevShareDetailsForMarketResponseAminoMsg {
   type: "/dydxprotocol.revshare.MsgSetMarketMapperRevShareDetailsForMarketResponse";

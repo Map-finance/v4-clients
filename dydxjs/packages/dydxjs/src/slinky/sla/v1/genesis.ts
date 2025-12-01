@@ -16,13 +16,24 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/slinky.sla.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the sla module's genesis state. */
+/**
+ * GenesisState defines the sla module's genesis state.
+ * @name GenesisStateAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** SLAs are the SLAs that are currently active. */
+  /**
+   * SLAs are the SLAs that are currently active.
+   */
   slas?: PriceFeedSLAAmino[];
-  /** PrceFeeds are the price feeds that are currently active. */
+  /**
+   * PrceFeeds are the price feeds that are currently active.
+   */
   price_feeds?: PriceFeedAmino[];
-  /** Params are the parameters for the sla module. */
+  /**
+   * Params are the parameters for the sla module.
+   */
   params?: ParamsAmino;
 }
 export interface GenesisStateAminoMsg {
@@ -44,9 +55,16 @@ export interface ParamsProtoMsg {
   typeUrl: "/slinky.sla.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the sla module. */
+/**
+ * Params defines the parameters for the sla module.
+ * @name ParamsAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.Params
+ */
 export interface ParamsAmino {
-  /** Enabled is a flag to enable or disable the sla module. */
+  /**
+   * Enabled is a flag to enable or disable the sla module.
+   */
   enabled?: boolean;
 }
 export interface ParamsAminoMsg {
@@ -98,6 +116,9 @@ export interface PriceFeedSLAProtoMsg {
  * PriceFeedSLA defines the the desired SLA for a given set of price feeds. A
  * price feed is defined to be a set of price prices for the same (currency
  * pair, validator).
+ * @name PriceFeedSLAAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.PriceFeedSLA
  */
 export interface PriceFeedSLAAmino {
   /**
@@ -122,9 +143,13 @@ export interface PriceFeedSLAAmino {
    * in order to be considered for the SLA.
    */
   minimum_block_updates?: string;
-  /** Frequency is the frequency at which we will check the SLA. */
+  /**
+   * Frequency is the frequency at which we will check the SLA.
+   */
   frequency?: string;
-  /** ID is the unique identifier for the SLA. */
+  /**
+   * ID is the unique identifier for the SLA.
+   */
   id?: string;
 }
 export interface PriceFeedSLAAminoMsg {
@@ -177,27 +202,40 @@ export interface PriceFeedProtoMsg {
 /**
  * PriceFeed defines the object type that will be utilized to monitor how
  * frequently validators are voting with price updates across the network.
+ * @name PriceFeedAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.PriceFeed
  */
 export interface PriceFeedAmino {
-  /** UpdateMap represents the relevant moving window of price feed updates. */
+  /**
+   * UpdateMap represents the relevant moving window of price feed updates.
+   */
   update_map?: string;
   /**
    * InclusionMap represents the relevant moving window of blocks that the
    * validator has voted on.
    */
   inclusion_map?: string;
-  /** Index corresponds to the current index into the bitmap. */
+  /**
+   * Index corresponds to the current index into the bitmap.
+   */
   index?: string;
-  /** Validator represents the validator that this SLA corresponds to. */
+  /**
+   * Validator represents the validator that this SLA corresponds to.
+   */
   validator?: string;
-  /** CurrencyPair represents the currency pair that this SLA corresponds to. */
+  /**
+   * CurrencyPair represents the currency pair that this SLA corresponds to.
+   */
   currency_pair?: CurrencyPairAmino;
   /**
    * MaximumViableWindow represents the maximum number of blocks that can be
    * represented by the bit map.
    */
   maximum_viable_window?: string;
-  /** ID corresponds to the SLA ID that this price feed corresponds to. */
+  /**
+   * ID corresponds to the SLA ID that this price feed corresponds to.
+   */
   id?: string;
 }
 export interface PriceFeedAminoMsg {
@@ -470,11 +508,11 @@ export const PriceFeedSLA = {
   },
   toAmino(message: PriceFeedSLA): PriceFeedSLAAmino {
     const obj: any = {};
-    obj.maximum_viable_window = message.maximumViableWindow !== BigInt(0) ? message.maximumViableWindow.toString() : undefined;
+    obj.maximum_viable_window = message.maximumViableWindow !== BigInt(0) ? message.maximumViableWindow?.toString() : undefined;
     obj.expected_uptime = message.expectedUptime === "" ? undefined : message.expectedUptime;
     obj.slash_constant = message.slashConstant === "" ? undefined : message.slashConstant;
-    obj.minimum_block_updates = message.minimumBlockUpdates !== BigInt(0) ? message.minimumBlockUpdates.toString() : undefined;
-    obj.frequency = message.frequency !== BigInt(0) ? message.frequency.toString() : undefined;
+    obj.minimum_block_updates = message.minimumBlockUpdates !== BigInt(0) ? message.minimumBlockUpdates?.toString() : undefined;
+    obj.frequency = message.frequency !== BigInt(0) ? message.frequency?.toString() : undefined;
     obj.id = message.id === "" ? undefined : message.id;
     return obj;
   },
@@ -606,10 +644,10 @@ export const PriceFeed = {
     const obj: any = {};
     obj.update_map = message.updateMap ? base64FromBytes(message.updateMap) : undefined;
     obj.inclusion_map = message.inclusionMap ? base64FromBytes(message.inclusionMap) : undefined;
-    obj.index = message.index !== BigInt(0) ? message.index.toString() : undefined;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     obj.validator = message.validator ? base64FromBytes(message.validator) : undefined;
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
-    obj.maximum_viable_window = message.maximumViableWindow !== BigInt(0) ? message.maximumViableWindow.toString() : undefined;
+    obj.maximum_viable_window = message.maximumViableWindow !== BigInt(0) ? message.maximumViableWindow?.toString() : undefined;
     obj.id = message.id === "" ? undefined : message.id;
     return obj;
   },

@@ -12,9 +12,16 @@ export interface MsgAlertProtoMsg {
   typeUrl: "/slinky.alerts.v1.MsgAlert";
   value: Uint8Array;
 }
-/** MsgAlert defines a message to create an alert. */
+/**
+ * MsgAlert defines a message to create an alert.
+ * @name MsgAlertAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgAlert
+ */
 export interface MsgAlertAmino {
-  /** alert is the alert to be filed */
+  /**
+   * alert is the alert to be filed
+   */
   alert?: AlertAmino;
 }
 export interface MsgAlertAminoMsg {
@@ -30,6 +37,11 @@ export interface MsgAlertResponseProtoMsg {
   typeUrl: "/slinky.alerts.v1.MsgAlertResponse";
   value: Uint8Array;
 }
+/**
+ * @name MsgAlertResponseAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgAlertResponse
+ */
 export interface MsgAlertResponseAmino {}
 export interface MsgAlertResponseAminoMsg {
   type: "/slinky.alerts.v1.MsgAlertResponse";
@@ -61,6 +73,9 @@ export type MsgConclusionEncoded = Omit<MsgConclusion, "conclusion"> & {
  * MsgConclusion defines a message carrying a Conclusion made by the SecondTier,
  * which will be used to close an alert. And trigger any ramifications of the
  * conclusion.
+ * @name MsgConclusionAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgConclusion
  */
 export interface MsgConclusionAmino {
   /**
@@ -68,7 +83,9 @@ export interface MsgConclusionAmino {
    * node from the SecondTier)
    */
   signer?: string;
-  /** conclusion is the conclusion to be filed */
+  /**
+   * conclusion is the conclusion to be filed
+   */
   conclusion?: AnyAmino;
 }
 export interface MsgConclusionAminoMsg {
@@ -89,6 +106,11 @@ export interface MsgConclusionResponseProtoMsg {
   typeUrl: "/slinky.alerts.v1.MsgConclusionResponse";
   value: Uint8Array;
 }
+/**
+ * @name MsgConclusionResponseAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgConclusionResponse
+ */
 export interface MsgConclusionResponseAmino {}
 export interface MsgConclusionResponseAminoMsg {
   type: "/slinky.alerts.v1.MsgConclusionResponse";
@@ -112,11 +134,18 @@ export interface MsgUpdateParamsProtoMsg {
 /**
  * MsgUpdateParams defines the message type expected by the UpdateParams rpc. It
  * contains an authority address, and the new Params for the x/alerts module.
+ * @name MsgUpdateParamsAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgUpdateParams
  */
 export interface MsgUpdateParamsAmino {
-  /** authority is the address of the authority that is submitting the update */
+  /**
+   * authority is the address of the authority that is submitting the update
+   */
   authority?: string;
-  /** params is the new set of parameters for the x/alerts module */
+  /**
+   * params is the new set of parameters for the x/alerts module
+   */
   params?: ParamsAmino;
 }
 export interface MsgUpdateParamsAminoMsg {
@@ -136,6 +165,11 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/slinky.alerts.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
+/**
+ * @name MsgUpdateParamsResponseAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "/slinky.alerts.v1.MsgUpdateParamsResponse";

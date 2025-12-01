@@ -31,7 +31,12 @@ export interface BlockRateLimitConfigurationProtoMsg {
   typeUrl: "/dydxprotocol.clob.BlockRateLimitConfiguration";
   value: Uint8Array;
 }
-/** Defines the block rate limits for CLOB specific operations. */
+/**
+ * Defines the block rate limits for CLOB specific operations.
+ * @name BlockRateLimitConfigurationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.BlockRateLimitConfiguration
+ */
 export interface BlockRateLimitConfigurationAmino {
   /**
    * How many short term order attempts (successful and failed) are allowed for
@@ -42,8 +47,8 @@ export interface BlockRateLimitConfigurationAmino {
    * Specifying 0 values disables this rate limit.
    * Deprecated in favor of `max_short_term_orders_and_cancels_per_n_blocks`
    * for v5.x onwards.
+   * @deprecated
    */
-  /** @deprecated */
   max_short_term_orders_per_n_blocks?: MaxPerNBlocksRateLimitAmino[];
   /**
    * How many stateful order attempts (successful and failed) are allowed for
@@ -54,7 +59,9 @@ export interface BlockRateLimitConfigurationAmino {
    * Specifying 0 values disables this rate limit.
    */
   max_stateful_orders_per_n_blocks?: MaxPerNBlocksRateLimitAmino[];
-  /** @deprecated */
+  /**
+   * @deprecated
+   */
   max_short_term_order_cancellations_per_n_blocks?: MaxPerNBlocksRateLimitAmino[];
   max_short_term_orders_and_cancels_per_n_blocks?: MaxPerNBlocksRateLimitAmino[];
 }
@@ -88,7 +95,12 @@ export interface MaxPerNBlocksRateLimitProtoMsg {
   typeUrl: "/dydxprotocol.clob.MaxPerNBlocksRateLimit";
   value: Uint8Array;
 }
-/** Defines a rate limit over a specific number of blocks. */
+/**
+ * Defines a rate limit over a specific number of blocks.
+ * @name MaxPerNBlocksRateLimitAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MaxPerNBlocksRateLimit
+ */
 export interface MaxPerNBlocksRateLimitAmino {
   /**
    * How many blocks the rate limit is over.

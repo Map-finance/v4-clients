@@ -15,6 +15,9 @@ export interface MarketMapRequestProtoMsg {
 /**
  * MarketMapRequest is the query request for the MarketMap query.
  * It takes no arguments.
+ * @name MarketMapRequestAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketMapRequest
  */
 export interface MarketMapRequestAmino {}
 export interface MarketMapRequestAminoMsg {
@@ -46,7 +49,12 @@ export interface MarketMapResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MarketMapResponse";
   value: Uint8Array;
 }
-/** MarketMapResponse is the query response for the MarketMap query. */
+/**
+ * MarketMapResponse is the query response for the MarketMap query.
+ * @name MarketMapResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketMapResponse
+ */
 export interface MarketMapResponseAmino {
   /**
    * MarketMap defines the global set of market configurations for all providers
@@ -59,7 +67,9 @@ export interface MarketMapResponseAmino {
    * is a new update to the map.
    */
   last_updated?: string;
-  /** ChainId is the chain identifier for the market map. */
+  /**
+   * ChainId is the chain identifier for the market map.
+   */
   chain_id?: string;
 }
 export interface MarketMapResponseAminoMsg {
@@ -90,6 +100,9 @@ export interface MarketRequestProtoMsg {
 /**
  * MarketRequest is the query request for the Market query.
  * It takes the currency pair of the market as an argument.
+ * @name MarketRequestAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketRequest
  */
 export interface MarketRequestAmino {
   /**
@@ -118,9 +131,16 @@ export interface MarketResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MarketResponse";
   value: Uint8Array;
 }
-/** MarketResponse is the query response for the Market query. */
+/**
+ * MarketResponse is the query response for the Market query.
+ * @name MarketResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketResponse
+ */
 export interface MarketResponseAmino {
-  /** Market is the configuration of a single market to be price-fetched for. */
+  /**
+   * Market is the configuration of a single market to be price-fetched for.
+   */
   market?: MarketAmino;
 }
 export interface MarketResponseAminoMsg {
@@ -137,7 +157,12 @@ export interface ParamsRequestProtoMsg {
   typeUrl: "/slinky.marketmap.v1.ParamsRequest";
   value: Uint8Array;
 }
-/** ParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * ParamsRequest is the request type for the Query/Params RPC method.
+ * @name ParamsRequestAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.ParamsRequest
+ */
 export interface ParamsRequestAmino {}
 export interface ParamsRequestAminoMsg {
   type: "/slinky.marketmap.v1.ParamsRequest";
@@ -153,7 +178,12 @@ export interface ParamsResponseProtoMsg {
   typeUrl: "/slinky.marketmap.v1.ParamsResponse";
   value: Uint8Array;
 }
-/** ParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * ParamsResponse is the response type for the Query/Params RPC method.
+ * @name ParamsResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.ParamsResponse
+ */
 export interface ParamsResponseAmino {
   params?: ParamsAmino;
 }
@@ -177,6 +207,9 @@ export interface LastUpdatedRequestProtoMsg {
 /**
  * LastUpdatedRequest is the request type for the Query/LastUpdated RPC
  * method.
+ * @name LastUpdatedRequestAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.LastUpdatedRequest
  */
 export interface LastUpdatedRequestAmino {}
 export interface LastUpdatedRequestAminoMsg {
@@ -202,6 +235,9 @@ export interface LastUpdatedResponseProtoMsg {
 /**
  * LastUpdatedResponse is the response type for the Query/LastUpdated RPC
  * method.
+ * @name LastUpdatedResponseAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.LastUpdatedResponse
  */
 export interface LastUpdatedResponseAmino {
   last_updated?: string;
@@ -334,7 +370,7 @@ export const MarketMapResponse = {
   toAmino(message: MarketMapResponse): MarketMapResponseAmino {
     const obj: any = {};
     obj.market_map = message.marketMap ? MarketMap.toAmino(message.marketMap) : undefined;
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated?.toString() : undefined;
     obj.chain_id = message.chainId === "" ? undefined : message.chainId;
     return obj;
   },
@@ -687,7 +723,7 @@ export const LastUpdatedResponse = {
   },
   toAmino(message: LastUpdatedResponse): LastUpdatedResponseAmino {
     const obj: any = {};
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: LastUpdatedResponseAminoMsg): LastUpdatedResponse {

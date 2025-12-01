@@ -8,7 +8,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is a request type for the Params RPC method. */
+/**
+ * QueryParamsRequest is a request type for the Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/dydxprotocol.stats.QueryParamsRequest";
@@ -24,7 +29,12 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is a response type for the Params RPC method. */
+/**
+ * QueryParamsResponse is a response type for the Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
   params?: ParamsAmino;
 }
@@ -42,7 +52,12 @@ export interface QueryStatsMetadataRequestProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryStatsMetadataRequest";
   value: Uint8Array;
 }
-/** QueryStatsMetadataRequest is a request type for the StatsMetadata RPC method. */
+/**
+ * QueryStatsMetadataRequest is a request type for the StatsMetadata RPC method.
+ * @name QueryStatsMetadataRequestAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryStatsMetadataRequest
+ */
 export interface QueryStatsMetadataRequestAmino {}
 export interface QueryStatsMetadataRequestAminoMsg {
   type: "/dydxprotocol.stats.QueryStatsMetadataRequest";
@@ -64,6 +79,9 @@ export interface QueryStatsMetadataResponseProtoMsg {
 /**
  * QueryStatsMetadataResponse is a response type for the StatsMetadata RPC
  * method.
+ * @name QueryStatsMetadataResponseAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryStatsMetadataResponse
  */
 export interface QueryStatsMetadataResponseAmino {
   metadata?: StatsMetadataAmino;
@@ -85,7 +103,12 @@ export interface QueryGlobalStatsRequestProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryGlobalStatsRequest";
   value: Uint8Array;
 }
-/** QueryGlobalStatsRequest is a request type for the GlobalStats RPC method. */
+/**
+ * QueryGlobalStatsRequest is a request type for the GlobalStats RPC method.
+ * @name QueryGlobalStatsRequestAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryGlobalStatsRequest
+ */
 export interface QueryGlobalStatsRequestAmino {}
 export interface QueryGlobalStatsRequestAminoMsg {
   type: "/dydxprotocol.stats.QueryGlobalStatsRequest";
@@ -101,7 +124,12 @@ export interface QueryGlobalStatsResponseProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryGlobalStatsResponse";
   value: Uint8Array;
 }
-/** QueryGlobalStatsResponse is a response type for the GlobalStats RPC method. */
+/**
+ * QueryGlobalStatsResponse is a response type for the GlobalStats RPC method.
+ * @name QueryGlobalStatsResponseAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryGlobalStatsResponse
+ */
 export interface QueryGlobalStatsResponseAmino {
   stats?: GlobalStatsAmino;
 }
@@ -121,7 +149,12 @@ export interface QueryUserStatsRequestProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryUserStatsRequest";
   value: Uint8Array;
 }
-/** QueryUserStatsRequest is a request type for the UserStats RPC method. */
+/**
+ * QueryUserStatsRequest is a request type for the UserStats RPC method.
+ * @name QueryUserStatsRequestAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryUserStatsRequest
+ */
 export interface QueryUserStatsRequestAmino {
   user?: string;
 }
@@ -141,7 +174,12 @@ export interface QueryUserStatsResponseProtoMsg {
   typeUrl: "/dydxprotocol.stats.QueryUserStatsResponse";
   value: Uint8Array;
 }
-/** QueryUserStatsResponse is a request type for the UserStats RPC method. */
+/**
+ * QueryUserStatsResponse is a request type for the UserStats RPC method.
+ * @name QueryUserStatsResponseAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.QueryUserStatsResponse
+ */
 export interface QueryUserStatsResponseAmino {
   stats?: UserStatsAmino;
 }

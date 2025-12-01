@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the subaccounts module's genesis state. */
+/**
+ * GenesisState defines the subaccounts module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.GenesisState
+ */
 export interface GenesisStateAmino {
   subaccounts?: SubaccountAmino[];
 }

@@ -11,10 +11,17 @@ export interface MsgSetLimitParamsProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.MsgSetLimitParams";
   value: Uint8Array;
 }
-/** MsgSetLimitParams is the Msg/SetLimitParams request type. */
+/**
+ * MsgSetLimitParams is the Msg/SetLimitParams request type.
+ * @name MsgSetLimitParamsAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.MsgSetLimitParams
+ */
 export interface MsgSetLimitParamsAmino {
   authority?: string;
-  /** Defines the parameters to set. All parameters must be supplied. */
+  /**
+   * Defines the parameters to set. All parameters must be supplied.
+   */
   limit_params?: LimitParamsAmino;
 }
 export interface MsgSetLimitParamsAminoMsg {
@@ -32,7 +39,12 @@ export interface MsgSetLimitParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.MsgSetLimitParamsResponse";
   value: Uint8Array;
 }
-/** MsgSetLimitParamsResponse is the Msg/SetLimitParams response type. */
+/**
+ * MsgSetLimitParamsResponse is the Msg/SetLimitParams response type.
+ * @name MsgSetLimitParamsResponseAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.MsgSetLimitParamsResponse
+ */
 export interface MsgSetLimitParamsResponseAmino {}
 export interface MsgSetLimitParamsResponseAminoMsg {
   type: "/dydxprotocol.ratelimit.MsgSetLimitParamsResponse";

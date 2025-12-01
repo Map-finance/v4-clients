@@ -16,6 +16,9 @@ export interface AffiliateInfoRequestProtoMsg {
 /**
  * AffiliateInfoRequest is the request type for the Query/AffiliateInfo RPC
  * method.
+ * @name AffiliateInfoRequestAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AffiliateInfoRequest
  */
 export interface AffiliateInfoRequestAmino {
   address?: string;
@@ -52,15 +55,26 @@ export interface AffiliateInfoResponseProtoMsg {
 /**
  * AffiliateInfoResponse is the response type for the Query/AffiliateInfo RPC
  * method.
+ * @name AffiliateInfoResponseAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AffiliateInfoResponse
  */
 export interface AffiliateInfoResponseAmino {
-  /** The affiliate's tier. */
+  /**
+   * The affiliate's tier.
+   */
   tier?: number;
-  /** The affiliate's taker fee share in parts-per-million. */
+  /**
+   * The affiliate's taker fee share in parts-per-million.
+   */
   fee_share_ppm?: number;
-  /** The affiliate's all-time referred volume in quote quantums. */
+  /**
+   * The affiliate's all-time referred volume in quote quantums.
+   */
   referred_volume?: string;
-  /** The affiliate's currently staked native tokens (in whole coins). */
+  /**
+   * The affiliate's currently staked native tokens (in whole coins).
+   */
   staked_amount?: string;
 }
 export interface AffiliateInfoResponseAminoMsg {
@@ -86,9 +100,16 @@ export interface ReferredByRequestProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.ReferredByRequest";
   value: Uint8Array;
 }
-/** ReferredByRequest is the request type for the Query/ReferredBy RPC method. */
+/**
+ * ReferredByRequest is the request type for the Query/ReferredBy RPC method.
+ * @name ReferredByRequestAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.ReferredByRequest
+ */
 export interface ReferredByRequestAmino {
-  /** The address to query. */
+  /**
+   * The address to query.
+   */
   address?: string;
 }
 export interface ReferredByRequestAminoMsg {
@@ -108,9 +129,16 @@ export interface ReferredByResponseProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.ReferredByResponse";
   value: Uint8Array;
 }
-/** ReferredByResponse is the response type for the Query/ReferredBy RPC method. */
+/**
+ * ReferredByResponse is the response type for the Query/ReferredBy RPC method.
+ * @name ReferredByResponseAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.ReferredByResponse
+ */
 export interface ReferredByResponseAmino {
-  /** The affiliate's address that referred the queried address. */
+  /**
+   * The affiliate's address that referred the queried address.
+   */
   affiliate_address?: string;
 }
 export interface ReferredByResponseAminoMsg {
@@ -133,6 +161,9 @@ export interface AllAffiliateTiersRequestProtoMsg {
 /**
  * AllAffiliateTiersRequest is the request type for the Query/AllAffiliateTiers
  * RPC method.
+ * @name AllAffiliateTiersRequestAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AllAffiliateTiersRequest
  */
 export interface AllAffiliateTiersRequestAmino {}
 export interface AllAffiliateTiersRequestAminoMsg {
@@ -159,9 +190,14 @@ export interface AllAffiliateTiersResponseProtoMsg {
 /**
  * AllAffiliateTiersResponse is the response type for the
  * Query/AllAffiliateTiers RPC method.
+ * @name AllAffiliateTiersResponseAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AllAffiliateTiersResponse
  */
 export interface AllAffiliateTiersResponseAmino {
-  /** All affiliate tiers information. */
+  /**
+   * All affiliate tiers information.
+   */
   tiers?: AffiliateTiersAmino;
 }
 export interface AllAffiliateTiersResponseAminoMsg {

@@ -19,10 +19,15 @@ export interface MsgSetMarketsHardCapProtoMsg {
 /**
  * MsgSetMarketsHardCap is used to set a hard cap on the number of markets
  * listed
+ * @name MsgSetMarketsHardCapAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgSetMarketsHardCap
  */
 export interface MsgSetMarketsHardCapAmino {
   authority?: string;
-  /** Hard cap for the total number of markets listed */
+  /**
+   * Hard cap for the total number of markets listed
+   */
   hard_cap_for_markets?: number;
 }
 export interface MsgSetMarketsHardCapAminoMsg {
@@ -43,7 +48,12 @@ export interface MsgSetMarketsHardCapResponseProtoMsg {
   typeUrl: "/dydxprotocol.listing.MsgSetMarketsHardCapResponse";
   value: Uint8Array;
 }
-/** MsgSetMarketsHardCapResponse defines the MsgSetMarketsHardCap response */
+/**
+ * MsgSetMarketsHardCapResponse defines the MsgSetMarketsHardCap response
+ * @name MsgSetMarketsHardCapResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgSetMarketsHardCapResponse
+ */
 export interface MsgSetMarketsHardCapResponseAmino {}
 export interface MsgSetMarketsHardCapResponseAminoMsg {
   type: "/dydxprotocol.listing.MsgSetMarketsHardCapResponse";
@@ -70,13 +80,22 @@ export interface MsgCreateMarketPermissionlessProtoMsg {
 /**
  * MsgCreateMarketPermissionless is a message used to create new markets without
  * going through x/gov
+ * @name MsgCreateMarketPermissionlessAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgCreateMarketPermissionless
  */
 export interface MsgCreateMarketPermissionlessAmino {
-  /** The name of the `Perpetual` (e.g. `BTC-USD`). */
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   */
   ticker?: string;
-  /** The subaccount to deposit from. */
+  /**
+   * The subaccount to deposit from.
+   */
   subaccount_id?: SubaccountIdAmino;
-  /** Number of quote quantums to deposit. */
+  /**
+   * Number of quote quantums to deposit.
+   */
   quote_quantums?: string;
 }
 export interface MsgCreateMarketPermissionlessAminoMsg {
@@ -104,6 +123,9 @@ export interface MsgCreateMarketPermissionlessResponseProtoMsg {
 /**
  * MsgCreateMarketPermissionlessResponse defines the
  * MsgCreateMarketPermissionless response
+ * @name MsgCreateMarketPermissionlessResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgCreateMarketPermissionlessResponse
  */
 export interface MsgCreateMarketPermissionlessResponseAmino {}
 export interface MsgCreateMarketPermissionlessResponseAminoMsg {
@@ -131,10 +153,15 @@ export interface MsgSetListingVaultDepositParamsProtoMsg {
 /**
  * MsgSetListingVaultDepositParams is a message used to set PML megavault
  * deposit params
+ * @name MsgSetListingVaultDepositParamsAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgSetListingVaultDepositParams
  */
 export interface MsgSetListingVaultDepositParamsAmino {
   authority?: string;
-  /** Params which define the vault deposit for market listing */
+  /**
+   * Params which define the vault deposit for market listing
+   */
   params?: ListingVaultDepositParamsAmino;
 }
 export interface MsgSetListingVaultDepositParamsAminoMsg {
@@ -161,6 +188,9 @@ export interface MsgSetListingVaultDepositParamsResponseProtoMsg {
 /**
  * MsgSetListingVaultDepositParamsResponse defines the
  * MsgSetListingVaultDepositParams response
+ * @name MsgSetListingVaultDepositParamsResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgSetListingVaultDepositParamsResponse
  */
 export interface MsgSetListingVaultDepositParamsResponseAmino {}
 export interface MsgSetListingVaultDepositParamsResponseAminoMsg {

@@ -16,6 +16,9 @@ export interface RewardShareProtoMsg {
 /**
  * RewardShare stores the relative weight of rewards that each address is
  * entitled to.
+ * @name RewardShareAmino
+ * @package dydxprotocol.rewards
+ * @see proto type: dydxprotocol.rewards.RewardShare
  */
 export interface RewardShareAmino {
   address?: string;

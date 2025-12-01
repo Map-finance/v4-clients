@@ -6,7 +6,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.sending.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the sending module's genesis state. */
+/**
+ * GenesisState defines the sending module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.sending
+ * @see proto type: dydxprotocol.sending.GenesisState
+ */
 export interface GenesisStateAmino {}
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.sending.GenesisState";

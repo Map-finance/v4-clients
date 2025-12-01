@@ -18,11 +18,18 @@ export interface MsgAddSLAsProtoMsg {
 /**
  * MsgAddSLAs defines the Msg/AddSLAs request type. It contains the
  * SLAs to be added to the store.
+ * @name MsgAddSLAsAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgAddSLAs
  */
 export interface MsgAddSLAsAmino {
-  /** SLAs defines the SLAs to be added to the store. */
+  /**
+   * SLAs defines the SLAs to be added to the store.
+   */
   slas?: PriceFeedSLAAmino[];
-  /** Authority defines the authority that is adding the SLAs. */
+  /**
+   * Authority defines the authority that is adding the SLAs.
+   */
   authority?: string;
 }
 export interface MsgAddSLAsAminoMsg {
@@ -43,7 +50,12 @@ export interface MsgAddSLAsResponseProtoMsg {
   typeUrl: "/slinky.sla.v1.MsgAddSLAsResponse";
   value: Uint8Array;
 }
-/** MsgAddSLAsResponse defines the Msg/AddSLAs response type. */
+/**
+ * MsgAddSLAsResponse defines the Msg/AddSLAs response type.
+ * @name MsgAddSLAsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgAddSLAsResponse
+ */
 export interface MsgAddSLAsResponseAmino {}
 export interface MsgAddSLAsResponseAminoMsg {
   type: "/slinky.sla.v1.MsgAddSLAsResponse";
@@ -68,11 +80,18 @@ export interface MsgRemoveSLAsProtoMsg {
 /**
  * MsgRemoveSLAs defines the Msg/RemoveSLAs request type. It contains the
  * IDs of the SLAs to be removed from the store.
+ * @name MsgRemoveSLAsAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgRemoveSLAs
  */
 export interface MsgRemoveSLAsAmino {
-  /** IDs defines the IDs of the SLAs to be removed from the store. */
+  /**
+   * IDs defines the IDs of the SLAs to be removed from the store.
+   */
   ids?: string[];
-  /** Authority defines the authority that is removing the SLAs. */
+  /**
+   * Authority defines the authority that is removing the SLAs.
+   */
   authority?: string;
 }
 export interface MsgRemoveSLAsAminoMsg {
@@ -93,7 +112,12 @@ export interface MsgRemoveSLAsResponseProtoMsg {
   typeUrl: "/slinky.sla.v1.MsgRemoveSLAsResponse";
   value: Uint8Array;
 }
-/** MsgRemoveSLAsResponse defines the Msg/RemoveSLAs response type. */
+/**
+ * MsgRemoveSLAsResponse defines the Msg/RemoveSLAs response type.
+ * @name MsgRemoveSLAsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgRemoveSLAsResponse
+ */
 export interface MsgRemoveSLAsResponseAmino {}
 export interface MsgRemoveSLAsResponseAminoMsg {
   type: "/slinky.sla.v1.MsgRemoveSLAsResponse";
@@ -118,11 +142,18 @@ export interface MsgParamsProtoMsg {
 /**
  * MsgParams defines the Msg/Params request type. It contains the
  * new parameters for the SLA module.
+ * @name MsgParamsAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgParams
  */
 export interface MsgParamsAmino {
-  /** Params defines the new parameters for the SLA module. */
+  /**
+   * Params defines the new parameters for the SLA module.
+   */
   params?: ParamsAmino;
-  /** Authority defines the authority that is updating the SLA module parameters. */
+  /**
+   * Authority defines the authority that is updating the SLA module parameters.
+   */
   authority?: string;
 }
 export interface MsgParamsAminoMsg {
@@ -143,7 +174,12 @@ export interface MsgParamsResponseProtoMsg {
   typeUrl: "/slinky.sla.v1.MsgParamsResponse";
   value: Uint8Array;
 }
-/** MsgParamsResponse defines the Msg/Params response type. */
+/**
+ * MsgParamsResponse defines the Msg/Params response type.
+ * @name MsgParamsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.MsgParamsResponse
+ */
 export interface MsgParamsResponseAmino {}
 export interface MsgParamsResponseAminoMsg {
   type: "/slinky.sla.v1.MsgParamsResponse";

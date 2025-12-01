@@ -13,7 +13,12 @@ export interface DowntimeParamsProtoMsg {
   typeUrl: "/dydxprotocol.blocktime.DowntimeParams";
   value: Uint8Array;
 }
-/** DowntimeParams defines the parameters for downtime. */
+/**
+ * DowntimeParams defines the parameters for downtime.
+ * @name DowntimeParamsAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.DowntimeParams
+ */
 export interface DowntimeParamsAmino {
   /**
    * Durations tracked for downtime. The durations must be sorted from

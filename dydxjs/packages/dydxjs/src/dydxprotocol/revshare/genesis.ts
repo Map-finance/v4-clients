@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.revshare.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines `x/revshare`'s genesis state. */
+/**
+ * GenesisState defines `x/revshare`'s genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.GenesisState
+ */
 export interface GenesisStateAmino {
   params?: MarketMapperRevenueShareParamsAmino;
 }

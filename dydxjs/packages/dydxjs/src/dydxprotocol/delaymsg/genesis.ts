@@ -12,11 +12,20 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the delaymsg module's genesis state. */
+/**
+ * GenesisState defines the delaymsg module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** delayed_messages is a list of delayed messages. */
+  /**
+   * delayed_messages is a list of delayed messages.
+   */
   delayed_messages?: DelayedMessageAmino[];
-  /** next_delayed_message_id is the id to be assigned to next delayed message. */
+  /**
+   * next_delayed_message_id is the id to be assigned to next delayed message.
+   */
   next_delayed_message_id?: number;
 }
 export interface GenesisStateAminoMsg {

@@ -13,6 +13,9 @@ export interface QueryNextDelayedMessageIdRequestProtoMsg {
 /**
  * QueryNextDelayedMessageIdRequest is the request type for the
  * NextDelayedMessageId RPC method.
+ * @name QueryNextDelayedMessageIdRequestAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryNextDelayedMessageIdRequest
  */
 export interface QueryNextDelayedMessageIdRequestAmino {}
 export interface QueryNextDelayedMessageIdRequestAminoMsg {
@@ -38,6 +41,9 @@ export interface QueryNextDelayedMessageIdResponseProtoMsg {
 /**
  * QueryNextDelayedMessageIdResponse is the response type for the
  * NextDelayedMessageId RPC method.
+ * @name QueryNextDelayedMessageIdResponseAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryNextDelayedMessageIdResponse
  */
 export interface QueryNextDelayedMessageIdResponseAmino {
   next_delayed_message_id?: number;
@@ -61,7 +67,12 @@ export interface QueryMessageRequestProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.QueryMessageRequest";
   value: Uint8Array;
 }
-/** QueryMessageRequest is the request type for the Message RPC method. */
+/**
+ * QueryMessageRequest is the request type for the Message RPC method.
+ * @name QueryMessageRequestAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryMessageRequest
+ */
 export interface QueryMessageRequestAmino {
   id?: number;
 }
@@ -81,7 +92,12 @@ export interface QueryMessageResponseProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.QueryMessageResponse";
   value: Uint8Array;
 }
-/** QueryGetMessageResponse is the response type for the Message RPC method. */
+/**
+ * QueryGetMessageResponse is the response type for the Message RPC method.
+ * @name QueryMessageResponseAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryMessageResponse
+ */
 export interface QueryMessageResponseAmino {
   message?: DelayedMessageAmino;
 }
@@ -107,6 +123,9 @@ export interface QueryBlockMessageIdsRequestProtoMsg {
 /**
  * QueryBlockMessageIdsRequest is the request type for the BlockMessageIds
  * RPC method.
+ * @name QueryBlockMessageIdsRequestAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryBlockMessageIdsRequest
  */
 export interface QueryBlockMessageIdsRequestAmino {
   block_height?: number;
@@ -136,6 +155,9 @@ export interface QueryBlockMessageIdsResponseProtoMsg {
 /**
  * QueryGetBlockMessageIdsResponse is the response type for the BlockMessageIds
  * RPC method.
+ * @name QueryBlockMessageIdsResponseAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.QueryBlockMessageIdsResponse
  */
 export interface QueryBlockMessageIdsResponseAmino {
   message_ids?: number[];

@@ -15,9 +15,14 @@ export interface MarketMapperRevShareDetailsProtoMsg {
 /**
  * MarketMapperRevShareDetails specifies any details associated with the market
  * mapper revenue share
+ * @name MarketMapperRevShareDetailsAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MarketMapperRevShareDetails
  */
 export interface MarketMapperRevShareDetailsAmino {
-  /** Unix timestamp recorded when the market revenue share expires */
+  /**
+   * Unix timestamp recorded when the market revenue share expires
+   */
   expiration_ts?: string;
 }
 export interface MarketMapperRevShareDetailsAminoMsg {
@@ -75,7 +80,7 @@ export const MarketMapperRevShareDetails = {
   },
   toAmino(message: MarketMapperRevShareDetails): MarketMapperRevShareDetailsAmino {
     const obj: any = {};
-    obj.expiration_ts = message.expirationTs !== BigInt(0) ? message.expirationTs.toString() : undefined;
+    obj.expiration_ts = message.expirationTs !== BigInt(0) ? message.expirationTs?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MarketMapperRevShareDetailsAminoMsg): MarketMapperRevShareDetails {

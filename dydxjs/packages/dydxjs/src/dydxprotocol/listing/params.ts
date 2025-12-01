@@ -17,16 +17,25 @@ export interface ListingVaultDepositParamsProtoMsg {
   typeUrl: "/dydxprotocol.listing.ListingVaultDepositParams";
   value: Uint8Array;
 }
-/** ListingVaultDepositParams represents the params for PML megavault deposits */
+/**
+ * ListingVaultDepositParams represents the params for PML megavault deposits
+ * @name ListingVaultDepositParamsAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.ListingVaultDepositParams
+ */
 export interface ListingVaultDepositParamsAmino {
-  /** Amount that will be deposited into the new market vault exclusively */
+  /**
+   * Amount that will be deposited into the new market vault exclusively
+   */
   new_vault_deposit_amount?: string;
   /**
    * Amount deposited into the main vault exclusively. This amount does not
    * include the amount deposited into the new vault.
    */
   main_vault_deposit_amount?: string;
-  /** Lockup period for this deposit */
+  /**
+   * Lockup period for this deposit
+   */
   num_blocks_to_lock_shares?: number;
 }
 export interface ListingVaultDepositParamsAminoMsg {

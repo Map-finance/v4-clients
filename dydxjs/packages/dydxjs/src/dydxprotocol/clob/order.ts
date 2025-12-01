@@ -208,7 +208,12 @@ export interface OrderIdProtoMsg {
   typeUrl: "/dydxprotocol.clob.OrderId";
   value: Uint8Array;
 }
-/** OrderId refers to a single order belonging to a Subaccount. */
+/**
+ * OrderId refers to a single order belonging to a Subaccount.
+ * @name OrderIdAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OrderId
+ */
 export interface OrderIdAmino {
   /**
    * The subaccount ID that opened this order.
@@ -240,7 +245,9 @@ export interface OrderIdAmino {
    * ID is invalid.
    */
   order_flags?: number;
-  /** ID of the CLOB the order is created for. */
+  /**
+   * ID of the CLOB the order is created for.
+   */
   clob_pair_id?: number;
 }
 export interface OrderIdAminoMsg {
@@ -272,6 +279,9 @@ export interface OrdersFilledDuringLatestBlockProtoMsg {
 /**
  * OrdersFilledDuringLatestBlock represents a list of `OrderIds` that were
  * filled by any non-zero amount in the latest block.
+ * @name OrdersFilledDuringLatestBlockAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OrdersFilledDuringLatestBlock
  */
 export interface OrdersFilledDuringLatestBlockAmino {
   /**
@@ -309,6 +319,9 @@ export interface PotentiallyPrunableOrdersProtoMsg {
 /**
  * PotentiallyPrunableOrders represents a list of orders that may be prunable
  * from state at a future block height.
+ * @name PotentiallyPrunableOrdersAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.PotentiallyPrunableOrders
  */
 export interface PotentiallyPrunableOrdersAmino {
   /**
@@ -352,9 +365,14 @@ export interface OrderFillStateProtoMsg {
  * state. This proto includes both the current on-chain fill amount of the
  * order, as well as the block at which this information can be pruned from
  * state.
+ * @name OrderFillStateAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OrderFillState
  */
 export interface OrderFillStateAmino {
-  /** The current fillAmount of the order according to on-chain state. */
+  /**
+   * The current fillAmount of the order according to on-chain state.
+   */
   fill_amount?: string;
   /**
    * The block height at which the fillAmount state for this order can be
@@ -407,6 +425,9 @@ export interface StatefulOrderTimeSliceValueProtoMsg {
  * This `StatefulOrderTimeSliceValue` in state is used for managing stateful
  * order expiration. Stateful order expirations can be for either long term
  * or conditional orders.
+ * @name StatefulOrderTimeSliceValueAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StatefulOrderTimeSliceValue
  */
 export interface StatefulOrderTimeSliceValueAmino {
   /**
@@ -454,6 +475,9 @@ export interface LongTermOrderPlacementProtoMsg {
  * LongTermOrderPlacement represents the placement of a stateful order in
  * state. It stores the stateful order itself and the `BlockHeight` and
  * `TransactionIndex` at which the order was placed.
+ * @name LongTermOrderPlacementAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.LongTermOrderPlacement
  */
 export interface LongTermOrderPlacementAmino {
   order?: OrderAmino;
@@ -500,10 +524,15 @@ export interface ConditionalOrderPlacementProtoMsg {
  * ConditionalOrderPlacement represents the placement of a conditional order in
  * state. It stores the stateful order itself, the `BlockHeight` and
  * `TransactionIndex` at which the order was placed and triggered.
+ * @name ConditionalOrderPlacementAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ConditionalOrderPlacement
  */
 export interface ConditionalOrderPlacementAmino {
   order?: OrderAmino;
-  /** The block height and transaction index at which the order was placed. */
+  /**
+   * The block height and transaction index at which the order was placed.
+   */
   placement_index?: TransactionOrderingAmino;
   /**
    * The block height and transaction index at which the order was triggered.
@@ -586,6 +615,21 @@ export interface Order {
    * orderId.ClobPairId`).
    */
   conditionalOrderTriggerSubticks: bigint;
+  /**
+   * twap_parameters represent the configuration for a TWAP order. This must be
+   * set for twap orders and will be ignored for all other order types.
+   */
+  twapParameters?: TwapParameters;
+  /**
+   * builder_code_parameters is the metadata for the
+   * partner or builder of an order specifying the fees charged.
+   */
+  builderCodeParameters?: BuilderCodeParameters;
+  /**
+   * order_router_address is the address of the order router that placed the
+   * order.
+   */
+  orderRouterAddress: string;
 }
 export interface OrderProtoMsg {
   typeUrl: "/dydxprotocol.clob.Order";
@@ -594,9 +638,14 @@ export interface OrderProtoMsg {
 /**
  * Order represents a single order belonging to a `Subaccount`
  * for a particular `ClobPair`.
+ * @name OrderAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.Order
  */
 export interface OrderAmino {
-  /** The unique ID of this order. Meant to be unique across all orders. */
+  /**
+   * The unique ID of this order. Meant to be unique across all orders.
+   */
   order_id?: OrderIdAmino;
   side?: Order_Side;
   /**
@@ -625,7 +674,9 @@ export interface OrderAmino {
    * conditional order.
    */
   good_til_block_time?: number;
-  /** The time in force of this order. */
+  /**
+   * The time in force of this order.
+   */
   time_in_force?: Order_TimeInForce;
   /**
    * Enforces that the order can only reduce the size of an existing position.
@@ -651,6 +702,21 @@ export interface OrderAmino {
    * orderId.ClobPairId`).
    */
   conditional_order_trigger_subticks?: string;
+  /**
+   * twap_parameters represent the configuration for a TWAP order. This must be
+   * set for twap orders and will be ignored for all other order types.
+   */
+  twap_parameters?: TwapParametersAmino;
+  /**
+   * builder_code_parameters is the metadata for the
+   * partner or builder of an order specifying the fees charged.
+   */
+  builder_code_parameters?: BuilderCodeParametersAmino;
+  /**
+   * order_router_address is the address of the order router that placed the
+   * order.
+   */
+  order_router_address?: string;
 }
 export interface OrderAminoMsg {
   type: "/dydxprotocol.clob.Order";
@@ -672,6 +738,114 @@ export interface OrderSDKType {
   client_metadata: number;
   condition_type: Order_ConditionType;
   conditional_order_trigger_subticks: bigint;
+  twap_parameters?: TwapParametersSDKType;
+  builder_code_parameters?: BuilderCodeParametersSDKType;
+  order_router_address: string;
+}
+/** TwapParameters represents the necessary configuration for a TWAP order. */
+export interface TwapParameters {
+  /**
+   * Duration of the TWAP order execution in seconds. Must be in the range
+   * [300 (5 minutes), 86400 (24 hours)].
+   */
+  duration: number;
+  /**
+   * Interval in seconds for each suborder to execute. Must be a
+   * whole number, a factor of the duration, and in the range
+   * [30 (30 seconds), 3600 (1 hour)].
+   */
+  interval: number;
+  /**
+   * Price tolerance in ppm for each suborder. This will be applied to
+   * the oracle price each time a suborder is triggered. Must be
+   * be in the range [0, 1_000_000).
+   */
+  priceTolerance: number;
+}
+export interface TwapParametersProtoMsg {
+  typeUrl: "/dydxprotocol.clob.TwapParameters";
+  value: Uint8Array;
+}
+/**
+ * TwapParameters represents the necessary configuration for a TWAP order.
+ * @name TwapParametersAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.TwapParameters
+ */
+export interface TwapParametersAmino {
+  /**
+   * Duration of the TWAP order execution in seconds. Must be in the range
+   * [300 (5 minutes), 86400 (24 hours)].
+   */
+  duration?: number;
+  /**
+   * Interval in seconds for each suborder to execute. Must be a
+   * whole number, a factor of the duration, and in the range
+   * [30 (30 seconds), 3600 (1 hour)].
+   */
+  interval?: number;
+  /**
+   * Price tolerance in ppm for each suborder. This will be applied to
+   * the oracle price each time a suborder is triggered. Must be
+   * be in the range [0, 1_000_000).
+   */
+  price_tolerance?: number;
+}
+export interface TwapParametersAminoMsg {
+  type: "/dydxprotocol.clob.TwapParameters";
+  value: TwapParametersAmino;
+}
+/** TwapParameters represents the necessary configuration for a TWAP order. */
+export interface TwapParametersSDKType {
+  duration: number;
+  interval: number;
+  price_tolerance: number;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ */
+export interface BuilderCodeParameters {
+  /** The address of the builder to which the fee will be paid. */
+  builderAddress: string;
+  /** The fee enforced on the order in ppm. */
+  feePpm: number;
+}
+export interface BuilderCodeParametersProtoMsg {
+  typeUrl: "/dydxprotocol.clob.BuilderCodeParameters";
+  value: Uint8Array;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ * @name BuilderCodeParametersAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.BuilderCodeParameters
+ */
+export interface BuilderCodeParametersAmino {
+  /**
+   * The address of the builder to which the fee will be paid.
+   */
+  builder_address?: string;
+  /**
+   * The fee enforced on the order in ppm.
+   */
+  fee_ppm?: number;
+}
+export interface BuilderCodeParametersAminoMsg {
+  type: "/dydxprotocol.clob.BuilderCodeParameters";
+  value: BuilderCodeParametersAmino;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ */
+export interface BuilderCodeParametersSDKType {
+  builder_address: string;
+  fee_ppm: number;
 }
 /**
  * TransactionOrdering represents a unique location in the block where a
@@ -694,11 +868,18 @@ export interface TransactionOrderingProtoMsg {
  * transaction was placed. This proto includes both block height and the
  * transaction index that the specific transaction was placed. This information
  * is used for ordering by time priority when the chain is restarted.
+ * @name TransactionOrderingAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.TransactionOrdering
  */
 export interface TransactionOrderingAmino {
-  /** Block height in which the transaction was placed. */
+  /**
+   * Block height in which the transaction was placed.
+   */
   block_height?: number;
-  /** Within the block, the unique transaction index. */
+  /**
+   * Within the block, the unique transaction index.
+   */
   transaction_index?: number;
 }
 export interface TransactionOrderingAminoMsg {
@@ -744,9 +925,14 @@ export interface StreamLiquidationOrderProtoMsg {
 /**
  * StreamLiquidationOrder represents an protocol-generated IOC liquidation
  * order. Used in full node streaming.
+ * @name StreamLiquidationOrderAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.StreamLiquidationOrder
  */
 export interface StreamLiquidationOrderAmino {
-  /** Information about this liquidation order. */
+  /**
+   * Information about this liquidation order.
+   */
   liquidation_info?: PerpetualLiquidationInfoAmino;
   /**
    * CLOB pair ID of the CLOB pair the liquidation order will be matched
@@ -758,9 +944,13 @@ export interface StreamLiquidationOrderAmino {
    * versa.
    */
   is_buy?: boolean;
-  /** The number of base quantums for this liquidation order. */
+  /**
+   * The number of base quantums for this liquidation order.
+   */
   quantums?: string;
-  /** The subticks this liquidation order will be submitted at. */
+  /**
+   * The subticks this liquidation order will be submitted at.
+   */
   subticks?: string;
 }
 export interface StreamLiquidationOrderAminoMsg {
@@ -1062,7 +1252,7 @@ export const OrderFillState = {
   },
   toAmino(message: OrderFillState): OrderFillStateAmino {
     const obj: any = {};
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     obj.prunable_block_height = message.prunableBlockHeight === 0 ? undefined : message.prunableBlockHeight;
     return obj;
   },
@@ -1321,7 +1511,10 @@ function createBaseOrder(): Order {
     reduceOnly: false,
     clientMetadata: 0,
     conditionType: 0,
-    conditionalOrderTriggerSubticks: BigInt(0)
+    conditionalOrderTriggerSubticks: BigInt(0),
+    twapParameters: undefined,
+    builderCodeParameters: undefined,
+    orderRouterAddress: ""
   };
 }
 export const Order = {
@@ -1359,6 +1552,15 @@ export const Order = {
     }
     if (message.conditionalOrderTriggerSubticks !== BigInt(0)) {
       writer.uint32(88).uint64(message.conditionalOrderTriggerSubticks);
+    }
+    if (message.twapParameters !== undefined) {
+      TwapParameters.encode(message.twapParameters, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.builderCodeParameters !== undefined) {
+      BuilderCodeParameters.encode(message.builderCodeParameters, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.orderRouterAddress !== "") {
+      writer.uint32(114).string(message.orderRouterAddress);
     }
     return writer;
   },
@@ -1402,6 +1604,15 @@ export const Order = {
         case 11:
           message.conditionalOrderTriggerSubticks = reader.uint64();
           break;
+        case 12:
+          message.twapParameters = TwapParameters.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.builderCodeParameters = BuilderCodeParameters.decode(reader, reader.uint32());
+          break;
+        case 14:
+          message.orderRouterAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1422,6 +1633,9 @@ export const Order = {
     message.clientMetadata = object.clientMetadata ?? 0;
     message.conditionType = object.conditionType ?? 0;
     message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks !== undefined && object.conditionalOrderTriggerSubticks !== null ? BigInt(object.conditionalOrderTriggerSubticks.toString()) : BigInt(0);
+    message.twapParameters = object.twapParameters !== undefined && object.twapParameters !== null ? TwapParameters.fromPartial(object.twapParameters) : undefined;
+    message.builderCodeParameters = object.builderCodeParameters !== undefined && object.builderCodeParameters !== null ? BuilderCodeParameters.fromPartial(object.builderCodeParameters) : undefined;
+    message.orderRouterAddress = object.orderRouterAddress ?? "";
     return message;
   },
   fromAmino(object: OrderAmino): Order {
@@ -1459,21 +1673,33 @@ export const Order = {
     if (object.conditional_order_trigger_subticks !== undefined && object.conditional_order_trigger_subticks !== null) {
       message.conditionalOrderTriggerSubticks = BigInt(object.conditional_order_trigger_subticks);
     }
+    if (object.twap_parameters !== undefined && object.twap_parameters !== null) {
+      message.twapParameters = TwapParameters.fromAmino(object.twap_parameters);
+    }
+    if (object.builder_code_parameters !== undefined && object.builder_code_parameters !== null) {
+      message.builderCodeParameters = BuilderCodeParameters.fromAmino(object.builder_code_parameters);
+    }
+    if (object.order_router_address !== undefined && object.order_router_address !== null) {
+      message.orderRouterAddress = object.order_router_address;
+    }
     return message;
   },
   toAmino(message: Order): OrderAmino {
     const obj: any = {};
     obj.order_id = message.orderId ? OrderId.toAmino(message.orderId) : undefined;
     obj.side = message.side === 0 ? undefined : message.side;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks.toString() : undefined;
+    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
     obj.good_til_block = message.goodTilBlock === null ? undefined : message.goodTilBlock;
     obj.good_til_block_time = message.goodTilBlockTime === null ? undefined : message.goodTilBlockTime;
     obj.time_in_force = message.timeInForce === 0 ? undefined : message.timeInForce;
     obj.reduce_only = message.reduceOnly === false ? undefined : message.reduceOnly;
     obj.client_metadata = message.clientMetadata === 0 ? undefined : message.clientMetadata;
     obj.condition_type = message.conditionType === 0 ? undefined : message.conditionType;
-    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks.toString() : undefined;
+    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks?.toString() : undefined;
+    obj.twap_parameters = message.twapParameters ? TwapParameters.toAmino(message.twapParameters) : undefined;
+    obj.builder_code_parameters = message.builderCodeParameters ? BuilderCodeParameters.toAmino(message.builderCodeParameters) : undefined;
+    obj.order_router_address = message.orderRouterAddress === "" ? undefined : message.orderRouterAddress;
     return obj;
   },
   fromAminoMsg(object: OrderAminoMsg): Order {
@@ -1489,6 +1715,168 @@ export const Order = {
     return {
       typeUrl: "/dydxprotocol.clob.Order",
       value: Order.encode(message).finish()
+    };
+  }
+};
+function createBaseTwapParameters(): TwapParameters {
+  return {
+    duration: 0,
+    interval: 0,
+    priceTolerance: 0
+  };
+}
+export const TwapParameters = {
+  typeUrl: "/dydxprotocol.clob.TwapParameters",
+  encode(message: TwapParameters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.duration !== 0) {
+      writer.uint32(8).uint32(message.duration);
+    }
+    if (message.interval !== 0) {
+      writer.uint32(16).uint32(message.interval);
+    }
+    if (message.priceTolerance !== 0) {
+      writer.uint32(24).uint32(message.priceTolerance);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): TwapParameters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTwapParameters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.duration = reader.uint32();
+          break;
+        case 2:
+          message.interval = reader.uint32();
+          break;
+        case 3:
+          message.priceTolerance = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<TwapParameters>): TwapParameters {
+    const message = createBaseTwapParameters();
+    message.duration = object.duration ?? 0;
+    message.interval = object.interval ?? 0;
+    message.priceTolerance = object.priceTolerance ?? 0;
+    return message;
+  },
+  fromAmino(object: TwapParametersAmino): TwapParameters {
+    const message = createBaseTwapParameters();
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = object.duration;
+    }
+    if (object.interval !== undefined && object.interval !== null) {
+      message.interval = object.interval;
+    }
+    if (object.price_tolerance !== undefined && object.price_tolerance !== null) {
+      message.priceTolerance = object.price_tolerance;
+    }
+    return message;
+  },
+  toAmino(message: TwapParameters): TwapParametersAmino {
+    const obj: any = {};
+    obj.duration = message.duration === 0 ? undefined : message.duration;
+    obj.interval = message.interval === 0 ? undefined : message.interval;
+    obj.price_tolerance = message.priceTolerance === 0 ? undefined : message.priceTolerance;
+    return obj;
+  },
+  fromAminoMsg(object: TwapParametersAminoMsg): TwapParameters {
+    return TwapParameters.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TwapParametersProtoMsg): TwapParameters {
+    return TwapParameters.decode(message.value);
+  },
+  toProto(message: TwapParameters): Uint8Array {
+    return TwapParameters.encode(message).finish();
+  },
+  toProtoMsg(message: TwapParameters): TwapParametersProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.clob.TwapParameters",
+      value: TwapParameters.encode(message).finish()
+    };
+  }
+};
+function createBaseBuilderCodeParameters(): BuilderCodeParameters {
+  return {
+    builderAddress: "",
+    feePpm: 0
+  };
+}
+export const BuilderCodeParameters = {
+  typeUrl: "/dydxprotocol.clob.BuilderCodeParameters",
+  encode(message: BuilderCodeParameters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.builderAddress !== "") {
+      writer.uint32(10).string(message.builderAddress);
+    }
+    if (message.feePpm !== 0) {
+      writer.uint32(16).uint32(message.feePpm);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): BuilderCodeParameters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBuilderCodeParameters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.builderAddress = reader.string();
+          break;
+        case 2:
+          message.feePpm = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<BuilderCodeParameters>): BuilderCodeParameters {
+    const message = createBaseBuilderCodeParameters();
+    message.builderAddress = object.builderAddress ?? "";
+    message.feePpm = object.feePpm ?? 0;
+    return message;
+  },
+  fromAmino(object: BuilderCodeParametersAmino): BuilderCodeParameters {
+    const message = createBaseBuilderCodeParameters();
+    if (object.builder_address !== undefined && object.builder_address !== null) {
+      message.builderAddress = object.builder_address;
+    }
+    if (object.fee_ppm !== undefined && object.fee_ppm !== null) {
+      message.feePpm = object.fee_ppm;
+    }
+    return message;
+  },
+  toAmino(message: BuilderCodeParameters): BuilderCodeParametersAmino {
+    const obj: any = {};
+    obj.builder_address = message.builderAddress === "" ? undefined : message.builderAddress;
+    obj.fee_ppm = message.feePpm === 0 ? undefined : message.feePpm;
+    return obj;
+  },
+  fromAminoMsg(object: BuilderCodeParametersAminoMsg): BuilderCodeParameters {
+    return BuilderCodeParameters.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BuilderCodeParametersProtoMsg): BuilderCodeParameters {
+    return BuilderCodeParameters.decode(message.value);
+  },
+  toProto(message: BuilderCodeParameters): Uint8Array {
+    return BuilderCodeParameters.encode(message).finish();
+  },
+  toProtoMsg(message: BuilderCodeParameters): BuilderCodeParametersProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.clob.BuilderCodeParameters",
+      value: BuilderCodeParameters.encode(message).finish()
     };
   }
 };
@@ -1658,8 +2046,8 @@ export const StreamLiquidationOrder = {
     obj.liquidation_info = message.liquidationInfo ? PerpetualLiquidationInfo.toAmino(message.liquidationInfo) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks.toString() : undefined;
+    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: StreamLiquidationOrderAminoMsg): StreamLiquidationOrder {

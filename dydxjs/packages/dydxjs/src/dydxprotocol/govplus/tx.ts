@@ -38,10 +38,17 @@ export interface MsgSlashValidatorProtoMsg {
   typeUrl: "/dydxprotocol.govplus.MsgSlashValidator";
   value: Uint8Array;
 }
-/** MsgSlashValidator is the Msg/SlashValidator request type. */
+/**
+ * MsgSlashValidator is the Msg/SlashValidator request type.
+ * @name MsgSlashValidatorAmino
+ * @package dydxprotocol.govplus
+ * @see proto type: dydxprotocol.govplus.MsgSlashValidator
+ */
 export interface MsgSlashValidatorAmino {
   authority?: string;
-  /** Consensus address of the validator to slash */
+  /**
+   * Consensus address of the validator to slash
+   */
   validator_address?: string;
   /**
    * Colloquially, the height at which the validator is deemed to have
@@ -88,7 +95,12 @@ export interface MsgSlashValidatorResponseProtoMsg {
   typeUrl: "/dydxprotocol.govplus.MsgSlashValidatorResponse";
   value: Uint8Array;
 }
-/** MsgSlashValidatorResponse is the Msg/SlashValidator response type. */
+/**
+ * MsgSlashValidatorResponse is the Msg/SlashValidator response type.
+ * @name MsgSlashValidatorResponseAmino
+ * @package dydxprotocol.govplus
+ * @see proto type: dydxprotocol.govplus.MsgSlashValidatorResponse
+ */
 export interface MsgSlashValidatorResponseAmino {}
 export interface MsgSlashValidatorResponseAminoMsg {
   type: "/dydxprotocol.govplus.MsgSlashValidatorResponse";

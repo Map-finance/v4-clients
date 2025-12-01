@@ -20,11 +20,18 @@ export interface MsgSoftwareUpgradeProtoMsg {
  * MsgSoftwareUpgrade is the Msg/SoftwareUpgrade request type.
  * 
  * Since: cosmos-sdk 0.46
+ * @name MsgSoftwareUpgradeAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgSoftwareUpgrade
  */
 export interface MsgSoftwareUpgradeAmino {
-  /** authority is the address of the governance account. */
+  /**
+   * authority is the address of the governance account.
+   */
   authority?: string;
-  /** plan is the upgrade plan. */
+  /**
+   * plan is the upgrade plan.
+   */
   plan?: PlanAmino;
 }
 export interface MsgSoftwareUpgradeAminoMsg {
@@ -54,6 +61,9 @@ export interface MsgSoftwareUpgradeResponseProtoMsg {
  * MsgSoftwareUpgradeResponse is the Msg/SoftwareUpgrade response type.
  * 
  * Since: cosmos-sdk 0.46
+ * @name MsgSoftwareUpgradeResponseAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgSoftwareUpgradeResponse
  */
 export interface MsgSoftwareUpgradeResponseAmino {}
 export interface MsgSoftwareUpgradeResponseAminoMsg {
@@ -83,9 +93,14 @@ export interface MsgCancelUpgradeProtoMsg {
  * MsgCancelUpgrade is the Msg/CancelUpgrade request type.
  * 
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUpgradeAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgCancelUpgrade
  */
 export interface MsgCancelUpgradeAmino {
-  /** authority is the address of the governance account. */
+  /**
+   * authority is the address of the governance account.
+   */
   authority?: string;
 }
 export interface MsgCancelUpgradeAminoMsg {
@@ -114,6 +129,9 @@ export interface MsgCancelUpgradeResponseProtoMsg {
  * MsgCancelUpgradeResponse is the Msg/CancelUpgrade response type.
  * 
  * Since: cosmos-sdk 0.46
+ * @name MsgCancelUpgradeResponseAmino
+ * @package cosmos.upgrade.v1beta1
+ * @see proto type: cosmos.upgrade.v1beta1.MsgCancelUpgradeResponse
  */
 export interface MsgCancelUpgradeResponseAmino {}
 export interface MsgCancelUpgradeResponseAminoMsg {

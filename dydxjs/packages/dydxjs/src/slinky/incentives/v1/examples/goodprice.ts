@@ -24,11 +24,18 @@ export interface GoodPriceIncentiveProtoMsg {
  * 
  * NOTE: This is an example of a good price incentive. It is not used in
  * production.
+ * @name GoodPriceIncentiveAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GoodPriceIncentive
  */
 export interface GoodPriceIncentiveAmino {
-  /** Validator is the address of the validator that submitted the good price. */
+  /**
+   * Validator is the address of the validator that submitted the good price.
+   */
   validator?: string;
-  /** Amount is the amount to reward. */
+  /**
+   * Amount is the amount to reward.
+   */
   amount?: string;
 }
 export interface GoodPriceIncentiveAminoMsg {

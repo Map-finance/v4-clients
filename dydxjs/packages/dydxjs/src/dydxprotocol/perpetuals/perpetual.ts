@@ -58,16 +58,25 @@ export interface PerpetualProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.Perpetual";
   value: Uint8Array;
 }
-/** Perpetual represents a perpetual on the dYdX exchange. */
+/**
+ * Perpetual represents a perpetual on the dYdX exchange.
+ * @name PerpetualAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.Perpetual
+ */
 export interface PerpetualAmino {
-  /** PerpetualParams is the parameters of the perpetual. */
+  /**
+   * PerpetualParams is the parameters of the perpetual.
+   */
   params?: PerpetualParamsAmino;
   /**
    * The current index determined by the cumulative all-time
    * history of the funding mechanism. Starts at zero.
    */
   funding_index?: string;
-  /** Total size of open long contracts, measured in base_quantums. */
+  /**
+   * Total size of open long contracts, measured in base_quantums.
+   */
   open_interest?: string;
 }
 export interface PerpetualAminoMsg {
@@ -119,11 +128,18 @@ export interface PerpetualParamsProtoMsg {
 /**
  * PerpetualParams represents the parameters of a perpetual on the dYdX
  * exchange.
+ * @name PerpetualParamsAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.PerpetualParams
  */
 export interface PerpetualParamsAmino {
-  /** Unique, sequentially-generated. */
+  /**
+   * Unique, sequentially-generated.
+   */
   id?: number;
-  /** The name of the `Perpetual` (e.g. `BTC-USD`). */
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   */
   ticker?: string;
   /**
    * The market associated with this `Perpetual`. It
@@ -143,9 +159,13 @@ export interface PerpetualParamsAmino {
    * parts-per-million.
    */
   default_funding_ppm?: number;
-  /** The liquidity_tier that this perpetual is associated with. */
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   */
   liquidity_tier?: number;
-  /** The market type specifying if this perpetual is cross or isolated */
+  /**
+   * The market type specifying if this perpetual is cross or isolated
+   */
   market_type?: PerpetualMarketType;
 }
 export interface PerpetualParamsAminoMsg {
@@ -180,9 +200,16 @@ export interface MarketPremiumsProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.MarketPremiums";
   value: Uint8Array;
 }
-/** MarketPremiums stores a list of premiums for a single perpetual market. */
+/**
+ * MarketPremiums stores a list of premiums for a single perpetual market.
+ * @name MarketPremiumsAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MarketPremiums
+ */
 export interface MarketPremiumsAmino {
-  /** perpetual_id is the Id of the perpetual market. */
+  /**
+   * perpetual_id is the Id of the perpetual market.
+   */
   perpetual_id?: number;
   /**
    * premiums is a list of premium values for a perpetual market. Since most
@@ -235,6 +262,9 @@ export interface PremiumStoreProtoMsg {
  * values for that market.
  * This struct can either be used to store `PremiumVotes` or
  * `PremiumSamples`.
+ * @name PremiumStoreAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.PremiumStore
  */
 export interface PremiumStoreAmino {
   /**
@@ -319,11 +349,20 @@ export interface LiquidityTierProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.LiquidityTier";
   value: Uint8Array;
 }
-/** LiquidityTier stores margin information. */
+/**
+ * LiquidityTier stores margin information.
+ * @name LiquidityTierAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.LiquidityTier
+ */
 export interface LiquidityTierAmino {
-  /** Unique id. */
+  /**
+   * Unique id.
+   */
   id?: number;
-  /** The name of the tier purely for mnemonic purposes, e.g. "Gold". */
+  /**
+   * The name of the tier purely for mnemonic purposes, e.g. "Gold".
+   */
   name?: string;
   /**
    * The margin fraction needed to open a position.
@@ -341,8 +380,8 @@ export interface LiquidityTierAmino {
    * the margin requirements increase at a rate of sqrt(size).
    * 
    * Deprecated since v3.x.
+   * @deprecated
    */
-  /** @deprecated */
   base_position_notional?: string;
   /**
    * The impact notional amount (in quote quantums) is used to determine impact
@@ -892,10 +931,10 @@ export const LiquidityTier = {
     obj.name = message.name === "" ? undefined : message.name;
     obj.initial_margin_ppm = message.initialMarginPpm === 0 ? undefined : message.initialMarginPpm;
     obj.maintenance_fraction_ppm = message.maintenanceFractionPpm === 0 ? undefined : message.maintenanceFractionPpm;
-    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional.toString() : undefined;
-    obj.impact_notional = message.impactNotional !== BigInt(0) ? message.impactNotional.toString() : undefined;
-    obj.open_interest_lower_cap = message.openInterestLowerCap !== BigInt(0) ? message.openInterestLowerCap.toString() : undefined;
-    obj.open_interest_upper_cap = message.openInterestUpperCap !== BigInt(0) ? message.openInterestUpperCap.toString() : undefined;
+    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional?.toString() : undefined;
+    obj.impact_notional = message.impactNotional !== BigInt(0) ? message.impactNotional?.toString() : undefined;
+    obj.open_interest_lower_cap = message.openInterestLowerCap !== BigInt(0) ? message.openInterestLowerCap?.toString() : undefined;
+    obj.open_interest_upper_cap = message.openInterestUpperCap !== BigInt(0) ? message.openInterestUpperCap?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: LiquidityTierAminoMsg): LiquidityTier {

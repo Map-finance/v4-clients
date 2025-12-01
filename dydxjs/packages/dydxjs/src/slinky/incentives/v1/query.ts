@@ -20,6 +20,9 @@ export interface GetIncentivesByTypeRequestProtoMsg {
 /**
  * GetIncentivesByTypeRequest is the request type for the
  * Query/GetIncentivesByType RPC method.
+ * @name GetIncentivesByTypeRequestAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GetIncentivesByTypeRequest
  */
 export interface GetIncentivesByTypeRequestAmino {
   /**
@@ -54,9 +57,14 @@ export interface GetIncentivesByTypeResponseProtoMsg {
 /**
  * GetIncentivesByTypeResponse is the response type for the
  * Query/GetIncentivesByType RPC method.
+ * @name GetIncentivesByTypeResponseAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GetIncentivesByTypeResponse
  */
 export interface GetIncentivesByTypeResponseAmino {
-  /** Entries is the list of incentives of the given type. */
+  /**
+   * Entries is the list of incentives of the given type.
+   */
   entries?: string[];
 }
 export interface GetIncentivesByTypeResponseAminoMsg {
@@ -82,6 +90,9 @@ export interface GetAllIncentivesRequestProtoMsg {
 /**
  * GetAllIncentivesRequest is the request type for the Query/GetAllIncentives
  * RPC method.
+ * @name GetAllIncentivesRequestAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GetAllIncentivesRequest
  */
 export interface GetAllIncentivesRequestAmino {}
 export interface GetAllIncentivesRequestAminoMsg {
@@ -108,9 +119,14 @@ export interface GetAllIncentivesResponseProtoMsg {
 /**
  * GetAllIncentivesResponse is the response type for the Query/GetAllIncentives
  * RPC method.
+ * @name GetAllIncentivesResponseAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GetAllIncentivesResponse
  */
 export interface GetAllIncentivesResponseAmino {
-  /** Registry is the list of all incentives, grouped by type. */
+  /**
+   * Registry is the list of all incentives, grouped by type.
+   */
   registry?: IncentivesByTypeAmino[];
 }
 export interface GetAllIncentivesResponseAminoMsg {

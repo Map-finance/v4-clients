@@ -19,9 +19,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.bridge.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the bridge module's genesis state. */
+/**
+ * GenesisState defines the bridge module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** The parameters of the module. */
+  /**
+   * The parameters of the module.
+   */
   event_params?: EventParamsAmino;
   propose_params?: ProposeParamsAmino;
   safety_params?: SafetyParamsAmino;

@@ -10,9 +10,16 @@ export interface ParamsProtoMsg {
   typeUrl: "/dydxprotocol.stats.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for x/stats module. */
+/**
+ * Params defines the parameters for x/stats module.
+ * @name ParamsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.Params
+ */
 export interface ParamsAmino {
-  /** The desired number of seconds in the look-back window. */
+  /**
+   * The desired number of seconds in the look-back window.
+   */
   window_duration?: DurationAmino;
 }
 export interface ParamsAminoMsg {

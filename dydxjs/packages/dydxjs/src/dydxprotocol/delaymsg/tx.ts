@@ -13,12 +13,21 @@ export interface MsgDelayMessageProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.MsgDelayMessage";
   value: Uint8Array;
 }
-/** MsgDelayMessage is a request type for the DelayMessage method. */
+/**
+ * MsgDelayMessage is a request type for the DelayMessage method.
+ * @name MsgDelayMessageAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.MsgDelayMessage
+ */
 export interface MsgDelayMessageAmino {
   authority?: string;
-  /** The message to be delayed. */
+  /**
+   * The message to be delayed.
+   */
   msg?: AnyAmino;
-  /** The number of blocks to delay the message for. */
+  /**
+   * The number of blocks to delay the message for.
+   */
   delay_blocks?: number;
 }
 export interface MsgDelayMessageAminoMsg {
@@ -40,9 +49,16 @@ export interface MsgDelayMessageResponseProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.MsgDelayMessageResponse";
   value: Uint8Array;
 }
-/** MsgDelayMessageResponse is a response type for the DelayMessage method. */
+/**
+ * MsgDelayMessageResponse is a response type for the DelayMessage method.
+ * @name MsgDelayMessageResponseAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.MsgDelayMessageResponse
+ */
 export interface MsgDelayMessageResponseAmino {
-  /** The id of the created delayed message. */
+  /**
+   * The id of the created delayed message.
+   */
   id?: string;
 }
 export interface MsgDelayMessageResponseAminoMsg {
@@ -184,7 +200,7 @@ export const MsgDelayMessageResponse = {
   },
   toAmino(message: MsgDelayMessageResponse): MsgDelayMessageResponseAmino {
     const obj: any = {};
-    obj.id = message.id !== BigInt(0) ? message.id.toString() : undefined;
+    obj.id = message.id !== BigInt(0) ? message.id?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgDelayMessageResponseAminoMsg): MsgDelayMessageResponse {

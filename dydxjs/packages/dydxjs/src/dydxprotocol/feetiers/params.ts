@@ -9,9 +9,16 @@ export interface PerpetualFeeParamsProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.PerpetualFeeParams";
   value: Uint8Array;
 }
-/** PerpetualFeeParams defines the parameters for perpetual fees. */
+/**
+ * PerpetualFeeParams defines the parameters for perpetual fees.
+ * @name PerpetualFeeParamsAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.PerpetualFeeParams
+ */
 export interface PerpetualFeeParamsAmino {
-  /** Sorted fee tiers (lowest requirements first). */
+  /**
+   * Sorted fee tiers (lowest requirements first).
+   */
   tiers?: PerpetualFeeTierAmino[];
 }
 export interface PerpetualFeeParamsAminoMsg {
@@ -41,19 +48,36 @@ export interface PerpetualFeeTierProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.PerpetualFeeTier";
   value: Uint8Array;
 }
-/** A fee tier for perpetuals */
+/**
+ * A fee tier for perpetuals
+ * @name PerpetualFeeTierAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.PerpetualFeeTier
+ */
 export interface PerpetualFeeTierAmino {
-  /** Human-readable name of the tier, e.g. "Gold". */
+  /**
+   * Human-readable name of the tier, e.g. "Gold".
+   */
   name?: string;
-  /** The trader's absolute volume requirement in quote quantums. */
+  /**
+   * The trader's absolute volume requirement in quote quantums.
+   */
   absolute_volume_requirement?: string;
-  /** The total volume share requirement. */
+  /**
+   * The total volume share requirement.
+   */
   total_volume_share_requirement_ppm?: number;
-  /** The maker volume share requirement. */
+  /**
+   * The maker volume share requirement.
+   */
   maker_volume_share_requirement_ppm?: number;
-  /** The maker fee once this tier is reached. */
+  /**
+   * The maker fee once this tier is reached.
+   */
   maker_fee_ppm?: number;
-  /** The taker fee once this tier is reached. */
+  /**
+   * The taker fee once this tier is reached.
+   */
   taker_fee_ppm?: number;
 }
 export interface PerpetualFeeTierAminoMsg {
@@ -234,7 +258,7 @@ export const PerpetualFeeTier = {
   toAmino(message: PerpetualFeeTier): PerpetualFeeTierAmino {
     const obj: any = {};
     obj.name = message.name === "" ? undefined : message.name;
-    obj.absolute_volume_requirement = message.absoluteVolumeRequirement !== BigInt(0) ? message.absoluteVolumeRequirement.toString() : undefined;
+    obj.absolute_volume_requirement = message.absoluteVolumeRequirement !== BigInt(0) ? message.absoluteVolumeRequirement?.toString() : undefined;
     obj.total_volume_share_requirement_ppm = message.totalVolumeShareRequirementPpm === 0 ? undefined : message.totalVolumeShareRequirementPpm;
     obj.maker_volume_share_requirement_ppm = message.makerVolumeShareRequirementPpm === 0 ? undefined : message.makerVolumeShareRequirementPpm;
     obj.maker_fee_ppm = message.makerFeePpm === 0 ? undefined : message.makerFeePpm;

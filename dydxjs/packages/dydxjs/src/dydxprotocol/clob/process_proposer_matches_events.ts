@@ -43,17 +43,26 @@ export interface ProcessProposerMatchesEventsProtoMsg {
  * - Conditional order IDs triggered in the last block.
  * - Conditional order IDs placed, but not triggered in the last block.
  * - The height of the block in which the events occurred.
+ * @name ProcessProposerMatchesEventsAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ProcessProposerMatchesEvents
  */
 export interface ProcessProposerMatchesEventsAmino {
-  /** @deprecated */
+  /**
+   * @deprecated
+   */
   placed_long_term_order_ids?: OrderIdAmino[];
   expired_stateful_order_ids?: OrderIdAmino[];
   order_ids_filled_in_last_block?: OrderIdAmino[];
-  /** @deprecated */
+  /**
+   * @deprecated
+   */
   placed_stateful_cancellation_order_ids?: OrderIdAmino[];
   removed_stateful_order_ids?: OrderIdAmino[];
   conditional_order_ids_triggered_in_last_block?: OrderIdAmino[];
-  /** @deprecated */
+  /**
+   * @deprecated
+   */
   placed_conditional_order_ids?: OrderIdAmino[];
   block_height?: number;
 }

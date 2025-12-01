@@ -24,7 +24,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for x/perpetuals module. */
+/**
+ * Params defines the parameters for x/perpetuals module.
+ * @name ParamsAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.Params
+ */
 export interface ParamsAmino {
   /**
    * Funding rate clamp factor in parts-per-million, used for clamping 8-hour

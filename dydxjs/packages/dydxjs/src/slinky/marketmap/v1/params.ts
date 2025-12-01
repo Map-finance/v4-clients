@@ -17,7 +17,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/slinky.marketmap.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the parameters for the x/marketmap module. */
+/**
+ * Params defines the parameters for the x/marketmap module.
+ * @name ParamsAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * MarketAuthorities is the list of authority accounts that are able to

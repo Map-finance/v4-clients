@@ -9,7 +9,12 @@ export interface QueryEventParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.bridge.QueryEventParamsRequest";
   value: Uint8Array;
 }
-/** QueryEventParamsRequest is a request type for the EventParams RPC method. */
+/**
+ * QueryEventParamsRequest is a request type for the EventParams RPC method.
+ * @name QueryEventParamsRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryEventParamsRequest
+ */
 export interface QueryEventParamsRequestAmino {}
 export interface QueryEventParamsRequestAminoMsg {
   type: "/dydxprotocol.bridge.QueryEventParamsRequest";
@@ -25,7 +30,12 @@ export interface QueryEventParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.bridge.QueryEventParamsResponse";
   value: Uint8Array;
 }
-/** QueryEventParamsResponse is a response type for the EventParams RPC method. */
+/**
+ * QueryEventParamsResponse is a response type for the EventParams RPC method.
+ * @name QueryEventParamsResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryEventParamsResponse
+ */
 export interface QueryEventParamsResponseAmino {
   params?: EventParamsAmino;
 }
@@ -43,7 +53,12 @@ export interface QueryProposeParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.bridge.QueryProposeParamsRequest";
   value: Uint8Array;
 }
-/** QueryProposeParamsRequest is a request type for the ProposeParams RPC method. */
+/**
+ * QueryProposeParamsRequest is a request type for the ProposeParams RPC method.
+ * @name QueryProposeParamsRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryProposeParamsRequest
+ */
 export interface QueryProposeParamsRequestAmino {}
 export interface QueryProposeParamsRequestAminoMsg {
   type: "/dydxprotocol.bridge.QueryProposeParamsRequest";
@@ -65,6 +80,9 @@ export interface QueryProposeParamsResponseProtoMsg {
 /**
  * QueryProposeParamsResponse is a response type for the ProposeParams RPC
  * method.
+ * @name QueryProposeParamsResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryProposeParamsResponse
  */
 export interface QueryProposeParamsResponseAmino {
   params?: ProposeParamsAmino;
@@ -86,7 +104,12 @@ export interface QuerySafetyParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.bridge.QuerySafetyParamsRequest";
   value: Uint8Array;
 }
-/** QuerySafetyParamsRequest is a request type for the SafetyParams RPC method. */
+/**
+ * QuerySafetyParamsRequest is a request type for the SafetyParams RPC method.
+ * @name QuerySafetyParamsRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QuerySafetyParamsRequest
+ */
 export interface QuerySafetyParamsRequestAmino {}
 export interface QuerySafetyParamsRequestAminoMsg {
   type: "/dydxprotocol.bridge.QuerySafetyParamsRequest";
@@ -102,7 +125,12 @@ export interface QuerySafetyParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.bridge.QuerySafetyParamsResponse";
   value: Uint8Array;
 }
-/** QuerySafetyParamsResponse is a response type for the SafetyParams RPC method. */
+/**
+ * QuerySafetyParamsResponse is a response type for the SafetyParams RPC method.
+ * @name QuerySafetyParamsResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QuerySafetyParamsResponse
+ */
 export interface QuerySafetyParamsResponseAmino {
   params?: SafetyParamsAmino;
 }
@@ -126,6 +154,9 @@ export interface QueryAcknowledgedEventInfoRequestProtoMsg {
 /**
  * QueryAcknowledgedEventInfoRequest is a request type for the
  * AcknowledgedEventInfo RPC method.
+ * @name QueryAcknowledgedEventInfoRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryAcknowledgedEventInfoRequest
  */
 export interface QueryAcknowledgedEventInfoRequestAmino {}
 export interface QueryAcknowledgedEventInfoRequestAminoMsg {
@@ -151,6 +182,9 @@ export interface QueryAcknowledgedEventInfoResponseProtoMsg {
 /**
  * QueryAcknowledgedEventInfoResponse is a response type for the
  * AcknowledgedEventInfo RPC method.
+ * @name QueryAcknowledgedEventInfoResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryAcknowledgedEventInfoResponse
  */
 export interface QueryAcknowledgedEventInfoResponseAmino {
   info?: BridgeEventInfoAmino;
@@ -178,6 +212,9 @@ export interface QueryRecognizedEventInfoRequestProtoMsg {
 /**
  * QueryRecognizedEventInfoRequest is a request type for the
  * RecognizedEventInfo RPC method.
+ * @name QueryRecognizedEventInfoRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryRecognizedEventInfoRequest
  */
 export interface QueryRecognizedEventInfoRequestAmino {}
 export interface QueryRecognizedEventInfoRequestAminoMsg {
@@ -203,6 +240,9 @@ export interface QueryRecognizedEventInfoResponseProtoMsg {
 /**
  * QueryRecognizedEventInfoResponse is a response type for the
  * RecognizedEventInfo RPC method.
+ * @name QueryRecognizedEventInfoResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryRecognizedEventInfoResponse
  */
 export interface QueryRecognizedEventInfoResponseAmino {
   info?: BridgeEventInfoAmino;
@@ -232,6 +272,9 @@ export interface QueryDelayedCompleteBridgeMessagesRequestProtoMsg {
 /**
  * QueryDelayedCompleteBridgeMessagesRequest is a request type for the
  * DelayedCompleteBridgeMessages RPC method.
+ * @name QueryDelayedCompleteBridgeMessagesRequestAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryDelayedCompleteBridgeMessagesRequest
  */
 export interface QueryDelayedCompleteBridgeMessagesRequestAmino {
   address?: string;
@@ -261,6 +304,9 @@ export interface QueryDelayedCompleteBridgeMessagesResponseProtoMsg {
 /**
  * QueryDelayedCompleteBridgeMessagesResponse is a response type for the
  * DelayedCompleteBridgeMessages RPC method.
+ * @name QueryDelayedCompleteBridgeMessagesResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.QueryDelayedCompleteBridgeMessagesResponse
  */
 export interface QueryDelayedCompleteBridgeMessagesResponseAmino {
   messages?: DelayedCompleteBridgeMessageAmino[];
@@ -293,6 +339,9 @@ export interface DelayedCompleteBridgeMessageProtoMsg {
  * DelayedCompleteBridgeMessage is a message type for the response of
  * DelayedCompleteBridgeMessages RPC method. It contains the message
  * and the block height at which it will execute.
+ * @name DelayedCompleteBridgeMessageAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.DelayedCompleteBridgeMessage
  */
 export interface DelayedCompleteBridgeMessageAmino {
   message?: MsgCompleteBridgeAmino;

@@ -46,9 +46,16 @@ export interface AssetProtoMsg {
   typeUrl: "/dydxprotocol.assets.Asset";
   value: Uint8Array;
 }
-/** Asset defines a single exchangable asset. */
+/**
+ * Asset defines a single exchangable asset.
+ * @name AssetAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.Asset
+ */
 export interface AssetAmino {
-  /** Unique, sequentially-generated. */
+  /**
+   * Unique, sequentially-generated.
+   */
   id?: number;
   /**
    * The human readable symbol of the `Asset` (e.g. `USDC`, `ATOM`).
@@ -72,7 +79,9 @@ export interface AssetAmino {
    * `quantums = denom_amount * 10^(denom_exponent - atomic_resolution)`
    */
   denom_exponent?: number;
-  /** `true` if this `Asset` has a valid `MarketId` value. */
+  /**
+   * `true` if this `Asset` has a valid `MarketId` value.
+   */
   has_market?: boolean;
   /**
    * The `Id` of the `Market` associated with this `Asset`. It acts as the

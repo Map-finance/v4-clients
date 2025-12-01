@@ -35,14 +35,21 @@ export interface QuotingParamsProtoMsg {
   typeUrl: "/dydxprotocol.vault.QuotingParams";
   value: Uint8Array;
 }
-/** QuotingParams stores vault quoting parameters. */
+/**
+ * QuotingParams stores vault quoting parameters.
+ * @name QuotingParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QuotingParams
+ */
 export interface QuotingParamsAmino {
   /**
    * The number of layers of orders a vault places. For example if
    * `layers=2`, a vault places 2 asks and 2 bids.
    */
   layers?: number;
-  /** The minimum base spread when a vault quotes around reservation price. */
+  /**
+   * The minimum base spread when a vault quotes around reservation price.
+   */
   spread_min_ppm?: number;
   /**
    * The buffer amount to add to min_price_change_ppm to arrive at `spread`
@@ -50,11 +57,17 @@ export interface QuotingParamsAmino {
    * `spread = max(spread_min_ppm, min_price_change_ppm + spread_buffer_ppm)`.
    */
   spread_buffer_ppm?: number;
-  /** The factor that determines how aggressive a vault skews its orders. */
+  /**
+   * The factor that determines how aggressive a vault skews its orders.
+   */
   skew_factor_ppm?: number;
-  /** The percentage of vault equity that each order is sized at. */
+  /**
+   * The percentage of vault equity that each order is sized at.
+   */
   order_size_pct_ppm?: number;
-  /** The duration that a vault's orders are valid for. */
+  /**
+   * The duration that a vault's orders are valid for.
+   */
   order_expiration_seconds?: number;
   /**
    * The number of quote quantums in quote asset that a vault with no perpetual
@@ -89,11 +102,20 @@ export interface VaultParamsProtoMsg {
   typeUrl: "/dydxprotocol.vault.VaultParams";
   value: Uint8Array;
 }
-/** VaultParams stores vault parameters. */
+/**
+ * VaultParams stores vault parameters.
+ * @name VaultParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.VaultParams
+ */
 export interface VaultParamsAmino {
-  /** Status of the vault. */
+  /**
+   * Status of the vault.
+   */
   status?: VaultStatus;
-  /** Quoting parameters of the vault. */
+  /**
+   * Quoting parameters of the vault.
+   */
   quoting_params?: QuotingParamsAmino;
 }
 export interface VaultParamsAminoMsg {
@@ -144,6 +166,9 @@ export interface ParamsProtoMsg {
 /**
  * Deprecated: Params stores `x/vault` parameters.
  * Deprecated since v6.x as is replaced by QuotingParams.
+ * @name ParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.Params
  */
 export interface ParamsAmino {
   /**
@@ -151,7 +176,9 @@ export interface ParamsAmino {
    * `layers=2`, a vault places 2 asks and 2 bids.
    */
   layers?: number;
-  /** The minimum base spread when a vault quotes around reservation price. */
+  /**
+   * The minimum base spread when a vault quotes around reservation price.
+   */
   spread_min_ppm?: number;
   /**
    * The buffer amount to add to min_price_change_ppm to arrive at `spread`
@@ -159,11 +186,17 @@ export interface ParamsAmino {
    * `spread = max(spread_min_ppm, min_price_change_ppm + spread_buffer_ppm)`.
    */
   spread_buffer_ppm?: number;
-  /** The factor that determines how aggressive a vault skews its orders. */
+  /**
+   * The factor that determines how aggressive a vault skews its orders.
+   */
   skew_factor_ppm?: number;
-  /** The percentage of vault equity that each order is sized at. */
+  /**
+   * The percentage of vault equity that each order is sized at.
+   */
   order_size_pct_ppm?: number;
-  /** The duration that a vault's orders are valid for. */
+  /**
+   * The duration that a vault's orders are valid for.
+   */
   order_expiration_seconds?: number;
   /**
    * The number of quote quantums in quote asset that a vault with no perpetual

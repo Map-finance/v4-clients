@@ -18,15 +18,28 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.vault.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines `x/vault`'s genesis state. */
+/**
+ * GenesisState defines `x/vault`'s genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** The total number of shares. */
+  /**
+   * The total number of shares.
+   */
   total_shares?: NumSharesAmino;
-  /** The shares of each owner. */
+  /**
+   * The shares of each owner.
+   */
   owner_shares?: OwnerShareAmino[];
-  /** The vaults. */
+  /**
+   * The vaults.
+   */
   vaults?: VaultAmino[];
-  /** The default quoting parameters for all vaults. */
+  /**
+   * The default quoting parameters for all vaults.
+   */
   default_quoting_params?: QuotingParamsAmino;
 }
 export interface GenesisStateAminoMsg {
@@ -53,13 +66,24 @@ export interface VaultProtoMsg {
   typeUrl: "/dydxprotocol.vault.Vault";
   value: Uint8Array;
 }
-/** Vault defines the state of a vault. */
+/**
+ * Vault defines the state of a vault.
+ * @name VaultAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.Vault
+ */
 export interface VaultAmino {
-  /** The ID of the vault. */
+  /**
+   * The ID of the vault.
+   */
   vault_id?: VaultIdAmino;
-  /** The parameters of the vault. */
+  /**
+   * The parameters of the vault.
+   */
   vault_params?: VaultParamsAmino;
-  /** The client IDs of the most recently placed orders of the vault. */
+  /**
+   * The client IDs of the most recently placed orders of the vault.
+   */
   most_recent_client_ids?: number[];
 }
 export interface VaultAminoMsg {
@@ -89,11 +113,18 @@ export interface GenesisStateV6ProtoMsg {
 /**
  * GenesisStateV6 defines `x/vault`'s genesis state in v6.x.
  * Deprecated since v7.x in favor of GenesisState.
+ * @name GenesisStateV6Amino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.GenesisStateV6
  */
 export interface GenesisStateV6Amino {
-  /** The vaults. */
+  /**
+   * The vaults.
+   */
   vaults?: VaultAmino[];
-  /** The default quoting parameters for all vaults. */
+  /**
+   * The default quoting parameters for all vaults.
+   */
   default_quoting_params?: QuotingParamsAmino;
 }
 export interface GenesisStateV6AminoMsg {
@@ -131,17 +162,30 @@ export interface VaultV6ProtoMsg {
 /**
  * VaultV6 defines the state of a vault.
  * Deprecated since v7.x in favor of Vault.
+ * @name VaultV6Amino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.VaultV6
  */
 export interface VaultV6Amino {
-  /** The ID of the vault. */
+  /**
+   * The ID of the vault.
+   */
   vault_id?: VaultIdAmino;
-  /** The total number of shares in the vault. */
+  /**
+   * The total number of shares in the vault.
+   */
   total_shares?: NumSharesAmino;
-  /** The shares of each owner in the vault. */
+  /**
+   * The shares of each owner in the vault.
+   */
   owner_shares?: OwnerShareAmino[];
-  /** The parameters of the vault. */
+  /**
+   * The parameters of the vault.
+   */
   vault_params?: VaultParamsAmino;
-  /** The client IDs of the most recently placed orders of the vault. */
+  /**
+   * The client IDs of the most recently placed orders of the vault.
+   */
   most_recent_client_ids?: number[];
 }
 export interface VaultV6AminoMsg {

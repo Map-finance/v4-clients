@@ -10,9 +10,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.rewards.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the rewards module's genesis state. */
+/**
+ * GenesisState defines the rewards module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.rewards
+ * @see proto type: dydxprotocol.rewards.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** The parameters of the module. */
+  /**
+   * The parameters of the module.
+   */
   params?: ParamsAmino;
 }
 export interface GenesisStateAminoMsg {

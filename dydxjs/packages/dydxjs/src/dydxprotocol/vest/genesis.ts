@@ -10,9 +10,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.vest.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the vest module's genesis state. */
+/**
+ * GenesisState defines the vest module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** The vest entries at genesis. */
+  /**
+   * The vest entries at genesis.
+   */
   vest_entries?: VestEntryAmino[];
 }
 export interface GenesisStateAminoMsg {

@@ -24,6 +24,9 @@ export interface EquityTierLimitConfigurationProtoMsg {
 /**
  * Defines the set of equity tiers to limit how many open orders
  * a subaccount is allowed to have.
+ * @name EquityTierLimitConfigurationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.EquityTierLimitConfiguration
  */
 export interface EquityTierLimitConfigurationAmino {
   /**
@@ -60,11 +63,20 @@ export interface EquityTierLimitProtoMsg {
   typeUrl: "/dydxprotocol.clob.EquityTierLimit";
   value: Uint8Array;
 }
-/** Defines an equity tier limit. */
+/**
+ * Defines an equity tier limit.
+ * @name EquityTierLimitAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.EquityTierLimit
+ */
 export interface EquityTierLimitAmino {
-  /** The total net collateral in USDC quote quantums of equity required. */
+  /**
+   * The total net collateral in USDC quote quantums of equity required.
+   */
   usd_tnc_required?: string;
-  /** What the limit is for `usd_tnc_required`. */
+  /**
+   * What the limit is for `usd_tnc_required`.
+   */
   limit?: number;
 }
 export interface EquityTierLimitAminoMsg {

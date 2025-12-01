@@ -46,9 +46,16 @@ export interface EpochInfoProtoMsg {
   typeUrl: "/dydxprotocol.epochs.EpochInfo";
   value: Uint8Array;
 }
-/** EpochInfo stores metadata of an epoch timer. */
+/**
+ * EpochInfo stores metadata of an epoch timer.
+ * @name EpochInfoAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.EpochInfo
+ */
 export interface EpochInfoAmino {
-  /** name is the unique identifier. */
+  /**
+   * name is the unique identifier.
+   */
   name?: string;
   /**
    * next_tick indicates when the next epoch starts (in Unix Epoch seconds),
@@ -57,7 +64,9 @@ export interface EpochInfoAmino {
    * initialization time (see `is_initialized` below).
    */
   next_tick?: number;
-  /** duration of the epoch in seconds. */
+  /**
+   * duration of the epoch in seconds.
+   */
   duration?: number;
   /**
    * current epoch is the number of the current epoch.

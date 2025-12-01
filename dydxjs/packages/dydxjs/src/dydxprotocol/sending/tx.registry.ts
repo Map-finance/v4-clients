@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
+import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
 import { MsgCreateTransfer } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.sending.MsgCreateTransfer", MsgCreateTransfer], ["/dydxprotocol.sending.MsgDepositToSubaccount", MsgDepositToSubaccount], ["/dydxprotocol.sending.MsgWithdrawFromSubaccount", MsgWithdrawFromSubaccount], ["/dydxprotocol.sending.MsgSendFromModuleToAccount", MsgSendFromModuleToAccount]];
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.sending.MsgCreateBridgeTransfer", MsgCreateBridgeTransfer], ["/dydxprotocol.sending.MsgCreateTransfer", MsgCreateTransfer], ["/dydxprotocol.sending.MsgDepositToSubaccount", MsgDepositToSubaccount], ["/dydxprotocol.sending.MsgWithdrawFromSubaccount", MsgWithdrawFromSubaccount], ["/dydxprotocol.sending.MsgSendFromModuleToAccount", MsgSendFromModuleToAccount]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -10,6 +10,12 @@ export const load = (protoRegistry: Registry) => {
 };
 export const MessageComposer = {
   encoded: {
+    createBridgeTransfer(value: MsgCreateBridgeTransfer) {
+      return {
+        typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransfer",
+        value: MsgCreateBridgeTransfer.encode(value).finish()
+      };
+    },
     createTransfer(value: MsgCreateTransfer) {
       return {
         typeUrl: "/dydxprotocol.sending.MsgCreateTransfer",
@@ -36,6 +42,12 @@ export const MessageComposer = {
     }
   },
   withTypeUrl: {
+    createBridgeTransfer(value: MsgCreateBridgeTransfer) {
+      return {
+        typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransfer",
+        value
+      };
+    },
     createTransfer(value: MsgCreateTransfer) {
       return {
         typeUrl: "/dydxprotocol.sending.MsgCreateTransfer",
@@ -62,6 +74,12 @@ export const MessageComposer = {
     }
   },
   fromPartial: {
+    createBridgeTransfer(value: MsgCreateBridgeTransfer) {
+      return {
+        typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransfer",
+        value: MsgCreateBridgeTransfer.fromPartial(value)
+      };
+    },
     createTransfer(value: MsgCreateTransfer) {
       return {
         typeUrl: "/dydxprotocol.sending.MsgCreateTransfer",

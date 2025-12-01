@@ -11,9 +11,16 @@ export interface BlockStatsProtoMsg {
   typeUrl: "/dydxprotocol.stats.BlockStats";
   value: Uint8Array;
 }
-/** BlockStats is used to store stats transiently within the scope of a block. */
+/**
+ * BlockStats is used to store stats transiently within the scope of a block.
+ * @name BlockStatsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.BlockStats
+ */
 export interface BlockStatsAmino {
-  /** The fills that occured on this block. */
+  /**
+   * The fills that occured on this block.
+   */
   fills?: BlockStats_FillAmino[];
 }
 export interface BlockStatsAminoMsg {
@@ -37,13 +44,24 @@ export interface BlockStats_FillProtoMsg {
   typeUrl: "/dydxprotocol.stats.Fill";
   value: Uint8Array;
 }
-/** Fill records data about a fill on this block. */
+/**
+ * Fill records data about a fill on this block.
+ * @name BlockStats_FillAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.BlockStats_Fill
+ */
 export interface BlockStats_FillAmino {
-  /** Taker wallet address */
+  /**
+   * Taker wallet address
+   */
   taker?: string;
-  /** Maker wallet address */
+  /**
+   * Maker wallet address
+   */
   maker?: string;
-  /** Notional USDC filled in quantums */
+  /**
+   * Notional USDC filled in quantums
+   */
   notional?: string;
 }
 export interface BlockStats_FillAminoMsg {
@@ -68,7 +86,12 @@ export interface StatsMetadataProtoMsg {
   typeUrl: "/dydxprotocol.stats.StatsMetadata";
   value: Uint8Array;
 }
-/** StatsMetadata stores metadata for the x/stats module */
+/**
+ * StatsMetadata stores metadata for the x/stats module
+ * @name StatsMetadataAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.StatsMetadata
+ */
 export interface StatsMetadataAmino {
   /**
    * The oldest epoch that is included in the stats. The next epoch to be
@@ -95,11 +118,20 @@ export interface EpochStatsProtoMsg {
   typeUrl: "/dydxprotocol.stats.EpochStats";
   value: Uint8Array;
 }
-/** EpochStats stores stats for a particular epoch */
+/**
+ * EpochStats stores stats for a particular epoch
+ * @name EpochStatsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.EpochStats
+ */
 export interface EpochStatsAmino {
-  /** Epoch end time */
+  /**
+   * Epoch end time
+   */
   epoch_end_time?: string;
-  /** Stats for each user in this epoch. Sorted by user. */
+  /**
+   * Stats for each user in this epoch. Sorted by user.
+   */
   stats?: EpochStats_UserWithStatsAmino[];
 }
 export interface EpochStatsAminoMsg {
@@ -120,7 +152,12 @@ export interface EpochStats_UserWithStatsProtoMsg {
   typeUrl: "/dydxprotocol.stats.UserWithStats";
   value: Uint8Array;
 }
-/** A user and its associated stats */
+/**
+ * A user and its associated stats
+ * @name EpochStats_UserWithStatsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.EpochStats_UserWithStats
+ */
 export interface EpochStats_UserWithStatsAmino {
   user?: string;
   stats?: UserStatsAmino;
@@ -143,9 +180,16 @@ export interface GlobalStatsProtoMsg {
   typeUrl: "/dydxprotocol.stats.GlobalStats";
   value: Uint8Array;
 }
-/** GlobalStats stores global stats */
+/**
+ * GlobalStats stores global stats
+ * @name GlobalStatsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.GlobalStats
+ */
 export interface GlobalStatsAmino {
-  /** Notional USDC traded in quantums */
+  /**
+   * Notional USDC traded in quantums
+   */
   notional_traded?: string;
 }
 export interface GlobalStatsAminoMsg {
@@ -167,11 +211,20 @@ export interface UserStatsProtoMsg {
   typeUrl: "/dydxprotocol.stats.UserStats";
   value: Uint8Array;
 }
-/** UserStats stores stats for a User */
+/**
+ * UserStats stores stats for a User
+ * @name UserStatsAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.UserStats
+ */
 export interface UserStatsAmino {
-  /** Taker USDC in quantums */
+  /**
+   * Taker USDC in quantums
+   */
   taker_notional?: string;
-  /** Maker USDC in quantums */
+  /**
+   * Maker USDC in quantums
+   */
   maker_notional?: string;
 }
 export interface UserStatsAminoMsg {
@@ -316,7 +369,7 @@ export const BlockStats_Fill = {
     const obj: any = {};
     obj.taker = message.taker === "" ? undefined : message.taker;
     obj.maker = message.maker === "" ? undefined : message.maker;
-    obj.notional = message.notional !== BigInt(0) ? message.notional.toString() : undefined;
+    obj.notional = message.notional !== BigInt(0) ? message.notional?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: BlockStats_FillAminoMsg): BlockStats_Fill {
@@ -594,7 +647,7 @@ export const GlobalStats = {
   },
   toAmino(message: GlobalStats): GlobalStatsAmino {
     const obj: any = {};
-    obj.notional_traded = message.notionalTraded !== BigInt(0) ? message.notionalTraded.toString() : undefined;
+    obj.notional_traded = message.notionalTraded !== BigInt(0) ? message.notionalTraded?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: GlobalStatsAminoMsg): GlobalStats {
@@ -668,8 +721,8 @@ export const UserStats = {
   },
   toAmino(message: UserStats): UserStatsAmino {
     const obj: any = {};
-    obj.taker_notional = message.takerNotional !== BigInt(0) ? message.takerNotional.toString() : undefined;
-    obj.maker_notional = message.makerNotional !== BigInt(0) ? message.makerNotional.toString() : undefined;
+    obj.taker_notional = message.takerNotional !== BigInt(0) ? message.takerNotional?.toString() : undefined;
+    obj.maker_notional = message.makerNotional !== BigInt(0) ? message.makerNotional?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: UserStatsAminoMsg): UserStats {

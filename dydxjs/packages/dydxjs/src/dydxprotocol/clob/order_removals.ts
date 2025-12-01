@@ -130,7 +130,12 @@ export interface OrderRemovalProtoMsg {
   typeUrl: "/dydxprotocol.clob.OrderRemoval";
   value: Uint8Array;
 }
-/** OrderRemoval is a request type used for forced removal of stateful orders. */
+/**
+ * OrderRemoval is a request type used for forced removal of stateful orders.
+ * @name OrderRemovalAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OrderRemoval
+ */
 export interface OrderRemovalAmino {
   order_id?: OrderIdAmino;
   removal_reason?: OrderRemoval_RemovalReason;

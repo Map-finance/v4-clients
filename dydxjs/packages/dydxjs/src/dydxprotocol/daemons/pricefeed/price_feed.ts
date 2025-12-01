@@ -10,7 +10,12 @@ export interface UpdateMarketPricesRequestProtoMsg {
   typeUrl: "/dydxprotocol.daemons.pricefeed.UpdateMarketPricesRequest";
   value: Uint8Array;
 }
-/** UpdateMarketPriceRequest is a request message updating market prices. */
+/**
+ * UpdateMarketPriceRequest is a request message updating market prices.
+ * @name UpdateMarketPricesRequestAmino
+ * @package dydxprotocol.daemons.pricefeed
+ * @see proto type: dydxprotocol.daemons.pricefeed.UpdateMarketPricesRequest
+ */
 export interface UpdateMarketPricesRequestAmino {
   market_price_updates?: MarketPriceUpdateAmino[];
 }
@@ -28,7 +33,12 @@ export interface UpdateMarketPricesResponseProtoMsg {
   typeUrl: "/dydxprotocol.daemons.pricefeed.UpdateMarketPricesResponse";
   value: Uint8Array;
 }
-/** UpdateMarketPricesResponse is a response message for updating market prices. */
+/**
+ * UpdateMarketPricesResponse is a response message for updating market prices.
+ * @name UpdateMarketPricesResponseAmino
+ * @package dydxprotocol.daemons.pricefeed
+ * @see proto type: dydxprotocol.daemons.pricefeed.UpdateMarketPricesResponse
+ */
 export interface UpdateMarketPricesResponseAmino {}
 export interface UpdateMarketPricesResponseAminoMsg {
   type: "/dydxprotocol.daemons.pricefeed.UpdateMarketPricesResponse";
@@ -46,7 +56,12 @@ export interface ExchangePriceProtoMsg {
   typeUrl: "/dydxprotocol.daemons.pricefeed.ExchangePrice";
   value: Uint8Array;
 }
-/** ExchangePrice represents a specific exchange's market price */
+/**
+ * ExchangePrice represents a specific exchange's market price
+ * @name ExchangePriceAmino
+ * @package dydxprotocol.daemons.pricefeed
+ * @see proto type: dydxprotocol.daemons.pricefeed.ExchangePrice
+ */
 export interface ExchangePriceAmino {
   exchange_id?: string;
   price?: string;
@@ -71,7 +86,12 @@ export interface MarketPriceUpdateProtoMsg {
   typeUrl: "/dydxprotocol.daemons.pricefeed.MarketPriceUpdate";
   value: Uint8Array;
 }
-/** MarketPriceUpdate represents an update to a single market */
+/**
+ * MarketPriceUpdate represents an update to a single market
+ * @name MarketPriceUpdateAmino
+ * @package dydxprotocol.daemons.pricefeed
+ * @see proto type: dydxprotocol.daemons.pricefeed.MarketPriceUpdate
+ */
 export interface MarketPriceUpdateAmino {
   market_id?: number;
   exchange_prices?: ExchangePriceAmino[];
@@ -267,7 +287,7 @@ export const ExchangePrice = {
   toAmino(message: ExchangePrice): ExchangePriceAmino {
     const obj: any = {};
     obj.exchange_id = message.exchangeId === "" ? undefined : message.exchangeId;
-    obj.price = message.price !== BigInt(0) ? message.price.toString() : undefined;
+    obj.price = message.price !== BigInt(0) ? message.price?.toString() : undefined;
     obj.last_update_time = message.lastUpdateTime ? Timestamp.toAmino(toTimestamp(message.lastUpdateTime)) : undefined;
     return obj;
   },

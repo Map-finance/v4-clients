@@ -1,7 +1,12 @@
 //@ts-nocheck
-import { MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
+import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
 import { MsgCreateTransfer } from "./tx";
 export const AminoConverter = {
+  "/dydxprotocol.sending.MsgCreateBridgeTransfer": {
+    aminoType: "/dydxprotocol.sending.MsgCreateBridgeTransfer",
+    toAmino: MsgCreateBridgeTransfer.toAmino,
+    fromAmino: MsgCreateBridgeTransfer.fromAmino
+  },
   "/dydxprotocol.sending.MsgCreateTransfer": {
     aminoType: "/dydxprotocol.sending.MsgCreateTransfer",
     toAmino: MsgCreateTransfer.toAmino,

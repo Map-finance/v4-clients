@@ -9,6 +9,11 @@ export interface OracleVoteExtension_PricesEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
 }
+/**
+ * @name OracleVoteExtension_PricesEntryAmino
+ * @package slinky.abci.v1
+ * @see proto type: slinky.abci.v1.OracleVoteExtension_PricesEntry
+ */
 export interface OracleVoteExtension_PricesEntryAmino {
   key?: string;
   value?: string;
@@ -36,7 +41,12 @@ export interface OracleVoteExtensionProtoMsg {
   typeUrl: "/slinky.abci.v1.OracleVoteExtension";
   value: Uint8Array;
 }
-/** OracleVoteExtension defines the vote extension structure for oracle prices. */
+/**
+ * OracleVoteExtension defines the vote extension structure for oracle prices.
+ * @name OracleVoteExtensionAmino
+ * @package slinky.abci.v1
+ * @see proto type: slinky.abci.v1.OracleVoteExtension
+ */
 export interface OracleVoteExtensionAmino {
   /**
    * Prices defines a map of id(CurrencyPair) -> price.Bytes() . i.e. 1 ->
@@ -111,7 +121,7 @@ export const OracleVoteExtension_PricesEntry = {
   },
   toAmino(message: OracleVoteExtension_PricesEntry): OracleVoteExtension_PricesEntryAmino {
     const obj: any = {};
-    obj.key = message.key !== BigInt(0) ? message.key.toString() : undefined;
+    obj.key = message.key !== BigInt(0) ? message.key?.toString() : undefined;
     obj.value = message.value ? base64FromBytes(message.value) : undefined;
     return obj;
   },

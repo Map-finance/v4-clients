@@ -24,11 +24,18 @@ export interface BadPriceIncentiveProtoMsg {
  * 
  * NOTE: This is an example of a bad price incentive. It is not used in
  * production.
+ * @name BadPriceIncentiveAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.BadPriceIncentive
  */
 export interface BadPriceIncentiveAmino {
-  /** Validator is the address of the validator that submitted the bad price. */
+  /**
+   * Validator is the address of the validator that submitted the bad price.
+   */
   validator?: string;
-  /** Amount is the amount to slash. */
+  /**
+   * Amount is the amount to slash.
+   */
   amount?: string;
 }
 export interface BadPriceIncentiveAminoMsg {

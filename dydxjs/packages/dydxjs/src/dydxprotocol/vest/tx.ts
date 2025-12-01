@@ -12,11 +12,20 @@ export interface MsgDeleteVestEntryProtoMsg {
   typeUrl: "/dydxprotocol.vest.MsgDeleteVestEntry";
   value: Uint8Array;
 }
-/** MsgDeleteVestEntry is the Msg/DeleteVestEntry request type. */
+/**
+ * MsgDeleteVestEntry is the Msg/DeleteVestEntry request type.
+ * @name MsgDeleteVestEntryAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.MsgDeleteVestEntry
+ */
 export interface MsgDeleteVestEntryAmino {
-  /** authority is the address that controls the module. */
+  /**
+   * authority is the address that controls the module.
+   */
   authority?: string;
-  /** The vester account of the vest entry to delete. */
+  /**
+   * The vester account of the vest entry to delete.
+   */
   vester_account?: string;
 }
 export interface MsgDeleteVestEntryAminoMsg {
@@ -34,7 +43,12 @@ export interface MsgDeleteVestEntryResponseProtoMsg {
   typeUrl: "/dydxprotocol.vest.MsgDeleteVestEntryResponse";
   value: Uint8Array;
 }
-/** MsgDeleteVestEntryResponse is the Msg/DeleteVestEntry response type. */
+/**
+ * MsgDeleteVestEntryResponse is the Msg/DeleteVestEntry response type.
+ * @name MsgDeleteVestEntryResponseAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.MsgDeleteVestEntryResponse
+ */
 export interface MsgDeleteVestEntryResponseAmino {}
 export interface MsgDeleteVestEntryResponseAminoMsg {
   type: "/dydxprotocol.vest.MsgDeleteVestEntryResponse";
@@ -53,11 +67,20 @@ export interface MsgSetVestEntryProtoMsg {
   typeUrl: "/dydxprotocol.vest.MsgSetVestEntry";
   value: Uint8Array;
 }
-/** MsgSetVestEntry is the Msg/SetVestEntry request type. */
+/**
+ * MsgSetVestEntry is the Msg/SetVestEntry request type.
+ * @name MsgSetVestEntryAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.MsgSetVestEntry
+ */
 export interface MsgSetVestEntryAmino {
-  /** authority is the address that controls the module. */
+  /**
+   * authority is the address that controls the module.
+   */
   authority?: string;
-  /** The vest entry to set. */
+  /**
+   * The vest entry to set.
+   */
   entry?: VestEntryAmino;
 }
 export interface MsgSetVestEntryAminoMsg {
@@ -75,7 +98,12 @@ export interface MsgSetVestEntryResponseProtoMsg {
   typeUrl: "/dydxprotocol.vest.MsgSetVestEntryResponse";
   value: Uint8Array;
 }
-/** MsgSetVestEntryResponse is the Msg/SetVestEntry response type. */
+/**
+ * MsgSetVestEntryResponse is the Msg/SetVestEntry response type.
+ * @name MsgSetVestEntryResponseAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.MsgSetVestEntryResponse
+ */
 export interface MsgSetVestEntryResponseAmino {}
 export interface MsgSetVestEntryResponseAminoMsg {
   type: "/dydxprotocol.vest.MsgSetVestEntryResponse";

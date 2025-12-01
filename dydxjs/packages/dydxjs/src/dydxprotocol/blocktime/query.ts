@@ -14,6 +14,9 @@ export interface QueryDowntimeParamsRequestProtoMsg {
 /**
  * QueryDowntimeParamsRequest is a request type for the DowntimeParams
  * RPC method.
+ * @name QueryDowntimeParamsRequestAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryDowntimeParamsRequest
  */
 export interface QueryDowntimeParamsRequestAmino {}
 export interface QueryDowntimeParamsRequestAminoMsg {
@@ -39,6 +42,9 @@ export interface QueryDowntimeParamsResponseProtoMsg {
 /**
  * QueryDowntimeParamsResponse is a response type for the DowntimeParams
  * RPC method.
+ * @name QueryDowntimeParamsResponseAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryDowntimeParamsResponse
  */
 export interface QueryDowntimeParamsResponseAmino {
   params?: DowntimeParamsAmino;
@@ -66,6 +72,9 @@ export interface QueryPreviousBlockInfoRequestProtoMsg {
 /**
  * QueryPreviousBlockInfoRequest is a request type for the PreviousBlockInfo
  * RPC method.
+ * @name QueryPreviousBlockInfoRequestAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryPreviousBlockInfoRequest
  */
 export interface QueryPreviousBlockInfoRequestAmino {}
 export interface QueryPreviousBlockInfoRequestAminoMsg {
@@ -91,6 +100,9 @@ export interface QueryPreviousBlockInfoResponseProtoMsg {
 /**
  * QueryPreviousBlockInfoResponse is a request type for the PreviousBlockInfo
  * RPC method.
+ * @name QueryPreviousBlockInfoResponseAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryPreviousBlockInfoResponse
  */
 export interface QueryPreviousBlockInfoResponseAmino {
   info?: BlockInfoAmino;
@@ -118,6 +130,9 @@ export interface QueryAllDowntimeInfoRequestProtoMsg {
 /**
  * QueryAllDowntimeInfoRequest is a request type for the AllDowntimeInfo
  * RPC method.
+ * @name QueryAllDowntimeInfoRequestAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryAllDowntimeInfoRequest
  */
 export interface QueryAllDowntimeInfoRequestAmino {}
 export interface QueryAllDowntimeInfoRequestAminoMsg {
@@ -143,6 +158,9 @@ export interface QueryAllDowntimeInfoResponseProtoMsg {
 /**
  * QueryAllDowntimeInfoResponse is a request type for the AllDowntimeInfo
  * RPC method.
+ * @name QueryAllDowntimeInfoResponseAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.QueryAllDowntimeInfoResponse
  */
 export interface QueryAllDowntimeInfoResponseAmino {
   info?: AllDowntimeInfoAmino;

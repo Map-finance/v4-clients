@@ -21,6 +21,9 @@ export interface OperationProtoMsg {
 /**
  * Operation represents an operation in the proposed operations. Operation is
  * used internally within the memclob only.
+ * @name OperationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.Operation
  */
 export interface OperationAmino {
   match?: ClobMatchAmino;
@@ -59,6 +62,9 @@ export interface InternalOperationProtoMsg {
 /**
  * InternalOperation represents an internal operation in the operations to
  * propose. InternalOperation is used internally within the memclob only.
+ * @name InternalOperationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.InternalOperation
  */
 export interface InternalOperationAmino {
   match?: ClobMatchAmino;

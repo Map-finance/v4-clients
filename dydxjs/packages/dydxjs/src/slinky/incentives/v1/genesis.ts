@@ -14,7 +14,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/slinky.incentives.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState is the genesis-state for the x/incentives module. */
+/**
+ * GenesisState is the genesis-state for the x/incentives module.
+ * @name GenesisStateAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   /**
    * Registry is a list of incentives by type. The registry defined here
@@ -51,6 +56,9 @@ export interface IncentivesByTypeProtoMsg {
 /**
  * IncentivesByType encapsulates a list of incentives by type. Each of the
  * entries here must correspond to the same incentive type defined here.
+ * @name IncentivesByTypeAmino
+ * @package slinky.incentives.v1
+ * @see proto type: slinky.incentives.v1.IncentivesByType
  */
 export interface IncentivesByTypeAmino {
   /**
@@ -58,7 +66,9 @@ export interface IncentivesByTypeAmino {
    * GoodPriceIncentiveType).
    */
   incentive_type?: string;
-  /** Entries is a list of incentive bytes. */
+  /**
+   * Entries is a list of incentive bytes.
+   */
   entries?: string[];
 }
 export interface IncentivesByTypeAminoMsg {

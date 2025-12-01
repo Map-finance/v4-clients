@@ -25,6 +25,9 @@ export interface PerpetualLiquidationInfoProtoMsg {
  * for a position held by a subaccount.
  * Note this proto is defined to make it easier to hash
  * the metadata of a liquidation, and is never written to state.
+ * @name PerpetualLiquidationInfoAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.PerpetualLiquidationInfo
  */
 export interface PerpetualLiquidationInfoAmino {
   /**
@@ -32,7 +35,9 @@ export interface PerpetualLiquidationInfoAmino {
    * onto.
    */
   subaccount_id?: SubaccountIdAmino;
-  /** The id of the perpetual involved. */
+  /**
+   * The id of the perpetual involved.
+   */
   perpetual_id?: number;
 }
 export interface PerpetualLiquidationInfoAminoMsg {
@@ -77,6 +82,9 @@ export interface SubaccountLiquidationInfoProtoMsg {
 /**
  * SubaccountLiquidationInfo holds liquidation information per-subaccount in the
  * current block.
+ * @name SubaccountLiquidationInfoAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.SubaccountLiquidationInfo
  */
 export interface SubaccountLiquidationInfoAmino {
   /**
@@ -125,9 +133,14 @@ export interface SubaccountOpenPositionInfoProtoMsg {
 /**
  * SubaccountOpenPositionInfo holds information about open positions for a
  * perpetual.
+ * @name SubaccountOpenPositionInfoAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.SubaccountOpenPositionInfo
  */
 export interface SubaccountOpenPositionInfoAmino {
-  /** The id of the perpetual. */
+  /**
+   * The id of the perpetual.
+   */
   perpetual_id?: number;
   subaccounts_with_long_position?: SubaccountIdAmino[];
   subaccounts_with_short_position?: SubaccountIdAmino[];
@@ -298,8 +311,8 @@ export const SubaccountLiquidationInfo = {
     } else {
       obj.perpetuals_liquidated = message.perpetualsLiquidated;
     }
-    obj.notional_liquidated = message.notionalLiquidated !== BigInt(0) ? message.notionalLiquidated.toString() : undefined;
-    obj.quantums_insurance_lost = message.quantumsInsuranceLost !== BigInt(0) ? message.quantumsInsuranceLost.toString() : undefined;
+    obj.notional_liquidated = message.notionalLiquidated !== BigInt(0) ? message.notionalLiquidated?.toString() : undefined;
+    obj.quantums_insurance_lost = message.quantumsInsuranceLost !== BigInt(0) ? message.quantumsInsuranceLost?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountLiquidationInfoAminoMsg): SubaccountLiquidationInfo {

@@ -10,9 +10,16 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the ratelimit module's genesis state. */
+/**
+ * GenesisState defines the ratelimit module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.GenesisState
+ */
 export interface GenesisStateAmino {
-  /** limit_params_list defines the list of `LimitParams` at genesis. */
+  /**
+   * limit_params_list defines the list of `LimitParams` at genesis.
+   */
   limit_params_list?: LimitParamsAmino[];
 }
 export interface GenesisStateAminoMsg {

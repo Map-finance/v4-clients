@@ -11,7 +11,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.prices.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the prices module's genesis state. */
+/**
+ * GenesisState defines the prices module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.GenesisState
+ */
 export interface GenesisStateAmino {
   market_params?: MarketParamAmino[];
   market_prices?: MarketPriceAmino[];

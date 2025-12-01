@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.epochs.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the epochs module's genesis state. */
+/**
+ * GenesisState defines the epochs module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.epochs
+ * @see proto type: dydxprotocol.epochs.GenesisState
+ */
 export interface GenesisStateAmino {
   epoch_info_list?: EpochInfoAmino[];
 }

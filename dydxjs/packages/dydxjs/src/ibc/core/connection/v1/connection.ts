@@ -90,18 +90,27 @@ export interface ConnectionEndProtoMsg {
  * separate one.
  * NOTE: there must only be 2 defined ConnectionEnds to establish
  * a connection between two chains.
+ * @name ConnectionEndAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ConnectionEnd
  */
 export interface ConnectionEndAmino {
-  /** client associated with this connection. */
+  /**
+   * client associated with this connection.
+   */
   client_id?: string;
   /**
    * IBC version which can be utilised to determine encodings or protocols for
    * channels or packets utilising this connection.
    */
   versions?: VersionAmino[];
-  /** current state of the connection end. */
+  /**
+   * current state of the connection end.
+   */
   state?: State;
-  /** counterparty chain associated with this connection. */
+  /**
+   * counterparty chain associated with this connection.
+   */
   counterparty?: CounterpartyAmino;
   /**
    * delay period that must pass before a consensus state can be used for
@@ -155,22 +164,35 @@ export interface IdentifiedConnectionProtoMsg {
 /**
  * IdentifiedConnection defines a connection with additional connection
  * identifier field.
+ * @name IdentifiedConnectionAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.IdentifiedConnection
  */
 export interface IdentifiedConnectionAmino {
-  /** connection identifier. */
+  /**
+   * connection identifier.
+   */
   id?: string;
-  /** client associated with this connection. */
+  /**
+   * client associated with this connection.
+   */
   client_id?: string;
   /**
    * IBC version which can be utilised to determine encodings or protocols for
    * channels or packets utilising this connection
    */
   versions?: VersionAmino[];
-  /** current state of the connection end. */
+  /**
+   * current state of the connection end.
+   */
   state?: State;
-  /** counterparty chain associated with this connection. */
+  /**
+   * counterparty chain associated with this connection.
+   */
   counterparty?: CounterpartyAmino;
-  /** delay period associated with this connection. */
+  /**
+   * delay period associated with this connection.
+   */
   delay_period?: string;
 }
 export interface IdentifiedConnectionAminoMsg {
@@ -208,7 +230,12 @@ export interface CounterpartyProtoMsg {
   typeUrl: "/ibc.core.connection.v1.Counterparty";
   value: Uint8Array;
 }
-/** Counterparty defines the counterparty chain associated with a connection end. */
+/**
+ * Counterparty defines the counterparty chain associated with a connection end.
+ * @name CounterpartyAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Counterparty
+ */
 export interface CounterpartyAmino {
   /**
    * identifies the client on the counterparty chain associated with a given
@@ -220,7 +247,9 @@ export interface CounterpartyAmino {
    * given connection.
    */
   connection_id?: string;
-  /** commitment merkle prefix of the counterparty chain. */
+  /**
+   * commitment merkle prefix of the counterparty chain.
+   */
   prefix?: MerklePrefixAmino;
 }
 export interface CounterpartyAminoMsg {
@@ -242,9 +271,16 @@ export interface ClientPathsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.ClientPaths";
   value: Uint8Array;
 }
-/** ClientPaths define all the connection paths for a client state. */
+/**
+ * ClientPaths define all the connection paths for a client state.
+ * @name ClientPathsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ClientPaths
+ */
 export interface ClientPathsAmino {
-  /** list of connection paths */
+  /**
+   * list of connection paths
+   */
   paths?: string[];
 }
 export interface ClientPathsAminoMsg {
@@ -266,11 +302,20 @@ export interface ConnectionPathsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.ConnectionPaths";
   value: Uint8Array;
 }
-/** ConnectionPaths define all the connection paths for a given client state. */
+/**
+ * ConnectionPaths define all the connection paths for a given client state.
+ * @name ConnectionPathsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.ConnectionPaths
+ */
 export interface ConnectionPathsAmino {
-  /** client state unique identifier */
+  /**
+   * client state unique identifier
+   */
   client_id?: string;
-  /** list of connection paths */
+  /**
+   * list of connection paths
+   */
   paths?: string[];
 }
 export interface ConnectionPathsAminoMsg {
@@ -299,11 +344,18 @@ export interface VersionProtoMsg {
 /**
  * Version defines the versioning scheme used to negotiate the IBC verison in
  * the connection handshake.
+ * @name VersionAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Version
  */
 export interface VersionAmino {
-  /** unique version identifier */
+  /**
+   * unique version identifier
+   */
   identifier?: string;
-  /** list of features compatible with the specified identifier */
+  /**
+   * list of features compatible with the specified identifier
+   */
   features?: string[];
 }
 export interface VersionAminoMsg {
@@ -331,7 +383,12 @@ export interface ParamsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.Params";
   value: Uint8Array;
 }
-/** Params defines the set of Connection parameters. */
+/**
+ * Params defines the set of Connection parameters.
+ * @name ParamsAmino
+ * @package ibc.core.connection.v1
+ * @see proto type: ibc.core.connection.v1.Params
+ */
 export interface ParamsAmino {
   /**
    * maximum expected time per block (in nanoseconds), used to enforce block delay. This parameter should reflect the
@@ -442,7 +499,7 @@ export const ConnectionEnd = {
     }
     obj.state = message.state === 0 ? undefined : message.state;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
-    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod.toString() : undefined;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ConnectionEndAminoMsg): ConnectionEnd {
@@ -573,7 +630,7 @@ export const IdentifiedConnection = {
     }
     obj.state = message.state === 0 ? undefined : message.state;
     obj.counterparty = message.counterparty ? Counterparty.toAmino(message.counterparty) : undefined;
-    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod.toString() : undefined;
+    obj.delay_period = message.delayPeriod !== BigInt(0) ? message.delayPeriod?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IdentifiedConnectionAminoMsg): IdentifiedConnection {
@@ -972,7 +1029,7 @@ export const Params = {
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
-    obj.max_expected_time_per_block = message.maxExpectedTimePerBlock !== BigInt(0) ? message.maxExpectedTimePerBlock.toString() : undefined;
+    obj.max_expected_time_per_block = message.maxExpectedTimePerBlock !== BigInt(0) ? message.maxExpectedTimePerBlock?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

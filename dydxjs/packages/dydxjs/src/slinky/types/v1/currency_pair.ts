@@ -15,6 +15,9 @@ export interface CurrencyPairProtoMsg {
 /**
  * CurrencyPair is the standard representation of a pair of assets, where one
  * (Base) is priced in terms of the other (Quote)
+ * @name CurrencyPairAmino
+ * @package slinky.types.v1
+ * @see proto type: slinky.types.v1.CurrencyPair
  */
 export interface CurrencyPairAmino {
   Base?: string;

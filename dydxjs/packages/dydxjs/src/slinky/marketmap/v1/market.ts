@@ -16,7 +16,12 @@ export interface MarketProtoMsg {
   typeUrl: "/slinky.marketmap.v1.Market";
   value: Uint8Array;
 }
-/** Market encapsulates a Ticker and its provider-specific configuration. */
+/**
+ * Market encapsulates a Ticker and its provider-specific configuration.
+ * @name MarketAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.Market
+ */
 export interface MarketAmino {
   /**
    * Ticker represents a price feed for a given asset pair i.e. BTC/USD. The
@@ -24,7 +29,9 @@ export interface MarketAmino {
    * of providers required to consider the ticker valid.
    */
   ticker?: TickerAmino;
-  /** ProviderConfigs is the list of provider-specific configs for this Market. */
+  /**
+   * ProviderConfigs is the list of provider-specific configs for this Market.
+   */
   provider_configs?: ProviderConfigAmino[];
 }
 export interface MarketAminoMsg {
@@ -73,9 +80,14 @@ export interface TickerProtoMsg {
  * Ticker represents a price feed for a given asset pair i.e. BTC/USD. The price
  * feed is scaled to a number of decimal places and has a minimum number of
  * providers required to consider the ticker valid.
+ * @name TickerAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.Ticker
  */
 export interface TickerAmino {
-  /** CurrencyPair is the currency pair for this ticker. */
+  /**
+   * CurrencyPair is the currency pair for this ticker.
+   */
   currency_pair?: CurrencyPairAmino;
   /**
    * Decimals is the number of decimal places for the ticker. The number of
@@ -148,6 +160,11 @@ export interface ProviderConfigProtoMsg {
   typeUrl: "/slinky.marketmap.v1.ProviderConfig";
   value: Uint8Array;
 }
+/**
+ * @name ProviderConfigAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.ProviderConfig
+ */
 export interface ProviderConfigAmino {
   /**
    * Name corresponds to the name of the provider for which the configuration is
@@ -197,6 +214,11 @@ export interface MarketMap_MarketsEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
 }
+/**
+ * @name MarketMap_MarketsEntryAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketMap_MarketsEntry
+ */
 export interface MarketMap_MarketsEntryAmino {
   key?: string;
   value?: MarketAmino;
@@ -223,7 +245,12 @@ export interface MarketMapProtoMsg {
   typeUrl: "/slinky.marketmap.v1.MarketMap";
   value: Uint8Array;
 }
-/** MarketMap maps ticker strings to their Markets. */
+/**
+ * MarketMap maps ticker strings to their Markets.
+ * @name MarketMapAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.MarketMap
+ */
 export interface MarketMapAmino {
   /**
    * Markets is the full list of tickers and their associated configurations
@@ -409,8 +436,8 @@ export const Ticker = {
   toAmino(message: Ticker): TickerAmino {
     const obj: any = {};
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
-    obj.decimals = message.decimals !== BigInt(0) ? message.decimals.toString() : undefined;
-    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? message.minProviderCount.toString() : undefined;
+    obj.decimals = message.decimals !== BigInt(0) ? message.decimals?.toString() : undefined;
+    obj.min_provider_count = message.minProviderCount !== BigInt(0) ? message.minProviderCount?.toString() : undefined;
     obj.enabled = message.enabled === false ? undefined : message.enabled;
     obj.metadata_JSON = message.metadataJSON === "" ? undefined : message.metadataJSON;
     return obj;

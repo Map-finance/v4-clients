@@ -22,11 +22,18 @@ export interface MsgDepositToMegavaultProtoMsg {
 /**
  * MsgDepositToMegavault deposits the specified asset from the subaccount to
  * megavault.
+ * @name MsgDepositToMegavaultAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgDepositToMegavault
  */
 export interface MsgDepositToMegavaultAmino {
-  /** The subaccount to deposit from. */
+  /**
+   * The subaccount to deposit from.
+   */
   subaccount_id?: SubaccountIdAmino;
-  /** Number of quote quantums to deposit. */
+  /**
+   * Number of quote quantums to deposit.
+   */
   quote_quantums?: string;
 }
 export interface MsgDepositToMegavaultAminoMsg {
@@ -50,9 +57,16 @@ export interface MsgDepositToMegavaultResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.MsgDepositToMegavaultResponse";
   value: Uint8Array;
 }
-/** MsgDepositToMegavaultResponse is the Msg/DepositToMegavault response type. */
+/**
+ * MsgDepositToMegavaultResponse is the Msg/DepositToMegavault response type.
+ * @name MsgDepositToMegavaultResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgDepositToMegavaultResponse
+ */
 export interface MsgDepositToMegavaultResponseAmino {
-  /** The number of shares minted from the deposit. */
+  /**
+   * The number of shares minted from the deposit.
+   */
   minted_shares?: NumSharesAmino;
 }
 export interface MsgDepositToMegavaultResponseAminoMsg {
@@ -79,10 +93,15 @@ export interface MsgUpdateDefaultQuotingParamsProtoMsg {
 /**
  * MsgUpdateDefaultQuotingParams is the Msg/UpdateDefaultQuotingParams request
  * type.
+ * @name MsgUpdateDefaultQuotingParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgUpdateDefaultQuotingParams
  */
 export interface MsgUpdateDefaultQuotingParamsAmino {
   authority?: string;
-  /** The quoting parameters to update to. Every field must be set. */
+  /**
+   * The quoting parameters to update to. Every field must be set.
+   */
   default_quoting_params?: QuotingParamsAmino;
 }
 export interface MsgUpdateDefaultQuotingParamsAminoMsg {
@@ -109,6 +128,9 @@ export interface MsgUpdateDefaultQuotingParamsResponseProtoMsg {
 /**
  * MsgUpdateDefaultQuotingParamsResponse is the Msg/UpdateDefaultQuotingParams
  * response type.
+ * @name MsgUpdateDefaultQuotingParamsResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgUpdateDefaultQuotingParamsResponse
  */
 export interface MsgUpdateDefaultQuotingParamsResponseAmino {}
 export interface MsgUpdateDefaultQuotingParamsResponseAminoMsg {
@@ -132,12 +154,21 @@ export interface MsgSetVaultParamsProtoMsg {
   typeUrl: "/dydxprotocol.vault.MsgSetVaultParams";
   value: Uint8Array;
 }
-/** MsgSetVaultParams is the Msg/SetVaultParams request type. */
+/**
+ * MsgSetVaultParams is the Msg/SetVaultParams request type.
+ * @name MsgSetVaultParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgSetVaultParams
+ */
 export interface MsgSetVaultParamsAmino {
   authority?: string;
-  /** The vault to set params of. */
+  /**
+   * The vault to set params of.
+   */
   vault_id?: VaultIdAmino;
-  /** The parameters to set. */
+  /**
+   * The parameters to set.
+   */
   vault_params?: VaultParamsAmino;
 }
 export interface MsgSetVaultParamsAminoMsg {
@@ -156,7 +187,12 @@ export interface MsgSetVaultParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.MsgSetVaultParamsResponse";
   value: Uint8Array;
 }
-/** MsgSetVaultParamsResponse is the Msg/SetVaultParams response type. */
+/**
+ * MsgSetVaultParamsResponse is the Msg/SetVaultParams response type.
+ * @name MsgSetVaultParamsResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.MsgSetVaultParamsResponse
+ */
 export interface MsgSetVaultParamsResponseAmino {}
 export interface MsgSetVaultParamsResponseAminoMsg {
   type: "/dydxprotocol.vault.MsgSetVaultParamsResponse";

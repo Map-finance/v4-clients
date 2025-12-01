@@ -10,7 +10,12 @@ export interface QueryAssetRequestProtoMsg {
   typeUrl: "/dydxprotocol.assets.QueryAssetRequest";
   value: Uint8Array;
 }
-/** Queries an Asset by id. */
+/**
+ * Queries an Asset by id.
+ * @name QueryAssetRequestAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.QueryAssetRequest
+ */
 export interface QueryAssetRequestAmino {
   id?: number;
 }
@@ -30,7 +35,12 @@ export interface QueryAssetResponseProtoMsg {
   typeUrl: "/dydxprotocol.assets.QueryAssetResponse";
   value: Uint8Array;
 }
-/** QueryAssetResponse is response type for the Asset RPC method. */
+/**
+ * QueryAssetResponse is response type for the Asset RPC method.
+ * @name QueryAssetResponseAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.QueryAssetResponse
+ */
 export interface QueryAssetResponseAmino {
   asset?: AssetAmino;
 }
@@ -50,7 +60,12 @@ export interface QueryAllAssetsRequestProtoMsg {
   typeUrl: "/dydxprotocol.assets.QueryAllAssetsRequest";
   value: Uint8Array;
 }
-/** Queries a list of Asset items. */
+/**
+ * Queries a list of Asset items.
+ * @name QueryAllAssetsRequestAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.QueryAllAssetsRequest
+ */
 export interface QueryAllAssetsRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -71,7 +86,12 @@ export interface QueryAllAssetsResponseProtoMsg {
   typeUrl: "/dydxprotocol.assets.QueryAllAssetsResponse";
   value: Uint8Array;
 }
-/** QueryAllAssetsResponse is response type for the AllAssets RPC method. */
+/**
+ * QueryAllAssetsResponse is response type for the AllAssets RPC method.
+ * @name QueryAllAssetsResponseAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.QueryAllAssetsResponse
+ */
 export interface QueryAllAssetsResponseAmino {
   asset?: AssetAmino[];
   pagination?: PageResponseAmino;

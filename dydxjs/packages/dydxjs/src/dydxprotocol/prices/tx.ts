@@ -18,11 +18,18 @@ export interface MsgCreateOracleMarketProtoMsg {
 /**
  * MsgCreateOracleMarket is a message used by x/gov for creating a new oracle
  * market.
+ * @name MsgCreateOracleMarketAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgCreateOracleMarket
  */
 export interface MsgCreateOracleMarketAmino {
-  /** The address that controls the module. */
+  /**
+   * The address that controls the module.
+   */
   authority?: string;
-  /** `params` defines parameters for the new oracle market. */
+  /**
+   * `params` defines parameters for the new oracle market.
+   */
   params?: MarketParamAmino;
 }
 export interface MsgCreateOracleMarketAminoMsg {
@@ -43,7 +50,12 @@ export interface MsgCreateOracleMarketResponseProtoMsg {
   typeUrl: "/dydxprotocol.prices.MsgCreateOracleMarketResponse";
   value: Uint8Array;
 }
-/** MsgCreateOracleMarketResponse defines the CreateOracleMarket response type. */
+/**
+ * MsgCreateOracleMarketResponse defines the CreateOracleMarket response type.
+ * @name MsgCreateOracleMarketResponseAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgCreateOracleMarketResponse
+ */
 export interface MsgCreateOracleMarketResponseAmino {}
 export interface MsgCreateOracleMarketResponseAminoMsg {
   type: "/dydxprotocol.prices.MsgCreateOracleMarketResponse";
@@ -59,7 +71,12 @@ export interface MsgUpdateMarketPricesProtoMsg {
   typeUrl: "/dydxprotocol.prices.MsgUpdateMarketPrices";
   value: Uint8Array;
 }
-/** MsgUpdateMarketPrices is a request type for the UpdateMarketPrices method. */
+/**
+ * MsgUpdateMarketPrices is a request type for the UpdateMarketPrices method.
+ * @name MsgUpdateMarketPricesAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgUpdateMarketPrices
+ */
 export interface MsgUpdateMarketPricesAmino {
   market_price_updates?: MsgUpdateMarketPrices_MarketPriceAmino[];
 }
@@ -82,11 +99,20 @@ export interface MsgUpdateMarketPrices_MarketPriceProtoMsg {
   typeUrl: "/dydxprotocol.prices.MarketPrice";
   value: Uint8Array;
 }
-/** MarketPrice represents a price update for a single market */
+/**
+ * MarketPrice represents a price update for a single market
+ * @name MsgUpdateMarketPrices_MarketPriceAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgUpdateMarketPrices_MarketPrice
+ */
 export interface MsgUpdateMarketPrices_MarketPriceAmino {
-  /** The id of market to update */
+  /**
+   * The id of market to update
+   */
   market_id?: number;
-  /** The updated price */
+  /**
+   * The updated price
+   */
   price?: string;
 }
 export interface MsgUpdateMarketPrices_MarketPriceAminoMsg {
@@ -110,6 +136,9 @@ export interface MsgUpdateMarketPricesResponseProtoMsg {
 /**
  * MsgUpdateMarketPricesResponse defines the MsgUpdateMarketPrices response
  * type.
+ * @name MsgUpdateMarketPricesResponseAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgUpdateMarketPricesResponse
  */
 export interface MsgUpdateMarketPricesResponseAmino {}
 export interface MsgUpdateMarketPricesResponseAminoMsg {
@@ -137,10 +166,15 @@ export interface MsgUpdateMarketParamProtoMsg {
 /**
  * MsgUpdateMarketParam is a message used by x/gov for updating the parameters
  * of an oracle market.
+ * @name MsgUpdateMarketParamAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgUpdateMarketParam
  */
 export interface MsgUpdateMarketParamAmino {
   authority?: string;
-  /** The market param to update. Each field must be set. */
+  /**
+   * The market param to update. Each field must be set.
+   */
   market_param?: MarketParamAmino;
 }
 export interface MsgUpdateMarketParamAminoMsg {
@@ -161,7 +195,12 @@ export interface MsgUpdateMarketParamResponseProtoMsg {
   typeUrl: "/dydxprotocol.prices.MsgUpdateMarketParamResponse";
   value: Uint8Array;
 }
-/** MsgUpdateMarketParamResponse defines the UpdateMarketParam response type. */
+/**
+ * MsgUpdateMarketParamResponse defines the UpdateMarketParam response type.
+ * @name MsgUpdateMarketParamResponseAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MsgUpdateMarketParamResponse
+ */
 export interface MsgUpdateMarketParamResponseAmino {}
 export interface MsgUpdateMarketParamResponseAminoMsg {
   type: "/dydxprotocol.prices.MsgUpdateMarketParamResponse";
@@ -415,7 +454,7 @@ export const MsgUpdateMarketPrices_MarketPrice = {
   toAmino(message: MsgUpdateMarketPrices_MarketPrice): MsgUpdateMarketPrices_MarketPriceAmino {
     const obj: any = {};
     obj.market_id = message.marketId === 0 ? undefined : message.marketId;
-    obj.price = message.price !== BigInt(0) ? message.price.toString() : undefined;
+    obj.price = message.price !== BigInt(0) ? message.price?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateMarketPrices_MarketPriceAminoMsg): MsgUpdateMarketPrices_MarketPrice {

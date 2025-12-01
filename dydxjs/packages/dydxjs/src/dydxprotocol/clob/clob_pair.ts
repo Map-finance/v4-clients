@@ -103,9 +103,14 @@ export interface PerpetualClobMetadataProtoMsg {
 /**
  * PerpetualClobMetadata contains metadata for a `ClobPair`
  * representing a Perpetual product.
+ * @name PerpetualClobMetadataAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.PerpetualClobMetadata
  */
 export interface PerpetualClobMetadataAmino {
-  /** Id of the Perpetual the CLOB allows trading of. */
+  /**
+   * Id of the Perpetual the CLOB allows trading of.
+   */
   perpetual_id?: number;
 }
 export interface PerpetualClobMetadataAminoMsg {
@@ -136,11 +141,18 @@ export interface SpotClobMetadataProtoMsg {
 /**
  * PerpetualClobMetadata contains metadata for a `ClobPair`
  * representing a Spot product.
+ * @name SpotClobMetadataAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.SpotClobMetadata
  */
 export interface SpotClobMetadataAmino {
-  /** Id of the base Asset in the trading pair. */
+  /**
+   * Id of the base Asset in the trading pair.
+   */
   base_asset_id?: number;
-  /** Id of the quote Asset in the trading pair. */
+  /**
+   * Id of the quote Asset in the trading pair.
+   */
   quote_asset_id?: number;
 }
 export interface SpotClobMetadataAminoMsg {
@@ -187,13 +199,20 @@ export interface ClobPairProtoMsg {
 /**
  * ClobPair represents a single CLOB pair for a given product
  * in state.
+ * @name ClobPairAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ClobPair
  */
 export interface ClobPairAmino {
-  /** ID of the orderbook that stores all resting liquidity for this CLOB. */
+  /**
+   * ID of the orderbook that stores all resting liquidity for this CLOB.
+   */
   id?: number;
   perpetual_clob_metadata?: PerpetualClobMetadataAmino;
   spot_clob_metadata?: SpotClobMetadataAmino;
-  /** Minimum increment in the size of orders on the CLOB, in base quantums. */
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   */
   step_base_quantums?: string;
   /**
    * Defines the tick size of the orderbook by defining how many subticks
@@ -489,7 +508,7 @@ export const ClobPair = {
     obj.id = message.id === 0 ? undefined : message.id;
     obj.perpetual_clob_metadata = message.perpetualClobMetadata ? PerpetualClobMetadata.toAmino(message.perpetualClobMetadata) : undefined;
     obj.spot_clob_metadata = message.spotClobMetadata ? SpotClobMetadata.toAmino(message.spotClobMetadata) : undefined;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.status = message.status === 0 ? undefined : message.status;

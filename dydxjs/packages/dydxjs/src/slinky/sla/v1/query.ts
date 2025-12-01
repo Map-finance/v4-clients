@@ -7,7 +7,12 @@ export interface GetAllSLAsRequestProtoMsg {
   typeUrl: "/slinky.sla.v1.GetAllSLAsRequest";
   value: Uint8Array;
 }
-/** QueryAllSLAsRequest is the request type for the Query/GetAllSLAs RPC method. */
+/**
+ * QueryAllSLAsRequest is the request type for the Query/GetAllSLAs RPC method.
+ * @name GetAllSLAsRequestAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.GetAllSLAsRequest
+ */
 export interface GetAllSLAsRequestAmino {}
 export interface GetAllSLAsRequestAminoMsg {
   type: "/slinky.sla.v1.GetAllSLAsRequest";
@@ -29,6 +34,9 @@ export interface GetAllSLAsResponseProtoMsg {
 /**
  * QueryAllSLAsResponse is the response type for the Query/GetAllSLAs RPC
  * method.
+ * @name GetAllSLAsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.GetAllSLAsResponse
  */
 export interface GetAllSLAsResponseAmino {
   slas?: PriceFeedSLAAmino[];
@@ -59,9 +67,14 @@ export interface GetPriceFeedsRequestProtoMsg {
 /**
  * QueryGetPriceFeedsRequest is the request type for the Query/GetPriceFeeds RPC
  * method.
+ * @name GetPriceFeedsRequestAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.GetPriceFeedsRequest
  */
 export interface GetPriceFeedsRequestAmino {
-  /** ID defines the SLA to query price feeds for. */
+  /**
+   * ID defines the SLA to query price feeds for.
+   */
   id?: string;
 }
 export interface GetPriceFeedsRequestAminoMsg {
@@ -90,9 +103,14 @@ export interface GetPriceFeedsResponseProtoMsg {
 /**
  * QueryGetPriceFeedsResponse is the response type for the Query/GetPriceFeeds
  * RPC method.
+ * @name GetPriceFeedsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.GetPriceFeedsResponse
  */
 export interface GetPriceFeedsResponseAmino {
-  /** PriceFeeds defines the price feeds for the given SLA. */
+  /**
+   * PriceFeeds defines the price feeds for the given SLA.
+   */
   price_feeds?: PriceFeedAmino[];
 }
 export interface GetPriceFeedsResponseAminoMsg {
@@ -112,7 +130,12 @@ export interface ParamsRequestProtoMsg {
   typeUrl: "/slinky.sla.v1.ParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/**
+ * QueryParamsRequest is the request type for the Query/Params RPC method.
+ * @name ParamsRequestAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.ParamsRequest
+ */
 export interface ParamsRequestAmino {}
 export interface ParamsRequestAminoMsg {
   type: "/slinky.sla.v1.ParamsRequest";
@@ -128,7 +151,12 @@ export interface ParamsResponseProtoMsg {
   typeUrl: "/slinky.sla.v1.ParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/**
+ * QueryParamsResponse is the response type for the Query/Params RPC method.
+ * @name ParamsResponseAmino
+ * @package slinky.sla.v1
+ * @see proto type: slinky.sla.v1.ParamsResponse
+ */
 export interface ParamsResponseAmino {
   params?: ParamsAmino;
 }

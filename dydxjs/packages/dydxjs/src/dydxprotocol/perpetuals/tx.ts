@@ -13,11 +13,20 @@ export interface MsgCreatePerpetualProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.MsgCreatePerpetual";
   value: Uint8Array;
 }
-/** MsgCreatePerpetual is a message used by x/gov to create a new perpetual. */
+/**
+ * MsgCreatePerpetual is a message used by x/gov to create a new perpetual.
+ * @name MsgCreatePerpetualAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgCreatePerpetual
+ */
 export interface MsgCreatePerpetualAmino {
-  /** The address that controls the module. */
+  /**
+   * The address that controls the module.
+   */
   authority?: string;
-  /** `params` defines parameters for the new perpetual market. */
+  /**
+   * `params` defines parameters for the new perpetual market.
+   */
   params?: PerpetualParamsAmino;
 }
 export interface MsgCreatePerpetualAminoMsg {
@@ -41,6 +50,9 @@ export interface MsgCreatePerpetualResponseProtoMsg {
 /**
  * MsgCreatePerpetualResponse defines the CreatePerpetual
  * response type.
+ * @name MsgCreatePerpetualResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgCreatePerpetualResponse
  */
 export interface MsgCreatePerpetualResponseAmino {}
 export interface MsgCreatePerpetualResponseAminoMsg {
@@ -69,11 +81,18 @@ export interface MsgSetLiquidityTierProtoMsg {
 /**
  * MsgSetLiquidityTier is a message used by x/gov to create or update a
  * liquidity tier.
+ * @name MsgSetLiquidityTierAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgSetLiquidityTier
  */
 export interface MsgSetLiquidityTierAmino {
-  /** The address that controls the module. */
+  /**
+   * The address that controls the module.
+   */
   authority?: string;
-  /** The liquidity tier to create or update. */
+  /**
+   * The liquidity tier to create or update.
+   */
   liquidity_tier?: LiquidityTierAmino;
 }
 export interface MsgSetLiquidityTierAminoMsg {
@@ -94,7 +113,12 @@ export interface MsgSetLiquidityTierResponseProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.MsgSetLiquidityTierResponse";
   value: Uint8Array;
 }
-/** MsgSetLiquidityTierResponse defines the SetLiquidityTier response type. */
+/**
+ * MsgSetLiquidityTierResponse defines the SetLiquidityTier response type.
+ * @name MsgSetLiquidityTierResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgSetLiquidityTierResponse
+ */
 export interface MsgSetLiquidityTierResponseAmino {}
 export interface MsgSetLiquidityTierResponseAminoMsg {
   type: "/dydxprotocol.perpetuals.MsgSetLiquidityTierResponse";
@@ -118,10 +142,15 @@ export interface MsgUpdatePerpetualParamsProtoMsg {
 /**
  * MsgUpdatePerpetualParams is a message used by x/gov to update the parameters
  * of a perpetual.
+ * @name MsgUpdatePerpetualParamsAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgUpdatePerpetualParams
  */
 export interface MsgUpdatePerpetualParamsAmino {
   authority?: string;
-  /** The perpetual to update. Each field must be set. */
+  /**
+   * The perpetual to update. Each field must be set.
+   */
   perpetual_params?: PerpetualParamsAmino;
 }
 export interface MsgUpdatePerpetualParamsAminoMsg {
@@ -148,6 +177,9 @@ export interface MsgUpdatePerpetualParamsResponseProtoMsg {
 /**
  * MsgUpdatePerpetualParamsResponse defines the UpdatePerpetualParams
  * response type.
+ * @name MsgUpdatePerpetualParamsResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgUpdatePerpetualParamsResponse
  */
 export interface MsgUpdatePerpetualParamsResponseAmino {}
 export interface MsgUpdatePerpetualParamsResponseAminoMsg {
@@ -176,11 +208,18 @@ export interface FundingPremiumProtoMsg {
 /**
  * FundingPremium represents a funding premium value for a perpetual
  * market. Can be used to represent a premium vote or a premium sample.
+ * @name FundingPremiumAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.FundingPremium
  */
 export interface FundingPremiumAmino {
-  /** The id of the perpetual market. */
+  /**
+   * The id of the perpetual market.
+   */
   perpetual_id?: number;
-  /** The sampled premium rate. In parts-per-million. */
+  /**
+   * The sampled premium rate. In parts-per-million.
+   */
   premium_ppm?: number;
 }
 export interface FundingPremiumAminoMsg {
@@ -203,7 +242,12 @@ export interface MsgAddPremiumVotesProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.MsgAddPremiumVotes";
   value: Uint8Array;
 }
-/** MsgAddPremiumVotes is a request type for the AddPremiumVotes method. */
+/**
+ * MsgAddPremiumVotes is a request type for the AddPremiumVotes method.
+ * @name MsgAddPremiumVotesAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgAddPremiumVotes
+ */
 export interface MsgAddPremiumVotesAmino {
   votes?: FundingPremiumAmino[];
 }
@@ -227,6 +271,9 @@ export interface MsgAddPremiumVotesResponseProtoMsg {
 /**
  * MsgAddPremiumVotesResponse defines the AddPremiumVotes
  * response type.
+ * @name MsgAddPremiumVotesResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgAddPremiumVotesResponse
  */
 export interface MsgAddPremiumVotesResponseAmino {}
 export interface MsgAddPremiumVotesResponseAminoMsg {
@@ -254,10 +301,15 @@ export interface MsgUpdateParamsProtoMsg {
 /**
  * MsgUpdateParams is a message used by x/gov to update the parameters of the
  * perpetuals module.
+ * @name MsgUpdateParamsAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgUpdateParams
  */
 export interface MsgUpdateParamsAmino {
   authority?: string;
-  /** The parameters to update. Each field must be set. */
+  /**
+   * The parameters to update. Each field must be set.
+   */
   params?: ParamsAmino;
 }
 export interface MsgUpdateParamsAminoMsg {
@@ -278,7 +330,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.perpetuals.MsgUpdateParamsResponse";
   value: Uint8Array;
 }
-/** MsgUpdateParamsResponse defines the UpdateParams response type. */
+/**
+ * MsgUpdateParamsResponse defines the UpdateParams response type.
+ * @name MsgUpdateParamsResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.MsgUpdateParamsResponse
+ */
 export interface MsgUpdateParamsResponseAmino {}
 export interface MsgUpdateParamsResponseAminoMsg {
   type: "/dydxprotocol.perpetuals.MsgUpdateParamsResponse";

@@ -25,18 +25,27 @@ export interface PerpetualPositionProtoMsg {
 /**
  * PerpetualPositions are an account’s positions of a `Perpetual`.
  * Therefore they hold any information needed to trade perpetuals.
+ * @name PerpetualPositionAmino
+ * @package dydxprotocol.subaccounts
+ * @see proto type: dydxprotocol.subaccounts.PerpetualPosition
  */
 export interface PerpetualPositionAmino {
-  /** The `Id` of the `Perpetual`. */
+  /**
+   * The `Id` of the `Perpetual`.
+   */
   perpetual_id?: number;
-  /** The size of the position in base quantums. */
+  /**
+   * The size of the position in base quantums.
+   */
   quantums?: string;
   /**
    * The funding_index of the `Perpetual` the last time this position was
    * settled.
    */
   funding_index?: string;
-  /** The quote_balance of the `Perpetual`. */
+  /**
+   * The quote_balance of the `Perpetual`.
+   */
   quote_balance?: string;
 }
 export interface PerpetualPositionAminoMsg {

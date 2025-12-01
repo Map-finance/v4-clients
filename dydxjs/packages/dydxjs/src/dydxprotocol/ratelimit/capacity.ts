@@ -20,7 +20,12 @@ export interface DenomCapacityProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.DenomCapacity";
   value: Uint8Array;
 }
-/** DenomCapacity stores a list of rate limit capacity for a denom. */
+/**
+ * DenomCapacity stores a list of rate limit capacity for a denom.
+ * @name DenomCapacityAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.DenomCapacity
+ */
 export interface DenomCapacityAmino {
   /**
    * denom is the denomination of the token being rate limited.
@@ -52,7 +57,12 @@ export interface LimiterCapacityProtoMsg {
   typeUrl: "/dydxprotocol.ratelimit.LimiterCapacity";
   value: Uint8Array;
 }
-/** LimiterCapacity contains a pair of limiter and its corresponding capacity. */
+/**
+ * LimiterCapacity contains a pair of limiter and its corresponding capacity.
+ * @name LimiterCapacityAmino
+ * @package dydxprotocol.ratelimit
+ * @see proto type: dydxprotocol.ratelimit.LimiterCapacity
+ */
 export interface LimiterCapacityAmino {
   limiter?: LimiterAmino;
   capacity?: string;

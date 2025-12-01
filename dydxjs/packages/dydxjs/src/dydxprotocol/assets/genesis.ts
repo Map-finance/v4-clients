@@ -9,7 +9,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.assets.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the assets module's genesis state. */
+/**
+ * GenesisState defines the assets module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.assets
+ * @see proto type: dydxprotocol.assets.GenesisState
+ */
 export interface GenesisStateAmino {
   assets?: AssetAmino[];
 }

@@ -34,6 +34,9 @@ export interface AlertParamsProtoMsg {
  * AlertParams is the set of parameters for the x/Alerts module's Alerting. It
  * defines whether or not Alerts can be submitted, and if so, the minimum
  * bond amount required to submit an Alert.
+ * @name AlertParamsAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.AlertParams
  */
 export interface AlertParamsAmino {
   /**
@@ -83,9 +86,16 @@ export interface PruningParamsProtoMsg {
   typeUrl: "/slinky.alerts.v1.PruningParams";
   value: Uint8Array;
 }
-/** PruningParams defines the criterion for pruning Alerts from the state. */
+/**
+ * PruningParams defines the criterion for pruning Alerts from the state.
+ * @name PruningParamsAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.PruningParams
+ */
 export interface PruningParamsAmino {
-  /** Enabled defines whether Alerts are to be pruned */
+  /**
+   * Enabled defines whether Alerts are to be pruned
+   */
   enabled?: boolean;
   /**
    * BlocksToPrune defines the number of blocks until an Alert will be pruned
@@ -127,16 +137,25 @@ export type ParamsEncoded = Omit<Params, "conclusionVerificationParams"> & {
    */
   conclusionVerificationParams?: MultiSigConclusionVerificationParamsProtoMsg | AnyProtoMsg | undefined;
 };
-/** Params is the set of parameters for the x/Alerts module. */
+/**
+ * Params is the set of parameters for the x/Alerts module.
+ * @name ParamsAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.Params
+ */
 export interface ParamsAmino {
-  /** AlertParams is the set of parameters for the x/Alerts module's Alerting. */
+  /**
+   * AlertParams is the set of parameters for the x/Alerts module's Alerting.
+   */
   alert_params?: AlertParamsAmino;
   /**
    * ConclusionVerificationParams is the set of parameters for the x/Alerts
    * module's conclusion verification.
    */
   conclusion_verification_params?: AnyAmino;
-  /** PruningParams is the set of parameters for the x/Alerts module's pruning. */
+  /**
+   * PruningParams is the set of parameters for the x/Alerts module's pruning.
+   */
   pruning_params?: PruningParamsAmino;
 }
 export interface ParamsAminoMsg {
@@ -166,11 +185,18 @@ export interface GenesisStateProtoMsg {
 /**
  * GenesisState is the state that must be provided at genesis. It contains
  * params for the module, and the set initial Alerts.
+ * @name GenesisStateAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.GenesisState
  */
 export interface GenesisStateAmino {
-  /** Params is the set of x/Alerts parameters */
+  /**
+   * Params is the set of x/Alerts parameters
+   */
   params?: ParamsAmino;
-  /** Alerts is the set of Alerts that have been submitted to the module */
+  /**
+   * Alerts is the set of Alerts that have been submitted to the module
+   */
   alerts?: AlertWithStatusAmino[];
 }
 export interface GenesisStateAminoMsg {
@@ -253,7 +279,7 @@ export const AlertParams = {
     const obj: any = {};
     obj.enabled = message.enabled === false ? undefined : message.enabled;
     obj.bond_amount = message.bondAmount ? Coin.toAmino(message.bondAmount) : Coin.toAmino(Coin.fromPartial({}));
-    obj.max_block_age = message.maxBlockAge !== BigInt(0) ? message.maxBlockAge.toString() : undefined;
+    obj.max_block_age = message.maxBlockAge !== BigInt(0) ? message.maxBlockAge?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: AlertParamsAminoMsg): AlertParams {
@@ -328,7 +354,7 @@ export const PruningParams = {
   toAmino(message: PruningParams): PruningParamsAmino {
     const obj: any = {};
     obj.enabled = message.enabled === false ? undefined : message.enabled;
-    obj.blocks_to_prune = message.blocksToPrune !== BigInt(0) ? message.blocksToPrune.toString() : undefined;
+    obj.blocks_to_prune = message.blocksToPrune !== BigInt(0) ? message.blocksToPrune?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: PruningParamsAminoMsg): PruningParams {

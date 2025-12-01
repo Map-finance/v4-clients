@@ -9,9 +9,16 @@ export interface AffiliateTiersProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.AffiliateTiers";
   value: Uint8Array;
 }
-/** AffiliateTiers defines the affiliate tiers. */
+/**
+ * AffiliateTiers defines the affiliate tiers.
+ * @name AffiliateTiersAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AffiliateTiers
+ */
 export interface AffiliateTiersAmino {
-  /** All affiliate tiers */
+  /**
+   * All affiliate tiers
+   */
   tiers?: AffiliateTiers_TierAmino[];
 }
 export interface AffiliateTiersAminoMsg {
@@ -37,15 +44,28 @@ export interface AffiliateTiers_TierProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.Tier";
   value: Uint8Array;
 }
-/** Tier defines an affiliate tier. */
+/**
+ * Tier defines an affiliate tier.
+ * @name AffiliateTiers_TierAmino
+ * @package dydxprotocol.affiliates
+ * @see proto type: dydxprotocol.affiliates.AffiliateTiers_Tier
+ */
 export interface AffiliateTiers_TierAmino {
-  /** Level of the tier */
+  /**
+   * Level of the tier
+   */
   level?: number;
-  /** Required all-time referred volume in quote quantums. */
+  /**
+   * Required all-time referred volume in quote quantums.
+   */
   req_referred_volume?: string;
-  /** Required currently staked native tokens (in whole coins). */
+  /**
+   * Required currently staked native tokens (in whole coins).
+   */
   req_staked_whole_coins?: number;
-  /** Taker fee share in parts-per-million. */
+  /**
+   * Taker fee share in parts-per-million.
+   */
   taker_fee_share_ppm?: number;
 }
 export interface AffiliateTiers_TierAminoMsg {
@@ -202,7 +222,7 @@ export const AffiliateTiers_Tier = {
   toAmino(message: AffiliateTiers_Tier): AffiliateTiers_TierAmino {
     const obj: any = {};
     obj.level = message.level === 0 ? undefined : message.level;
-    obj.req_referred_volume = message.reqReferredVolume !== BigInt(0) ? message.reqReferredVolume.toString() : undefined;
+    obj.req_referred_volume = message.reqReferredVolume !== BigInt(0) ? message.reqReferredVolume?.toString() : undefined;
     obj.req_staked_whole_coins = message.reqStakedWholeCoins === 0 ? undefined : message.reqStakedWholeCoins;
     obj.taker_fee_share_ppm = message.takerFeeSharePpm === 0 ? undefined : message.takerFeeSharePpm;
     return obj;

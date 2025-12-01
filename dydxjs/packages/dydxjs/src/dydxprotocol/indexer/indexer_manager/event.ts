@@ -65,6 +65,9 @@ export interface IndexerTendermintEventWrapperProtoMsg {
 /**
  * IndexerTendermintEventWrapper is a wrapper around IndexerTendermintEvent,
  * with an additional txn_hash field.
+ * @name IndexerTendermintEventWrapperAmino
+ * @package dydxprotocol.indexer.indexer_manager
+ * @see proto type: dydxprotocol.indexer.indexer_manager.IndexerTendermintEventWrapper
  */
 export interface IndexerTendermintEventWrapperAmino {
   event?: IndexerTendermintEventAmino;
@@ -96,6 +99,9 @@ export interface IndexerEventsStoreValueProtoMsg {
 /**
  * IndexerEventsStoreValue represents the type of the value of the
  * `IndexerEventsStore` in state.
+ * @name IndexerEventsStoreValueAmino
+ * @package dydxprotocol.indexer.indexer_manager
+ * @see proto type: dydxprotocol.indexer.indexer_manager.IndexerEventsStoreValue
  */
 export interface IndexerEventsStoreValueAmino {
   events?: IndexerTendermintEventWrapperAmino[];
@@ -140,9 +146,14 @@ export interface IndexerTendermintEventProtoMsg {
  * IndexerTendermintEvent contains the base64 encoded event proto emitted from
  * the dYdX application as well as additional metadata to determine the ordering
  * of the event within the block and the subtype of the event.
+ * @name IndexerTendermintEventAmino
+ * @package dydxprotocol.indexer.indexer_manager
+ * @see proto type: dydxprotocol.indexer.indexer_manager.IndexerTendermintEvent
  */
 export interface IndexerTendermintEventAmino {
-  /** Subtype of the event e.g. "order_fill", "subaccount_update", etc. */
+  /**
+   * Subtype of the event e.g. "order_fill", "subaccount_update", etc.
+   */
   subtype?: string;
   transaction_index?: number;
   block_event?: IndexerTendermintEvent_BlockEvent;
@@ -152,9 +163,13 @@ export interface IndexerTendermintEventAmino {
    * TODO(DEC-537): Deprecate this field because events are already ordered.
    */
   event_index?: number;
-  /** Version of the event. */
+  /**
+   * Version of the event.
+   */
   version?: number;
-  /** Tendermint event bytes. */
+  /**
+   * Tendermint event bytes.
+   */
   data_bytes?: string;
 }
 export interface IndexerTendermintEventAminoMsg {
@@ -195,6 +210,9 @@ export interface IndexerTendermintBlockProtoMsg {
  * metadata for the block height, timestamp of the block and a list of all the
  * hashes of the transactions within the block. The transaction hashes follow
  * the ordering of the transactions as they appear within the block.
+ * @name IndexerTendermintBlockAmino
+ * @package dydxprotocol.indexer.indexer_manager
+ * @see proto type: dydxprotocol.indexer.indexer_manager.IndexerTendermintBlock
  */
 export interface IndexerTendermintBlockAmino {
   height?: number;

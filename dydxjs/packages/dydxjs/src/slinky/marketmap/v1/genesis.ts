@@ -22,7 +22,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/slinky.marketmap.v1.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the x/marketmap module's genesis state. */
+/**
+ * GenesisState defines the x/marketmap module's genesis state.
+ * @name GenesisStateAmino
+ * @package slinky.marketmap.v1
+ * @see proto type: slinky.marketmap.v1.GenesisState
+ */
 export interface GenesisStateAmino {
   /**
    * MarketMap defines the global set of market configurations for all providers
@@ -35,7 +40,9 @@ export interface GenesisStateAmino {
    * is a new update to the map.
    */
   last_updated?: string;
-  /** Params are the parameters for the x/marketmap module. */
+  /**
+   * Params are the parameters for the x/marketmap module.
+   */
   params?: ParamsAmino;
 }
 export interface GenesisStateAminoMsg {
@@ -115,7 +122,7 @@ export const GenesisState = {
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.market_map = message.marketMap ? MarketMap.toAmino(message.marketMap) : undefined;
-    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated.toString() : undefined;
+    obj.last_updated = message.lastUpdated !== BigInt(0) ? message.lastUpdated?.toString() : undefined;
     obj.params = message.params ? Params.toAmino(message.params) : undefined;
     return obj;
   },

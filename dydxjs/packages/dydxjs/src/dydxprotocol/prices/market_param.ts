@@ -43,11 +43,18 @@ export interface MarketParamProtoMsg {
  * representing price values, resolving markets on individual exchanges, and
  * generating price updates. This configuration is specific to the quote
  * currency.
+ * @name MarketParamAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.MarketParam
  */
 export interface MarketParamAmino {
-  /** Unique, sequentially-generated value. */
+  /**
+   * Unique, sequentially-generated value.
+   */
   id?: number;
-  /** The human-readable name of the market pair (e.g. `BTC-USD`). */
+  /**
+   * The human-readable name of the market pair (e.g. `BTC-USD`).
+   */
   pair?: string;
   /**
    * Static value. The exponent of the price.

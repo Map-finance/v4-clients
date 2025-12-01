@@ -15,9 +15,16 @@ export interface IndexerSubaccountIdProtoMsg {
   typeUrl: "/dydxprotocol.indexer.protocol.v1.IndexerSubaccountId";
   value: Uint8Array;
 }
-/** IndexerSubaccountId defines a unique identifier for a Subaccount. */
+/**
+ * IndexerSubaccountId defines a unique identifier for a Subaccount.
+ * @name IndexerSubaccountIdAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.IndexerSubaccountId
+ */
 export interface IndexerSubaccountIdAmino {
-  /** The address of the wallet that owns this subaccount. */
+  /**
+   * The address of the wallet that owns this subaccount.
+   */
   owner?: string;
   /**
    * < 128 Since 128 should be enough to start and it fits within
@@ -63,11 +70,18 @@ export interface IndexerPerpetualPositionProtoMsg {
 /**
  * IndexerPerpetualPosition are an account’s positions of a `Perpetual`.
  * Therefore they hold any information needed to trade perpetuals.
+ * @name IndexerPerpetualPositionAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.IndexerPerpetualPosition
  */
 export interface IndexerPerpetualPositionAmino {
-  /** The `Id` of the `Perpetual`. */
+  /**
+   * The `Id` of the `Perpetual`.
+   */
   perpetual_id?: number;
-  /** The size of the position in base quantums. */
+  /**
+   * The size of the position in base quantums.
+   */
   quantums?: string;
   /**
    * The funding_index of the `Perpetual` the last time this position was
@@ -119,11 +133,18 @@ export interface IndexerAssetPositionProtoMsg {
 /**
  * IndexerAssetPosition define an account’s positions of an `Asset`.
  * Therefore they hold any information needed to trade on Spot and Margin.
+ * @name IndexerAssetPositionAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.IndexerAssetPosition
  */
 export interface IndexerAssetPositionAmino {
-  /** The `Id` of the `Asset`. */
+  /**
+   * The `Id` of the `Asset`.
+   */
   asset_id?: number;
-  /** The absolute size of the position in base quantums. */
+  /**
+   * The absolute size of the position in base quantums.
+   */
   quantums?: string;
   /**
    * The `Index` (either `LongIndex` or `ShortIndex`) of the `Asset` the last
@@ -387,7 +408,7 @@ export const IndexerAssetPosition = {
     const obj: any = {};
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
     obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
-    obj.index = message.index !== BigInt(0) ? message.index.toString() : undefined;
+    obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: IndexerAssetPositionAminoMsg): IndexerAssetPosition {

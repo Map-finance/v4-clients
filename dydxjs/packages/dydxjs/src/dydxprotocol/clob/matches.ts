@@ -20,6 +20,9 @@ export interface ClobMatchProtoMsg {
  * ClobMatch represents an operations queue entry around all different types
  * of matches, specifically regular matches, liquidation matches, and
  * deleveraging matches.
+ * @name ClobMatchAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ClobMatch
  */
 export interface ClobMatchAmino {
   match_orders?: MatchOrdersAmino;
@@ -54,14 +57,21 @@ export interface MakerFillProtoMsg {
   typeUrl: "/dydxprotocol.clob.MakerFill";
   value: Uint8Array;
 }
-/** MakerFill represents the filled amount of a matched maker order. */
+/**
+ * MakerFill represents the filled amount of a matched maker order.
+ * @name MakerFillAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MakerFill
+ */
 export interface MakerFillAmino {
   /**
    * The filled amount of the matched maker order, in base quantums.
    * TODO(CLOB-571): update to use SerializableInt.
    */
   fill_amount?: string;
-  /** The `OrderId` of the matched maker order. */
+  /**
+   * The `OrderId` of the matched maker order.
+   */
   maker_order_id?: OrderIdAmino;
 }
 export interface MakerFillAminoMsg {
@@ -84,11 +94,20 @@ export interface MatchOrdersProtoMsg {
   typeUrl: "/dydxprotocol.clob.MatchOrders";
   value: Uint8Array;
 }
-/** MatchOrders is an injected message used for matching orders. */
+/**
+ * MatchOrders is an injected message used for matching orders.
+ * @name MatchOrdersAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MatchOrders
+ */
 export interface MatchOrdersAmino {
-  /** The `OrderId` of the taker order. */
+  /**
+   * The `OrderId` of the taker order.
+   */
   taker_order_id?: OrderIdAmino;
-  /** An ordered list of fills created by this taker order. */
+  /**
+   * An ordered list of fills created by this taker order.
+   */
   fills?: MakerFillAmino[];
 }
 export interface MatchOrdersAminoMsg {
@@ -125,19 +144,34 @@ export interface MatchPerpetualLiquidationProtoMsg {
 /**
  * MatchPerpetualLiquidation is an injected message used for liquidating a
  * subaccount.
+ * @name MatchPerpetualLiquidationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MatchPerpetualLiquidation
  */
 export interface MatchPerpetualLiquidationAmino {
-  /** ID of the subaccount that was liquidated. */
+  /**
+   * ID of the subaccount that was liquidated.
+   */
   liquidated?: SubaccountIdAmino;
-  /** The ID of the clob pair involved in the liquidation. */
+  /**
+   * The ID of the clob pair involved in the liquidation.
+   */
   clob_pair_id?: number;
-  /** The ID of the perpetual involved in the liquidation. */
+  /**
+   * The ID of the perpetual involved in the liquidation.
+   */
   perpetual_id?: number;
-  /** The total size of the liquidation order including any unfilled size. */
+  /**
+   * The total size of the liquidation order including any unfilled size.
+   */
   total_size?: string;
-  /** `true` if liquidating a short position, `false` otherwise. */
+  /**
+   * `true` if liquidating a short position, `false` otherwise.
+   */
   is_buy?: boolean;
-  /** An ordered list of fills created by this liquidation. */
+  /**
+   * An ordered list of fills created by this liquidation.
+   */
   fills?: MakerFillAmino[];
 }
 export interface MatchPerpetualLiquidationAminoMsg {
@@ -182,13 +216,22 @@ export interface MatchPerpetualDeleveragingProtoMsg {
 /**
  * MatchPerpetualDeleveraging is an injected message used for deleveraging a
  * subaccount.
+ * @name MatchPerpetualDeleveragingAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MatchPerpetualDeleveraging
  */
 export interface MatchPerpetualDeleveragingAmino {
-  /** ID of the subaccount that was liquidated. */
+  /**
+   * ID of the subaccount that was liquidated.
+   */
   liquidated?: SubaccountIdAmino;
-  /** The ID of the perpetual that was liquidated. */
+  /**
+   * The ID of the perpetual that was liquidated.
+   */
   perpetual_id?: number;
-  /** An ordered list of fills created by this liquidation. */
+  /**
+   * An ordered list of fills created by this liquidation.
+   */
   fills?: MatchPerpetualDeleveraging_FillAmino[];
   /**
    * Flag denoting whether the deleveraging operation was for the purpose
@@ -230,7 +273,12 @@ export interface MatchPerpetualDeleveraging_FillProtoMsg {
   typeUrl: "/dydxprotocol.clob.Fill";
   value: Uint8Array;
 }
-/** Fill represents a fill between the liquidated and offsetting subaccount. */
+/**
+ * Fill represents a fill between the liquidated and offsetting subaccount.
+ * @name MatchPerpetualDeleveraging_FillAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MatchPerpetualDeleveraging_Fill
+ */
 export interface MatchPerpetualDeleveraging_FillAmino {
   /**
    * ID of the subaccount that was used to offset the liquidated subaccount's
@@ -395,7 +443,7 @@ export const MakerFill = {
   },
   toAmino(message: MakerFill): MakerFillAmino {
     const obj: any = {};
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     obj.maker_order_id = message.makerOrderId ? OrderId.toAmino(message.makerOrderId) : undefined;
     return obj;
   },
@@ -592,7 +640,7 @@ export const MatchPerpetualLiquidation = {
     obj.liquidated = message.liquidated ? SubaccountId.toAmino(message.liquidated) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize.toString() : undefined;
+    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize?.toString() : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
     if (message.fills) {
       obj.fills = message.fills.map(e => e ? MakerFill.toAmino(e) : undefined);
@@ -774,7 +822,7 @@ export const MatchPerpetualDeleveraging_Fill = {
   toAmino(message: MatchPerpetualDeleveraging_Fill): MatchPerpetualDeleveraging_FillAmino {
     const obj: any = {};
     obj.offsetting_subaccount_id = message.offsettingSubaccountId ? SubaccountId.toAmino(message.offsettingSubaccountId) : undefined;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MatchPerpetualDeleveraging_FillAminoMsg): MatchPerpetualDeleveraging_Fill {

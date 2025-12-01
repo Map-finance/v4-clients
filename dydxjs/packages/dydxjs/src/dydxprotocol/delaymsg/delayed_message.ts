@@ -14,13 +14,24 @@ export interface DelayedMessageProtoMsg {
   typeUrl: "/dydxprotocol.delaymsg.DelayedMessage";
   value: Uint8Array;
 }
-/** DelayedMessage is a message that is delayed until a certain block height. */
+/**
+ * DelayedMessage is a message that is delayed until a certain block height.
+ * @name DelayedMessageAmino
+ * @package dydxprotocol.delaymsg
+ * @see proto type: dydxprotocol.delaymsg.DelayedMessage
+ */
 export interface DelayedMessageAmino {
-  /** The ID of the delayed message. */
+  /**
+   * The ID of the delayed message.
+   */
   id?: number;
-  /** The message to be executed. */
+  /**
+   * The message to be executed.
+   */
   msg?: AnyAmino;
-  /** The block height at which the message should be executed. */
+  /**
+   * The block height at which the message should be executed.
+   */
   block_height?: number;
 }
 export interface DelayedMessageAminoMsg {

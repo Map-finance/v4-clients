@@ -31,6 +31,9 @@ export interface VestEntryProtoMsg {
 /**
  * VestEntry specifies a Vester Account and the rate at which tokens are
  * dripped into the corresponding Treasury Account.
+ * @name VestEntryAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.VestEntry
  */
 export interface VestEntryAmino {
   /**
@@ -38,11 +41,17 @@ export interface VestEntryAmino {
    * This is also the key to this `VestEntry` in state.
    */
   vester_account?: string;
-  /** The module account to vest tokens to. */
+  /**
+   * The module account to vest tokens to.
+   */
   treasury_account?: string;
-  /** The denom of the token to vest. */
+  /**
+   * The denom of the token to vest.
+   */
   denom?: string;
-  /** The start time of vest. Before this time, no vest will occur. */
+  /**
+   * The start time of vest. Before this time, no vest will occur.
+   */
   start_time?: string;
   /**
    * The end time of vest. At this target date, all funds should be in the

@@ -87,13 +87,24 @@ export interface OrderbookMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.OrderbookMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-orderbooks` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-orderbooks` kafka topic.
+ * @name OrderbookMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.OrderbookMessage
+ */
 export interface OrderbookMessageAmino {
-  /** Stringified JSON object of all events to be streamed. */
+  /**
+   * Stringified JSON object of all events to be streamed.
+   */
   contents?: string;
-  /** Clob pair id of the Orderbook message. */
+  /**
+   * Clob pair id of the Orderbook message.
+   */
   clob_pair_id?: string;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface OrderbookMessageAminoMsg {
@@ -125,19 +136,36 @@ export interface SubaccountMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.SubaccountMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-subaccounts` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-subaccounts` kafka topic.
+ * @name SubaccountMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.SubaccountMessage
+ */
 export interface SubaccountMessageAmino {
-  /** Block height where the contents occur. */
+  /**
+   * Block height where the contents occur.
+   */
   block_height?: string;
-  /** Transaction index where the contents occur. */
+  /**
+   * Transaction index where the contents occur.
+   */
   transaction_index?: number;
-  /** Event index where the contents occur. */
+  /**
+   * Event index where the contents occur.
+   */
   event_index?: number;
-  /** Stringified JSON object of all events to be streamed. */
+  /**
+   * Stringified JSON object of all events to be streamed.
+   */
   contents?: string;
-  /** Subaccount id that the content corresponds to. */
+  /**
+   * Subaccount id that the content corresponds to.
+   */
   subaccount_id?: IndexerSubaccountIdAmino;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface SubaccountMessageAminoMsg {
@@ -168,15 +196,28 @@ export interface TradeMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.TradeMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-trades` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-trades` kafka topic.
+ * @name TradeMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.TradeMessage
+ */
 export interface TradeMessageAmino {
-  /** Block height where the contents occur. */
+  /**
+   * Block height where the contents occur.
+   */
   block_height?: string;
-  /** Stringified JSON object of all events to be streamed. */
+  /**
+   * Stringified JSON object of all events to be streamed.
+   */
   contents?: string;
-  /** Clob pair id of the Trade message. */
+  /**
+   * Clob pair id of the Trade message.
+   */
   clob_pair_id?: string;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface TradeMessageAminoMsg {
@@ -201,11 +242,20 @@ export interface MarketMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.MarketMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-markets` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-markets` kafka topic.
+ * @name MarketMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.MarketMessage
+ */
 export interface MarketMessageAmino {
-  /** Stringified JSON object of all events to be streamed. */
+  /**
+   * Stringified JSON object of all events to be streamed.
+   */
   contents?: string;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface MarketMessageAminoMsg {
@@ -232,15 +282,28 @@ export interface CandleMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.CandleMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-candles` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-candles` kafka topic.
+ * @name CandleMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.CandleMessage
+ */
 export interface CandleMessageAmino {
-  /** Stringified JSON object of all events to be streamed. */
+  /**
+   * Stringified JSON object of all events to be streamed.
+   */
   contents?: string;
-  /** Clob pair id of the Candle message. */
+  /**
+   * Clob pair id of the Candle message.
+   */
   clob_pair_id?: string;
-  /** Resolution of the candle update. */
+  /**
+   * Resolution of the candle update.
+   */
   resolution?: CandleMessage_Resolution;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface CandleMessageAminoMsg {
@@ -267,13 +330,24 @@ export interface BlockHeightMessageProtoMsg {
   typeUrl: "/dydxprotocol.indexer.socks.BlockHeightMessage";
   value: Uint8Array;
 }
-/** Message to be sent through the 'to-websockets-block-height` kafka topic. */
+/**
+ * Message to be sent through the 'to-websockets-block-height` kafka topic.
+ * @name BlockHeightMessageAmino
+ * @package dydxprotocol.indexer.socks
+ * @see proto type: dydxprotocol.indexer.socks.BlockHeightMessage
+ */
 export interface BlockHeightMessageAmino {
-  /** Block height where the contents occur. */
+  /**
+   * Block height where the contents occur.
+   */
   block_height?: string;
-  /** ISO formatted time of the block height. */
+  /**
+   * ISO formatted time of the block height.
+   */
   time?: string;
-  /** Version of the websocket message. */
+  /**
+   * Version of the websocket message.
+   */
   version?: string;
 }
 export interface BlockHeightMessageAminoMsg {

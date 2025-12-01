@@ -9,7 +9,12 @@ export interface QueryPricesRequestProtoMsg {
   typeUrl: "/slinky.service.v1.QueryPricesRequest";
   value: Uint8Array;
 }
-/** QueryPricesRequest defines the request type for the the Prices method. */
+/**
+ * QueryPricesRequest defines the request type for the the Prices method.
+ * @name QueryPricesRequestAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryPricesRequest
+ */
 export interface QueryPricesRequestAmino {}
 export interface QueryPricesRequestAminoMsg {
   type: "/slinky.service.v1.QueryPricesRequest";
@@ -25,6 +30,11 @@ export interface QueryPricesResponse_PricesEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
 }
+/**
+ * @name QueryPricesResponse_PricesEntryAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryPricesResponse_PricesEntry
+ */
 export interface QueryPricesResponse_PricesEntryAmino {
   key?: string;
   value?: string;
@@ -52,15 +62,26 @@ export interface QueryPricesResponseProtoMsg {
   typeUrl: "/slinky.service.v1.QueryPricesResponse";
   value: Uint8Array;
 }
-/** QueryPricesResponse defines the response type for the Prices method. */
+/**
+ * QueryPricesResponse defines the response type for the Prices method.
+ * @name QueryPricesResponseAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryPricesResponse
+ */
 export interface QueryPricesResponseAmino {
-  /** Prices defines the list of prices. */
+  /**
+   * Prices defines the list of prices.
+   */
   prices?: {
     [key: string]: string;
   };
-  /** Timestamp defines the timestamp of the prices. */
+  /**
+   * Timestamp defines the timestamp of the prices.
+   */
   timestamp?: string;
-  /** Version defines the version of the oracle service that provided the prices. */
+  /**
+   * Version defines the version of the oracle service that provided the prices.
+   */
   version?: string;
 }
 export interface QueryPricesResponseAminoMsg {
@@ -81,7 +102,12 @@ export interface QueryMarketMapRequestProtoMsg {
   typeUrl: "/slinky.service.v1.QueryMarketMapRequest";
   value: Uint8Array;
 }
-/** QueryMarketMapRequest defines the request type for the MarketMap method. */
+/**
+ * QueryMarketMapRequest defines the request type for the MarketMap method.
+ * @name QueryMarketMapRequestAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryMarketMapRequest
+ */
 export interface QueryMarketMapRequestAmino {}
 export interface QueryMarketMapRequestAminoMsg {
   type: "/slinky.service.v1.QueryMarketMapRequest";
@@ -98,9 +124,16 @@ export interface QueryMarketMapResponseProtoMsg {
   typeUrl: "/slinky.service.v1.QueryMarketMapResponse";
   value: Uint8Array;
 }
-/** QueryMarketMapResponse defines the response type for the MarketMap method. */
+/**
+ * QueryMarketMapResponse defines the response type for the MarketMap method.
+ * @name QueryMarketMapResponseAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryMarketMapResponse
+ */
 export interface QueryMarketMapResponseAmino {
-  /** MarketMap defines the current market map configuration. */
+  /**
+   * MarketMap defines the current market map configuration.
+   */
   market_map?: MarketMapAmino;
 }
 export interface QueryMarketMapResponseAminoMsg {
@@ -117,7 +150,12 @@ export interface QueryVersionRequestProtoMsg {
   typeUrl: "/slinky.service.v1.QueryVersionRequest";
   value: Uint8Array;
 }
-/** QueryVersionRequest defines the request type for the Version method. */
+/**
+ * QueryVersionRequest defines the request type for the Version method.
+ * @name QueryVersionRequestAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryVersionRequest
+ */
 export interface QueryVersionRequestAmino {}
 export interface QueryVersionRequestAminoMsg {
   type: "/slinky.service.v1.QueryVersionRequest";
@@ -134,9 +172,16 @@ export interface QueryVersionResponseProtoMsg {
   typeUrl: "/slinky.service.v1.QueryVersionResponse";
   value: Uint8Array;
 }
-/** QueryVersionResponse defines the response type for the Version method. */
+/**
+ * QueryVersionResponse defines the response type for the Version method.
+ * @name QueryVersionResponseAmino
+ * @package slinky.service.v1
+ * @see proto type: slinky.service.v1.QueryVersionResponse
+ */
 export interface QueryVersionResponseAmino {
-  /** Version defines the current version of the oracle service. */
+  /**
+   * Version defines the current version of the oracle service.
+   */
   version?: string;
 }
 export interface QueryVersionResponseAminoMsg {

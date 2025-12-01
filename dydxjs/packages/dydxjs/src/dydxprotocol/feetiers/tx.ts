@@ -11,10 +11,17 @@ export interface MsgUpdatePerpetualFeeParamsProtoMsg {
   typeUrl: "/dydxprotocol.feetiers.MsgUpdatePerpetualFeeParams";
   value: Uint8Array;
 }
-/** MsgUpdatePerpetualFeeParams is the Msg/UpdatePerpetualFeeParams request type. */
+/**
+ * MsgUpdatePerpetualFeeParams is the Msg/UpdatePerpetualFeeParams request type.
+ * @name MsgUpdatePerpetualFeeParamsAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.MsgUpdatePerpetualFeeParams
+ */
 export interface MsgUpdatePerpetualFeeParamsAmino {
   authority?: string;
-  /** Defines the parameters to update. All parameters must be supplied. */
+  /**
+   * Defines the parameters to update. All parameters must be supplied.
+   */
   params?: PerpetualFeeParamsAmino;
 }
 export interface MsgUpdatePerpetualFeeParamsAminoMsg {
@@ -38,6 +45,9 @@ export interface MsgUpdatePerpetualFeeParamsResponseProtoMsg {
 /**
  * MsgUpdatePerpetualFeeParamsResponse is the Msg/UpdatePerpetualFeeParams
  * response type.
+ * @name MsgUpdatePerpetualFeeParamsResponseAmino
+ * @package dydxprotocol.feetiers
+ * @see proto type: dydxprotocol.feetiers.MsgUpdatePerpetualFeeParamsResponse
  */
 export interface MsgUpdatePerpetualFeeParamsResponseAmino {}
 export interface MsgUpdatePerpetualFeeParamsResponseAminoMsg {

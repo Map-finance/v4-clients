@@ -31,9 +31,14 @@ export interface AlertProtoMsg {
  * Alert defines the basic meta-data necessary for the alerts module to resolve
  * a claim that the price of a CurrencyPair on-chain is deviating from the price
  * off-chain.
+ * @name AlertAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.Alert
  */
 export interface AlertAmino {
-  /** height represents the height for which the alert is filed. */
+  /**
+   * height represents the height for which the alert is filed.
+   */
   height?: string;
   /**
    * signer is the signer of this alert, this is the address that will receive
@@ -87,18 +92,27 @@ export interface AlertStatusProtoMsg {
  * AlertStatus contains the module specific state for an alert: Has the alert
  * been concluded? What height was the alert submitted, what height should the
  * alert be purged?
+ * @name AlertStatusAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.AlertStatus
  */
 export interface AlertStatusAmino {
-  /** ConclusionStatus determines whether the alert has been concluded. */
+  /**
+   * ConclusionStatus determines whether the alert has been concluded.
+   */
   conclusion_status?: string;
-  /** SubmissionHeight is the height that the alert was submitted in. */
+  /**
+   * SubmissionHeight is the height that the alert was submitted in.
+   */
   submission_height?: string;
   /**
    * SubmissionTimestamp is the block-timestamp of the block that the alert was
    * submitted in (as a UTC value in Unix time).
    */
   submission_timestamp?: string;
-  /** PurgeHeight is the height at which the alert should be purged. */
+  /**
+   * PurgeHeight is the height at which the alert should be purged.
+   */
   purge_height?: string;
 }
 export interface AlertStatusAminoMsg {
@@ -135,11 +149,18 @@ export interface AlertWithStatusProtoMsg {
  * AlertWithStatus represents a wrapper around the Alert and AlertStatus
  * objects, this is so that the module specific information about Alerts can be
  * packaged together.
+ * @name AlertWithStatusAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.AlertWithStatus
  */
 export interface AlertWithStatusAmino {
-  /** alert is the alert that this status corresponds to. */
+  /**
+   * alert is the alert that this status corresponds to.
+   */
   alert?: AlertAmino;
-  /** status is the status of the alert. */
+  /**
+   * status is the status of the alert.
+   */
   status?: AlertStatusAmino;
 }
 export interface AlertWithStatusAminoMsg {
@@ -164,7 +185,12 @@ export interface SignatureProtoMsg {
   typeUrl: "/slinky.alerts.v1.Signature";
   value: Uint8Array;
 }
-/** Signature is a container for a signer address mapped to a signature. */
+/**
+ * Signature is a container for a signer address mapped to a signature.
+ * @name SignatureAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.Signature
+ */
 export interface SignatureAmino {
   signer?: string;
   signature?: string;
@@ -215,9 +241,14 @@ export interface MultiSigConclusionProtoMsg {
  * signatures. The signature is defined over the alert UID, status, OracleData,
  * and PriceBound. The signatures are used to verify that the conclusion is
  * valid.
+ * @name MultiSigConclusionAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MultiSigConclusion
  */
 export interface MultiSigConclusionAmino {
-  /** alert is the alert that this conclusion corresponds to. */
+  /**
+   * alert is the alert that this conclusion corresponds to.
+   */
   alert?: AlertAmino;
   /**
    * signatures is a map of signer -> signature. Where the signature is over
@@ -229,7 +260,9 @@ export interface MultiSigConclusionAmino {
    * designated time-range.
    */
   price_bound?: PriceBoundAmino;
-  /** status is the status of the conclusion. */
+  /**
+   * status is the status of the conclusion.
+   */
   status?: boolean;
   /**
    * CurrencyPairID is the ID of the currency-pair that this conclusion
@@ -277,9 +310,14 @@ export interface MultiSigConclusionVerificationParamsProtoMsg {
  * Notice, the public-key (value) are the base-64 encoded bytes of the public
  * key. And the signer (key) is the bech32 encoded address of the signer.
  * Notice, all public keys must be secp256 keys.
+ * @name MultiSigConclusionVerificationParamsAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.MultiSigConclusionVerificationParams
  */
 export interface MultiSigConclusionVerificationParamsAmino {
-  /** signers is a map of signer -> public key. */
+  /**
+   * signers is a map of signer -> public key.
+   */
   signers?: AnyAmino[];
 }
 export interface MultiSigConclusionVerificationParamsAminoMsg {
@@ -312,6 +350,9 @@ export interface PriceBoundProtoMsg {
 /**
  * PriceBound represents the bounds of the price of a currency-pair off chain
  * for a designated time-range
+ * @name PriceBoundAmino
+ * @package slinky.alerts.v1
+ * @see proto type: slinky.alerts.v1.PriceBound
  */
 export interface PriceBoundAmino {
   high?: string;
@@ -395,7 +436,7 @@ export const Alert = {
   },
   toAmino(message: Alert): AlertAmino {
     const obj: any = {};
-    obj.height = message.height !== BigInt(0) ? message.height.toString() : undefined;
+    obj.height = message.height !== BigInt(0) ? message.height?.toString() : undefined;
     obj.signer = message.signer === "" ? undefined : message.signer;
     obj.currency_pair = message.currencyPair ? CurrencyPair.toAmino(message.currencyPair) : undefined;
     return obj;
@@ -499,10 +540,10 @@ export const AlertStatus = {
   },
   toAmino(message: AlertStatus): AlertStatusAmino {
     const obj: any = {};
-    obj.conclusion_status = message.conclusionStatus !== BigInt(0) ? message.conclusionStatus.toString() : undefined;
-    obj.submission_height = message.submissionHeight !== BigInt(0) ? message.submissionHeight.toString() : undefined;
-    obj.submission_timestamp = message.submissionTimestamp !== BigInt(0) ? message.submissionTimestamp.toString() : undefined;
-    obj.purge_height = message.purgeHeight !== BigInt(0) ? message.purgeHeight.toString() : undefined;
+    obj.conclusion_status = message.conclusionStatus !== BigInt(0) ? message.conclusionStatus?.toString() : undefined;
+    obj.submission_height = message.submissionHeight !== BigInt(0) ? message.submissionHeight?.toString() : undefined;
+    obj.submission_timestamp = message.submissionTimestamp !== BigInt(0) ? message.submissionTimestamp?.toString() : undefined;
+    obj.purge_height = message.purgeHeight !== BigInt(0) ? message.purgeHeight?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: AlertStatusAminoMsg): AlertStatus {
@@ -778,7 +819,7 @@ export const MultiSigConclusion = {
     }
     obj.price_bound = message.priceBound ? PriceBound.toAmino(message.priceBound) : undefined;
     obj.status = message.status === false ? undefined : message.status;
-    obj.currency_pair_i_d = message.currencyPairID !== BigInt(0) ? message.currencyPairID.toString() : undefined;
+    obj.currency_pair_i_d = message.currencyPairID !== BigInt(0) ? message.currencyPairID?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MultiSigConclusionAminoMsg): MultiSigConclusion {

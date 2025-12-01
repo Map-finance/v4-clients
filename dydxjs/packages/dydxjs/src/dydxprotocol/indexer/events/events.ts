@@ -3,6 +3,7 @@ import { IndexerSubaccountId, IndexerSubaccountIdAmino, IndexerSubaccountIdSDKTy
 import { IndexerOrder, IndexerOrderAmino, IndexerOrderSDKType, IndexerOrderId, IndexerOrderIdAmino, IndexerOrderIdSDKType, ClobPairStatus } from "../protocol/v1/clob";
 import { OrderRemovalReason } from "../shared/removal_reason";
 import { PerpetualMarketType } from "../protocol/v1/perpetual";
+import { VaultStatus } from "../protocol/v1/vault";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** Type is the type for funding values. */
@@ -88,9 +89,14 @@ export interface FundingUpdateV1ProtoMsg {
 /**
  * FundingUpdate is used for funding update events and includes a funding
  * value and an optional funding index that correspond to a perpetual market.
+ * @name FundingUpdateV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.FundingUpdateV1
  */
 export interface FundingUpdateV1Amino {
-  /** The id of the perpetual market. */
+  /**
+   * The id of the perpetual market.
+   */
   perpetual_id?: number;
   /**
    * funding value (in parts-per-million) can be premium vote, premium sample,
@@ -150,6 +156,9 @@ export interface FundingEventV1ProtoMsg {
  * 3. Funding rate and index: final funding rate combining all premium samples
  *    during a `funding-tick` epoch and funding index accordingly updated with
  *    `funding rate * price`.
+ * @name FundingEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.FundingEventV1
  */
 export interface FundingEventV1Amino {
   /**
@@ -157,7 +166,9 @@ export interface FundingEventV1Amino {
    * markets. The list is sorted by `perpetualId`s which are unique.
    */
   updates?: FundingUpdateV1Amino[];
-  /** type stores the type of funding updates. */
+  /**
+   * type stores the type of funding updates.
+   */
   type?: FundingEventV1_Type;
 }
 export interface FundingEventV1AminoMsg {
@@ -197,9 +208,14 @@ export interface MarketEventV1ProtoMsg {
 /**
  * MarketEvent message contains all the information about a market event on
  * the dYdX chain.
+ * @name MarketEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.MarketEventV1
  */
 export interface MarketEventV1Amino {
-  /** market id. */
+  /**
+   * market id.
+   */
   market_id?: number;
   price_update?: MarketPriceUpdateEventV1Amino;
   market_create?: MarketCreateEventV1Amino;
@@ -238,6 +254,9 @@ export interface MarketPriceUpdateEventV1ProtoMsg {
 /**
  * MarketPriceUpdateEvent message contains all the information about a price
  * update on the dYdX chain.
+ * @name MarketPriceUpdateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.MarketPriceUpdateEventV1
  */
 export interface MarketPriceUpdateEventV1Amino {
   /**
@@ -272,9 +291,16 @@ export interface MarketBaseEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.MarketBaseEventV1";
   value: Uint8Array;
 }
-/** shared fields between MarketCreateEvent and MarketModifyEvent */
+/**
+ * shared fields between MarketCreateEvent and MarketModifyEvent
+ * @name MarketBaseEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.MarketBaseEventV1
+ */
 export interface MarketBaseEventV1Amino {
-  /** String representation of the market pair, e.g. `BTC-USD` */
+  /**
+   * String representation of the market pair, e.g. `BTC-USD`
+   */
   pair?: string;
   /**
    * The minimum allowable change in the Price value for a given update.
@@ -312,6 +338,9 @@ export interface MarketCreateEventV1ProtoMsg {
 /**
  * MarketCreateEvent message contains all the information about a new market on
  * the dYdX chain.
+ * @name MarketCreateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.MarketCreateEventV1
  */
 export interface MarketCreateEventV1Amino {
   base?: MarketBaseEventV1Amino;
@@ -349,6 +378,9 @@ export interface MarketModifyEventV1ProtoMsg {
 /**
  * MarketModifyEvent message contains all the information about a market update
  * on the dYdX chain
+ * @name MarketModifyEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.MarketModifyEventV1
  */
 export interface MarketModifyEventV1Amino {
   base?: MarketBaseEventV1Amino;
@@ -373,7 +405,12 @@ export interface SourceOfFundsProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.SourceOfFunds";
   value: Uint8Array;
 }
-/** SourceOfFunds is the source of funds in a transfer event. */
+/**
+ * SourceOfFunds is the source of funds in a transfer event.
+ * @name SourceOfFundsAmino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.SourceOfFunds
+ */
 export interface SourceOfFundsAmino {
   subaccount_id?: IndexerSubaccountIdAmino;
   address?: string;
@@ -398,8 +435,11 @@ export interface TransferEventV1 {
   recipientSubaccountId?: IndexerSubaccountId;
   /** Id of the asset transfered. */
   assetId: number;
-  /** The amount of asset in quantums to transfer. */
-  amount: bigint;
+  /**
+   * The amount of asset in quantums to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   */
+  amount: Uint8Array;
   /**
    * The sender is one of below
    * - a subaccount ID (in transfer and withdraw events).
@@ -422,13 +462,21 @@ export interface TransferEventV1ProtoMsg {
  * deposit-to-subaccount, or withdraw-from-subaccount on the dYdX chain.
  * When a subaccount is involved, a SubaccountUpdateEvent message will
  * be produced with the updated asset positions.
+ * @name TransferEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.TransferEventV1
  */
 export interface TransferEventV1Amino {
   sender_subaccount_id?: IndexerSubaccountIdAmino;
   recipient_subaccount_id?: IndexerSubaccountIdAmino;
-  /** Id of the asset transfered. */
+  /**
+   * Id of the asset transfered.
+   */
   asset_id?: number;
-  /** The amount of asset in quantums to transfer. */
+  /**
+   * The amount of asset in quantums to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   */
   amount?: string;
   /**
    * The sender is one of below
@@ -457,7 +505,7 @@ export interface TransferEventV1SDKType {
   sender_subaccount_id?: IndexerSubaccountIdSDKType;
   recipient_subaccount_id?: IndexerSubaccountIdSDKType;
   asset_id: number;
-  amount: bigint;
+  amount: Uint8Array;
   sender?: SourceOfFundsSDKType;
   recipient?: SourceOfFundsSDKType;
 }
@@ -485,6 +533,22 @@ export interface OrderFillEventV1 {
   totalFilledTaker: bigint;
   /** rev share for affiliates in USDC quantums. */
   affiliateRevShare: bigint;
+  /** fee for maker builder in USDC quantums. */
+  makerBuilderFee: bigint;
+  /** fee for taker builder in USDC quantums. */
+  takerBuilderFee: bigint;
+  /** builder address for maker */
+  makerBuilderAddress: string;
+  /** builder address for taker */
+  takerBuilderAddress: string;
+  /** fee for maker order router in USDC quantums */
+  makerOrderRouterFee: bigint;
+  /** fee for taker order router in USDC quantums */
+  takerOrderRouterFee: bigint;
+  /** order router address for maker */
+  makerOrderRouterAddress: string;
+  /** order router address for taker */
+  takerOrderRouterAddress: string;
 }
 export interface OrderFillEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.OrderFillEventV1";
@@ -494,26 +558,71 @@ export interface OrderFillEventV1ProtoMsg {
  * OrderFillEvent message contains all the information from an order match in
  * the dYdX chain. This includes the maker/taker orders that matched and the
  * amount filled.
+ * @name OrderFillEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.OrderFillEventV1
  */
 export interface OrderFillEventV1Amino {
   maker_order?: IndexerOrderAmino;
   order?: IndexerOrderAmino;
   liquidation_order?: LiquidationOrderV1Amino;
-  /** Fill amount in base quantums. */
+  /**
+   * Fill amount in base quantums.
+   */
   fill_amount?: string;
-  /** Maker fee in USDC quantums. */
+  /**
+   * Maker fee in USDC quantums.
+   */
   maker_fee?: string;
   /**
    * Taker fee in USDC quantums. If the taker order is a liquidation, then this
    * represents the special liquidation fee, not the standard taker fee.
    */
   taker_fee?: string;
-  /** Total filled of the maker order in base quantums. */
+  /**
+   * Total filled of the maker order in base quantums.
+   */
   total_filled_maker?: string;
-  /** Total filled of the taker order in base quantums. */
+  /**
+   * Total filled of the taker order in base quantums.
+   */
   total_filled_taker?: string;
-  /** rev share for affiliates in USDC quantums. */
+  /**
+   * rev share for affiliates in USDC quantums.
+   */
   affiliate_rev_share?: string;
+  /**
+   * fee for maker builder in USDC quantums.
+   */
+  maker_builder_fee?: string;
+  /**
+   * fee for taker builder in USDC quantums.
+   */
+  taker_builder_fee?: string;
+  /**
+   * builder address for maker
+   */
+  maker_builder_address?: string;
+  /**
+   * builder address for taker
+   */
+  taker_builder_address?: string;
+  /**
+   * fee for maker order router in USDC quantums
+   */
+  maker_order_router_fee?: string;
+  /**
+   * fee for taker order router in USDC quantums
+   */
+  taker_order_router_fee?: string;
+  /**
+   * order router address for maker
+   */
+  maker_order_router_address?: string;
+  /**
+   * order router address for taker
+   */
+  taker_order_router_address?: string;
 }
 export interface OrderFillEventV1AminoMsg {
   type: "/dydxprotocol.indexer.events.OrderFillEventV1";
@@ -534,6 +643,14 @@ export interface OrderFillEventV1SDKType {
   total_filled_maker: bigint;
   total_filled_taker: bigint;
   affiliate_rev_share: bigint;
+  maker_builder_fee: bigint;
+  taker_builder_fee: bigint;
+  maker_builder_address: string;
+  taker_builder_address: string;
+  maker_order_router_fee: bigint;
+  taker_order_router_fee: bigint;
+  maker_order_router_address: string;
+  taker_order_router_address: string;
 }
 /**
  * DeleveragingEvent message contains all the information for a deleveraging
@@ -572,22 +689,35 @@ export interface DeleveragingEventV1ProtoMsg {
  * DeleveragingEvent message contains all the information for a deleveraging
  * on the dYdX chain. This includes the liquidated/offsetting subaccounts and
  * the amount filled.
+ * @name DeleveragingEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.DeleveragingEventV1
  */
 export interface DeleveragingEventV1Amino {
-  /** ID of the subaccount that was liquidated. */
+  /**
+   * ID of the subaccount that was liquidated.
+   */
   liquidated?: IndexerSubaccountIdAmino;
-  /** ID of the subaccount that was used to offset the position. */
+  /**
+   * ID of the subaccount that was used to offset the position.
+   */
   offsetting?: IndexerSubaccountIdAmino;
-  /** The ID of the perpetual that was liquidated. */
+  /**
+   * The ID of the perpetual that was liquidated.
+   */
   perpetual_id?: number;
   /**
    * The amount filled between the liquidated and offsetting position, in
    * base quantums.
    */
   fill_amount?: string;
-  /** Total quote quantums filled. */
+  /**
+   * Total quote quantums filled.
+   */
   total_quote_quantums?: string;
-  /** `true` if liquidating a short position, `false` otherwise. */
+  /**
+   * `true` if liquidating a short position, `false` otherwise.
+   */
   is_buy?: boolean;
   /**
    * `true` if the deleveraging event is for final settlement, indicating
@@ -649,20 +779,31 @@ export interface LiquidationOrderV1ProtoMsg {
 /**
  * LiquidationOrder represents the liquidation taker order to be included in a
  * liquidation order fill event.
+ * @name LiquidationOrderV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.LiquidationOrderV1
  */
 export interface LiquidationOrderV1Amino {
-  /** ID of the subaccount that was liquidated. */
+  /**
+   * ID of the subaccount that was liquidated.
+   */
   liquidated?: IndexerSubaccountIdAmino;
-  /** The ID of the clob pair involved in the liquidation. */
+  /**
+   * The ID of the clob pair involved in the liquidation.
+   */
   clob_pair_id?: number;
-  /** The ID of the perpetual involved in the liquidation. */
+  /**
+   * The ID of the perpetual involved in the liquidation.
+   */
   perpetual_id?: number;
   /**
    * The total size of the liquidation order including any unfilled size,
    * in base quantums.
    */
   total_size?: string;
-  /** `true` if liquidating a short position, `false` otherwise. */
+  /**
+   * `true` if liquidating a short position, `false` otherwise.
+   */
   is_buy?: boolean;
   /**
    * The fillable price in subticks.
@@ -713,6 +854,9 @@ export interface SubaccountUpdateEventV1ProtoMsg {
  * Note: This event message will contain all the updates to a subaccount
  * at the end of a block which is why multiple asset/perpetual position
  * updates may exist.
+ * @name SubaccountUpdateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.SubaccountUpdateEventV1
  */
 export interface SubaccountUpdateEventV1Amino {
   subaccount_id?: IndexerSubaccountIdAmino;
@@ -750,6 +894,7 @@ export interface StatefulOrderEventV1 {
   conditionalOrderTriggered?: StatefulOrderEventV1_ConditionalOrderTriggeredV1;
   longTermOrderPlacement?: StatefulOrderEventV1_LongTermOrderPlacementV1;
   orderReplacement?: StatefulOrderEventV1_LongTermOrderReplacementV1;
+  twapOrderPlacement?: StatefulOrderEventV1_TwapOrderPlacementV1;
 }
 export interface StatefulOrderEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.StatefulOrderEventV1";
@@ -760,15 +905,21 @@ export interface StatefulOrderEventV1ProtoMsg {
  * order. Currently, this is either the placement of a long-term order, the
  * placement or triggering of a conditional order, or the removal of a
  * stateful order.
+ * @name StatefulOrderEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1
  */
 export interface StatefulOrderEventV1Amino {
-  /** @deprecated */
+  /**
+   * @deprecated
+   */
   order_place?: StatefulOrderEventV1_StatefulOrderPlacementV1Amino;
   order_removal?: StatefulOrderEventV1_StatefulOrderRemovalV1Amino;
   conditional_order_placement?: StatefulOrderEventV1_ConditionalOrderPlacementV1Amino;
   conditional_order_triggered?: StatefulOrderEventV1_ConditionalOrderTriggeredV1Amino;
   long_term_order_placement?: StatefulOrderEventV1_LongTermOrderPlacementV1Amino;
   order_replacement?: StatefulOrderEventV1_LongTermOrderReplacementV1Amino;
+  twap_order_placement?: StatefulOrderEventV1_TwapOrderPlacementV1Amino;
 }
 export interface StatefulOrderEventV1AminoMsg {
   type: "/dydxprotocol.indexer.events.StatefulOrderEventV1";
@@ -788,6 +939,7 @@ export interface StatefulOrderEventV1SDKType {
   conditional_order_triggered?: StatefulOrderEventV1_ConditionalOrderTriggeredV1SDKType;
   long_term_order_placement?: StatefulOrderEventV1_LongTermOrderPlacementV1SDKType;
   order_replacement?: StatefulOrderEventV1_LongTermOrderReplacementV1SDKType;
+  twap_order_placement?: StatefulOrderEventV1_TwapOrderPlacementV1SDKType;
 }
 /**
  * A stateful order placement contains an order.
@@ -803,6 +955,9 @@ export interface StatefulOrderEventV1_StatefulOrderPlacementV1ProtoMsg {
 /**
  * A stateful order placement contains an order.
  * Deprecated in favor of LongTermOrderPlacementV1.
+ * @name StatefulOrderEventV1_StatefulOrderPlacementV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_StatefulOrderPlacementV1
  */
 export interface StatefulOrderEventV1_StatefulOrderPlacementV1Amino {
   order?: IndexerOrderAmino;
@@ -833,6 +988,9 @@ export interface StatefulOrderEventV1_StatefulOrderRemovalV1ProtoMsg {
 /**
  * A stateful order removal contains the id of an order that was already
  * placed and is now removed and the reason for the removal.
+ * @name StatefulOrderEventV1_StatefulOrderRemovalV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_StatefulOrderRemovalV1
  */
 export interface StatefulOrderEventV1_StatefulOrderRemovalV1Amino {
   removed_order_id?: IndexerOrderIdAmino;
@@ -864,6 +1022,9 @@ export interface StatefulOrderEventV1_ConditionalOrderPlacementV1ProtoMsg {
 /**
  * A conditional order placement contains an order. The order is newly-placed
  * and untriggered when this event is emitted.
+ * @name StatefulOrderEventV1_ConditionalOrderPlacementV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_ConditionalOrderPlacementV1
  */
 export interface StatefulOrderEventV1_ConditionalOrderPlacementV1Amino {
   order?: IndexerOrderAmino;
@@ -893,6 +1054,9 @@ export interface StatefulOrderEventV1_ConditionalOrderTriggeredV1ProtoMsg {
 /**
  * A conditional order trigger event contains an order id and is emitted when
  * an order is triggered.
+ * @name StatefulOrderEventV1_ConditionalOrderTriggeredV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_ConditionalOrderTriggeredV1
  */
 export interface StatefulOrderEventV1_ConditionalOrderTriggeredV1Amino {
   triggered_order_id?: IndexerOrderIdAmino;
@@ -916,7 +1080,12 @@ export interface StatefulOrderEventV1_LongTermOrderPlacementV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.LongTermOrderPlacementV1";
   value: Uint8Array;
 }
-/** A long term order placement contains an order. */
+/**
+ * A long term order placement contains an order.
+ * @name StatefulOrderEventV1_LongTermOrderPlacementV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_LongTermOrderPlacementV1
+ */
 export interface StatefulOrderEventV1_LongTermOrderPlacementV1Amino {
   order?: IndexerOrderAmino;
 }
@@ -938,9 +1107,16 @@ export interface StatefulOrderEventV1_LongTermOrderReplacementV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.LongTermOrderReplacementV1";
   value: Uint8Array;
 }
-/** A long term order replacement contains an old order ID and the new order. */
+/**
+ * A long term order replacement contains an old order ID and the new order.
+ * @name StatefulOrderEventV1_LongTermOrderReplacementV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_LongTermOrderReplacementV1
+ */
 export interface StatefulOrderEventV1_LongTermOrderReplacementV1Amino {
-  /** vault replaces orders with a different order ID */
+  /**
+   * vault replaces orders with a different order ID
+   */
   old_order_id?: IndexerOrderIdAmino;
   order?: IndexerOrderAmino;
 }
@@ -951,6 +1127,31 @@ export interface StatefulOrderEventV1_LongTermOrderReplacementV1AminoMsg {
 /** A long term order replacement contains an old order ID and the new order. */
 export interface StatefulOrderEventV1_LongTermOrderReplacementV1SDKType {
   old_order_id?: IndexerOrderIdSDKType;
+  order?: IndexerOrderSDKType;
+}
+/** A twap order placement contains an order. */
+export interface StatefulOrderEventV1_TwapOrderPlacementV1 {
+  order?: IndexerOrder;
+}
+export interface StatefulOrderEventV1_TwapOrderPlacementV1ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.TwapOrderPlacementV1";
+  value: Uint8Array;
+}
+/**
+ * A twap order placement contains an order.
+ * @name StatefulOrderEventV1_TwapOrderPlacementV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.StatefulOrderEventV1_TwapOrderPlacementV1
+ */
+export interface StatefulOrderEventV1_TwapOrderPlacementV1Amino {
+  order?: IndexerOrderAmino;
+}
+export interface StatefulOrderEventV1_TwapOrderPlacementV1AminoMsg {
+  type: "/dydxprotocol.indexer.events.TwapOrderPlacementV1";
+  value: StatefulOrderEventV1_TwapOrderPlacementV1Amino;
+}
+/** A twap order placement contains an order. */
+export interface StatefulOrderEventV1_TwapOrderPlacementV1SDKType {
   order?: IndexerOrderSDKType;
 }
 /**
@@ -989,9 +1190,14 @@ export interface AssetCreateEventV1ProtoMsg {
 /**
  * AssetCreateEventV1 message contains all the information about an new Asset on
  * the dYdX chain.
+ * @name AssetCreateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.AssetCreateEventV1
  */
 export interface AssetCreateEventV1Amino {
-  /** Unique, sequentially-generated. */
+  /**
+   * Unique, sequentially-generated.
+   */
   id?: number;
   /**
    * The human readable symbol of the `Asset` (e.g. `USDC`, `ATOM`).
@@ -999,7 +1205,9 @@ export interface AssetCreateEventV1Amino {
    * full coin.
    */
   symbol?: string;
-  /** `true` if this `Asset` has a valid `MarketId` value. */
+  /**
+   * `true` if this `Asset` has a valid `MarketId` value.
+   */
   has_market?: boolean;
   /**
    * The `Id` of the `Market` associated with this `Asset`. It acts as the
@@ -1029,6 +1237,151 @@ export interface AssetCreateEventV1SDKType {
   has_market: boolean;
   market_id: number;
   atomic_resolution: number;
+}
+/**
+ * SpotMarketCreateEventV1 message contains all the information about a
+ * new Spot Market on the dYdX chain.
+ */
+export interface SpotMarketCreateEventV1 {
+  /** Unique Spot Market id (same as clobPairId for spot markets). */
+  id: number;
+  /**
+   * Unique clob pair Id associated with this spot market
+   * Defined in clob.clob_pair
+   */
+  clobPairId: number;
+  spotClobMetadata?: SpotMarketCreateEventV1_SpotClobMetadata;
+  /** Status of the CLOB */
+  status: ClobPairStatus;
+  /**
+   * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
+   * per Subtick.
+   * Defined in clob.clob_pair
+   */
+  quantumConversionExponent: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a spot position with `base_quantums = 1e8` is equivalent to
+   * a position size of one full coin.
+   */
+  atomicResolution: number;
+  /**
+   * Defines the tick size of the orderbook by defining how many subticks
+   * are in one tick. That is, the subticks of any valid order must be a
+   * multiple of this value.
+   */
+  subticksPerTick: number;
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Must be a power of 10.
+   */
+  stepBaseQuantums: bigint;
+}
+export interface SpotMarketCreateEventV1ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.SpotMarketCreateEventV1";
+  value: Uint8Array;
+}
+/**
+ * SpotMarketCreateEventV1 message contains all the information about a
+ * new Spot Market on the dYdX chain.
+ * @name SpotMarketCreateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.SpotMarketCreateEventV1
+ */
+export interface SpotMarketCreateEventV1Amino {
+  /**
+   * Unique Spot Market id (same as clobPairId for spot markets).
+   */
+  id?: number;
+  /**
+   * Unique clob pair Id associated with this spot market
+   * Defined in clob.clob_pair
+   */
+  clob_pair_id?: number;
+  spot_clob_metadata?: SpotMarketCreateEventV1_SpotClobMetadataAmino;
+  /**
+   * Status of the CLOB
+   */
+  status?: ClobPairStatus;
+  /**
+   * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
+   * per Subtick.
+   * Defined in clob.clob_pair
+   */
+  quantum_conversion_exponent?: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a spot position with `base_quantums = 1e8` is equivalent to
+   * a position size of one full coin.
+   */
+  atomic_resolution?: number;
+  /**
+   * Defines the tick size of the orderbook by defining how many subticks
+   * are in one tick. That is, the subticks of any valid order must be a
+   * multiple of this value.
+   */
+  subticks_per_tick?: number;
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Must be a power of 10.
+   */
+  step_base_quantums?: string;
+}
+export interface SpotMarketCreateEventV1AminoMsg {
+  type: "/dydxprotocol.indexer.events.SpotMarketCreateEventV1";
+  value: SpotMarketCreateEventV1Amino;
+}
+/**
+ * SpotMarketCreateEventV1 message contains all the information about a
+ * new Spot Market on the dYdX chain.
+ */
+export interface SpotMarketCreateEventV1SDKType {
+  id: number;
+  clob_pair_id: number;
+  spot_clob_metadata?: SpotMarketCreateEventV1_SpotClobMetadataSDKType;
+  status: ClobPairStatus;
+  quantum_conversion_exponent: number;
+  atomic_resolution: number;
+  subticks_per_tick: number;
+  step_base_quantums: bigint;
+}
+/** Spot-specific metadata */
+export interface SpotMarketCreateEventV1_SpotClobMetadata {
+  /** The base asset id (e.g. 1 for BTC) */
+  baseAssetId: number;
+  /** The quote asset id (e.g. 0 for USDC) */
+  quoteAssetId: number;
+}
+export interface SpotMarketCreateEventV1_SpotClobMetadataProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.SpotClobMetadata";
+  value: Uint8Array;
+}
+/**
+ * Spot-specific metadata
+ * @name SpotMarketCreateEventV1_SpotClobMetadataAmino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.SpotMarketCreateEventV1_SpotClobMetadata
+ */
+export interface SpotMarketCreateEventV1_SpotClobMetadataAmino {
+  /**
+   * The base asset id (e.g. 1 for BTC)
+   */
+  base_asset_id?: number;
+  /**
+   * The quote asset id (e.g. 0 for USDC)
+   */
+  quote_asset_id?: number;
+}
+export interface SpotMarketCreateEventV1_SpotClobMetadataAminoMsg {
+  type: "/dydxprotocol.indexer.events.SpotClobMetadata";
+  value: SpotMarketCreateEventV1_SpotClobMetadataAmino;
+}
+/** Spot-specific metadata */
+export interface SpotMarketCreateEventV1_SpotClobMetadataSDKType {
+  base_asset_id: number;
+  quote_asset_id: number;
 }
 /**
  * PerpetualMarketCreateEventV1 message contains all the information about a
@@ -1102,8 +1455,11 @@ export interface PerpetualMarketCreateEventV1ProtoMsg {
  * new Perpetual Market on the dYdX chain.
  * Deprecated. See PerpetualMarketCreateEventV2 for the most up to date message
  * for the event to create a new Perpetual Market.
+ * @name PerpetualMarketCreateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.PerpetualMarketCreateEventV1
+ * @deprecated
  */
-/** @deprecated */
 export interface PerpetualMarketCreateEventV1Amino {
   /**
    * Unique Perpetual id.
@@ -1125,7 +1481,9 @@ export interface PerpetualMarketCreateEventV1Amino {
    * Defined in perpetuals.perpetual
    */
   market_id?: number;
-  /** Status of the CLOB */
+  /**
+   * Status of the CLOB
+   */
   status?: ClobPairStatus;
   /**
    * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
@@ -1186,7 +1544,9 @@ export interface PerpetualMarketCreateEventV1SDKType {
 /**
  * PerpetualMarketCreateEventV2 message contains all the information about a
  * new Perpetual Market on the dYdX chain.
+ * Deprecated. Use PerpetualMarketCreateEventV3 for the most up to date message
  */
+/** @deprecated */
 export interface PerpetualMarketCreateEventV2 {
   /**
    * Unique Perpetual id.
@@ -1252,6 +1612,11 @@ export interface PerpetualMarketCreateEventV2ProtoMsg {
 /**
  * PerpetualMarketCreateEventV2 message contains all the information about a
  * new Perpetual Market on the dYdX chain.
+ * Deprecated. Use PerpetualMarketCreateEventV3 for the most up to date message
+ * @name PerpetualMarketCreateEventV2Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.PerpetualMarketCreateEventV2
+ * @deprecated
  */
 export interface PerpetualMarketCreateEventV2Amino {
   /**
@@ -1274,7 +1639,9 @@ export interface PerpetualMarketCreateEventV2Amino {
    * Defined in perpetuals.perpetual
    */
   market_id?: number;
-  /** Status of the CLOB */
+  /**
+   * Status of the CLOB
+   */
   status?: ClobPairStatus;
   /**
    * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
@@ -1308,7 +1675,9 @@ export interface PerpetualMarketCreateEventV2Amino {
    * Defined in perpetuals.perpetual
    */
   liquidity_tier?: number;
-  /** Market type of the perpetual. */
+  /**
+   * Market type of the perpetual.
+   */
   market_type?: PerpetualMarketType;
 }
 export interface PerpetualMarketCreateEventV2AminoMsg {
@@ -1318,7 +1687,9 @@ export interface PerpetualMarketCreateEventV2AminoMsg {
 /**
  * PerpetualMarketCreateEventV2 message contains all the information about a
  * new Perpetual Market on the dYdX chain.
+ * Deprecated. Use PerpetualMarketCreateEventV3 for the most up to date message
  */
+/** @deprecated */
 export interface PerpetualMarketCreateEventV2SDKType {
   id: number;
   clob_pair_id: number;
@@ -1331,6 +1702,169 @@ export interface PerpetualMarketCreateEventV2SDKType {
   step_base_quantums: bigint;
   liquidity_tier: number;
   market_type: PerpetualMarketType;
+}
+/**
+ * PerpetualMarketCreateEventV3 message contains all the information about a
+ * new Perpetual Market on the dYdX chain.
+ */
+export interface PerpetualMarketCreateEventV3 {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id: number;
+  /**
+   * Unique clob pair Id associated with this perpetual market
+   * Defined in clob.clob_pair
+   */
+  clobPairId: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  marketId: number;
+  /** Status of the CLOB */
+  status: ClobPairStatus;
+  /**
+   * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
+   * per Subtick.
+   * Defined in clob.clob_pair
+   */
+  quantumConversionExponent: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomicResolution: number;
+  /**
+   * Defines the tick size of the orderbook by defining how many subticks
+   * are in one tick. That is, the subticks of any valid order must be a
+   * multiple of this value. Generally this value should start `>= 100`to
+   * allow room for decreasing it.
+   * Defined in clob.clob_pair
+   */
+  subticksPerTick: number;
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Defined in clob.clob_pair
+   */
+  stepBaseQuantums: bigint;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidityTier: number;
+  /** Market type of the perpetual. */
+  marketType: PerpetualMarketType;
+  /** Default 8hr funding rate in parts-per-million. */
+  defaultFunding8hrPpm: number;
+}
+export interface PerpetualMarketCreateEventV3ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.PerpetualMarketCreateEventV3";
+  value: Uint8Array;
+}
+/**
+ * PerpetualMarketCreateEventV3 message contains all the information about a
+ * new Perpetual Market on the dYdX chain.
+ * @name PerpetualMarketCreateEventV3Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.PerpetualMarketCreateEventV3
+ */
+export interface PerpetualMarketCreateEventV3Amino {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id?: number;
+  /**
+   * Unique clob pair Id associated with this perpetual market
+   * Defined in clob.clob_pair
+   */
+  clob_pair_id?: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker?: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  market_id?: number;
+  /**
+   * Status of the CLOB
+   */
+  status?: ClobPairStatus;
+  /**
+   * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
+   * per Subtick.
+   * Defined in clob.clob_pair
+   */
+  quantum_conversion_exponent?: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomic_resolution?: number;
+  /**
+   * Defines the tick size of the orderbook by defining how many subticks
+   * are in one tick. That is, the subticks of any valid order must be a
+   * multiple of this value. Generally this value should start `>= 100`to
+   * allow room for decreasing it.
+   * Defined in clob.clob_pair
+   */
+  subticks_per_tick?: number;
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Defined in clob.clob_pair
+   */
+  step_base_quantums?: string;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidity_tier?: number;
+  /**
+   * Market type of the perpetual.
+   */
+  market_type?: PerpetualMarketType;
+  /**
+   * Default 8hr funding rate in parts-per-million.
+   */
+  default_funding8hr_ppm?: number;
+}
+export interface PerpetualMarketCreateEventV3AminoMsg {
+  type: "/dydxprotocol.indexer.events.PerpetualMarketCreateEventV3";
+  value: PerpetualMarketCreateEventV3Amino;
+}
+/**
+ * PerpetualMarketCreateEventV3 message contains all the information about a
+ * new Perpetual Market on the dYdX chain.
+ */
+export interface PerpetualMarketCreateEventV3SDKType {
+  id: number;
+  clob_pair_id: number;
+  ticker: string;
+  market_id: number;
+  status: ClobPairStatus;
+  quantum_conversion_exponent: number;
+  atomic_resolution: number;
+  subticks_per_tick: number;
+  step_base_quantums: bigint;
+  liquidity_tier: number;
+  market_type: PerpetualMarketType;
+  default_funding8hr_ppm: number;
 }
 /**
  * LiquidityTierUpsertEventV1 message contains all the information to
@@ -1368,11 +1902,18 @@ export interface LiquidityTierUpsertEventV1ProtoMsg {
 /**
  * LiquidityTierUpsertEventV1 message contains all the information to
  * create/update a Liquidity Tier on the dYdX chain.
+ * @name LiquidityTierUpsertEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.LiquidityTierUpsertEventV1
  */
 export interface LiquidityTierUpsertEventV1Amino {
-  /** Unique id. */
+  /**
+   * Unique id.
+   */
   id?: number;
-  /** The name of the tier purely for mnemonic purposes, e.g. "Gold". */
+  /**
+   * The name of the tier purely for mnemonic purposes, e.g. "Gold".
+   */
   name?: string;
   /**
    * The margin fraction needed to open a position.
@@ -1390,8 +1931,8 @@ export interface LiquidityTierUpsertEventV1Amino {
    * the margin requirements increase at a rate of sqrt(size).
    * 
    * Deprecated since v3.x.
+   * @deprecated
    */
-  /** @deprecated */
   base_position_notional?: string;
 }
 export interface LiquidityTierUpsertEventV1AminoMsg {
@@ -1449,6 +1990,9 @@ export interface UpdateClobPairEventV1ProtoMsg {
 /**
  * UpdateClobPairEventV1 message contains all the information about an update to
  * a clob pair on the dYdX chain.
+ * @name UpdateClobPairEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.UpdateClobPairEventV1
  */
 export interface UpdateClobPairEventV1Amino {
   /**
@@ -1456,7 +2000,9 @@ export interface UpdateClobPairEventV1Amino {
    * Defined in clob.clob_pair
    */
   clob_pair_id?: number;
-  /** Status of the CLOB */
+  /**
+   * Status of the CLOB
+   */
   status?: ClobPairStatus;
   /**
    * `10^Exponent` gives the number of QuoteQuantums traded per BaseQuantum
@@ -1496,7 +2042,10 @@ export interface UpdateClobPairEventV1SDKType {
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
  * to a perpetual on the dYdX chain.
+ * Deprecated. See UpdatePerpetualEventV2 for the most up to date message
+ * for the event to update a perpetual.
  */
+/** @deprecated */
 export interface UpdatePerpetualEventV1 {
   /**
    * Unique Perpetual id.
@@ -1534,6 +2083,12 @@ export interface UpdatePerpetualEventV1ProtoMsg {
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
  * to a perpetual on the dYdX chain.
+ * Deprecated. See UpdatePerpetualEventV2 for the most up to date message
+ * for the event to update a perpetual.
+ * @name UpdatePerpetualEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.UpdatePerpetualEventV1
+ * @deprecated
  */
 export interface UpdatePerpetualEventV1Amino {
   /**
@@ -1572,13 +2127,223 @@ export interface UpdatePerpetualEventV1AminoMsg {
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
  * to a perpetual on the dYdX chain.
+ * Deprecated. See UpdatePerpetualEventV2 for the most up to date message
+ * for the event to update a perpetual.
  */
+/** @deprecated */
 export interface UpdatePerpetualEventV1SDKType {
   id: number;
   ticker: string;
   market_id: number;
   atomic_resolution: number;
   liquidity_tier: number;
+}
+/**
+ * UpdatePerpetualEventV2 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ * Deprecated. Use UpdatePerpetualEventV3.
+ */
+/** @deprecated */
+export interface UpdatePerpetualEventV2 {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  marketId: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomicResolution: number;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidityTier: number;
+  /** Market type of the perpetual. */
+  marketType: PerpetualMarketType;
+}
+export interface UpdatePerpetualEventV2ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV2";
+  value: Uint8Array;
+}
+/**
+ * UpdatePerpetualEventV2 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ * Deprecated. Use UpdatePerpetualEventV3.
+ * @name UpdatePerpetualEventV2Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.UpdatePerpetualEventV2
+ * @deprecated
+ */
+export interface UpdatePerpetualEventV2Amino {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id?: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker?: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  market_id?: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomic_resolution?: number;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidity_tier?: number;
+  /**
+   * Market type of the perpetual.
+   */
+  market_type?: PerpetualMarketType;
+}
+export interface UpdatePerpetualEventV2AminoMsg {
+  type: "/dydxprotocol.indexer.events.UpdatePerpetualEventV2";
+  value: UpdatePerpetualEventV2Amino;
+}
+/**
+ * UpdatePerpetualEventV2 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ * Deprecated. Use UpdatePerpetualEventV3.
+ */
+/** @deprecated */
+export interface UpdatePerpetualEventV2SDKType {
+  id: number;
+  ticker: string;
+  market_id: number;
+  atomic_resolution: number;
+  liquidity_tier: number;
+  market_type: PerpetualMarketType;
+}
+/**
+ * UpdatePerpetualEventV3 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ */
+export interface UpdatePerpetualEventV3 {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  marketId: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomicResolution: number;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidityTier: number;
+  /** Market type of the perpetual. */
+  marketType: PerpetualMarketType;
+  /** Default 8hr funding rate in parts-per-million. */
+  defaultFunding8hrPpm: number;
+}
+export interface UpdatePerpetualEventV3ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV3";
+  value: Uint8Array;
+}
+/**
+ * UpdatePerpetualEventV3 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ * @name UpdatePerpetualEventV3Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.UpdatePerpetualEventV3
+ */
+export interface UpdatePerpetualEventV3Amino {
+  /**
+   * Unique Perpetual id.
+   * Defined in perpetuals.perpetual
+   */
+  id?: number;
+  /**
+   * The name of the `Perpetual` (e.g. `BTC-USD`).
+   * Defined in perpetuals.perpetual
+   */
+  ticker?: string;
+  /**
+   * Unique id of market param associated with this perpetual market.
+   * Defined in perpetuals.perpetual
+   */
+  market_id?: number;
+  /**
+   * The exponent for converting an atomic amount (`size = 1`)
+   * to a full coin. For example, if `AtomicResolution = -8`
+   * then a `PerpetualPosition` with `size = 1e8` is equivalent to
+   * a position size of one full coin.
+   * Defined in perpetuals.perpetual
+   */
+  atomic_resolution?: number;
+  /**
+   * The liquidity_tier that this perpetual is associated with.
+   * Defined in perpetuals.perpetual
+   */
+  liquidity_tier?: number;
+  /**
+   * Market type of the perpetual.
+   */
+  market_type?: PerpetualMarketType;
+  /**
+   * Default 8hr funding rate in parts-per-million.
+   */
+  default_funding8hr_ppm?: number;
+}
+export interface UpdatePerpetualEventV3AminoMsg {
+  type: "/dydxprotocol.indexer.events.UpdatePerpetualEventV3";
+  value: UpdatePerpetualEventV3Amino;
+}
+/**
+ * UpdatePerpetualEventV3 message contains all the information about an update
+ * to a perpetual on the dYdX chain.
+ */
+export interface UpdatePerpetualEventV3SDKType {
+  id: number;
+  ticker: string;
+  market_id: number;
+  atomic_resolution: number;
+  liquidity_tier: number;
+  market_type: PerpetualMarketType;
+  default_funding8hr_ppm: number;
 }
 /**
  * TradingRewardsEventV1 is communicates all trading rewards for all accounts
@@ -1595,9 +2360,14 @@ export interface TradingRewardsEventV1ProtoMsg {
 /**
  * TradingRewardsEventV1 is communicates all trading rewards for all accounts
  * that receive trade rewards in the block.
+ * @name TradingRewardsEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.TradingRewardsEventV1
  */
 export interface TradingRewardsEventV1Amino {
-  /** The list of all trading rewards in the block. */
+  /**
+   * The list of all trading rewards in the block.
+   */
   trading_rewards?: AddressTradingRewardAmino[];
 }
 export interface TradingRewardsEventV1AminoMsg {
@@ -1631,9 +2401,14 @@ export interface AddressTradingRewardProtoMsg {
 /**
  * AddressTradingReward contains info on an instance of an address receiving a
  * reward
+ * @name AddressTradingRewardAmino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.AddressTradingReward
  */
 export interface AddressTradingRewardAmino {
-  /** The address of the wallet that will receive the trading reward. */
+  /**
+   * The address of the wallet that will receive the trading reward.
+   */
   owner?: string;
   /**
    * The amount of trading rewards earned by the address above in denoms. 1e18
@@ -1653,31 +2428,47 @@ export interface AddressTradingRewardSDKType {
   owner: string;
   denom_amount: Uint8Array;
 }
-/** OpenInterestUpdateEventV1 is used for open interest update events */
+/**
+ * OpenInterestUpdateEventV1 is used for open interest update events
+ * Deprecated.
+ */
+/** @deprecated */
 export interface OpenInterestUpdateEventV1 {
-  /** The list of all open interest updates in the block. */
   openInterestUpdates: OpenInterestUpdate[];
 }
 export interface OpenInterestUpdateEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.OpenInterestUpdateEventV1";
   value: Uint8Array;
 }
-/** OpenInterestUpdateEventV1 is used for open interest update events */
+/**
+ * OpenInterestUpdateEventV1 is used for open interest update events
+ * Deprecated.
+ * @name OpenInterestUpdateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.OpenInterestUpdateEventV1
+ * @deprecated
+ */
 export interface OpenInterestUpdateEventV1Amino {
-  /** The list of all open interest updates in the block. */
   open_interest_updates?: OpenInterestUpdateAmino[];
 }
 export interface OpenInterestUpdateEventV1AminoMsg {
   type: "/dydxprotocol.indexer.events.OpenInterestUpdateEventV1";
   value: OpenInterestUpdateEventV1Amino;
 }
-/** OpenInterestUpdateEventV1 is used for open interest update events */
+/**
+ * OpenInterestUpdateEventV1 is used for open interest update events
+ * Deprecated.
+ */
+/** @deprecated */
 export interface OpenInterestUpdateEventV1SDKType {
   open_interest_updates: OpenInterestUpdateSDKType[];
 }
-/** OpenInterestUpdate contains a single open interest update for a perpetual */
+/**
+ * OpenInterestUpdate contains a single open interest update for a perpetual
+ * Deprecated.
+ */
+/** @deprecated */
 export interface OpenInterestUpdate {
-  /** The ID of the perpetual market. */
   perpetualId: number;
   /** The new open interest value for the perpetual market. */
   openInterest: Uint8Array;
@@ -1686,18 +2477,30 @@ export interface OpenInterestUpdateProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.OpenInterestUpdate";
   value: Uint8Array;
 }
-/** OpenInterestUpdate contains a single open interest update for a perpetual */
+/**
+ * OpenInterestUpdate contains a single open interest update for a perpetual
+ * Deprecated.
+ * @name OpenInterestUpdateAmino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.OpenInterestUpdate
+ * @deprecated
+ */
 export interface OpenInterestUpdateAmino {
-  /** The ID of the perpetual market. */
   perpetual_id?: number;
-  /** The new open interest value for the perpetual market. */
+  /**
+   * The new open interest value for the perpetual market.
+   */
   open_interest?: string;
 }
 export interface OpenInterestUpdateAminoMsg {
   type: "/dydxprotocol.indexer.events.OpenInterestUpdate";
   value: OpenInterestUpdateAmino;
 }
-/** OpenInterestUpdate contains a single open interest update for a perpetual */
+/**
+ * OpenInterestUpdate contains a single open interest update for a perpetual
+ * Deprecated.
+ */
+/** @deprecated */
 export interface OpenInterestUpdateSDKType {
   perpetual_id: number;
   open_interest: Uint8Array;
@@ -1744,11 +2547,18 @@ export interface LiquidityTierUpsertEventV2ProtoMsg {
  * LiquidationEventV2 message contains all the information needed to update
  * the liquidity tiers. It contains all the fields from V1 along with the
  * open interest caps.
+ * @name LiquidityTierUpsertEventV2Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.LiquidityTierUpsertEventV2
  */
 export interface LiquidityTierUpsertEventV2Amino {
-  /** Unique id. */
+  /**
+   * Unique id.
+   */
   id?: number;
-  /** The name of the tier purely for mnemonic purposes, e.g. "Gold". */
+  /**
+   * The name of the tier purely for mnemonic purposes, e.g. "Gold".
+   */
   name?: string;
   /**
    * The margin fraction needed to open a position.
@@ -1766,12 +2576,16 @@ export interface LiquidityTierUpsertEventV2Amino {
    * the margin requirements increase at a rate of sqrt(size).
    * 
    * Deprecated since v3.x.
+   * @deprecated
    */
-  /** @deprecated */
   base_position_notional?: string;
-  /** Lower cap of open interest in quote quantums. optional */
+  /**
+   * Lower cap of open interest in quote quantums. optional
+   */
   open_interest_lower_cap?: string;
-  /** Upper cap of open interest in quote quantums. */
+  /**
+   * Upper cap of open interest in quote quantums.
+   */
   open_interest_upper_cap?: string;
 }
 export interface LiquidityTierUpsertEventV2AminoMsg {
@@ -1799,21 +2613,26 @@ export interface RegisterAffiliateEventV1 {
   referee: string;
   /** Address of the affiliate associated with the referee. */
   affiliate: string;
-  /** Block number at which the affiliate was registered. */
-  registeredAtBlock: bigint;
 }
 export interface RegisterAffiliateEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.RegisterAffiliateEventV1";
   value: Uint8Array;
 }
-/** Event emitted when a referee is registered with an affiliate. */
+/**
+ * Event emitted when a referee is registered with an affiliate.
+ * @name RegisterAffiliateEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.RegisterAffiliateEventV1
+ */
 export interface RegisterAffiliateEventV1Amino {
-  /** Address of the referee being registered. */
+  /**
+   * Address of the referee being registered.
+   */
   referee?: string;
-  /** Address of the affiliate associated with the referee. */
+  /**
+   * Address of the affiliate associated with the referee.
+   */
   affiliate?: string;
-  /** Block number at which the affiliate was registered. */
-  registered_at_block?: string;
 }
 export interface RegisterAffiliateEventV1AminoMsg {
   type: "/dydxprotocol.indexer.events.RegisterAffiliateEventV1";
@@ -1823,7 +2642,49 @@ export interface RegisterAffiliateEventV1AminoMsg {
 export interface RegisterAffiliateEventV1SDKType {
   referee: string;
   affiliate: string;
-  registered_at_block: bigint;
+}
+/** Event emitted when a vault is created / updated. */
+export interface UpsertVaultEventV1 {
+  /** Address of the vault. */
+  address: string;
+  /** Clob pair Id associated with the vault. */
+  clobPairId: number;
+  /** Status of the vault. */
+  status: VaultStatus;
+}
+export interface UpsertVaultEventV1ProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.events.UpsertVaultEventV1";
+  value: Uint8Array;
+}
+/**
+ * Event emitted when a vault is created / updated.
+ * @name UpsertVaultEventV1Amino
+ * @package dydxprotocol.indexer.events
+ * @see proto type: dydxprotocol.indexer.events.UpsertVaultEventV1
+ */
+export interface UpsertVaultEventV1Amino {
+  /**
+   * Address of the vault.
+   */
+  address?: string;
+  /**
+   * Clob pair Id associated with the vault.
+   */
+  clob_pair_id?: number;
+  /**
+   * Status of the vault.
+   */
+  status?: VaultStatus;
+}
+export interface UpsertVaultEventV1AminoMsg {
+  type: "/dydxprotocol.indexer.events.UpsertVaultEventV1";
+  value: UpsertVaultEventV1Amino;
+}
+/** Event emitted when a vault is created / updated. */
+export interface UpsertVaultEventV1SDKType {
+  address: string;
+  clob_pair_id: number;
+  status: VaultStatus;
 }
 function createBaseFundingUpdateV1(): FundingUpdateV1 {
   return {
@@ -2132,7 +2993,7 @@ export const MarketPriceUpdateEventV1 = {
   },
   toAmino(message: MarketPriceUpdateEventV1): MarketPriceUpdateEventV1Amino {
     const obj: any = {};
-    obj.price_with_exponent = message.priceWithExponent !== BigInt(0) ? message.priceWithExponent.toString() : undefined;
+    obj.price_with_exponent = message.priceWithExponent !== BigInt(0) ? message.priceWithExponent?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MarketPriceUpdateEventV1AminoMsg): MarketPriceUpdateEventV1 {
@@ -2444,7 +3305,7 @@ function createBaseTransferEventV1(): TransferEventV1 {
     senderSubaccountId: undefined,
     recipientSubaccountId: undefined,
     assetId: 0,
-    amount: BigInt(0),
+    amount: new Uint8Array(),
     sender: undefined,
     recipient: undefined
   };
@@ -2461,8 +3322,8 @@ export const TransferEventV1 = {
     if (message.assetId !== 0) {
       writer.uint32(24).uint32(message.assetId);
     }
-    if (message.amount !== BigInt(0)) {
-      writer.uint32(32).uint64(message.amount);
+    if (message.amount.length !== 0) {
+      writer.uint32(34).bytes(message.amount);
     }
     if (message.sender !== undefined) {
       SourceOfFunds.encode(message.sender, writer.uint32(42).fork()).ldelim();
@@ -2489,7 +3350,7 @@ export const TransferEventV1 = {
           message.assetId = reader.uint32();
           break;
         case 4:
-          message.amount = reader.uint64();
+          message.amount = reader.bytes();
           break;
         case 5:
           message.sender = SourceOfFunds.decode(reader, reader.uint32());
@@ -2509,7 +3370,7 @@ export const TransferEventV1 = {
     message.senderSubaccountId = object.senderSubaccountId !== undefined && object.senderSubaccountId !== null ? IndexerSubaccountId.fromPartial(object.senderSubaccountId) : undefined;
     message.recipientSubaccountId = object.recipientSubaccountId !== undefined && object.recipientSubaccountId !== null ? IndexerSubaccountId.fromPartial(object.recipientSubaccountId) : undefined;
     message.assetId = object.assetId ?? 0;
-    message.amount = object.amount !== undefined && object.amount !== null ? BigInt(object.amount.toString()) : BigInt(0);
+    message.amount = object.amount ?? new Uint8Array();
     message.sender = object.sender !== undefined && object.sender !== null ? SourceOfFunds.fromPartial(object.sender) : undefined;
     message.recipient = object.recipient !== undefined && object.recipient !== null ? SourceOfFunds.fromPartial(object.recipient) : undefined;
     return message;
@@ -2526,7 +3387,7 @@ export const TransferEventV1 = {
       message.assetId = object.asset_id;
     }
     if (object.amount !== undefined && object.amount !== null) {
-      message.amount = BigInt(object.amount);
+      message.amount = bytesFromBase64(object.amount);
     }
     if (object.sender !== undefined && object.sender !== null) {
       message.sender = SourceOfFunds.fromAmino(object.sender);
@@ -2541,7 +3402,7 @@ export const TransferEventV1 = {
     obj.sender_subaccount_id = message.senderSubaccountId ? IndexerSubaccountId.toAmino(message.senderSubaccountId) : undefined;
     obj.recipient_subaccount_id = message.recipientSubaccountId ? IndexerSubaccountId.toAmino(message.recipientSubaccountId) : undefined;
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.amount = message.amount !== BigInt(0) ? message.amount.toString() : undefined;
+    obj.amount = message.amount ? base64FromBytes(message.amount) : undefined;
     obj.sender = message.sender ? SourceOfFunds.toAmino(message.sender) : undefined;
     obj.recipient = message.recipient ? SourceOfFunds.toAmino(message.recipient) : undefined;
     return obj;
@@ -2572,7 +3433,15 @@ function createBaseOrderFillEventV1(): OrderFillEventV1 {
     takerFee: BigInt(0),
     totalFilledMaker: BigInt(0),
     totalFilledTaker: BigInt(0),
-    affiliateRevShare: BigInt(0)
+    affiliateRevShare: BigInt(0),
+    makerBuilderFee: BigInt(0),
+    takerBuilderFee: BigInt(0),
+    makerBuilderAddress: "",
+    takerBuilderAddress: "",
+    makerOrderRouterFee: BigInt(0),
+    takerOrderRouterFee: BigInt(0),
+    makerOrderRouterAddress: "",
+    takerOrderRouterAddress: ""
   };
 }
 export const OrderFillEventV1 = {
@@ -2604,6 +3473,30 @@ export const OrderFillEventV1 = {
     }
     if (message.affiliateRevShare !== BigInt(0)) {
       writer.uint32(72).uint64(message.affiliateRevShare);
+    }
+    if (message.makerBuilderFee !== BigInt(0)) {
+      writer.uint32(80).uint64(message.makerBuilderFee);
+    }
+    if (message.takerBuilderFee !== BigInt(0)) {
+      writer.uint32(88).uint64(message.takerBuilderFee);
+    }
+    if (message.makerBuilderAddress !== "") {
+      writer.uint32(98).string(message.makerBuilderAddress);
+    }
+    if (message.takerBuilderAddress !== "") {
+      writer.uint32(106).string(message.takerBuilderAddress);
+    }
+    if (message.makerOrderRouterFee !== BigInt(0)) {
+      writer.uint32(112).uint64(message.makerOrderRouterFee);
+    }
+    if (message.takerOrderRouterFee !== BigInt(0)) {
+      writer.uint32(120).uint64(message.takerOrderRouterFee);
+    }
+    if (message.makerOrderRouterAddress !== "") {
+      writer.uint32(130).string(message.makerOrderRouterAddress);
+    }
+    if (message.takerOrderRouterAddress !== "") {
+      writer.uint32(138).string(message.takerOrderRouterAddress);
     }
     return writer;
   },
@@ -2641,6 +3534,30 @@ export const OrderFillEventV1 = {
         case 9:
           message.affiliateRevShare = reader.uint64();
           break;
+        case 10:
+          message.makerBuilderFee = reader.uint64();
+          break;
+        case 11:
+          message.takerBuilderFee = reader.uint64();
+          break;
+        case 12:
+          message.makerBuilderAddress = reader.string();
+          break;
+        case 13:
+          message.takerBuilderAddress = reader.string();
+          break;
+        case 14:
+          message.makerOrderRouterFee = reader.uint64();
+          break;
+        case 15:
+          message.takerOrderRouterFee = reader.uint64();
+          break;
+        case 16:
+          message.makerOrderRouterAddress = reader.string();
+          break;
+        case 17:
+          message.takerOrderRouterAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2659,6 +3576,14 @@ export const OrderFillEventV1 = {
     message.totalFilledMaker = object.totalFilledMaker !== undefined && object.totalFilledMaker !== null ? BigInt(object.totalFilledMaker.toString()) : BigInt(0);
     message.totalFilledTaker = object.totalFilledTaker !== undefined && object.totalFilledTaker !== null ? BigInt(object.totalFilledTaker.toString()) : BigInt(0);
     message.affiliateRevShare = object.affiliateRevShare !== undefined && object.affiliateRevShare !== null ? BigInt(object.affiliateRevShare.toString()) : BigInt(0);
+    message.makerBuilderFee = object.makerBuilderFee !== undefined && object.makerBuilderFee !== null ? BigInt(object.makerBuilderFee.toString()) : BigInt(0);
+    message.takerBuilderFee = object.takerBuilderFee !== undefined && object.takerBuilderFee !== null ? BigInt(object.takerBuilderFee.toString()) : BigInt(0);
+    message.makerBuilderAddress = object.makerBuilderAddress ?? "";
+    message.takerBuilderAddress = object.takerBuilderAddress ?? "";
+    message.makerOrderRouterFee = object.makerOrderRouterFee !== undefined && object.makerOrderRouterFee !== null ? BigInt(object.makerOrderRouterFee.toString()) : BigInt(0);
+    message.takerOrderRouterFee = object.takerOrderRouterFee !== undefined && object.takerOrderRouterFee !== null ? BigInt(object.takerOrderRouterFee.toString()) : BigInt(0);
+    message.makerOrderRouterAddress = object.makerOrderRouterAddress ?? "";
+    message.takerOrderRouterAddress = object.takerOrderRouterAddress ?? "";
     return message;
   },
   fromAmino(object: OrderFillEventV1Amino): OrderFillEventV1 {
@@ -2690,6 +3615,30 @@ export const OrderFillEventV1 = {
     if (object.affiliate_rev_share !== undefined && object.affiliate_rev_share !== null) {
       message.affiliateRevShare = BigInt(object.affiliate_rev_share);
     }
+    if (object.maker_builder_fee !== undefined && object.maker_builder_fee !== null) {
+      message.makerBuilderFee = BigInt(object.maker_builder_fee);
+    }
+    if (object.taker_builder_fee !== undefined && object.taker_builder_fee !== null) {
+      message.takerBuilderFee = BigInt(object.taker_builder_fee);
+    }
+    if (object.maker_builder_address !== undefined && object.maker_builder_address !== null) {
+      message.makerBuilderAddress = object.maker_builder_address;
+    }
+    if (object.taker_builder_address !== undefined && object.taker_builder_address !== null) {
+      message.takerBuilderAddress = object.taker_builder_address;
+    }
+    if (object.maker_order_router_fee !== undefined && object.maker_order_router_fee !== null) {
+      message.makerOrderRouterFee = BigInt(object.maker_order_router_fee);
+    }
+    if (object.taker_order_router_fee !== undefined && object.taker_order_router_fee !== null) {
+      message.takerOrderRouterFee = BigInt(object.taker_order_router_fee);
+    }
+    if (object.maker_order_router_address !== undefined && object.maker_order_router_address !== null) {
+      message.makerOrderRouterAddress = object.maker_order_router_address;
+    }
+    if (object.taker_order_router_address !== undefined && object.taker_order_router_address !== null) {
+      message.takerOrderRouterAddress = object.taker_order_router_address;
+    }
     return message;
   },
   toAmino(message: OrderFillEventV1): OrderFillEventV1Amino {
@@ -2697,12 +3646,20 @@ export const OrderFillEventV1 = {
     obj.maker_order = message.makerOrder ? IndexerOrder.toAmino(message.makerOrder) : undefined;
     obj.order = message.order ? IndexerOrder.toAmino(message.order) : undefined;
     obj.liquidation_order = message.liquidationOrder ? LiquidationOrderV1.toAmino(message.liquidationOrder) : undefined;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
-    obj.maker_fee = message.makerFee !== BigInt(0) ? message.makerFee.toString() : undefined;
-    obj.taker_fee = message.takerFee !== BigInt(0) ? message.takerFee.toString() : undefined;
-    obj.total_filled_maker = message.totalFilledMaker !== BigInt(0) ? message.totalFilledMaker.toString() : undefined;
-    obj.total_filled_taker = message.totalFilledTaker !== BigInt(0) ? message.totalFilledTaker.toString() : undefined;
-    obj.affiliate_rev_share = message.affiliateRevShare !== BigInt(0) ? message.affiliateRevShare.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.maker_fee = message.makerFee !== BigInt(0) ? message.makerFee?.toString() : undefined;
+    obj.taker_fee = message.takerFee !== BigInt(0) ? message.takerFee?.toString() : undefined;
+    obj.total_filled_maker = message.totalFilledMaker !== BigInt(0) ? message.totalFilledMaker?.toString() : undefined;
+    obj.total_filled_taker = message.totalFilledTaker !== BigInt(0) ? message.totalFilledTaker?.toString() : undefined;
+    obj.affiliate_rev_share = message.affiliateRevShare !== BigInt(0) ? message.affiliateRevShare?.toString() : undefined;
+    obj.maker_builder_fee = message.makerBuilderFee !== BigInt(0) ? message.makerBuilderFee?.toString() : undefined;
+    obj.taker_builder_fee = message.takerBuilderFee !== BigInt(0) ? message.takerBuilderFee?.toString() : undefined;
+    obj.maker_builder_address = message.makerBuilderAddress === "" ? undefined : message.makerBuilderAddress;
+    obj.taker_builder_address = message.takerBuilderAddress === "" ? undefined : message.takerBuilderAddress;
+    obj.maker_order_router_fee = message.makerOrderRouterFee !== BigInt(0) ? message.makerOrderRouterFee?.toString() : undefined;
+    obj.taker_order_router_fee = message.takerOrderRouterFee !== BigInt(0) ? message.takerOrderRouterFee?.toString() : undefined;
+    obj.maker_order_router_address = message.makerOrderRouterAddress === "" ? undefined : message.makerOrderRouterAddress;
+    obj.taker_order_router_address = message.takerOrderRouterAddress === "" ? undefined : message.takerOrderRouterAddress;
     return obj;
   },
   fromAminoMsg(object: OrderFillEventV1AminoMsg): OrderFillEventV1 {
@@ -2834,8 +3791,8 @@ export const DeleveragingEventV1 = {
     obj.liquidated = message.liquidated ? IndexerSubaccountId.toAmino(message.liquidated) : undefined;
     obj.offsetting = message.offsetting ? IndexerSubaccountId.toAmino(message.offsetting) : undefined;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
-    obj.total_quote_quantums = message.totalQuoteQuantums !== BigInt(0) ? message.totalQuoteQuantums.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.total_quote_quantums = message.totalQuoteQuantums !== BigInt(0) ? message.totalQuoteQuantums?.toString() : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
     obj.is_final_settlement = message.isFinalSettlement === false ? undefined : message.isFinalSettlement;
     return obj;
@@ -2958,9 +3915,9 @@ export const LiquidationOrderV1 = {
     obj.liquidated = message.liquidated ? IndexerSubaccountId.toAmino(message.liquidated) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize.toString() : undefined;
+    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize?.toString() : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks.toString() : undefined;
+    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: LiquidationOrderV1AminoMsg): LiquidationOrderV1 {
@@ -3077,7 +4034,8 @@ function createBaseStatefulOrderEventV1(): StatefulOrderEventV1 {
     conditionalOrderPlacement: undefined,
     conditionalOrderTriggered: undefined,
     longTermOrderPlacement: undefined,
-    orderReplacement: undefined
+    orderReplacement: undefined,
+    twapOrderPlacement: undefined
   };
 }
 export const StatefulOrderEventV1 = {
@@ -3100,6 +4058,9 @@ export const StatefulOrderEventV1 = {
     }
     if (message.orderReplacement !== undefined) {
       StatefulOrderEventV1_LongTermOrderReplacementV1.encode(message.orderReplacement, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.twapOrderPlacement !== undefined) {
+      StatefulOrderEventV1_TwapOrderPlacementV1.encode(message.twapOrderPlacement, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -3128,6 +4089,9 @@ export const StatefulOrderEventV1 = {
         case 8:
           message.orderReplacement = StatefulOrderEventV1_LongTermOrderReplacementV1.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.twapOrderPlacement = StatefulOrderEventV1_TwapOrderPlacementV1.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3143,6 +4107,7 @@ export const StatefulOrderEventV1 = {
     message.conditionalOrderTriggered = object.conditionalOrderTriggered !== undefined && object.conditionalOrderTriggered !== null ? StatefulOrderEventV1_ConditionalOrderTriggeredV1.fromPartial(object.conditionalOrderTriggered) : undefined;
     message.longTermOrderPlacement = object.longTermOrderPlacement !== undefined && object.longTermOrderPlacement !== null ? StatefulOrderEventV1_LongTermOrderPlacementV1.fromPartial(object.longTermOrderPlacement) : undefined;
     message.orderReplacement = object.orderReplacement !== undefined && object.orderReplacement !== null ? StatefulOrderEventV1_LongTermOrderReplacementV1.fromPartial(object.orderReplacement) : undefined;
+    message.twapOrderPlacement = object.twapOrderPlacement !== undefined && object.twapOrderPlacement !== null ? StatefulOrderEventV1_TwapOrderPlacementV1.fromPartial(object.twapOrderPlacement) : undefined;
     return message;
   },
   fromAmino(object: StatefulOrderEventV1Amino): StatefulOrderEventV1 {
@@ -3165,6 +4130,9 @@ export const StatefulOrderEventV1 = {
     if (object.order_replacement !== undefined && object.order_replacement !== null) {
       message.orderReplacement = StatefulOrderEventV1_LongTermOrderReplacementV1.fromAmino(object.order_replacement);
     }
+    if (object.twap_order_placement !== undefined && object.twap_order_placement !== null) {
+      message.twapOrderPlacement = StatefulOrderEventV1_TwapOrderPlacementV1.fromAmino(object.twap_order_placement);
+    }
     return message;
   },
   toAmino(message: StatefulOrderEventV1): StatefulOrderEventV1Amino {
@@ -3175,6 +4143,7 @@ export const StatefulOrderEventV1 = {
     obj.conditional_order_triggered = message.conditionalOrderTriggered ? StatefulOrderEventV1_ConditionalOrderTriggeredV1.toAmino(message.conditionalOrderTriggered) : undefined;
     obj.long_term_order_placement = message.longTermOrderPlacement ? StatefulOrderEventV1_LongTermOrderPlacementV1.toAmino(message.longTermOrderPlacement) : undefined;
     obj.order_replacement = message.orderReplacement ? StatefulOrderEventV1_LongTermOrderReplacementV1.toAmino(message.orderReplacement) : undefined;
+    obj.twap_order_placement = message.twapOrderPlacement ? StatefulOrderEventV1_TwapOrderPlacementV1.toAmino(message.twapOrderPlacement) : undefined;
     return obj;
   },
   fromAminoMsg(object: StatefulOrderEventV1AminoMsg): StatefulOrderEventV1 {
@@ -3595,6 +4564,69 @@ export const StatefulOrderEventV1_LongTermOrderReplacementV1 = {
     };
   }
 };
+function createBaseStatefulOrderEventV1_TwapOrderPlacementV1(): StatefulOrderEventV1_TwapOrderPlacementV1 {
+  return {
+    order: undefined
+  };
+}
+export const StatefulOrderEventV1_TwapOrderPlacementV1 = {
+  typeUrl: "/dydxprotocol.indexer.events.TwapOrderPlacementV1",
+  encode(message: StatefulOrderEventV1_TwapOrderPlacementV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.order !== undefined) {
+      IndexerOrder.encode(message.order, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): StatefulOrderEventV1_TwapOrderPlacementV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStatefulOrderEventV1_TwapOrderPlacementV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.order = IndexerOrder.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<StatefulOrderEventV1_TwapOrderPlacementV1>): StatefulOrderEventV1_TwapOrderPlacementV1 {
+    const message = createBaseStatefulOrderEventV1_TwapOrderPlacementV1();
+    message.order = object.order !== undefined && object.order !== null ? IndexerOrder.fromPartial(object.order) : undefined;
+    return message;
+  },
+  fromAmino(object: StatefulOrderEventV1_TwapOrderPlacementV1Amino): StatefulOrderEventV1_TwapOrderPlacementV1 {
+    const message = createBaseStatefulOrderEventV1_TwapOrderPlacementV1();
+    if (object.order !== undefined && object.order !== null) {
+      message.order = IndexerOrder.fromAmino(object.order);
+    }
+    return message;
+  },
+  toAmino(message: StatefulOrderEventV1_TwapOrderPlacementV1): StatefulOrderEventV1_TwapOrderPlacementV1Amino {
+    const obj: any = {};
+    obj.order = message.order ? IndexerOrder.toAmino(message.order) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: StatefulOrderEventV1_TwapOrderPlacementV1AminoMsg): StatefulOrderEventV1_TwapOrderPlacementV1 {
+    return StatefulOrderEventV1_TwapOrderPlacementV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StatefulOrderEventV1_TwapOrderPlacementV1ProtoMsg): StatefulOrderEventV1_TwapOrderPlacementV1 {
+    return StatefulOrderEventV1_TwapOrderPlacementV1.decode(message.value);
+  },
+  toProto(message: StatefulOrderEventV1_TwapOrderPlacementV1): Uint8Array {
+    return StatefulOrderEventV1_TwapOrderPlacementV1.encode(message).finish();
+  },
+  toProtoMsg(message: StatefulOrderEventV1_TwapOrderPlacementV1): StatefulOrderEventV1_TwapOrderPlacementV1ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.TwapOrderPlacementV1",
+      value: StatefulOrderEventV1_TwapOrderPlacementV1.encode(message).finish()
+    };
+  }
+};
 function createBaseAssetCreateEventV1(): AssetCreateEventV1 {
   return {
     id: 0,
@@ -3703,6 +4735,228 @@ export const AssetCreateEventV1 = {
     return {
       typeUrl: "/dydxprotocol.indexer.events.AssetCreateEventV1",
       value: AssetCreateEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseSpotMarketCreateEventV1(): SpotMarketCreateEventV1 {
+  return {
+    id: 0,
+    clobPairId: 0,
+    spotClobMetadata: undefined,
+    status: 0,
+    quantumConversionExponent: 0,
+    atomicResolution: 0,
+    subticksPerTick: 0,
+    stepBaseQuantums: BigInt(0)
+  };
+}
+export const SpotMarketCreateEventV1 = {
+  typeUrl: "/dydxprotocol.indexer.events.SpotMarketCreateEventV1",
+  encode(message: SpotMarketCreateEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.clobPairId !== 0) {
+      writer.uint32(16).uint32(message.clobPairId);
+    }
+    if (message.spotClobMetadata !== undefined) {
+      SpotMarketCreateEventV1_SpotClobMetadata.encode(message.spotClobMetadata, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.status !== 0) {
+      writer.uint32(32).int32(message.status);
+    }
+    if (message.quantumConversionExponent !== 0) {
+      writer.uint32(40).sint32(message.quantumConversionExponent);
+    }
+    if (message.atomicResolution !== 0) {
+      writer.uint32(48).sint32(message.atomicResolution);
+    }
+    if (message.subticksPerTick !== 0) {
+      writer.uint32(56).uint32(message.subticksPerTick);
+    }
+    if (message.stepBaseQuantums !== BigInt(0)) {
+      writer.uint32(64).uint64(message.stepBaseQuantums);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): SpotMarketCreateEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpotMarketCreateEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.clobPairId = reader.uint32();
+          break;
+        case 3:
+          message.spotClobMetadata = SpotMarketCreateEventV1_SpotClobMetadata.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.status = reader.int32() as any;
+          break;
+        case 5:
+          message.quantumConversionExponent = reader.sint32();
+          break;
+        case 6:
+          message.atomicResolution = reader.sint32();
+          break;
+        case 7:
+          message.subticksPerTick = reader.uint32();
+          break;
+        case 8:
+          message.stepBaseQuantums = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<SpotMarketCreateEventV1>): SpotMarketCreateEventV1 {
+    const message = createBaseSpotMarketCreateEventV1();
+    message.id = object.id ?? 0;
+    message.clobPairId = object.clobPairId ?? 0;
+    message.spotClobMetadata = object.spotClobMetadata !== undefined && object.spotClobMetadata !== null ? SpotMarketCreateEventV1_SpotClobMetadata.fromPartial(object.spotClobMetadata) : undefined;
+    message.status = object.status ?? 0;
+    message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
+    message.atomicResolution = object.atomicResolution ?? 0;
+    message.subticksPerTick = object.subticksPerTick ?? 0;
+    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: SpotMarketCreateEventV1Amino): SpotMarketCreateEventV1 {
+    const message = createBaseSpotMarketCreateEventV1();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.clob_pair_id !== undefined && object.clob_pair_id !== null) {
+      message.clobPairId = object.clob_pair_id;
+    }
+    if (object.spot_clob_metadata !== undefined && object.spot_clob_metadata !== null) {
+      message.spotClobMetadata = SpotMarketCreateEventV1_SpotClobMetadata.fromAmino(object.spot_clob_metadata);
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    if (object.quantum_conversion_exponent !== undefined && object.quantum_conversion_exponent !== null) {
+      message.quantumConversionExponent = object.quantum_conversion_exponent;
+    }
+    if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
+      message.atomicResolution = object.atomic_resolution;
+    }
+    if (object.subticks_per_tick !== undefined && object.subticks_per_tick !== null) {
+      message.subticksPerTick = object.subticks_per_tick;
+    }
+    if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
+      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+    }
+    return message;
+  },
+  toAmino(message: SpotMarketCreateEventV1): SpotMarketCreateEventV1Amino {
+    const obj: any = {};
+    obj.id = message.id === 0 ? undefined : message.id;
+    obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
+    obj.spot_clob_metadata = message.spotClobMetadata ? SpotMarketCreateEventV1_SpotClobMetadata.toAmino(message.spotClobMetadata) : undefined;
+    obj.status = message.status === 0 ? undefined : message.status;
+    obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
+    obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SpotMarketCreateEventV1AminoMsg): SpotMarketCreateEventV1 {
+    return SpotMarketCreateEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SpotMarketCreateEventV1ProtoMsg): SpotMarketCreateEventV1 {
+    return SpotMarketCreateEventV1.decode(message.value);
+  },
+  toProto(message: SpotMarketCreateEventV1): Uint8Array {
+    return SpotMarketCreateEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: SpotMarketCreateEventV1): SpotMarketCreateEventV1ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.SpotMarketCreateEventV1",
+      value: SpotMarketCreateEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseSpotMarketCreateEventV1_SpotClobMetadata(): SpotMarketCreateEventV1_SpotClobMetadata {
+  return {
+    baseAssetId: 0,
+    quoteAssetId: 0
+  };
+}
+export const SpotMarketCreateEventV1_SpotClobMetadata = {
+  typeUrl: "/dydxprotocol.indexer.events.SpotClobMetadata",
+  encode(message: SpotMarketCreateEventV1_SpotClobMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.baseAssetId !== 0) {
+      writer.uint32(8).uint32(message.baseAssetId);
+    }
+    if (message.quoteAssetId !== 0) {
+      writer.uint32(16).uint32(message.quoteAssetId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): SpotMarketCreateEventV1_SpotClobMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpotMarketCreateEventV1_SpotClobMetadata();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.baseAssetId = reader.uint32();
+          break;
+        case 2:
+          message.quoteAssetId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<SpotMarketCreateEventV1_SpotClobMetadata>): SpotMarketCreateEventV1_SpotClobMetadata {
+    const message = createBaseSpotMarketCreateEventV1_SpotClobMetadata();
+    message.baseAssetId = object.baseAssetId ?? 0;
+    message.quoteAssetId = object.quoteAssetId ?? 0;
+    return message;
+  },
+  fromAmino(object: SpotMarketCreateEventV1_SpotClobMetadataAmino): SpotMarketCreateEventV1_SpotClobMetadata {
+    const message = createBaseSpotMarketCreateEventV1_SpotClobMetadata();
+    if (object.base_asset_id !== undefined && object.base_asset_id !== null) {
+      message.baseAssetId = object.base_asset_id;
+    }
+    if (object.quote_asset_id !== undefined && object.quote_asset_id !== null) {
+      message.quoteAssetId = object.quote_asset_id;
+    }
+    return message;
+  },
+  toAmino(message: SpotMarketCreateEventV1_SpotClobMetadata): SpotMarketCreateEventV1_SpotClobMetadataAmino {
+    const obj: any = {};
+    obj.base_asset_id = message.baseAssetId === 0 ? undefined : message.baseAssetId;
+    obj.quote_asset_id = message.quoteAssetId === 0 ? undefined : message.quoteAssetId;
+    return obj;
+  },
+  fromAminoMsg(object: SpotMarketCreateEventV1_SpotClobMetadataAminoMsg): SpotMarketCreateEventV1_SpotClobMetadata {
+    return SpotMarketCreateEventV1_SpotClobMetadata.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SpotMarketCreateEventV1_SpotClobMetadataProtoMsg): SpotMarketCreateEventV1_SpotClobMetadata {
+    return SpotMarketCreateEventV1_SpotClobMetadata.decode(message.value);
+  },
+  toProto(message: SpotMarketCreateEventV1_SpotClobMetadata): Uint8Array {
+    return SpotMarketCreateEventV1_SpotClobMetadata.encode(message).finish();
+  },
+  toProtoMsg(message: SpotMarketCreateEventV1_SpotClobMetadata): SpotMarketCreateEventV1_SpotClobMetadataProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.SpotClobMetadata",
+      value: SpotMarketCreateEventV1_SpotClobMetadata.encode(message).finish()
     };
   }
 };
@@ -3857,7 +5111,7 @@ export const PerpetualMarketCreateEventV1 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
     obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
     return obj;
   },
@@ -4039,7 +5293,7 @@ export const PerpetualMarketCreateEventV2 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
     obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
     obj.market_type = message.marketType === 0 ? undefined : message.marketType;
     return obj;
@@ -4057,6 +5311,201 @@ export const PerpetualMarketCreateEventV2 = {
     return {
       typeUrl: "/dydxprotocol.indexer.events.PerpetualMarketCreateEventV2",
       value: PerpetualMarketCreateEventV2.encode(message).finish()
+    };
+  }
+};
+function createBasePerpetualMarketCreateEventV3(): PerpetualMarketCreateEventV3 {
+  return {
+    id: 0,
+    clobPairId: 0,
+    ticker: "",
+    marketId: 0,
+    status: 0,
+    quantumConversionExponent: 0,
+    atomicResolution: 0,
+    subticksPerTick: 0,
+    stepBaseQuantums: BigInt(0),
+    liquidityTier: 0,
+    marketType: 0,
+    defaultFunding8hrPpm: 0
+  };
+}
+export const PerpetualMarketCreateEventV3 = {
+  typeUrl: "/dydxprotocol.indexer.events.PerpetualMarketCreateEventV3",
+  encode(message: PerpetualMarketCreateEventV3, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.clobPairId !== 0) {
+      writer.uint32(16).uint32(message.clobPairId);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.marketId !== 0) {
+      writer.uint32(32).uint32(message.marketId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(40).int32(message.status);
+    }
+    if (message.quantumConversionExponent !== 0) {
+      writer.uint32(48).sint32(message.quantumConversionExponent);
+    }
+    if (message.atomicResolution !== 0) {
+      writer.uint32(56).sint32(message.atomicResolution);
+    }
+    if (message.subticksPerTick !== 0) {
+      writer.uint32(64).uint32(message.subticksPerTick);
+    }
+    if (message.stepBaseQuantums !== BigInt(0)) {
+      writer.uint32(72).uint64(message.stepBaseQuantums);
+    }
+    if (message.liquidityTier !== 0) {
+      writer.uint32(80).uint32(message.liquidityTier);
+    }
+    if (message.marketType !== 0) {
+      writer.uint32(88).int32(message.marketType);
+    }
+    if (message.defaultFunding8hrPpm !== 0) {
+      writer.uint32(96).int32(message.defaultFunding8hrPpm);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): PerpetualMarketCreateEventV3 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePerpetualMarketCreateEventV3();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.clobPairId = reader.uint32();
+          break;
+        case 3:
+          message.ticker = reader.string();
+          break;
+        case 4:
+          message.marketId = reader.uint32();
+          break;
+        case 5:
+          message.status = reader.int32() as any;
+          break;
+        case 6:
+          message.quantumConversionExponent = reader.sint32();
+          break;
+        case 7:
+          message.atomicResolution = reader.sint32();
+          break;
+        case 8:
+          message.subticksPerTick = reader.uint32();
+          break;
+        case 9:
+          message.stepBaseQuantums = reader.uint64();
+          break;
+        case 10:
+          message.liquidityTier = reader.uint32();
+          break;
+        case 11:
+          message.marketType = reader.int32() as any;
+          break;
+        case 12:
+          message.defaultFunding8hrPpm = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<PerpetualMarketCreateEventV3>): PerpetualMarketCreateEventV3 {
+    const message = createBasePerpetualMarketCreateEventV3();
+    message.id = object.id ?? 0;
+    message.clobPairId = object.clobPairId ?? 0;
+    message.ticker = object.ticker ?? "";
+    message.marketId = object.marketId ?? 0;
+    message.status = object.status ?? 0;
+    message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
+    message.atomicResolution = object.atomicResolution ?? 0;
+    message.subticksPerTick = object.subticksPerTick ?? 0;
+    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.liquidityTier = object.liquidityTier ?? 0;
+    message.marketType = object.marketType ?? 0;
+    message.defaultFunding8hrPpm = object.defaultFunding8hrPpm ?? 0;
+    return message;
+  },
+  fromAmino(object: PerpetualMarketCreateEventV3Amino): PerpetualMarketCreateEventV3 {
+    const message = createBasePerpetualMarketCreateEventV3();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.clob_pair_id !== undefined && object.clob_pair_id !== null) {
+      message.clobPairId = object.clob_pair_id;
+    }
+    if (object.ticker !== undefined && object.ticker !== null) {
+      message.ticker = object.ticker;
+    }
+    if (object.market_id !== undefined && object.market_id !== null) {
+      message.marketId = object.market_id;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    if (object.quantum_conversion_exponent !== undefined && object.quantum_conversion_exponent !== null) {
+      message.quantumConversionExponent = object.quantum_conversion_exponent;
+    }
+    if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
+      message.atomicResolution = object.atomic_resolution;
+    }
+    if (object.subticks_per_tick !== undefined && object.subticks_per_tick !== null) {
+      message.subticksPerTick = object.subticks_per_tick;
+    }
+    if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
+      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+    }
+    if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
+      message.liquidityTier = object.liquidity_tier;
+    }
+    if (object.market_type !== undefined && object.market_type !== null) {
+      message.marketType = object.market_type;
+    }
+    if (object.default_funding8hr_ppm !== undefined && object.default_funding8hr_ppm !== null) {
+      message.defaultFunding8hrPpm = object.default_funding8hr_ppm;
+    }
+    return message;
+  },
+  toAmino(message: PerpetualMarketCreateEventV3): PerpetualMarketCreateEventV3Amino {
+    const obj: any = {};
+    obj.id = message.id === 0 ? undefined : message.id;
+    obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
+    obj.ticker = message.ticker === "" ? undefined : message.ticker;
+    obj.market_id = message.marketId === 0 ? undefined : message.marketId;
+    obj.status = message.status === 0 ? undefined : message.status;
+    obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
+    obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
+    obj.market_type = message.marketType === 0 ? undefined : message.marketType;
+    obj.default_funding8hr_ppm = message.defaultFunding8hrPpm === 0 ? undefined : message.defaultFunding8hrPpm;
+    return obj;
+  },
+  fromAminoMsg(object: PerpetualMarketCreateEventV3AminoMsg): PerpetualMarketCreateEventV3 {
+    return PerpetualMarketCreateEventV3.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PerpetualMarketCreateEventV3ProtoMsg): PerpetualMarketCreateEventV3 {
+    return PerpetualMarketCreateEventV3.decode(message.value);
+  },
+  toProto(message: PerpetualMarketCreateEventV3): Uint8Array {
+    return PerpetualMarketCreateEventV3.encode(message).finish();
+  },
+  toProtoMsg(message: PerpetualMarketCreateEventV3): PerpetualMarketCreateEventV3ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.PerpetualMarketCreateEventV3",
+      value: PerpetualMarketCreateEventV3.encode(message).finish()
     };
   }
 };
@@ -4152,7 +5601,7 @@ export const LiquidityTierUpsertEventV1 = {
     obj.name = message.name === "" ? undefined : message.name;
     obj.initial_margin_ppm = message.initialMarginPpm === 0 ? undefined : message.initialMarginPpm;
     obj.maintenance_fraction_ppm = message.maintenanceFractionPpm === 0 ? undefined : message.maintenanceFractionPpm;
-    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional.toString() : undefined;
+    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: LiquidityTierUpsertEventV1AminoMsg): LiquidityTierUpsertEventV1 {
@@ -4263,7 +5712,7 @@ export const UpdateClobPairEventV1 = {
     obj.status = message.status === 0 ? undefined : message.status;
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: UpdateClobPairEventV1AminoMsg): UpdateClobPairEventV1 {
@@ -4390,6 +5839,264 @@ export const UpdatePerpetualEventV1 = {
     return {
       typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV1",
       value: UpdatePerpetualEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseUpdatePerpetualEventV2(): UpdatePerpetualEventV2 {
+  return {
+    id: 0,
+    ticker: "",
+    marketId: 0,
+    atomicResolution: 0,
+    liquidityTier: 0,
+    marketType: 0
+  };
+}
+export const UpdatePerpetualEventV2 = {
+  typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV2",
+  encode(message: UpdatePerpetualEventV2, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(18).string(message.ticker);
+    }
+    if (message.marketId !== 0) {
+      writer.uint32(24).uint32(message.marketId);
+    }
+    if (message.atomicResolution !== 0) {
+      writer.uint32(32).sint32(message.atomicResolution);
+    }
+    if (message.liquidityTier !== 0) {
+      writer.uint32(40).uint32(message.liquidityTier);
+    }
+    if (message.marketType !== 0) {
+      writer.uint32(48).int32(message.marketType);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdatePerpetualEventV2 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdatePerpetualEventV2();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.ticker = reader.string();
+          break;
+        case 3:
+          message.marketId = reader.uint32();
+          break;
+        case 4:
+          message.atomicResolution = reader.sint32();
+          break;
+        case 5:
+          message.liquidityTier = reader.uint32();
+          break;
+        case 6:
+          message.marketType = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<UpdatePerpetualEventV2>): UpdatePerpetualEventV2 {
+    const message = createBaseUpdatePerpetualEventV2();
+    message.id = object.id ?? 0;
+    message.ticker = object.ticker ?? "";
+    message.marketId = object.marketId ?? 0;
+    message.atomicResolution = object.atomicResolution ?? 0;
+    message.liquidityTier = object.liquidityTier ?? 0;
+    message.marketType = object.marketType ?? 0;
+    return message;
+  },
+  fromAmino(object: UpdatePerpetualEventV2Amino): UpdatePerpetualEventV2 {
+    const message = createBaseUpdatePerpetualEventV2();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.ticker !== undefined && object.ticker !== null) {
+      message.ticker = object.ticker;
+    }
+    if (object.market_id !== undefined && object.market_id !== null) {
+      message.marketId = object.market_id;
+    }
+    if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
+      message.atomicResolution = object.atomic_resolution;
+    }
+    if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
+      message.liquidityTier = object.liquidity_tier;
+    }
+    if (object.market_type !== undefined && object.market_type !== null) {
+      message.marketType = object.market_type;
+    }
+    return message;
+  },
+  toAmino(message: UpdatePerpetualEventV2): UpdatePerpetualEventV2Amino {
+    const obj: any = {};
+    obj.id = message.id === 0 ? undefined : message.id;
+    obj.ticker = message.ticker === "" ? undefined : message.ticker;
+    obj.market_id = message.marketId === 0 ? undefined : message.marketId;
+    obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
+    obj.market_type = message.marketType === 0 ? undefined : message.marketType;
+    return obj;
+  },
+  fromAminoMsg(object: UpdatePerpetualEventV2AminoMsg): UpdatePerpetualEventV2 {
+    return UpdatePerpetualEventV2.fromAmino(object.value);
+  },
+  fromProtoMsg(message: UpdatePerpetualEventV2ProtoMsg): UpdatePerpetualEventV2 {
+    return UpdatePerpetualEventV2.decode(message.value);
+  },
+  toProto(message: UpdatePerpetualEventV2): Uint8Array {
+    return UpdatePerpetualEventV2.encode(message).finish();
+  },
+  toProtoMsg(message: UpdatePerpetualEventV2): UpdatePerpetualEventV2ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV2",
+      value: UpdatePerpetualEventV2.encode(message).finish()
+    };
+  }
+};
+function createBaseUpdatePerpetualEventV3(): UpdatePerpetualEventV3 {
+  return {
+    id: 0,
+    ticker: "",
+    marketId: 0,
+    atomicResolution: 0,
+    liquidityTier: 0,
+    marketType: 0,
+    defaultFunding8hrPpm: 0
+  };
+}
+export const UpdatePerpetualEventV3 = {
+  typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV3",
+  encode(message: UpdatePerpetualEventV3, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(18).string(message.ticker);
+    }
+    if (message.marketId !== 0) {
+      writer.uint32(24).uint32(message.marketId);
+    }
+    if (message.atomicResolution !== 0) {
+      writer.uint32(32).sint32(message.atomicResolution);
+    }
+    if (message.liquidityTier !== 0) {
+      writer.uint32(40).uint32(message.liquidityTier);
+    }
+    if (message.marketType !== 0) {
+      writer.uint32(48).int32(message.marketType);
+    }
+    if (message.defaultFunding8hrPpm !== 0) {
+      writer.uint32(56).int32(message.defaultFunding8hrPpm);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdatePerpetualEventV3 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdatePerpetualEventV3();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.ticker = reader.string();
+          break;
+        case 3:
+          message.marketId = reader.uint32();
+          break;
+        case 4:
+          message.atomicResolution = reader.sint32();
+          break;
+        case 5:
+          message.liquidityTier = reader.uint32();
+          break;
+        case 6:
+          message.marketType = reader.int32() as any;
+          break;
+        case 7:
+          message.defaultFunding8hrPpm = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<UpdatePerpetualEventV3>): UpdatePerpetualEventV3 {
+    const message = createBaseUpdatePerpetualEventV3();
+    message.id = object.id ?? 0;
+    message.ticker = object.ticker ?? "";
+    message.marketId = object.marketId ?? 0;
+    message.atomicResolution = object.atomicResolution ?? 0;
+    message.liquidityTier = object.liquidityTier ?? 0;
+    message.marketType = object.marketType ?? 0;
+    message.defaultFunding8hrPpm = object.defaultFunding8hrPpm ?? 0;
+    return message;
+  },
+  fromAmino(object: UpdatePerpetualEventV3Amino): UpdatePerpetualEventV3 {
+    const message = createBaseUpdatePerpetualEventV3();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.ticker !== undefined && object.ticker !== null) {
+      message.ticker = object.ticker;
+    }
+    if (object.market_id !== undefined && object.market_id !== null) {
+      message.marketId = object.market_id;
+    }
+    if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
+      message.atomicResolution = object.atomic_resolution;
+    }
+    if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
+      message.liquidityTier = object.liquidity_tier;
+    }
+    if (object.market_type !== undefined && object.market_type !== null) {
+      message.marketType = object.market_type;
+    }
+    if (object.default_funding8hr_ppm !== undefined && object.default_funding8hr_ppm !== null) {
+      message.defaultFunding8hrPpm = object.default_funding8hr_ppm;
+    }
+    return message;
+  },
+  toAmino(message: UpdatePerpetualEventV3): UpdatePerpetualEventV3Amino {
+    const obj: any = {};
+    obj.id = message.id === 0 ? undefined : message.id;
+    obj.ticker = message.ticker === "" ? undefined : message.ticker;
+    obj.market_id = message.marketId === 0 ? undefined : message.marketId;
+    obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
+    obj.market_type = message.marketType === 0 ? undefined : message.marketType;
+    obj.default_funding8hr_ppm = message.defaultFunding8hrPpm === 0 ? undefined : message.defaultFunding8hrPpm;
+    return obj;
+  },
+  fromAminoMsg(object: UpdatePerpetualEventV3AminoMsg): UpdatePerpetualEventV3 {
+    return UpdatePerpetualEventV3.fromAmino(object.value);
+  },
+  fromProtoMsg(message: UpdatePerpetualEventV3ProtoMsg): UpdatePerpetualEventV3 {
+    return UpdatePerpetualEventV3.decode(message.value);
+  },
+  toProto(message: UpdatePerpetualEventV3): Uint8Array {
+    return UpdatePerpetualEventV3.encode(message).finish();
+  },
+  toProtoMsg(message: UpdatePerpetualEventV3): UpdatePerpetualEventV3ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.UpdatePerpetualEventV3",
+      value: UpdatePerpetualEventV3.encode(message).finish()
     };
   }
 };
@@ -4787,9 +6494,9 @@ export const LiquidityTierUpsertEventV2 = {
     obj.name = message.name === "" ? undefined : message.name;
     obj.initial_margin_ppm = message.initialMarginPpm === 0 ? undefined : message.initialMarginPpm;
     obj.maintenance_fraction_ppm = message.maintenanceFractionPpm === 0 ? undefined : message.maintenanceFractionPpm;
-    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional.toString() : undefined;
-    obj.open_interest_lower_cap = message.openInterestLowerCap !== BigInt(0) ? message.openInterestLowerCap.toString() : undefined;
-    obj.open_interest_upper_cap = message.openInterestUpperCap !== BigInt(0) ? message.openInterestUpperCap.toString() : undefined;
+    obj.base_position_notional = message.basePositionNotional !== BigInt(0) ? message.basePositionNotional?.toString() : undefined;
+    obj.open_interest_lower_cap = message.openInterestLowerCap !== BigInt(0) ? message.openInterestLowerCap?.toString() : undefined;
+    obj.open_interest_upper_cap = message.openInterestUpperCap !== BigInt(0) ? message.openInterestUpperCap?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: LiquidityTierUpsertEventV2AminoMsg): LiquidityTierUpsertEventV2 {
@@ -4811,8 +6518,7 @@ export const LiquidityTierUpsertEventV2 = {
 function createBaseRegisterAffiliateEventV1(): RegisterAffiliateEventV1 {
   return {
     referee: "",
-    affiliate: "",
-    registeredAtBlock: BigInt(0)
+    affiliate: ""
   };
 }
 export const RegisterAffiliateEventV1 = {
@@ -4823,9 +6529,6 @@ export const RegisterAffiliateEventV1 = {
     }
     if (message.affiliate !== "") {
       writer.uint32(18).string(message.affiliate);
-    }
-    if (message.registeredAtBlock !== BigInt(0)) {
-      writer.uint32(24).uint64(message.registeredAtBlock);
     }
     return writer;
   },
@@ -4842,9 +6545,6 @@ export const RegisterAffiliateEventV1 = {
         case 2:
           message.affiliate = reader.string();
           break;
-        case 3:
-          message.registeredAtBlock = reader.uint64();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4856,7 +6556,6 @@ export const RegisterAffiliateEventV1 = {
     const message = createBaseRegisterAffiliateEventV1();
     message.referee = object.referee ?? "";
     message.affiliate = object.affiliate ?? "";
-    message.registeredAtBlock = object.registeredAtBlock !== undefined && object.registeredAtBlock !== null ? BigInt(object.registeredAtBlock.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: RegisterAffiliateEventV1Amino): RegisterAffiliateEventV1 {
@@ -4867,16 +6566,12 @@ export const RegisterAffiliateEventV1 = {
     if (object.affiliate !== undefined && object.affiliate !== null) {
       message.affiliate = object.affiliate;
     }
-    if (object.registered_at_block !== undefined && object.registered_at_block !== null) {
-      message.registeredAtBlock = BigInt(object.registered_at_block);
-    }
     return message;
   },
   toAmino(message: RegisterAffiliateEventV1): RegisterAffiliateEventV1Amino {
     const obj: any = {};
     obj.referee = message.referee === "" ? undefined : message.referee;
     obj.affiliate = message.affiliate === "" ? undefined : message.affiliate;
-    obj.registered_at_block = message.registeredAtBlock !== BigInt(0) ? message.registeredAtBlock.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: RegisterAffiliateEventV1AminoMsg): RegisterAffiliateEventV1 {
@@ -4892,6 +6587,93 @@ export const RegisterAffiliateEventV1 = {
     return {
       typeUrl: "/dydxprotocol.indexer.events.RegisterAffiliateEventV1",
       value: RegisterAffiliateEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseUpsertVaultEventV1(): UpsertVaultEventV1 {
+  return {
+    address: "",
+    clobPairId: 0,
+    status: 0
+  };
+}
+export const UpsertVaultEventV1 = {
+  typeUrl: "/dydxprotocol.indexer.events.UpsertVaultEventV1",
+  encode(message: UpsertVaultEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.clobPairId !== 0) {
+      writer.uint32(16).uint32(message.clobPairId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(24).int32(message.status);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): UpsertVaultEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpsertVaultEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.clobPairId = reader.uint32();
+          break;
+        case 3:
+          message.status = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<UpsertVaultEventV1>): UpsertVaultEventV1 {
+    const message = createBaseUpsertVaultEventV1();
+    message.address = object.address ?? "";
+    message.clobPairId = object.clobPairId ?? 0;
+    message.status = object.status ?? 0;
+    return message;
+  },
+  fromAmino(object: UpsertVaultEventV1Amino): UpsertVaultEventV1 {
+    const message = createBaseUpsertVaultEventV1();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.clob_pair_id !== undefined && object.clob_pair_id !== null) {
+      message.clobPairId = object.clob_pair_id;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    return message;
+  },
+  toAmino(message: UpsertVaultEventV1): UpsertVaultEventV1Amino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
+    obj.status = message.status === 0 ? undefined : message.status;
+    return obj;
+  },
+  fromAminoMsg(object: UpsertVaultEventV1AminoMsg): UpsertVaultEventV1 {
+    return UpsertVaultEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: UpsertVaultEventV1ProtoMsg): UpsertVaultEventV1 {
+    return UpsertVaultEventV1.decode(message.value);
+  },
+  toProto(message: UpsertVaultEventV1): Uint8Array {
+    return UpsertVaultEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: UpsertVaultEventV1): UpsertVaultEventV1ProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.events.UpsertVaultEventV1",
+      value: UpsertVaultEventV1.encode(message).finish()
     };
   }
 };

@@ -9,7 +9,12 @@ export interface QueryVestEntryRequestProtoMsg {
   typeUrl: "/dydxprotocol.vest.QueryVestEntryRequest";
   value: Uint8Array;
 }
-/** QueryVestEntryRequest is a request type for the VestEntry RPC method. */
+/**
+ * QueryVestEntryRequest is a request type for the VestEntry RPC method.
+ * @name QueryVestEntryRequestAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.QueryVestEntryRequest
+ */
 export interface QueryVestEntryRequestAmino {
   vester_account?: string;
 }
@@ -29,7 +34,12 @@ export interface QueryVestEntryResponseProtoMsg {
   typeUrl: "/dydxprotocol.vest.QueryVestEntryResponse";
   value: Uint8Array;
 }
-/** QueryVestEntryResponse is a response type for the VestEntry RPC method. */
+/**
+ * QueryVestEntryResponse is a response type for the VestEntry RPC method.
+ * @name QueryVestEntryResponseAmino
+ * @package dydxprotocol.vest
+ * @see proto type: dydxprotocol.vest.QueryVestEntryResponse
+ */
 export interface QueryVestEntryResponseAmino {
   entry?: VestEntryAmino;
 }

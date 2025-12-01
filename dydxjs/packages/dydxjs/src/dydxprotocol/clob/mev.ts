@@ -17,7 +17,12 @@ export interface MEVMatchProtoMsg {
   typeUrl: "/dydxprotocol.clob.MEVMatch";
   value: Uint8Array;
 }
-/** MEVMatch represents all necessary data to calculate MEV for a regular match. */
+/**
+ * MEVMatch represents all necessary data to calculate MEV for a regular match.
+ * @name MEVMatchAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MEVMatch
+ */
 export interface MEVMatchAmino {
   taker_order_subaccount_id?: SubaccountIdAmino;
   taker_fee_ppm?: number;
@@ -64,6 +69,9 @@ export interface MEVLiquidationMatchProtoMsg {
 /**
  * MEVLiquidationMatch represents all necessary data to calculate MEV for a
  * liquidation.
+ * @name MEVLiquidationMatchAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MEVLiquidationMatch
  */
 export interface MEVLiquidationMatchAmino {
   liquidated_subaccount_id?: SubaccountIdAmino;
@@ -102,7 +110,12 @@ export interface ClobMidPriceProtoMsg {
   typeUrl: "/dydxprotocol.clob.ClobMidPrice";
   value: Uint8Array;
 }
-/** ClobMidPrice contains the mid price of a CLOB pair, represented by it's ID. */
+/**
+ * ClobMidPrice contains the mid price of a CLOB pair, represented by it's ID.
+ * @name ClobMidPriceAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ClobMidPrice
+ */
 export interface ClobMidPriceAmino {
   clob_pair?: ClobPairAmino;
   subticks?: string;
@@ -131,6 +144,9 @@ export interface ValidatorMevMatchesProtoMsg {
 /**
  * ValidatorMevMatches contains all matches from the validator's local
  * operations queue.
+ * @name ValidatorMevMatchesAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.ValidatorMevMatches
  */
 export interface ValidatorMevMatchesAmino {
   matches?: MEVMatchAmino[];
@@ -165,6 +181,9 @@ export interface MevNodeToNodeMetricsProtoMsg {
 /**
  * MevNodeToNodeMetrics is a data structure for encapsulating all MEV node <>
  * node metrics.
+ * @name MevNodeToNodeMetricsAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MevNodeToNodeMetrics
  */
 export interface MevNodeToNodeMetricsAmino {
   validator_mev_matches?: ValidatorMevMatchesAmino;
@@ -310,11 +329,11 @@ export const MEVMatch = {
     obj.taker_order_subaccount_id = message.takerOrderSubaccountId ? SubaccountId.toAmino(message.takerOrderSubaccountId) : undefined;
     obj.taker_fee_ppm = message.takerFeePpm === 0 ? undefined : message.takerFeePpm;
     obj.maker_order_subaccount_id = message.makerOrderSubaccountId ? SubaccountId.toAmino(message.makerOrderSubaccountId) : undefined;
-    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks.toString() : undefined;
+    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks?.toString() : undefined;
     obj.maker_order_is_buy = message.makerOrderIsBuy === false ? undefined : message.makerOrderIsBuy;
     obj.maker_fee_ppm = message.makerFeePpm === 0 ? undefined : message.makerFeePpm;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MEVMatchAminoMsg): MEVMatch {
@@ -455,13 +474,13 @@ export const MEVLiquidationMatch = {
   toAmino(message: MEVLiquidationMatch): MEVLiquidationMatchAmino {
     const obj: any = {};
     obj.liquidated_subaccount_id = message.liquidatedSubaccountId ? SubaccountId.toAmino(message.liquidatedSubaccountId) : undefined;
-    obj.insurance_fund_delta_quote_quantums = message.insuranceFundDeltaQuoteQuantums !== BigInt(0) ? message.insuranceFundDeltaQuoteQuantums.toString() : undefined;
+    obj.insurance_fund_delta_quote_quantums = message.insuranceFundDeltaQuoteQuantums !== BigInt(0) ? message.insuranceFundDeltaQuoteQuantums?.toString() : undefined;
     obj.maker_order_subaccount_id = message.makerOrderSubaccountId ? SubaccountId.toAmino(message.makerOrderSubaccountId) : undefined;
-    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks.toString() : undefined;
+    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks?.toString() : undefined;
     obj.maker_order_is_buy = message.makerOrderIsBuy === false ? undefined : message.makerOrderIsBuy;
     obj.maker_fee_ppm = message.makerFeePpm === 0 ? undefined : message.makerFeePpm;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount.toString() : undefined;
+    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MEVLiquidationMatchAminoMsg): MEVLiquidationMatch {
@@ -536,7 +555,7 @@ export const ClobMidPrice = {
   toAmino(message: ClobMidPrice): ClobMidPriceAmino {
     const obj: any = {};
     obj.clob_pair = message.clobPair ? ClobPair.toAmino(message.clobPair) : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks.toString() : undefined;
+    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ClobMidPriceAminoMsg): ClobMidPrice {
@@ -716,7 +735,7 @@ export const MevNodeToNodeMetrics = {
       obj.clob_mid_prices = message.clobMidPrices;
     }
     obj.bp_mev_matches = message.bpMevMatches ? ValidatorMevMatches.toAmino(message.bpMevMatches) : undefined;
-    obj.proposal_receive_time = message.proposalReceiveTime !== BigInt(0) ? message.proposalReceiveTime.toString() : undefined;
+    obj.proposal_receive_time = message.proposalReceiveTime !== BigInt(0) ? message.proposalReceiveTime?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: MevNodeToNodeMetricsAminoMsg): MevNodeToNodeMetrics {

@@ -15,7 +15,12 @@ export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.clob.GenesisState";
   value: Uint8Array;
 }
-/** GenesisState defines the clob module's genesis state. */
+/**
+ * GenesisState defines the clob module's genesis state.
+ * @name GenesisStateAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.GenesisState
+ */
 export interface GenesisStateAmino {
   clob_pairs?: ClobPairAmino[];
   liquidations_config?: LiquidationsConfigAmino;

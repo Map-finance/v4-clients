@@ -10,9 +10,16 @@ export interface NumSharesProtoMsg {
   typeUrl: "/dydxprotocol.vault.NumShares";
   value: Uint8Array;
 }
-/** NumShares represents the number of shares. */
+/**
+ * NumShares represents the number of shares.
+ * @name NumSharesAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.NumShares
+ */
 export interface NumSharesAmino {
-  /** Number of shares. */
+  /**
+   * Number of shares.
+   */
   num_shares?: string;
 }
 export interface NumSharesAminoMsg {
@@ -32,7 +39,12 @@ export interface OwnerShareProtoMsg {
   typeUrl: "/dydxprotocol.vault.OwnerShare";
   value: Uint8Array;
 }
-/** OwnerShare is a type for owner shares. */
+/**
+ * OwnerShare is a type for owner shares.
+ * @name OwnerShareAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.OwnerShare
+ */
 export interface OwnerShareAmino {
   owner?: string;
   shares?: NumSharesAmino;

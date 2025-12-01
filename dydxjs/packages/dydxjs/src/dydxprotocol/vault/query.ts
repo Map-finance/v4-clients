@@ -12,7 +12,12 @@ export interface QueryParamsRequestProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryParamsRequest";
   value: Uint8Array;
 }
-/** QueryParamsRequest is a request type for the Params RPC method. */
+/**
+ * QueryParamsRequest is a request type for the Params RPC method.
+ * @name QueryParamsRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryParamsRequest
+ */
 export interface QueryParamsRequestAmino {}
 export interface QueryParamsRequestAminoMsg {
   type: "/dydxprotocol.vault.QueryParamsRequest";
@@ -31,10 +36,17 @@ export interface QueryParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryParamsResponse";
   value: Uint8Array;
 }
-/** QueryParamsResponse is a response type for the Params RPC method. */
+/**
+ * QueryParamsResponse is a response type for the Params RPC method.
+ * @name QueryParamsResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryParamsResponse
+ */
 export interface QueryParamsResponseAmino {
-  /** Deprecated since v6.x in favor of default_quoting_params. */
-  /** @deprecated */
+  /**
+   * Deprecated since v6.x in favor of default_quoting_params.
+   * @deprecated
+   */
   params?: ParamsAmino;
   default_quoting_params?: QuotingParamsAmino;
 }
@@ -57,7 +69,12 @@ export interface QueryVaultRequestProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryVaultRequest";
   value: Uint8Array;
 }
-/** QueryVaultRequest is a request type for the Vault RPC method. */
+/**
+ * QueryVaultRequest is a request type for the Vault RPC method.
+ * @name QueryVaultRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryVaultRequest
+ */
 export interface QueryVaultRequestAmino {
   type?: VaultType;
   number?: number;
@@ -83,7 +100,12 @@ export interface QueryVaultResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryVaultResponse";
   value: Uint8Array;
 }
-/** QueryVaultResponse is a response type for the Vault RPC method. */
+/**
+ * QueryVaultResponse is a response type for the Vault RPC method.
+ * @name QueryVaultResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryVaultResponse
+ */
 export interface QueryVaultResponseAmino {
   vault_id?: VaultIdAmino;
   subaccount_id?: SubaccountIdAmino;
@@ -111,7 +133,12 @@ export interface QueryAllVaultsRequestProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryAllVaultsRequest";
   value: Uint8Array;
 }
-/** QueryAllVaultsRequest is a request type for the AllVaults RPC method. */
+/**
+ * QueryAllVaultsRequest is a request type for the AllVaults RPC method.
+ * @name QueryAllVaultsRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryAllVaultsRequest
+ */
 export interface QueryAllVaultsRequestAmino {
   pagination?: PageRequestAmino;
 }
@@ -132,7 +159,12 @@ export interface QueryAllVaultsResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryAllVaultsResponse";
   value: Uint8Array;
 }
-/** QueryAllVaultsResponse is a response type for the AllVaults RPC method. */
+/**
+ * QueryAllVaultsResponse is a response type for the AllVaults RPC method.
+ * @name QueryAllVaultsResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryAllVaultsResponse
+ */
 export interface QueryAllVaultsResponseAmino {
   vaults?: QueryVaultResponseAmino[];
   pagination?: PageResponseAmino;
@@ -158,6 +190,9 @@ export interface QueryMegavaultTotalSharesRequestProtoMsg {
 /**
  * QueryMegavaultTotalSharesRequest is a request type for the
  * MegavaultTotalShares RPC method.
+ * @name QueryMegavaultTotalSharesRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultTotalSharesRequest
  */
 export interface QueryMegavaultTotalSharesRequestAmino {}
 export interface QueryMegavaultTotalSharesRequestAminoMsg {
@@ -183,6 +218,9 @@ export interface QueryMegavaultTotalSharesResponseProtoMsg {
 /**
  * QueryMegavaultTotalSharesResponse is a response type for the
  * MegavaultTotalShares RPC method.
+ * @name QueryMegavaultTotalSharesResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultTotalSharesResponse
  */
 export interface QueryMegavaultTotalSharesResponseAmino {
   total_shares?: NumSharesAmino;
@@ -212,6 +250,9 @@ export interface QueryMegavaultOwnerSharesRequestProtoMsg {
 /**
  * QueryMegavaultOwnerSharesRequest is a request type for the
  * MegavaultOwnerShares RPC method.
+ * @name QueryMegavaultOwnerSharesRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultOwnerSharesRequest
  */
 export interface QueryMegavaultOwnerSharesRequestAmino {
   pagination?: PageRequestAmino;
@@ -242,6 +283,9 @@ export interface QueryMegavaultOwnerSharesResponseProtoMsg {
 /**
  * QueryMegavaultOwnerSharesResponse is a response type for the
  * MegavaultOwnerShares RPC method.
+ * @name QueryMegavaultOwnerSharesResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultOwnerSharesResponse
  */
 export interface QueryMegavaultOwnerSharesResponseAmino {
   owner_shares?: OwnerShareAmino[];

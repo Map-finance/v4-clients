@@ -20,11 +20,20 @@ export interface MsgCreateClobPairProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgCreateClobPair";
   value: Uint8Array;
 }
-/** MsgCreateClobPair is a message used by x/gov for creating a new clob pair. */
+/**
+ * MsgCreateClobPair is a message used by x/gov for creating a new clob pair.
+ * @name MsgCreateClobPairAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgCreateClobPair
+ */
 export interface MsgCreateClobPairAmino {
-  /** The address that controls the module. */
+  /**
+   * The address that controls the module.
+   */
   authority?: string;
-  /** `clob_pair` defines parameters for the new clob pair. */
+  /**
+   * `clob_pair` defines parameters for the new clob pair.
+   */
   clob_pair?: ClobPairAmino;
 }
 export interface MsgCreateClobPairAminoMsg {
@@ -42,7 +51,12 @@ export interface MsgCreateClobPairResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgCreateClobPairResponse";
   value: Uint8Array;
 }
-/** MsgCreateClobPairResponse defines the CreateClobPair response type. */
+/**
+ * MsgCreateClobPairResponse defines the CreateClobPair response type.
+ * @name MsgCreateClobPairResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgCreateClobPairResponse
+ */
 export interface MsgCreateClobPairResponseAmino {}
 export interface MsgCreateClobPairResponseAminoMsg {
   type: "/dydxprotocol.clob.MsgCreateClobPairResponse";
@@ -65,9 +79,14 @@ export interface MsgProposedOperationsProtoMsg {
 /**
  * MsgProposedOperations is a message injected by block proposers to
  * specify the operations that occurred in a block.
+ * @name MsgProposedOperationsAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgProposedOperations
  */
 export interface MsgProposedOperationsAmino {
-  /** The list of operations proposed by the block proposer. */
+  /**
+   * The list of operations proposed by the block proposer.
+   */
   operations_queue?: OperationRawAmino[];
 }
 export interface MsgProposedOperationsAminoMsg {
@@ -93,6 +112,9 @@ export interface MsgProposedOperationsResponseProtoMsg {
 /**
  * MsgProposedOperationsResponse is the response type of the message injected
  * by block proposers to specify the operations that occurred in a block.
+ * @name MsgProposedOperationsResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgProposedOperationsResponse
  */
 export interface MsgProposedOperationsResponseAmino {}
 export interface MsgProposedOperationsResponseAminoMsg {
@@ -112,7 +134,12 @@ export interface MsgPlaceOrderProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgPlaceOrder";
   value: Uint8Array;
 }
-/** MsgPlaceOrder is a request type used for placing orders. */
+/**
+ * MsgPlaceOrder is a request type used for placing orders.
+ * @name MsgPlaceOrderAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgPlaceOrder
+ */
 export interface MsgPlaceOrderAmino {
   order?: OrderAmino;
 }
@@ -130,7 +157,12 @@ export interface MsgPlaceOrderResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgPlaceOrderResponse";
   value: Uint8Array;
 }
-/** MsgPlaceOrderResponse is a response type used for placing orders. */
+/**
+ * MsgPlaceOrderResponse is a response type used for placing orders.
+ * @name MsgPlaceOrderResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgPlaceOrderResponse
+ */
 export interface MsgPlaceOrderResponseAmino {}
 export interface MsgPlaceOrderResponseAminoMsg {
   type: "/dydxprotocol.clob.MsgPlaceOrderResponse";
@@ -159,7 +191,12 @@ export interface MsgCancelOrderProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgCancelOrder";
   value: Uint8Array;
 }
-/** MsgCancelOrder is a request type used for canceling orders. */
+/**
+ * MsgCancelOrder is a request type used for canceling orders.
+ * @name MsgCancelOrderAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgCancelOrder
+ */
 export interface MsgCancelOrderAmino {
   order_id?: OrderIdAmino;
   /**
@@ -192,7 +229,12 @@ export interface MsgCancelOrderResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgCancelOrderResponse";
   value: Uint8Array;
 }
-/** MsgCancelOrderResponse is a response type used for canceling orders. */
+/**
+ * MsgCancelOrderResponse is a response type used for canceling orders.
+ * @name MsgCancelOrderResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgCancelOrderResponse
+ */
 export interface MsgCancelOrderResponseAmino {}
 export interface MsgCancelOrderResponseAminoMsg {
   type: "/dydxprotocol.clob.MsgCancelOrderResponse";
@@ -221,13 +263,22 @@ export interface MsgBatchCancelProtoMsg {
  * MsgBatchCancel is a request type used for batch canceling orders.
  * This msg is not atomic. Cancels will be performed optimistically even
  * if some cancels are invalid or fail.
+ * @name MsgBatchCancelAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgBatchCancel
  */
 export interface MsgBatchCancelAmino {
-  /** The subaccount this batch cancel will be applied for. */
+  /**
+   * The subaccount this batch cancel will be applied for.
+   */
   subaccount_id?: SubaccountIdAmino;
-  /** The batch of short term orders that will be cancelled. */
+  /**
+   * The batch of short term orders that will be cancelled.
+   */
   short_term_cancels?: OrderBatchAmino[];
-  /** The last block the short term order cancellations can be executed at. */
+  /**
+   * The last block the short term order cancellations can be executed at.
+   */
   good_til_block?: number;
 }
 export interface MsgBatchCancelAminoMsg {
@@ -267,9 +318,14 @@ export interface OrderBatchProtoMsg {
  * OrderBatch represents a batch of orders all belonging to a single clob pair
  * id. Along with a subaccount id and an order flag, is used to represent a
  * batch of orders that share the same subaccount, order flag, and clob pair id.
+ * @name OrderBatchAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OrderBatch
  */
 export interface OrderBatchAmino {
-  /** The Clob Pair ID all orders in this order batch belong to. */
+  /**
+   * The Clob Pair ID all orders in this order batch belong to.
+   */
   clob_pair_id?: number;
   /**
    * List of client ids in this order batch.
@@ -308,11 +364,18 @@ export interface MsgBatchCancelResponseProtoMsg {
 /**
  * MsgBatchCancelResponse is a response type used for batch canceling orders.
  * It indicates which cancel orders have succeeded or failed.
+ * @name MsgBatchCancelResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgBatchCancelResponse
  */
 export interface MsgBatchCancelResponseAmino {
-  /** A batch of short term cancel orders that have succeeded. */
+  /**
+   * A batch of short term cancel orders that have succeeded.
+   */
   short_term_succeeded?: OrderBatchAmino[];
-  /** A batch of short term cancel orders that have failed. */
+  /**
+   * A batch of short term cancel orders that have failed.
+   */
   short_term_failed?: OrderBatchAmino[];
 }
 export interface MsgBatchCancelResponseAminoMsg {
@@ -338,11 +401,20 @@ export interface MsgUpdateClobPairProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgUpdateClobPair";
   value: Uint8Array;
 }
-/** MsgUpdateClobPair is a request type used for updating a ClobPair in state. */
+/**
+ * MsgUpdateClobPair is a request type used for updating a ClobPair in state.
+ * @name MsgUpdateClobPairAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateClobPair
+ */
 export interface MsgUpdateClobPairAmino {
-  /** Authority is the address that may send this message. */
+  /**
+   * Authority is the address that may send this message.
+   */
   authority?: string;
-  /** `clob_pair` is the ClobPair to write to state. */
+  /**
+   * `clob_pair` is the ClobPair to write to state.
+   */
   clob_pair?: ClobPairAmino;
 }
 export interface MsgUpdateClobPairAminoMsg {
@@ -366,6 +438,9 @@ export interface MsgUpdateClobPairResponseProtoMsg {
 /**
  * MsgUpdateClobPairResponse is a response type used for setting a ClobPair's
  * status.
+ * @name MsgUpdateClobPairResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateClobPairResponse
  */
 export interface MsgUpdateClobPairResponseAmino {}
 export interface MsgUpdateClobPairResponseAminoMsg {
@@ -393,6 +468,9 @@ export interface OperationRawProtoMsg {
 /**
  * OperationRaw represents an operation in the proposed operations.
  * Note that the `order_placement` operation is a signed message.
+ * @name OperationRawAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.OperationRaw
  */
 export interface OperationRawAmino {
   match?: ClobMatchAmino;
@@ -431,6 +509,9 @@ export interface MsgUpdateEquityTierLimitConfigurationProtoMsg {
 /**
  * MsgUpdateEquityTierLimitConfiguration is the Msg/EquityTierLimitConfiguration
  * request type.
+ * @name MsgUpdateEquityTierLimitConfigurationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateEquityTierLimitConfiguration
  */
 export interface MsgUpdateEquityTierLimitConfigurationAmino {
   authority?: string;
@@ -464,6 +545,9 @@ export interface MsgUpdateEquityTierLimitConfigurationResponseProtoMsg {
 /**
  * MsgUpdateEquityTierLimitConfiguration is the Msg/EquityTierLimitConfiguration
  * response type.
+ * @name MsgUpdateEquityTierLimitConfigurationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateEquityTierLimitConfigurationResponse
  */
 export interface MsgUpdateEquityTierLimitConfigurationResponseAmino {}
 export interface MsgUpdateEquityTierLimitConfigurationResponseAminoMsg {
@@ -494,6 +578,9 @@ export interface MsgUpdateBlockRateLimitConfigurationProtoMsg {
 /**
  * MsgUpdateBlockRateLimitConfiguration is the Msg/BlockRateLimitConfiguration
  * request type.
+ * @name MsgUpdateBlockRateLimitConfigurationAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateBlockRateLimitConfiguration
  */
 export interface MsgUpdateBlockRateLimitConfigurationAmino {
   authority?: string;
@@ -527,6 +614,9 @@ export interface MsgUpdateBlockRateLimitConfigurationResponseProtoMsg {
 /**
  * MsgUpdateBlockRateLimitConfiguration is a response type for updating the
  * liquidations config.
+ * @name MsgUpdateBlockRateLimitConfigurationResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateBlockRateLimitConfigurationResponse
  */
 export interface MsgUpdateBlockRateLimitConfigurationResponseAmino {}
 export interface MsgUpdateBlockRateLimitConfigurationResponseAminoMsg {
@@ -558,9 +648,14 @@ export interface MsgUpdateLiquidationsConfigProtoMsg {
 /**
  * MsgUpdateLiquidationsConfig is a request type for updating the liquidations
  * config.
+ * @name MsgUpdateLiquidationsConfigAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateLiquidationsConfig
  */
 export interface MsgUpdateLiquidationsConfigAmino {
-  /** Authority is the address that may send this message. */
+  /**
+   * Authority is the address that may send this message.
+   */
   authority?: string;
   /**
    * Defines the liquidations configuration to update to. All fields must
@@ -586,7 +681,12 @@ export interface MsgUpdateLiquidationsConfigResponseProtoMsg {
   typeUrl: "/dydxprotocol.clob.MsgUpdateLiquidationsConfigResponse";
   value: Uint8Array;
 }
-/** MsgUpdateLiquidationsConfig is the Msg/LiquidationsConfig response type. */
+/**
+ * MsgUpdateLiquidationsConfig is the Msg/LiquidationsConfig response type.
+ * @name MsgUpdateLiquidationsConfigResponseAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.MsgUpdateLiquidationsConfigResponse
+ */
 export interface MsgUpdateLiquidationsConfigResponseAmino {}
 export interface MsgUpdateLiquidationsConfigResponseAminoMsg {
   type: "/dydxprotocol.clob.MsgUpdateLiquidationsConfigResponse";
