@@ -26,11 +26,20 @@ export class BigIntLong {
   }
 
   static fromNumber(num: number, unsigned: boolean = false): BigIntLong {
-    return new BigIntLong(BigInt(num), unsigned);
+    // 对于安全整数范围内的值，直接转换（最快且精确）
+    if (Number.isSafeInteger(num)) {
+      return new BigIntLong(BigInt(num), unsigned);
+    }
+    // 对于超过安全整数范围的值，使用 toString() 来获取最精确的字符串表示
+    // 注意：如果原始 number 已经超过安全整数范围，它本身可能已经丢失精度
+    // 但使用 toString() 可以获取这个 number 能表示的最精确值
+    const numStr = num.toString();
+    return new BigIntLong(BigInt(numStr), unsigned);
   }
 
   static fromInt(num: number, unsigned: boolean = false): BigIntLong {
-    return new BigIntLong(BigInt(num), unsigned);
+    // 使用与 fromNumber 相同的逻辑来保持精度
+    return BigIntLong.fromNumber(num, unsigned);
   }
 
   static fromBytes(bytes: number[] | Uint8Array, unsigned: boolean = false, le: boolean = true): BigIntLong {
@@ -96,9 +105,9 @@ export class BigIntLong {
 
   toNumber(): number {
     const num = Number(this.value);
-    if (!Number.isSafeInteger(num)) {
-      throw new Error(`Value ${this.value} is too large to convert to number`);
-    }
+    // if (!Number.isSafeInteger(num)) {
+    //   throw new Error(`Value ${this.value} is too large to convert to number`);
+    // }
     return num;
   }
 
