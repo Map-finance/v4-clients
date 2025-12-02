@@ -1,5 +1,5 @@
 {
-  "name": "@h2-v4-proto/dydxjs",
+  "name": "@dydxprotocol/v4-proto",
   "version": "1.0.0",
   "author": "jared vu <jared@dydx.exchange>",
   "description": "dydx client library",

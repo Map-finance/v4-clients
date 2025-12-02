@@ -531,13 +531,10 @@ export class Composer {
     ];
 
     const msg: MsgSubmitProposal = {
-      title,
       initialDeposit,
-      summary,
       messages,
       proposer,
       metadata,
-      expedited,
     };
 
     return {
