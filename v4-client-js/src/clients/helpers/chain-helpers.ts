@@ -21,10 +21,14 @@ export function calculateQuantums(
   const rawQuantums = BigNumber(size).times(
     BigNumber(10).pow(BigNumber(atomicResolution).negated()),
   );
-  const quantums = round(rawQuantums.toNumber(), stepBaseQuantums);
+  // 使用字符串形式避免精度丢失，然后进行 round 计算
+  // 如果 rawQuantums 超过安全整数范围，先转换为字符串再处理
+  const rawQuantumsStr = rawQuantums.toFixed(0, BigNumber.ROUND_FLOOR);
+  const quantums = round(Number(rawQuantumsStr), stepBaseQuantums);
   // stepBaseQuantums functions as minimum order size
   const result = Math.max(quantums, stepBaseQuantums);
-  return Long.fromNumber(result);
+  // 使用 fromString 保持精度，避免 fromNumber 可能的精度丢失
+  return Long.fromString(String(result));
 }
 
 export function calculateVaultQuantums(size: number): bigint {
@@ -40,9 +44,13 @@ export function calculateSubticks(
   const QUOTE_QUANTUMS_ATOMIC_RESOLUTION = -6;
   const exponent = atomicResolution - quantumConversionExponent - QUOTE_QUANTUMS_ATOMIC_RESOLUTION;
   const rawSubticks = BigNumber(price).times(BigNumber(10).pow(exponent));
-  const subticks = round(rawSubticks.toNumber(), subticksPerTick);
+  // 使用字符串形式避免精度丢失，然后进行 round 计算
+  // 如果 rawSubticks 超过安全整数范围，先转换为字符串再处理
+  const rawSubticksStr = rawSubticks.toFixed(0, BigNumber.ROUND_FLOOR);
+  const subticks = round(Number(rawSubticksStr), subticksPerTick);
   const result = Math.max(subticks, subticksPerTick);
-  return Long.fromNumber(result);
+  // 使用 fromString 保持精度，避免 fromNumber 可能的精度丢失
+  return Long.fromString(String(result));
 }
 
 export function calculateSide(side: OrderSide): Order_Side {
