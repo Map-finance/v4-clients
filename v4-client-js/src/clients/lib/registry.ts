@@ -12,6 +12,8 @@ import {
   MsgUpdateClobPair,
   MsgBatchCancel,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/tx';
+import { Order, OrderId, TwapParameters } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+import { SubaccountId } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/subaccounts/subaccount';
 import { MsgDelayMessage } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/delaymsg/tx';
 import { MsgCreateMarketPermissionless } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/listing/tx';
 import { MsgCreatePerpetual } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/tx';
@@ -47,6 +49,7 @@ import {
   TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
 } from '../constants';
 import { Long } from '../../lib/long';
+import { bigIntToBytes } from '../../lib/helpers';
 
 export const registry: ReadonlyArray<[string, GeneratedType]> = [];
 
@@ -151,14 +154,28 @@ const MsgCreateBridgeTransferCodec = {
       writer.uint32(24).int32(message.assetId);
     }
 
-    // 编码 quantums (field 4, uint64)
-    // 使用 toString() 保持 18+ 位精度，protobuf uint64 支持字符串参数
-    if (message.quantums) {
-      const quantumsValue =
-        typeof message.quantums === 'object' && 'toString' in message.quantums
-          ? message.quantums.toString()
-          : String(message.quantums);
-      writer.uint32(32).uint64(quantumsValue);
+    // 编码 quantums (field 4, bytes) - 使用 SerializableInt 格式
+    // 服务器期望 bytes wire type，而不是 varint
+    // 注意：即使 quantums 是 0 或 BigInt(0)，也必须编码
+    if (message.quantums !== undefined && message.quantums !== null) {
+      // 将 quantums 转换为 BigInt，然后转换为 SerializableInt 格式的 bytes
+      let quantumsBigInt: bigint;
+      if (typeof message.quantums === 'bigint') {
+        quantumsBigInt = message.quantums;
+      } else if (typeof message.quantums === 'string') {
+        quantumsBigInt = BigInt(message.quantums);
+      } else if (typeof message.quantums === 'object' && 'toString' in message.quantums) {
+        // Long 类型 - 转换为字符串再转换为 BigInt 以保持精度
+        quantumsBigInt = BigInt(message.quantums.toString());
+      } else {
+        quantumsBigInt = BigInt(message.quantums);
+      }
+      const quantumsBytes = bigIntToBytes(quantumsBigInt);
+      writer.uint32(34).bytes(quantumsBytes);
+    } else {
+      // 如果 quantums 未定义，编码默认值 0
+      const quantumsBytes = bigIntToBytes(BigInt(0));
+      writer.uint32(34).bytes(quantumsBytes);
     }
 
     // 编码 chainId (field 5, string)
@@ -184,10 +201,218 @@ const MsgCreateBridgeTransferCodec = {
   }),
 } as any;
 
+// Order 编码解码器 - 字段 3 (quantums) 和字段 4 (subticks) 使用 bytes (SerializableInt 格式)
+const OrderCodec = {
+  encode(
+    message: Order,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 orderId (field 1, OrderId)
+    if (message.orderId) {
+      const orderIdWriter = writer.uint32(10).fork();
+      if (message.orderId.subaccountId) {
+        const subaccountIdWriter = orderIdWriter.uint32(10).fork();
+        if (message.orderId.subaccountId.owner) {
+          subaccountIdWriter.uint32(10).string(message.orderId.subaccountId.owner);
+        }
+        if (message.orderId.subaccountId.number !== undefined) {
+          subaccountIdWriter.uint32(16).uint32(message.orderId.subaccountId.number);
+        }
+        subaccountIdWriter.ldelim();
+      }
+      if (message.orderId.clientId !== undefined) {
+        orderIdWriter.uint32(21).fixed32(message.orderId.clientId);
+      }
+      if (message.orderId.orderFlags !== undefined) {
+        orderIdWriter.uint32(24).uint32(message.orderId.orderFlags);
+      }
+      if (message.orderId.clobPairId !== undefined) {
+        orderIdWriter.uint32(32).uint32(message.orderId.clobPairId);
+      }
+      orderIdWriter.ldelim();
+    }
+
+    // 编码 side (field 2, int32)
+    if (message.side !== undefined && message.side !== 0) {
+      writer.uint32(16).int32(message.side);
+    }
+
+    // 编码 quantums (field 3, bytes) - 使用 SerializableInt 格式
+    // 服务器期望 bytes wire type，而不是 varint
+    // 注意：即使 quantums 是 0 或 BigInt(0)，也必须编码
+    if (message.quantums !== undefined && message.quantums !== null) {
+      let quantumsBigInt: bigint;
+      if (typeof message.quantums === 'bigint') {
+        quantumsBigInt = message.quantums;
+      } else if (typeof message.quantums === 'string') {
+        quantumsBigInt = BigInt(message.quantums);
+      } else if (typeof message.quantums === 'object' && 'toString' in message.quantums) {
+        // Long 类型 - 转换为字符串再转换为 BigInt 以保持精度
+        quantumsBigInt = BigInt(message.quantums.toString());
+      } else {
+        quantumsBigInt = BigInt(message.quantums);
+      }
+      const quantumsBytes = bigIntToBytes(quantumsBigInt);
+      writer.uint32(26).bytes(quantumsBytes);
+    } else {
+      // 如果 quantums 未定义，编码默认值 0
+      const quantumsBytes = bigIntToBytes(BigInt(0));
+      writer.uint32(26).bytes(quantumsBytes);
+    }
+
+    // 编码 subticks (field 4, bytes) - 使用 SerializableInt 格式
+    // 服务器期望 bytes wire type，而不是 varint
+    // 注意：即使 subticks 是 0 或 BigInt(0)，也必须编码
+    if (message.subticks !== undefined && message.subticks !== null) {
+      let subticksBigInt: bigint;
+      if (typeof message.subticks === 'bigint') {
+        subticksBigInt = message.subticks;
+      } else if (typeof message.subticks === 'string') {
+        subticksBigInt = BigInt(message.subticks);
+      } else if (typeof message.subticks === 'object' && 'toString' in message.subticks) {
+        // Long 类型 - 转换为字符串再转换为 BigInt 以保持精度
+        subticksBigInt = BigInt(message.subticks.toString());
+      } else {
+        subticksBigInt = BigInt(message.subticks);
+      }
+      const subticksBytes = bigIntToBytes(subticksBigInt);
+      writer.uint32(34).bytes(subticksBytes);
+    } else {
+      // 如果 subticks 未定义，编码默认值 0
+      const subticksBytes = bigIntToBytes(BigInt(0));
+      writer.uint32(34).bytes(subticksBytes);
+    }
+
+    // 编码 goodTilBlock (field 5, uint32, oneof)
+    if (message.goodTilBlock !== undefined) {
+      writer.uint32(40).uint32(message.goodTilBlock);
+    }
+
+    // 编码 goodTilBlockTime (field 6, fixed32, oneof)
+    if (message.goodTilBlockTime !== undefined) {
+      writer.uint32(53).fixed32(message.goodTilBlockTime);
+    }
+
+    // 编码 timeInForce (field 7, int32)
+    if (message.timeInForce !== undefined && message.timeInForce !== 0) {
+      writer.uint32(56).int32(message.timeInForce);
+    }
+
+    // 编码 reduceOnly (field 8, bool)
+    if (message.reduceOnly === true) {
+      writer.uint32(64).bool(message.reduceOnly);
+    }
+
+    // 编码 clientMetadata (field 9, uint32)
+    if (message.clientMetadata !== undefined && message.clientMetadata !== 0) {
+      writer.uint32(72).uint32(message.clientMetadata);
+    }
+
+    // 编码 conditionType (field 10, int32)
+    if (message.conditionType !== undefined && message.conditionType !== 0) {
+      writer.uint32(80).int32(message.conditionType);
+    }
+
+    // 编码 conditionalOrderTriggerSubticks (field 11, uint64)
+    // 注意：这个字段可能也需要使用 bytes，但先保持 uint64 看看
+    if (message.conditionalOrderTriggerSubticks !== undefined) {
+      let triggerSubticksBigInt: bigint;
+      if (typeof message.conditionalOrderTriggerSubticks === 'bigint') {
+        triggerSubticksBigInt = message.conditionalOrderTriggerSubticks;
+      } else if (typeof message.conditionalOrderTriggerSubticks === 'string') {
+        triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks);
+      } else if (typeof message.conditionalOrderTriggerSubticks === 'object' && 'toString' in message.conditionalOrderTriggerSubticks) {
+        triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks.toString());
+      } else {
+        triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks);
+      }
+      const triggerSubticksBytes = bigIntToBytes(triggerSubticksBigInt);
+      writer.uint32(90).bytes(triggerSubticksBytes);
+    }
+
+    // 编码 twapParameters (field 12, TwapParameters)
+    if (message.twapParameters) {
+      const twapWriter = writer.uint32(98).fork();
+      if (message.twapParameters.duration !== undefined) {
+        twapWriter.uint32(8).uint32(message.twapParameters.duration);
+      }
+      if (message.twapParameters.interval !== undefined) {
+        twapWriter.uint32(16).uint32(message.twapParameters.interval);
+      }
+      if (message.twapParameters.priceTolerance !== undefined) {
+        twapWriter.uint32(24).uint32(message.twapParameters.priceTolerance);
+      }
+      twapWriter.ldelim();
+    }
+
+    // 编码 builderCodeParameters (field 13, BuilderCodeParameters)
+    if (message.builderCodeParameters) {
+      const builderWriter = writer.uint32(106).fork();
+      if (message.builderCodeParameters.builderAddress) {
+        builderWriter.uint32(10).string(message.builderCodeParameters.builderAddress);
+      }
+      if (message.builderCodeParameters.feePpm !== undefined) {
+        builderWriter.uint32(16).uint32(message.builderCodeParameters.feePpm);
+      }
+      builderWriter.ldelim();
+    }
+
+    // 编码 orderRouterAddress (field 14, string)
+    if (message.orderRouterAddress) {
+      writer.uint32(114).string(message.orderRouterAddress);
+    }
+
+    return writer;
+  },
+  decode: (input: any) => input as Order,
+  fromPartial: (object: Partial<Order>) => ({
+    orderId: object.orderId ?? {
+      subaccountId: { owner: '', number: 0 },
+      clientId: 0,
+      orderFlags: 0,
+      clobPairId: 0,
+    },
+    side: object.side ?? 0,
+    quantums: object.quantums ?? BigInt(0),
+    subticks: object.subticks ?? BigInt(0),
+    goodTilBlock: object.goodTilBlock,
+    goodTilBlockTime: object.goodTilBlockTime,
+    timeInForce: object.timeInForce ?? 0,
+    reduceOnly: object.reduceOnly ?? false,
+    clientMetadata: object.clientMetadata ?? 0,
+    conditionType: object.conditionType ?? 0,
+    conditionalOrderTriggerSubticks: object.conditionalOrderTriggerSubticks ?? BigInt(0),
+    twapParameters: object.twapParameters,
+    builderCodeParameters: object.builderCodeParameters,
+    orderRouterAddress: object.orderRouterAddress ?? '',
+  }),
+} as any;
+
+// MsgPlaceOrder 编码解码器
+const MsgPlaceOrderCodec = {
+  encode(
+    message: MsgPlaceOrder,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 order (field 1, Order)
+    if (message.order) {
+      const orderWriter = writer.uint32(10).fork();
+      OrderCodec.encode(message.order, orderWriter);
+      orderWriter.ldelim();
+    }
+
+    return writer;
+  },
+  decode: (input: any) => input as MsgPlaceOrder,
+  fromPartial: (object: Partial<MsgPlaceOrder>) => ({
+    order: object.order ? OrderCodec.fromPartial(object.order) : OrderCodec.fromPartial({}),
+  }),
+} as any;
+
 export function generateRegistry(): Registry {
   return new Registry([
-    // clob
-    [TYPE_URL_MSG_PLACE_ORDER, MsgPlaceOrder as GeneratedType],
+    // clob - 使用手动编码的版本
+    [TYPE_URL_MSG_PLACE_ORDER, MsgPlaceOrderCodec as GeneratedType],
     [TYPE_URL_MSG_CANCEL_ORDER, MsgCancelOrder as GeneratedType],
     [TYPE_URL_BATCH_CANCEL, MsgBatchCancel as GeneratedType],
     [TYPE_URL_MSG_CREATE_CLOB_PAIR, MsgCreateClobPair as GeneratedType],
