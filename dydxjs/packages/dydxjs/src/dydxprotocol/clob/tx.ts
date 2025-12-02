@@ -9,9 +9,12 @@ import { ClobMatch, ClobMatchAmino, ClobMatchSDKType } from "./matches";
 import { OrderRemoval, OrderRemovalAmino, OrderRemovalSDKType } from "./order_removals";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../helpers";
-/** MsgCreateClobPair is a message used by x/gov for creating a new clob pair. */
+/**
+ * MsgCreateClobPair is a message used by x/gov for creating a new clob pair
+ * through governance.
+ */
 export interface MsgCreateClobPair {
-  /** The address that controls the module. */
+  /** The address that controls the module (governance module only). */
   authority: string;
   /** `clob_pair` defines parameters for the new clob pair. */
   clobPair: ClobPair;
@@ -21,14 +24,15 @@ export interface MsgCreateClobPairProtoMsg {
   value: Uint8Array;
 }
 /**
- * MsgCreateClobPair is a message used by x/gov for creating a new clob pair.
+ * MsgCreateClobPair is a message used by x/gov for creating a new clob pair
+ * through governance.
  * @name MsgCreateClobPairAmino
  * @package dydxprotocol.clob
  * @see proto type: dydxprotocol.clob.MsgCreateClobPair
  */
 export interface MsgCreateClobPairAmino {
   /**
-   * The address that controls the module.
+   * The address that controls the module (governance module only).
    */
   authority?: string;
   /**
@@ -40,7 +44,10 @@ export interface MsgCreateClobPairAminoMsg {
   type: "/dydxprotocol.clob.MsgCreateClobPair";
   value: MsgCreateClobPairAmino;
 }
-/** MsgCreateClobPair is a message used by x/gov for creating a new clob pair. */
+/**
+ * MsgCreateClobPair is a message used by x/gov for creating a new clob pair
+ * through governance.
+ */
 export interface MsgCreateClobPairSDKType {
   authority: string;
   clob_pair: ClobPairSDKType;
@@ -390,9 +397,15 @@ export interface MsgBatchCancelResponseSDKType {
   short_term_succeeded: OrderBatchSDKType[];
   short_term_failed: OrderBatchSDKType[];
 }
-/** MsgUpdateClobPair is a request type used for updating a ClobPair in state. */
+/**
+ * MsgUpdateClobPair is a request type used for updating a ClobPair in state
+ * through governance.
+ */
 export interface MsgUpdateClobPair {
-  /** Authority is the address that may send this message. */
+  /**
+   * Authority is the address that may send this message (governance module
+   * only).
+   */
   authority: string;
   /** `clob_pair` is the ClobPair to write to state. */
   clobPair: ClobPair;
@@ -402,14 +415,16 @@ export interface MsgUpdateClobPairProtoMsg {
   value: Uint8Array;
 }
 /**
- * MsgUpdateClobPair is a request type used for updating a ClobPair in state.
+ * MsgUpdateClobPair is a request type used for updating a ClobPair in state
+ * through governance.
  * @name MsgUpdateClobPairAmino
  * @package dydxprotocol.clob
  * @see proto type: dydxprotocol.clob.MsgUpdateClobPair
  */
 export interface MsgUpdateClobPairAmino {
   /**
-   * Authority is the address that may send this message.
+   * Authority is the address that may send this message (governance module
+   * only).
    */
   authority?: string;
   /**
@@ -421,7 +436,10 @@ export interface MsgUpdateClobPairAminoMsg {
   type: "/dydxprotocol.clob.MsgUpdateClobPair";
   value: MsgUpdateClobPairAmino;
 }
-/** MsgUpdateClobPair is a request type used for updating a ClobPair in state. */
+/**
+ * MsgUpdateClobPair is a request type used for updating a ClobPair in state
+ * through governance.
+ */
 export interface MsgUpdateClobPairSDKType {
   authority: string;
   clob_pair: ClobPairSDKType;

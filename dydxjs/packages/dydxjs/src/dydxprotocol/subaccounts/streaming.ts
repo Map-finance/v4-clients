@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "./subaccount";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /**
  * StreamSubaccountUpdate provides information on a subaccount update. Used in
  * the full node GRPC stream.
@@ -75,8 +76,12 @@ export interface StreamSubaccountUpdateSDKType {
 export interface SubaccountPerpetualPosition {
   /** The `Id` of the `Perpetual`. */
   perpetualId: number;
-  /** The size of the position in base quantums. */
-  quantums: bigint;
+  /**
+   * The size of the position in base quantums. Negative means short.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  quantums: Uint8Array;
 }
 export interface SubaccountPerpetualPositionProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.SubaccountPerpetualPosition";
@@ -95,7 +100,9 @@ export interface SubaccountPerpetualPositionAmino {
    */
   perpetual_id?: number;
   /**
-   * The size of the position in base quantums.
+   * The size of the position in base quantums. Negative means short.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   quantums?: string;
 }
@@ -109,7 +116,7 @@ export interface SubaccountPerpetualPositionAminoMsg {
  */
 export interface SubaccountPerpetualPositionSDKType {
   perpetual_id: number;
-  quantums: bigint;
+  quantums: Uint8Array;
 }
 /**
  * SubaccountAssetPosition provides information on a subaccount's updated asset
@@ -118,8 +125,12 @@ export interface SubaccountPerpetualPositionSDKType {
 export interface SubaccountAssetPosition {
   /** The `Id` of the `Asset`. */
   assetId: number;
-  /** The absolute size of the position in base quantums. */
-  quantums: bigint;
+  /**
+   * The absolute size of the position in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  quantums: Uint8Array;
 }
 export interface SubaccountAssetPositionProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.SubaccountAssetPosition";
@@ -139,6 +150,8 @@ export interface SubaccountAssetPositionAmino {
   asset_id?: number;
   /**
    * The absolute size of the position in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   quantums?: string;
 }
@@ -152,7 +165,7 @@ export interface SubaccountAssetPositionAminoMsg {
  */
 export interface SubaccountAssetPositionSDKType {
   asset_id: number;
-  quantums: bigint;
+  quantums: Uint8Array;
 }
 function createBaseStreamSubaccountUpdate(): StreamSubaccountUpdate {
   return {
@@ -260,7 +273,7 @@ export const StreamSubaccountUpdate = {
 function createBaseSubaccountPerpetualPosition(): SubaccountPerpetualPosition {
   return {
     perpetualId: 0,
-    quantums: BigInt(0)
+    quantums: new Uint8Array()
   };
 }
 export const SubaccountPerpetualPosition = {
@@ -269,8 +282,8 @@ export const SubaccountPerpetualPosition = {
     if (message.perpetualId !== 0) {
       writer.uint32(8).uint32(message.perpetualId);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(16).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(18).bytes(message.quantums);
     }
     return writer;
   },
@@ -285,7 +298,7 @@ export const SubaccountPerpetualPosition = {
           message.perpetualId = reader.uint32();
           break;
         case 2:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -297,7 +310,7 @@ export const SubaccountPerpetualPosition = {
   fromPartial(object: Partial<SubaccountPerpetualPosition>): SubaccountPerpetualPosition {
     const message = createBaseSubaccountPerpetualPosition();
     message.perpetualId = object.perpetualId ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: SubaccountPerpetualPositionAmino): SubaccountPerpetualPosition {
@@ -306,14 +319,14 @@ export const SubaccountPerpetualPosition = {
       message.perpetualId = object.perpetual_id;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     return message;
   },
   toAmino(message: SubaccountPerpetualPosition): SubaccountPerpetualPositionAmino {
     const obj: any = {};
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountPerpetualPositionAminoMsg): SubaccountPerpetualPosition {
@@ -335,7 +348,7 @@ export const SubaccountPerpetualPosition = {
 function createBaseSubaccountAssetPosition(): SubaccountAssetPosition {
   return {
     assetId: 0,
-    quantums: BigInt(0)
+    quantums: new Uint8Array()
   };
 }
 export const SubaccountAssetPosition = {
@@ -344,8 +357,8 @@ export const SubaccountAssetPosition = {
     if (message.assetId !== 0) {
       writer.uint32(8).uint32(message.assetId);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(16).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(18).bytes(message.quantums);
     }
     return writer;
   },
@@ -360,7 +373,7 @@ export const SubaccountAssetPosition = {
           message.assetId = reader.uint32();
           break;
         case 2:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -372,7 +385,7 @@ export const SubaccountAssetPosition = {
   fromPartial(object: Partial<SubaccountAssetPosition>): SubaccountAssetPosition {
     const message = createBaseSubaccountAssetPosition();
     message.assetId = object.assetId ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: SubaccountAssetPositionAmino): SubaccountAssetPosition {
@@ -381,14 +394,14 @@ export const SubaccountAssetPosition = {
       message.assetId = object.asset_id;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     return message;
   },
   toAmino(message: SubaccountAssetPosition): SubaccountAssetPositionAmino {
     const obj: any = {};
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: SubaccountAssetPositionAminoMsg): SubaccountAssetPosition {

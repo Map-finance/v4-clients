@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgAcknowledgeBridges, MsgCompleteBridge, MsgUpdateEventParams, MsgUpdateProposeParams, MsgUpdateSafetyParams } from "./tx";
+import { MsgAcknowledgeBridges, MsgCompleteBridge, MsgUpdateEventParams, MsgUpdateProposeParams, MsgUpdateSafetyParams, MsgUpdateAcknowledgedEventInfo } from "./tx";
 export const AminoConverter = {
   "/dydxprotocol.bridge.MsgAcknowledgeBridges": {
     aminoType: "/dydxprotocol.bridge.MsgAcknowledgeBridges",
@@ -25,5 +25,10 @@ export const AminoConverter = {
     aminoType: "/dydxprotocol.bridge.MsgUpdateSafetyParams",
     toAmino: MsgUpdateSafetyParams.toAmino,
     fromAmino: MsgUpdateSafetyParams.fromAmino
+  },
+  "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo": {
+    aminoType: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
+    toAmino: MsgUpdateAcknowledgedEventInfo.toAmino,
+    fromAmino: MsgUpdateAcknowledgedEventInfo.fromAmino
   }
 };

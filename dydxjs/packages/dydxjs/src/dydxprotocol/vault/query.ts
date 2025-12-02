@@ -1,9 +1,9 @@
 //@ts-nocheck
 import { VaultType, VaultId, VaultIdAmino, VaultIdSDKType } from "./vault";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params, ParamsAmino, ParamsSDKType, QuotingParams, QuotingParamsAmino, QuotingParamsSDKType, VaultParams, VaultParamsAmino, VaultParamsSDKType } from "./params";
+import { NumShares, NumSharesAmino, NumSharesSDKType, ShareUnlock, ShareUnlockAmino, ShareUnlockSDKType, OwnerShare, OwnerShareAmino, OwnerShareSDKType } from "./share";
+import { QuotingParams, QuotingParamsAmino, QuotingParamsSDKType, OperatorParams, OperatorParamsAmino, OperatorParamsSDKType, VaultParams, VaultParamsAmino, VaultParamsSDKType } from "./params";
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "../subaccounts/subaccount";
-import { NumShares, NumSharesAmino, NumSharesSDKType, OwnerShare, OwnerShareAmino, OwnerShareSDKType } from "./share";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /** QueryParamsRequest is a request type for the Params RPC method. */
@@ -27,10 +27,8 @@ export interface QueryParamsRequestAminoMsg {
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is a response type for the Params RPC method. */
 export interface QueryParamsResponse {
-  /** Deprecated since v6.x in favor of default_quoting_params. */
-  /** @deprecated */
-  params: Params;
   defaultQuotingParams: QuotingParams;
+  operatorParams: OperatorParams;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryParamsResponse";
@@ -43,12 +41,8 @@ export interface QueryParamsResponseProtoMsg {
  * @see proto type: dydxprotocol.vault.QueryParamsResponse
  */
 export interface QueryParamsResponseAmino {
-  /**
-   * Deprecated since v6.x in favor of default_quoting_params.
-   * @deprecated
-   */
-  params?: ParamsAmino;
   default_quoting_params?: QuotingParamsAmino;
+  operator_params?: OperatorParamsAmino;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "/dydxprotocol.vault.QueryParamsResponse";
@@ -56,9 +50,8 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is a response type for the Params RPC method. */
 export interface QueryParamsResponseSDKType {
-  /** @deprecated */
-  params: ParamsSDKType;
   default_quoting_params: QuotingParamsSDKType;
+  operator_params: OperatorParamsSDKType;
 }
 /** QueryVaultRequest is a request type for the Vault RPC method. */
 export interface QueryVaultRequest {
@@ -95,6 +88,7 @@ export interface QueryVaultResponse {
   equity: Uint8Array;
   inventory: Uint8Array;
   vaultParams: VaultParams;
+  mostRecentClientIds: number[];
 }
 export interface QueryVaultResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryVaultResponse";
@@ -112,6 +106,7 @@ export interface QueryVaultResponseAmino {
   equity?: string;
   inventory?: string;
   vault_params?: VaultParamsAmino;
+  most_recent_client_ids?: number[];
 }
 export interface QueryVaultResponseAminoMsg {
   type: "/dydxprotocol.vault.QueryVaultResponse";
@@ -124,6 +119,7 @@ export interface QueryVaultResponseSDKType {
   equity: Uint8Array;
   inventory: Uint8Array;
   vault_params: VaultParamsSDKType;
+  most_recent_client_ids: number[];
 }
 /** QueryAllVaultsRequest is a request type for the AllVaults RPC method. */
 export interface QueryAllVaultsRequest {
@@ -241,7 +237,7 @@ export interface QueryMegavaultTotalSharesResponseSDKType {
  * MegavaultOwnerShares RPC method.
  */
 export interface QueryMegavaultOwnerSharesRequest {
-  pagination?: PageRequest;
+  address: string;
 }
 export interface QueryMegavaultOwnerSharesRequestProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesRequest";
@@ -255,7 +251,7 @@ export interface QueryMegavaultOwnerSharesRequestProtoMsg {
  * @see proto type: dydxprotocol.vault.QueryMegavaultOwnerSharesRequest
  */
 export interface QueryMegavaultOwnerSharesRequestAmino {
-  pagination?: PageRequestAmino;
+  address?: string;
 }
 export interface QueryMegavaultOwnerSharesRequestAminoMsg {
   type: "/dydxprotocol.vault.QueryMegavaultOwnerSharesRequest";
@@ -266,15 +262,26 @@ export interface QueryMegavaultOwnerSharesRequestAminoMsg {
  * MegavaultOwnerShares RPC method.
  */
 export interface QueryMegavaultOwnerSharesRequestSDKType {
-  pagination?: PageRequestSDKType;
+  address: string;
 }
 /**
  * QueryMegavaultOwnerSharesResponse is a response type for the
  * MegavaultOwnerShares RPC method.
  */
 export interface QueryMegavaultOwnerSharesResponse {
-  ownerShares: OwnerShare[];
-  pagination?: PageResponse;
+  /** Owner address. */
+  address: string;
+  /** Total number of shares that belong to the owner. */
+  shares: NumShares;
+  /** All share unlocks. */
+  shareUnlocks: ShareUnlock[];
+  /** Owner equity in megavault (in quote quantums). */
+  equity: Uint8Array;
+  /**
+   * Equity that owner can withdraw in quote quantums (as one cannot
+   * withdraw locked shares).
+   */
+  withdrawableEquity: Uint8Array;
 }
 export interface QueryMegavaultOwnerSharesResponseProtoMsg {
   typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesResponse";
@@ -288,8 +295,27 @@ export interface QueryMegavaultOwnerSharesResponseProtoMsg {
  * @see proto type: dydxprotocol.vault.QueryMegavaultOwnerSharesResponse
  */
 export interface QueryMegavaultOwnerSharesResponseAmino {
-  owner_shares?: OwnerShareAmino[];
-  pagination?: PageResponseAmino;
+  /**
+   * Owner address.
+   */
+  address?: string;
+  /**
+   * Total number of shares that belong to the owner.
+   */
+  shares?: NumSharesAmino;
+  /**
+   * All share unlocks.
+   */
+  share_unlocks?: ShareUnlockAmino[];
+  /**
+   * Owner equity in megavault (in quote quantums).
+   */
+  equity?: string;
+  /**
+   * Equity that owner can withdraw in quote quantums (as one cannot
+   * withdraw locked shares).
+   */
+  withdrawable_equity?: string;
 }
 export interface QueryMegavaultOwnerSharesResponseAminoMsg {
   type: "/dydxprotocol.vault.QueryMegavaultOwnerSharesResponse";
@@ -300,8 +326,235 @@ export interface QueryMegavaultOwnerSharesResponseAminoMsg {
  * MegavaultOwnerShares RPC method.
  */
 export interface QueryMegavaultOwnerSharesResponseSDKType {
+  address: string;
+  shares: NumSharesSDKType;
+  share_unlocks: ShareUnlockSDKType[];
+  equity: Uint8Array;
+  withdrawable_equity: Uint8Array;
+}
+/**
+ * QueryMegavaultAllOwnerSharesRequest is a request type for the
+ * MegavaultAllOwnerShares RPC method.
+ */
+export interface QueryMegavaultAllOwnerSharesRequest {
+  pagination?: PageRequest;
+}
+export interface QueryMegavaultAllOwnerSharesRequestProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryMegavaultAllOwnerSharesRequest is a request type for the
+ * MegavaultAllOwnerShares RPC method.
+ * @name QueryMegavaultAllOwnerSharesRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultAllOwnerSharesRequest
+ */
+export interface QueryMegavaultAllOwnerSharesRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryMegavaultAllOwnerSharesRequestAminoMsg {
+  type: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesRequest";
+  value: QueryMegavaultAllOwnerSharesRequestAmino;
+}
+/**
+ * QueryMegavaultAllOwnerSharesRequest is a request type for the
+ * MegavaultAllOwnerShares RPC method.
+ */
+export interface QueryMegavaultAllOwnerSharesRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+/**
+ * QueryMegavaultAllOwnerSharesResponse is a response type for the
+ * MegavaultAllOwnerShares RPC method.
+ */
+export interface QueryMegavaultAllOwnerSharesResponse {
+  ownerShares: OwnerShare[];
+  pagination?: PageResponse;
+}
+export interface QueryMegavaultAllOwnerSharesResponseProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryMegavaultAllOwnerSharesResponse is a response type for the
+ * MegavaultAllOwnerShares RPC method.
+ * @name QueryMegavaultAllOwnerSharesResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultAllOwnerSharesResponse
+ */
+export interface QueryMegavaultAllOwnerSharesResponseAmino {
+  owner_shares?: OwnerShareAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryMegavaultAllOwnerSharesResponseAminoMsg {
+  type: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesResponse";
+  value: QueryMegavaultAllOwnerSharesResponseAmino;
+}
+/**
+ * QueryMegavaultAllOwnerSharesResponse is a response type for the
+ * MegavaultAllOwnerShares RPC method.
+ */
+export interface QueryMegavaultAllOwnerSharesResponseSDKType {
   owner_shares: OwnerShareSDKType[];
   pagination?: PageResponseSDKType;
+}
+/** QueryVaultParamsRequest is a request for the VaultParams RPC method. */
+export interface QueryVaultParamsRequest {
+  type: VaultType;
+  number: number;
+}
+export interface QueryVaultParamsRequestProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryVaultParamsRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryVaultParamsRequest is a request for the VaultParams RPC method.
+ * @name QueryVaultParamsRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryVaultParamsRequest
+ */
+export interface QueryVaultParamsRequestAmino {
+  type?: VaultType;
+  number?: number;
+}
+export interface QueryVaultParamsRequestAminoMsg {
+  type: "/dydxprotocol.vault.QueryVaultParamsRequest";
+  value: QueryVaultParamsRequestAmino;
+}
+/** QueryVaultParamsRequest is a request for the VaultParams RPC method. */
+export interface QueryVaultParamsRequestSDKType {
+  type: VaultType;
+  number: number;
+}
+/** QueryVaultParamsResponse is a response for the VaultParams RPC method. */
+export interface QueryVaultParamsResponse {
+  vaultId: VaultId;
+  vaultParams: VaultParams;
+}
+export interface QueryVaultParamsResponseProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryVaultParamsResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryVaultParamsResponse is a response for the VaultParams RPC method.
+ * @name QueryVaultParamsResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryVaultParamsResponse
+ */
+export interface QueryVaultParamsResponseAmino {
+  vault_id?: VaultIdAmino;
+  vault_params?: VaultParamsAmino;
+}
+export interface QueryVaultParamsResponseAminoMsg {
+  type: "/dydxprotocol.vault.QueryVaultParamsResponse";
+  value: QueryVaultParamsResponseAmino;
+}
+/** QueryVaultParamsResponse is a response for the VaultParams RPC method. */
+export interface QueryVaultParamsResponseSDKType {
+  vault_id: VaultIdSDKType;
+  vault_params: VaultParamsSDKType;
+}
+/**
+ * QueryMegavaultWithdrawalInfoRequest is a request type for the
+ * MegavaultWithdrawalInfo RPC method.
+ */
+export interface QueryMegavaultWithdrawalInfoRequest {
+  /** Number of shares to withdraw. */
+  sharesToWithdraw: NumShares;
+}
+export interface QueryMegavaultWithdrawalInfoRequestProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryMegavaultWithdrawalInfoRequest is a request type for the
+ * MegavaultWithdrawalInfo RPC method.
+ * @name QueryMegavaultWithdrawalInfoRequestAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultWithdrawalInfoRequest
+ */
+export interface QueryMegavaultWithdrawalInfoRequestAmino {
+  /**
+   * Number of shares to withdraw.
+   */
+  shares_to_withdraw?: NumSharesAmino;
+}
+export interface QueryMegavaultWithdrawalInfoRequestAminoMsg {
+  type: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoRequest";
+  value: QueryMegavaultWithdrawalInfoRequestAmino;
+}
+/**
+ * QueryMegavaultWithdrawalInfoRequest is a request type for the
+ * MegavaultWithdrawalInfo RPC method.
+ */
+export interface QueryMegavaultWithdrawalInfoRequestSDKType {
+  shares_to_withdraw: NumSharesSDKType;
+}
+/**
+ * QueryMegavaultWithdrawalInfoResponse is a response type for the
+ * MegavaultWithdrawalInfo RPC method.
+ */
+export interface QueryMegavaultWithdrawalInfoResponse {
+  /** Number of shares to withdraw. */
+  sharesToWithdraw: NumShares;
+  /**
+   * Number of quote quantums above `shares` are expected to redeem.
+   * Withdrawl slippage can be calculated by comparing
+   * `expected_quote_quantums` with
+   * `megavault_equity * shares_to_withdraw / total_shares`
+   */
+  expectedQuoteQuantums: Uint8Array;
+  /** Equity of megavault (in quote quantums). */
+  megavaultEquity: Uint8Array;
+  /** Total shares in megavault. */
+  totalShares: NumShares;
+}
+export interface QueryMegavaultWithdrawalInfoResponseProtoMsg {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryMegavaultWithdrawalInfoResponse is a response type for the
+ * MegavaultWithdrawalInfo RPC method.
+ * @name QueryMegavaultWithdrawalInfoResponseAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.QueryMegavaultWithdrawalInfoResponse
+ */
+export interface QueryMegavaultWithdrawalInfoResponseAmino {
+  /**
+   * Number of shares to withdraw.
+   */
+  shares_to_withdraw?: NumSharesAmino;
+  /**
+   * Number of quote quantums above `shares` are expected to redeem.
+   * Withdrawl slippage can be calculated by comparing
+   * `expected_quote_quantums` with
+   * `megavault_equity * shares_to_withdraw / total_shares`
+   */
+  expected_quote_quantums?: string;
+  /**
+   * Equity of megavault (in quote quantums).
+   */
+  megavault_equity?: string;
+  /**
+   * Total shares in megavault.
+   */
+  total_shares?: NumSharesAmino;
+}
+export interface QueryMegavaultWithdrawalInfoResponseAminoMsg {
+  type: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoResponse";
+  value: QueryMegavaultWithdrawalInfoResponseAmino;
+}
+/**
+ * QueryMegavaultWithdrawalInfoResponse is a response type for the
+ * MegavaultWithdrawalInfo RPC method.
+ */
+export interface QueryMegavaultWithdrawalInfoResponseSDKType {
+  shares_to_withdraw: NumSharesSDKType;
+  expected_quote_quantums: Uint8Array;
+  megavault_equity: Uint8Array;
+  total_shares: NumSharesSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -355,18 +608,18 @@ export const QueryParamsRequest = {
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: Params.fromPartial({}),
-    defaultQuotingParams: QuotingParams.fromPartial({})
+    defaultQuotingParams: QuotingParams.fromPartial({}),
+    operatorParams: OperatorParams.fromPartial({})
   };
 }
 export const QueryParamsResponse = {
   typeUrl: "/dydxprotocol.vault.QueryParamsResponse",
   encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.params !== undefined) {
-      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
-    }
     if (message.defaultQuotingParams !== undefined) {
-      QuotingParams.encode(message.defaultQuotingParams, writer.uint32(18).fork()).ldelim();
+      QuotingParams.encode(message.defaultQuotingParams, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.operatorParams !== undefined) {
+      OperatorParams.encode(message.operatorParams, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -378,10 +631,10 @@ export const QueryParamsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.params = Params.decode(reader, reader.uint32());
+          message.defaultQuotingParams = QuotingParams.decode(reader, reader.uint32());
           break;
         case 2:
-          message.defaultQuotingParams = QuotingParams.decode(reader, reader.uint32());
+          message.operatorParams = OperatorParams.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -392,24 +645,24 @@ export const QueryParamsResponse = {
   },
   fromPartial(object: Partial<QueryParamsResponse>): QueryParamsResponse {
     const message = createBaseQueryParamsResponse();
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     message.defaultQuotingParams = object.defaultQuotingParams !== undefined && object.defaultQuotingParams !== null ? QuotingParams.fromPartial(object.defaultQuotingParams) : undefined;
+    message.operatorParams = object.operatorParams !== undefined && object.operatorParams !== null ? OperatorParams.fromPartial(object.operatorParams) : undefined;
     return message;
   },
   fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
     const message = createBaseQueryParamsResponse();
-    if (object.params !== undefined && object.params !== null) {
-      message.params = Params.fromAmino(object.params);
-    }
     if (object.default_quoting_params !== undefined && object.default_quoting_params !== null) {
       message.defaultQuotingParams = QuotingParams.fromAmino(object.default_quoting_params);
+    }
+    if (object.operator_params !== undefined && object.operator_params !== null) {
+      message.operatorParams = OperatorParams.fromAmino(object.operator_params);
     }
     return message;
   },
   toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
     const obj: any = {};
-    obj.params = message.params ? Params.toAmino(message.params) : undefined;
     obj.default_quoting_params = message.defaultQuotingParams ? QuotingParams.toAmino(message.defaultQuotingParams) : undefined;
+    obj.operator_params = message.operatorParams ? OperatorParams.toAmino(message.operatorParams) : undefined;
     return obj;
   },
   fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
@@ -509,7 +762,8 @@ function createBaseQueryVaultResponse(): QueryVaultResponse {
     subaccountId: SubaccountId.fromPartial({}),
     equity: new Uint8Array(),
     inventory: new Uint8Array(),
-    vaultParams: VaultParams.fromPartial({})
+    vaultParams: VaultParams.fromPartial({}),
+    mostRecentClientIds: []
   };
 }
 export const QueryVaultResponse = {
@@ -530,6 +784,11 @@ export const QueryVaultResponse = {
     if (message.vaultParams !== undefined) {
       VaultParams.encode(message.vaultParams, writer.uint32(42).fork()).ldelim();
     }
+    writer.uint32(50).fork();
+    for (const v of message.mostRecentClientIds) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number): QueryVaultResponse {
@@ -554,6 +813,16 @@ export const QueryVaultResponse = {
         case 5:
           message.vaultParams = VaultParams.decode(reader, reader.uint32());
           break;
+        case 6:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.mostRecentClientIds.push(reader.uint32());
+            }
+          } else {
+            message.mostRecentClientIds.push(reader.uint32());
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -568,6 +837,7 @@ export const QueryVaultResponse = {
     message.equity = object.equity ?? new Uint8Array();
     message.inventory = object.inventory ?? new Uint8Array();
     message.vaultParams = object.vaultParams !== undefined && object.vaultParams !== null ? VaultParams.fromPartial(object.vaultParams) : undefined;
+    message.mostRecentClientIds = object.mostRecentClientIds?.map(e => e) || [];
     return message;
   },
   fromAmino(object: QueryVaultResponseAmino): QueryVaultResponse {
@@ -587,6 +857,7 @@ export const QueryVaultResponse = {
     if (object.vault_params !== undefined && object.vault_params !== null) {
       message.vaultParams = VaultParams.fromAmino(object.vault_params);
     }
+    message.mostRecentClientIds = object.most_recent_client_ids?.map(e => e) || [];
     return message;
   },
   toAmino(message: QueryVaultResponse): QueryVaultResponseAmino {
@@ -596,6 +867,11 @@ export const QueryVaultResponse = {
     obj.equity = message.equity ? base64FromBytes(message.equity) : undefined;
     obj.inventory = message.inventory ? base64FromBytes(message.inventory) : undefined;
     obj.vault_params = message.vaultParams ? VaultParams.toAmino(message.vaultParams) : undefined;
+    if (message.mostRecentClientIds) {
+      obj.most_recent_client_ids = message.mostRecentClientIds.map(e => e);
+    } else {
+      obj.most_recent_client_ids = message.mostRecentClientIds;
+    }
     return obj;
   },
   fromAminoMsg(object: QueryVaultResponseAminoMsg): QueryVaultResponse {
@@ -869,14 +1145,14 @@ export const QueryMegavaultTotalSharesResponse = {
 };
 function createBaseQueryMegavaultOwnerSharesRequest(): QueryMegavaultOwnerSharesRequest {
   return {
-    pagination: undefined
+    address: ""
   };
 }
 export const QueryMegavaultOwnerSharesRequest = {
   typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesRequest",
   encode(message: QueryMegavaultOwnerSharesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(26).fork()).ldelim();
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
     }
     return writer;
   },
@@ -887,8 +1163,8 @@ export const QueryMegavaultOwnerSharesRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 3:
-          message.pagination = PageRequest.decode(reader, reader.uint32());
+        case 1:
+          message.address = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -899,19 +1175,19 @@ export const QueryMegavaultOwnerSharesRequest = {
   },
   fromPartial(object: Partial<QueryMegavaultOwnerSharesRequest>): QueryMegavaultOwnerSharesRequest {
     const message = createBaseQueryMegavaultOwnerSharesRequest();
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.address = object.address ?? "";
     return message;
   },
   fromAmino(object: QueryMegavaultOwnerSharesRequestAmino): QueryMegavaultOwnerSharesRequest {
     const message = createBaseQueryMegavaultOwnerSharesRequest();
-    if (object.pagination !== undefined && object.pagination !== null) {
-      message.pagination = PageRequest.fromAmino(object.pagination);
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
     }
     return message;
   },
   toAmino(message: QueryMegavaultOwnerSharesRequest): QueryMegavaultOwnerSharesRequestAmino {
     const obj: any = {};
-    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.address = message.address === "" ? undefined : message.address;
     return obj;
   },
   fromAminoMsg(object: QueryMegavaultOwnerSharesRequestAminoMsg): QueryMegavaultOwnerSharesRequest {
@@ -932,13 +1208,189 @@ export const QueryMegavaultOwnerSharesRequest = {
 };
 function createBaseQueryMegavaultOwnerSharesResponse(): QueryMegavaultOwnerSharesResponse {
   return {
-    ownerShares: [],
-    pagination: undefined
+    address: "",
+    shares: NumShares.fromPartial({}),
+    shareUnlocks: [],
+    equity: new Uint8Array(),
+    withdrawableEquity: new Uint8Array()
   };
 }
 export const QueryMegavaultOwnerSharesResponse = {
   typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesResponse",
   encode(message: QueryMegavaultOwnerSharesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.shares !== undefined) {
+      NumShares.encode(message.shares, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.shareUnlocks) {
+      ShareUnlock.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.equity.length !== 0) {
+      writer.uint32(34).bytes(message.equity);
+    }
+    if (message.withdrawableEquity.length !== 0) {
+      writer.uint32(42).bytes(message.withdrawableEquity);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultOwnerSharesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMegavaultOwnerSharesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.shares = NumShares.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.shareUnlocks.push(ShareUnlock.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.equity = reader.bytes();
+          break;
+        case 5:
+          message.withdrawableEquity = reader.bytes();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryMegavaultOwnerSharesResponse>): QueryMegavaultOwnerSharesResponse {
+    const message = createBaseQueryMegavaultOwnerSharesResponse();
+    message.address = object.address ?? "";
+    message.shares = object.shares !== undefined && object.shares !== null ? NumShares.fromPartial(object.shares) : undefined;
+    message.shareUnlocks = object.shareUnlocks?.map(e => ShareUnlock.fromPartial(e)) || [];
+    message.equity = object.equity ?? new Uint8Array();
+    message.withdrawableEquity = object.withdrawableEquity ?? new Uint8Array();
+    return message;
+  },
+  fromAmino(object: QueryMegavaultOwnerSharesResponseAmino): QueryMegavaultOwnerSharesResponse {
+    const message = createBaseQueryMegavaultOwnerSharesResponse();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.shares !== undefined && object.shares !== null) {
+      message.shares = NumShares.fromAmino(object.shares);
+    }
+    message.shareUnlocks = object.share_unlocks?.map(e => ShareUnlock.fromAmino(e)) || [];
+    if (object.equity !== undefined && object.equity !== null) {
+      message.equity = bytesFromBase64(object.equity);
+    }
+    if (object.withdrawable_equity !== undefined && object.withdrawable_equity !== null) {
+      message.withdrawableEquity = bytesFromBase64(object.withdrawable_equity);
+    }
+    return message;
+  },
+  toAmino(message: QueryMegavaultOwnerSharesResponse): QueryMegavaultOwnerSharesResponseAmino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.shares = message.shares ? NumShares.toAmino(message.shares) : undefined;
+    if (message.shareUnlocks) {
+      obj.share_unlocks = message.shareUnlocks.map(e => e ? ShareUnlock.toAmino(e) : undefined);
+    } else {
+      obj.share_unlocks = message.shareUnlocks;
+    }
+    obj.equity = message.equity ? base64FromBytes(message.equity) : undefined;
+    obj.withdrawable_equity = message.withdrawableEquity ? base64FromBytes(message.withdrawableEquity) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMegavaultOwnerSharesResponseAminoMsg): QueryMegavaultOwnerSharesResponse {
+    return QueryMegavaultOwnerSharesResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMegavaultOwnerSharesResponseProtoMsg): QueryMegavaultOwnerSharesResponse {
+    return QueryMegavaultOwnerSharesResponse.decode(message.value);
+  },
+  toProto(message: QueryMegavaultOwnerSharesResponse): Uint8Array {
+    return QueryMegavaultOwnerSharesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMegavaultOwnerSharesResponse): QueryMegavaultOwnerSharesResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesResponse",
+      value: QueryMegavaultOwnerSharesResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryMegavaultAllOwnerSharesRequest(): QueryMegavaultAllOwnerSharesRequest {
+  return {
+    pagination: undefined
+  };
+}
+export const QueryMegavaultAllOwnerSharesRequest = {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesRequest",
+  encode(message: QueryMegavaultAllOwnerSharesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultAllOwnerSharesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMegavaultAllOwnerSharesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryMegavaultAllOwnerSharesRequest>): QueryMegavaultAllOwnerSharesRequest {
+    const message = createBaseQueryMegavaultAllOwnerSharesRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryMegavaultAllOwnerSharesRequestAmino): QueryMegavaultAllOwnerSharesRequest {
+    const message = createBaseQueryMegavaultAllOwnerSharesRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryMegavaultAllOwnerSharesRequest): QueryMegavaultAllOwnerSharesRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMegavaultAllOwnerSharesRequestAminoMsg): QueryMegavaultAllOwnerSharesRequest {
+    return QueryMegavaultAllOwnerSharesRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMegavaultAllOwnerSharesRequestProtoMsg): QueryMegavaultAllOwnerSharesRequest {
+    return QueryMegavaultAllOwnerSharesRequest.decode(message.value);
+  },
+  toProto(message: QueryMegavaultAllOwnerSharesRequest): Uint8Array {
+    return QueryMegavaultAllOwnerSharesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMegavaultAllOwnerSharesRequest): QueryMegavaultAllOwnerSharesRequestProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesRequest",
+      value: QueryMegavaultAllOwnerSharesRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryMegavaultAllOwnerSharesResponse(): QueryMegavaultAllOwnerSharesResponse {
+  return {
+    ownerShares: [],
+    pagination: undefined
+  };
+}
+export const QueryMegavaultAllOwnerSharesResponse = {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesResponse",
+  encode(message: QueryMegavaultAllOwnerSharesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.ownerShares) {
       OwnerShare.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -947,10 +1399,10 @@ export const QueryMegavaultOwnerSharesResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultOwnerSharesResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultAllOwnerSharesResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryMegavaultOwnerSharesResponse();
+    const message = createBaseQueryMegavaultAllOwnerSharesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -967,21 +1419,21 @@ export const QueryMegavaultOwnerSharesResponse = {
     }
     return message;
   },
-  fromPartial(object: Partial<QueryMegavaultOwnerSharesResponse>): QueryMegavaultOwnerSharesResponse {
-    const message = createBaseQueryMegavaultOwnerSharesResponse();
+  fromPartial(object: Partial<QueryMegavaultAllOwnerSharesResponse>): QueryMegavaultAllOwnerSharesResponse {
+    const message = createBaseQueryMegavaultAllOwnerSharesResponse();
     message.ownerShares = object.ownerShares?.map(e => OwnerShare.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
-  fromAmino(object: QueryMegavaultOwnerSharesResponseAmino): QueryMegavaultOwnerSharesResponse {
-    const message = createBaseQueryMegavaultOwnerSharesResponse();
+  fromAmino(object: QueryMegavaultAllOwnerSharesResponseAmino): QueryMegavaultAllOwnerSharesResponse {
+    const message = createBaseQueryMegavaultAllOwnerSharesResponse();
     message.ownerShares = object.owner_shares?.map(e => OwnerShare.fromAmino(e)) || [];
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageResponse.fromAmino(object.pagination);
     }
     return message;
   },
-  toAmino(message: QueryMegavaultOwnerSharesResponse): QueryMegavaultOwnerSharesResponseAmino {
+  toAmino(message: QueryMegavaultAllOwnerSharesResponse): QueryMegavaultAllOwnerSharesResponseAmino {
     const obj: any = {};
     if (message.ownerShares) {
       obj.owner_shares = message.ownerShares.map(e => e ? OwnerShare.toAmino(e) : undefined);
@@ -991,19 +1443,331 @@ export const QueryMegavaultOwnerSharesResponse = {
     obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
     return obj;
   },
-  fromAminoMsg(object: QueryMegavaultOwnerSharesResponseAminoMsg): QueryMegavaultOwnerSharesResponse {
-    return QueryMegavaultOwnerSharesResponse.fromAmino(object.value);
+  fromAminoMsg(object: QueryMegavaultAllOwnerSharesResponseAminoMsg): QueryMegavaultAllOwnerSharesResponse {
+    return QueryMegavaultAllOwnerSharesResponse.fromAmino(object.value);
   },
-  fromProtoMsg(message: QueryMegavaultOwnerSharesResponseProtoMsg): QueryMegavaultOwnerSharesResponse {
-    return QueryMegavaultOwnerSharesResponse.decode(message.value);
+  fromProtoMsg(message: QueryMegavaultAllOwnerSharesResponseProtoMsg): QueryMegavaultAllOwnerSharesResponse {
+    return QueryMegavaultAllOwnerSharesResponse.decode(message.value);
   },
-  toProto(message: QueryMegavaultOwnerSharesResponse): Uint8Array {
-    return QueryMegavaultOwnerSharesResponse.encode(message).finish();
+  toProto(message: QueryMegavaultAllOwnerSharesResponse): Uint8Array {
+    return QueryMegavaultAllOwnerSharesResponse.encode(message).finish();
   },
-  toProtoMsg(message: QueryMegavaultOwnerSharesResponse): QueryMegavaultOwnerSharesResponseProtoMsg {
+  toProtoMsg(message: QueryMegavaultAllOwnerSharesResponse): QueryMegavaultAllOwnerSharesResponseProtoMsg {
     return {
-      typeUrl: "/dydxprotocol.vault.QueryMegavaultOwnerSharesResponse",
-      value: QueryMegavaultOwnerSharesResponse.encode(message).finish()
+      typeUrl: "/dydxprotocol.vault.QueryMegavaultAllOwnerSharesResponse",
+      value: QueryMegavaultAllOwnerSharesResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryVaultParamsRequest(): QueryVaultParamsRequest {
+  return {
+    type: 0,
+    number: 0
+  };
+}
+export const QueryVaultParamsRequest = {
+  typeUrl: "/dydxprotocol.vault.QueryVaultParamsRequest",
+  encode(message: QueryVaultParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.type !== 0) {
+      writer.uint32(8).int32(message.type);
+    }
+    if (message.number !== 0) {
+      writer.uint32(16).uint32(message.number);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryVaultParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVaultParamsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.type = reader.int32() as any;
+          break;
+        case 2:
+          message.number = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryVaultParamsRequest>): QueryVaultParamsRequest {
+    const message = createBaseQueryVaultParamsRequest();
+    message.type = object.type ?? 0;
+    message.number = object.number ?? 0;
+    return message;
+  },
+  fromAmino(object: QueryVaultParamsRequestAmino): QueryVaultParamsRequest {
+    const message = createBaseQueryVaultParamsRequest();
+    if (object.type !== undefined && object.type !== null) {
+      message.type = object.type;
+    }
+    if (object.number !== undefined && object.number !== null) {
+      message.number = object.number;
+    }
+    return message;
+  },
+  toAmino(message: QueryVaultParamsRequest): QueryVaultParamsRequestAmino {
+    const obj: any = {};
+    obj.type = message.type === 0 ? undefined : message.type;
+    obj.number = message.number === 0 ? undefined : message.number;
+    return obj;
+  },
+  fromAminoMsg(object: QueryVaultParamsRequestAminoMsg): QueryVaultParamsRequest {
+    return QueryVaultParamsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryVaultParamsRequestProtoMsg): QueryVaultParamsRequest {
+    return QueryVaultParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryVaultParamsRequest): Uint8Array {
+    return QueryVaultParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryVaultParamsRequest): QueryVaultParamsRequestProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryVaultParamsRequest",
+      value: QueryVaultParamsRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryVaultParamsResponse(): QueryVaultParamsResponse {
+  return {
+    vaultId: VaultId.fromPartial({}),
+    vaultParams: VaultParams.fromPartial({})
+  };
+}
+export const QueryVaultParamsResponse = {
+  typeUrl: "/dydxprotocol.vault.QueryVaultParamsResponse",
+  encode(message: QueryVaultParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.vaultId !== undefined) {
+      VaultId.encode(message.vaultId, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.vaultParams !== undefined) {
+      VaultParams.encode(message.vaultParams, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryVaultParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVaultParamsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.vaultId = VaultId.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.vaultParams = VaultParams.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryVaultParamsResponse>): QueryVaultParamsResponse {
+    const message = createBaseQueryVaultParamsResponse();
+    message.vaultId = object.vaultId !== undefined && object.vaultId !== null ? VaultId.fromPartial(object.vaultId) : undefined;
+    message.vaultParams = object.vaultParams !== undefined && object.vaultParams !== null ? VaultParams.fromPartial(object.vaultParams) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryVaultParamsResponseAmino): QueryVaultParamsResponse {
+    const message = createBaseQueryVaultParamsResponse();
+    if (object.vault_id !== undefined && object.vault_id !== null) {
+      message.vaultId = VaultId.fromAmino(object.vault_id);
+    }
+    if (object.vault_params !== undefined && object.vault_params !== null) {
+      message.vaultParams = VaultParams.fromAmino(object.vault_params);
+    }
+    return message;
+  },
+  toAmino(message: QueryVaultParamsResponse): QueryVaultParamsResponseAmino {
+    const obj: any = {};
+    obj.vault_id = message.vaultId ? VaultId.toAmino(message.vaultId) : undefined;
+    obj.vault_params = message.vaultParams ? VaultParams.toAmino(message.vaultParams) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryVaultParamsResponseAminoMsg): QueryVaultParamsResponse {
+    return QueryVaultParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryVaultParamsResponseProtoMsg): QueryVaultParamsResponse {
+    return QueryVaultParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryVaultParamsResponse): Uint8Array {
+    return QueryVaultParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryVaultParamsResponse): QueryVaultParamsResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryVaultParamsResponse",
+      value: QueryVaultParamsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryMegavaultWithdrawalInfoRequest(): QueryMegavaultWithdrawalInfoRequest {
+  return {
+    sharesToWithdraw: NumShares.fromPartial({})
+  };
+}
+export const QueryMegavaultWithdrawalInfoRequest = {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoRequest",
+  encode(message: QueryMegavaultWithdrawalInfoRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.sharesToWithdraw !== undefined) {
+      NumShares.encode(message.sharesToWithdraw, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultWithdrawalInfoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMegavaultWithdrawalInfoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sharesToWithdraw = NumShares.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryMegavaultWithdrawalInfoRequest>): QueryMegavaultWithdrawalInfoRequest {
+    const message = createBaseQueryMegavaultWithdrawalInfoRequest();
+    message.sharesToWithdraw = object.sharesToWithdraw !== undefined && object.sharesToWithdraw !== null ? NumShares.fromPartial(object.sharesToWithdraw) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryMegavaultWithdrawalInfoRequestAmino): QueryMegavaultWithdrawalInfoRequest {
+    const message = createBaseQueryMegavaultWithdrawalInfoRequest();
+    if (object.shares_to_withdraw !== undefined && object.shares_to_withdraw !== null) {
+      message.sharesToWithdraw = NumShares.fromAmino(object.shares_to_withdraw);
+    }
+    return message;
+  },
+  toAmino(message: QueryMegavaultWithdrawalInfoRequest): QueryMegavaultWithdrawalInfoRequestAmino {
+    const obj: any = {};
+    obj.shares_to_withdraw = message.sharesToWithdraw ? NumShares.toAmino(message.sharesToWithdraw) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMegavaultWithdrawalInfoRequestAminoMsg): QueryMegavaultWithdrawalInfoRequest {
+    return QueryMegavaultWithdrawalInfoRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMegavaultWithdrawalInfoRequestProtoMsg): QueryMegavaultWithdrawalInfoRequest {
+    return QueryMegavaultWithdrawalInfoRequest.decode(message.value);
+  },
+  toProto(message: QueryMegavaultWithdrawalInfoRequest): Uint8Array {
+    return QueryMegavaultWithdrawalInfoRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMegavaultWithdrawalInfoRequest): QueryMegavaultWithdrawalInfoRequestProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoRequest",
+      value: QueryMegavaultWithdrawalInfoRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryMegavaultWithdrawalInfoResponse(): QueryMegavaultWithdrawalInfoResponse {
+  return {
+    sharesToWithdraw: NumShares.fromPartial({}),
+    expectedQuoteQuantums: new Uint8Array(),
+    megavaultEquity: new Uint8Array(),
+    totalShares: NumShares.fromPartial({})
+  };
+}
+export const QueryMegavaultWithdrawalInfoResponse = {
+  typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoResponse",
+  encode(message: QueryMegavaultWithdrawalInfoResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.sharesToWithdraw !== undefined) {
+      NumShares.encode(message.sharesToWithdraw, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.expectedQuoteQuantums.length !== 0) {
+      writer.uint32(18).bytes(message.expectedQuoteQuantums);
+    }
+    if (message.megavaultEquity.length !== 0) {
+      writer.uint32(26).bytes(message.megavaultEquity);
+    }
+    if (message.totalShares !== undefined) {
+      NumShares.encode(message.totalShares, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMegavaultWithdrawalInfoResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryMegavaultWithdrawalInfoResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sharesToWithdraw = NumShares.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.expectedQuoteQuantums = reader.bytes();
+          break;
+        case 3:
+          message.megavaultEquity = reader.bytes();
+          break;
+        case 4:
+          message.totalShares = NumShares.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryMegavaultWithdrawalInfoResponse>): QueryMegavaultWithdrawalInfoResponse {
+    const message = createBaseQueryMegavaultWithdrawalInfoResponse();
+    message.sharesToWithdraw = object.sharesToWithdraw !== undefined && object.sharesToWithdraw !== null ? NumShares.fromPartial(object.sharesToWithdraw) : undefined;
+    message.expectedQuoteQuantums = object.expectedQuoteQuantums ?? new Uint8Array();
+    message.megavaultEquity = object.megavaultEquity ?? new Uint8Array();
+    message.totalShares = object.totalShares !== undefined && object.totalShares !== null ? NumShares.fromPartial(object.totalShares) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryMegavaultWithdrawalInfoResponseAmino): QueryMegavaultWithdrawalInfoResponse {
+    const message = createBaseQueryMegavaultWithdrawalInfoResponse();
+    if (object.shares_to_withdraw !== undefined && object.shares_to_withdraw !== null) {
+      message.sharesToWithdraw = NumShares.fromAmino(object.shares_to_withdraw);
+    }
+    if (object.expected_quote_quantums !== undefined && object.expected_quote_quantums !== null) {
+      message.expectedQuoteQuantums = bytesFromBase64(object.expected_quote_quantums);
+    }
+    if (object.megavault_equity !== undefined && object.megavault_equity !== null) {
+      message.megavaultEquity = bytesFromBase64(object.megavault_equity);
+    }
+    if (object.total_shares !== undefined && object.total_shares !== null) {
+      message.totalShares = NumShares.fromAmino(object.total_shares);
+    }
+    return message;
+  },
+  toAmino(message: QueryMegavaultWithdrawalInfoResponse): QueryMegavaultWithdrawalInfoResponseAmino {
+    const obj: any = {};
+    obj.shares_to_withdraw = message.sharesToWithdraw ? NumShares.toAmino(message.sharesToWithdraw) : undefined;
+    obj.expected_quote_quantums = message.expectedQuoteQuantums ? base64FromBytes(message.expectedQuoteQuantums) : undefined;
+    obj.megavault_equity = message.megavaultEquity ? base64FromBytes(message.megavaultEquity) : undefined;
+    obj.total_shares = message.totalShares ? NumShares.toAmino(message.totalShares) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMegavaultWithdrawalInfoResponseAminoMsg): QueryMegavaultWithdrawalInfoResponse {
+    return QueryMegavaultWithdrawalInfoResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryMegavaultWithdrawalInfoResponseProtoMsg): QueryMegavaultWithdrawalInfoResponse {
+    return QueryMegavaultWithdrawalInfoResponse.decode(message.value);
+  },
+  toProto(message: QueryMegavaultWithdrawalInfoResponse): Uint8Array {
+    return QueryMegavaultWithdrawalInfoResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMegavaultWithdrawalInfoResponse): QueryMegavaultWithdrawalInfoResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.QueryMegavaultWithdrawalInfoResponse",
+      value: QueryMegavaultWithdrawalInfoResponse.encode(message).finish()
     };
   }
 };

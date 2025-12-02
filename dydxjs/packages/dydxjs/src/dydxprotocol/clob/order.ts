@@ -2,6 +2,7 @@
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "../subaccounts/subaccount";
 import { PerpetualLiquidationInfo, PerpetualLiquidationInfoAmino, PerpetualLiquidationInfoSDKType } from "./liquidations";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /**
  * Represents the side of the orderbook the order will be placed on.
  * Note that Side.SIDE_UNSPECIFIED is an invalid order and cannot be
@@ -187,15 +188,14 @@ export interface OrderId {
   clientId: number;
   /**
    * order_flags represent order flags for the order. This field is invalid if
-   * it's greater than 127 (larger than one byte). Each bit in the first byte
-   * represents a different flag. Currently only two flags are supported.
+   * it's greater than 257. Each bit represents a different flag.
    * 
-   * Starting from the bit after the most MSB (note that the MSB is used in
-   * proto varint encoding, and therefore cannot be used): Bit 1 is set if this
-   * order is a Long-Term order (0x40, or 64 as a uint8). Bit 2 is set if this
-   * order is a Conditional order (0x20, or 32 as a uint8).
-   * 
-   * If neither bit is set, the order is assumed to be a Short-Term order.
+   * The following are the valid orderId flags:
+   * ShortTerm    = uint32(0)
+   * Conditional  = uint32(32)
+   * LongTerm     = uint32(64)
+   * Twap         = uint32(128)
+   * TwapSuborder = uint32(256) (for internal use only)
    * 
    * If both bits are set or bits other than the 2nd and 3rd are set, the order
    * ID is invalid.
@@ -231,15 +231,14 @@ export interface OrderIdAmino {
   client_id?: number;
   /**
    * order_flags represent order flags for the order. This field is invalid if
-   * it's greater than 127 (larger than one byte). Each bit in the first byte
-   * represents a different flag. Currently only two flags are supported.
+   * it's greater than 257. Each bit represents a different flag.
    * 
-   * Starting from the bit after the most MSB (note that the MSB is used in
-   * proto varint encoding, and therefore cannot be used): Bit 1 is set if this
-   * order is a Long-Term order (0x40, or 64 as a uint8). Bit 2 is set if this
-   * order is a Conditional order (0x20, or 32 as a uint8).
-   * 
-   * If neither bit is set, the order is assumed to be a Short-Term order.
+   * The following are the valid orderId flags:
+   * ShortTerm    = uint32(0)
+   * Conditional  = uint32(32)
+   * LongTerm     = uint32(64)
+   * Twap         = uint32(128)
+   * TwapSuborder = uint32(256) (for internal use only)
    * 
    * If both bits are set or bits other than the 2nd and 3rd are set, the order
    * ID is invalid.
@@ -348,8 +347,12 @@ export interface PotentiallyPrunableOrdersSDKType {
  * state.
  */
 export interface OrderFillState {
-  /** The current fillAmount of the order according to on-chain state. */
-  fillAmount: bigint;
+  /**
+   * The current fillAmount of the order according to on-chain state.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  fillAmount: Uint8Array;
   /**
    * The block height at which the fillAmount state for this order can be
    * pruned.
@@ -372,6 +375,8 @@ export interface OrderFillStateProtoMsg {
 export interface OrderFillStateAmino {
   /**
    * The current fillAmount of the order according to on-chain state.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   fill_amount?: string;
   /**
@@ -391,7 +396,7 @@ export interface OrderFillStateAminoMsg {
  * state.
  */
 export interface OrderFillStateSDKType {
-  fill_amount: bigint;
+  fill_amount: Uint8Array;
   prunable_block_height: number;
 }
 /**
@@ -501,6 +506,62 @@ export interface LongTermOrderPlacementSDKType {
   placement_index: TransactionOrderingSDKType;
 }
 /**
+ * TwapOrderPlacement represents the placement of a TWAP order in
+ * the TWAP Order State. It will store the original parent TWAP order as
+ * well as maintain the state of the remaining legs and quantums
+ * to be executed.
+ */
+export interface TwapOrderPlacement {
+  order: Order;
+  /** The number of legs remaining to be executed. */
+  remainingLegs: number;
+  /**
+   * The number of quantums remaining to be executed.
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
+  remainingQuantums: Uint8Array;
+}
+export interface TwapOrderPlacementProtoMsg {
+  typeUrl: "/dydxprotocol.clob.TwapOrderPlacement";
+  value: Uint8Array;
+}
+/**
+ * TwapOrderPlacement represents the placement of a TWAP order in
+ * the TWAP Order State. It will store the original parent TWAP order as
+ * well as maintain the state of the remaining legs and quantums
+ * to be executed.
+ * @name TwapOrderPlacementAmino
+ * @package dydxprotocol.clob
+ * @see proto type: dydxprotocol.clob.TwapOrderPlacement
+ */
+export interface TwapOrderPlacementAmino {
+  order?: OrderAmino;
+  /**
+   * The number of legs remaining to be executed.
+   */
+  remaining_legs?: number;
+  /**
+   * The number of quantums remaining to be executed.
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
+  remaining_quantums?: string;
+}
+export interface TwapOrderPlacementAminoMsg {
+  type: "/dydxprotocol.clob.TwapOrderPlacement";
+  value: TwapOrderPlacementAmino;
+}
+/**
+ * TwapOrderPlacement represents the placement of a TWAP order in
+ * the TWAP Order State. It will store the original parent TWAP order as
+ * well as maintain the state of the remaining legs and quantums
+ * to be executed.
+ */
+export interface TwapOrderPlacementSDKType {
+  order: OrderSDKType;
+  remaining_legs: number;
+  remaining_quantums: Uint8Array;
+}
+/**
  * ConditionalOrderPlacement represents the placement of a conditional order in
  * state. It stores the stateful order itself, the `BlockHeight` and
  * `TransactionIndex` at which the order was placed and triggered.
@@ -566,14 +627,17 @@ export interface Order {
   /**
    * The size of this order in base quantums. Must be a multiple of
    * `ClobPair.StepBaseQuantums` (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  quantums: bigint;
+  quantums: Uint8Array;
   /**
    * The price level that this order will be placed at on the orderbook,
    * in subticks. Must be a multiple of ClobPair.SubticksPerTick
    * (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
-  subticks: bigint;
+  subticks: Uint8Array;
   /**
    * The last block this order can be executed at (after which it will be
    * unfillable). Used only for Short-Term orders. If this value is non-zero
@@ -613,8 +677,9 @@ export interface Order {
    * cannot be CONDITION_TYPE_UNSPECIFIED. Value is in subticks.
    * Must be a multiple of ClobPair.SubticksPerTick (where `ClobPair.Id =
    * orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
-  conditionalOrderTriggerSubticks: bigint;
+  conditionalOrderTriggerSubticks: Uint8Array;
   /**
    * twap_parameters represent the configuration for a TWAP order. This must be
    * set for twap orders and will be ignored for all other order types.
@@ -651,12 +716,15 @@ export interface OrderAmino {
   /**
    * The size of this order in base quantums. Must be a multiple of
    * `ClobPair.StepBaseQuantums` (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   quantums?: string;
   /**
    * The price level that this order will be placed at on the orderbook,
    * in subticks. Must be a multiple of ClobPair.SubticksPerTick
    * (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
   subticks?: string;
   /**
@@ -700,6 +768,7 @@ export interface OrderAmino {
    * cannot be CONDITION_TYPE_UNSPECIFIED. Value is in subticks.
    * Must be a multiple of ClobPair.SubticksPerTick (where `ClobPair.Id =
    * orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
   conditional_order_trigger_subticks?: string;
   /**
@@ -729,15 +798,15 @@ export interface OrderAminoMsg {
 export interface OrderSDKType {
   order_id: OrderIdSDKType;
   side: Order_Side;
-  quantums: bigint;
-  subticks: bigint;
+  quantums: Uint8Array;
+  subticks: Uint8Array;
   good_til_block?: number;
   good_til_block_time?: number;
   time_in_force: Order_TimeInForce;
   reduce_only: boolean;
   client_metadata: number;
   condition_type: Order_ConditionType;
-  conditional_order_trigger_subticks: bigint;
+  conditional_order_trigger_subticks: Uint8Array;
   twap_parameters?: TwapParametersSDKType;
   builder_code_parameters?: BuilderCodeParametersSDKType;
   order_router_address: string;
@@ -913,10 +982,16 @@ export interface StreamLiquidationOrder {
    * versa.
    */
   isBuy: boolean;
-  /** The number of base quantums for this liquidation order. */
-  quantums: bigint;
-  /** The subticks this liquidation order will be submitted at. */
-  subticks: bigint;
+  /**
+   * The number of base quantums for this liquidation order.
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
+  quantums: Uint8Array;
+  /**
+   * The subticks this liquidation order will be submitted at.
+   * Supports arbitrary precision for high-precision price calculations.
+   */
+  subticks: Uint8Array;
 }
 export interface StreamLiquidationOrderProtoMsg {
   typeUrl: "/dydxprotocol.clob.StreamLiquidationOrder";
@@ -946,10 +1021,12 @@ export interface StreamLiquidationOrderAmino {
   is_buy?: boolean;
   /**
    * The number of base quantums for this liquidation order.
+   * Supports arbitrary precision for tokens with high decimal places.
    */
   quantums?: string;
   /**
    * The subticks this liquidation order will be submitted at.
+   * Supports arbitrary precision for high-precision price calculations.
    */
   subticks?: string;
 }
@@ -965,8 +1042,8 @@ export interface StreamLiquidationOrderSDKType {
   liquidation_info?: PerpetualLiquidationInfoSDKType;
   clob_pair_id: number;
   is_buy: boolean;
-  quantums: bigint;
-  subticks: bigint;
+  quantums: Uint8Array;
+  subticks: Uint8Array;
 }
 function createBaseOrderId(): OrderId {
   return {
@@ -1199,15 +1276,15 @@ export const PotentiallyPrunableOrders = {
 };
 function createBaseOrderFillState(): OrderFillState {
   return {
-    fillAmount: BigInt(0),
+    fillAmount: new Uint8Array(),
     prunableBlockHeight: 0
   };
 }
 export const OrderFillState = {
   typeUrl: "/dydxprotocol.clob.OrderFillState",
   encode(message: OrderFillState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(8).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(10).bytes(message.fillAmount);
     }
     if (message.prunableBlockHeight !== 0) {
       writer.uint32(16).uint32(message.prunableBlockHeight);
@@ -1222,7 +1299,7 @@ export const OrderFillState = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         case 2:
           message.prunableBlockHeight = reader.uint32();
@@ -1236,14 +1313,14 @@ export const OrderFillState = {
   },
   fromPartial(object: Partial<OrderFillState>): OrderFillState {
     const message = createBaseOrderFillState();
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
     message.prunableBlockHeight = object.prunableBlockHeight ?? 0;
     return message;
   },
   fromAmino(object: OrderFillStateAmino): OrderFillState {
     const message = createBaseOrderFillState();
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     if (object.prunable_block_height !== undefined && object.prunable_block_height !== null) {
       message.prunableBlockHeight = object.prunable_block_height;
@@ -1252,7 +1329,7 @@ export const OrderFillState = {
   },
   toAmino(message: OrderFillState): OrderFillStateAmino {
     const obj: any = {};
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
     obj.prunable_block_height = message.prunableBlockHeight === 0 ? undefined : message.prunableBlockHeight;
     return obj;
   },
@@ -1412,6 +1489,93 @@ export const LongTermOrderPlacement = {
     };
   }
 };
+function createBaseTwapOrderPlacement(): TwapOrderPlacement {
+  return {
+    order: Order.fromPartial({}),
+    remainingLegs: 0,
+    remainingQuantums: new Uint8Array()
+  };
+}
+export const TwapOrderPlacement = {
+  typeUrl: "/dydxprotocol.clob.TwapOrderPlacement",
+  encode(message: TwapOrderPlacement, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.order !== undefined) {
+      Order.encode(message.order, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.remainingLegs !== 0) {
+      writer.uint32(16).uint32(message.remainingLegs);
+    }
+    if (message.remainingQuantums.length !== 0) {
+      writer.uint32(26).bytes(message.remainingQuantums);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): TwapOrderPlacement {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTwapOrderPlacement();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.order = Order.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.remainingLegs = reader.uint32();
+          break;
+        case 3:
+          message.remainingQuantums = reader.bytes();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<TwapOrderPlacement>): TwapOrderPlacement {
+    const message = createBaseTwapOrderPlacement();
+    message.order = object.order !== undefined && object.order !== null ? Order.fromPartial(object.order) : undefined;
+    message.remainingLegs = object.remainingLegs ?? 0;
+    message.remainingQuantums = object.remainingQuantums ?? new Uint8Array();
+    return message;
+  },
+  fromAmino(object: TwapOrderPlacementAmino): TwapOrderPlacement {
+    const message = createBaseTwapOrderPlacement();
+    if (object.order !== undefined && object.order !== null) {
+      message.order = Order.fromAmino(object.order);
+    }
+    if (object.remaining_legs !== undefined && object.remaining_legs !== null) {
+      message.remainingLegs = object.remaining_legs;
+    }
+    if (object.remaining_quantums !== undefined && object.remaining_quantums !== null) {
+      message.remainingQuantums = bytesFromBase64(object.remaining_quantums);
+    }
+    return message;
+  },
+  toAmino(message: TwapOrderPlacement): TwapOrderPlacementAmino {
+    const obj: any = {};
+    obj.order = message.order ? Order.toAmino(message.order) : undefined;
+    obj.remaining_legs = message.remainingLegs === 0 ? undefined : message.remainingLegs;
+    obj.remaining_quantums = message.remainingQuantums ? base64FromBytes(message.remainingQuantums) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: TwapOrderPlacementAminoMsg): TwapOrderPlacement {
+    return TwapOrderPlacement.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TwapOrderPlacementProtoMsg): TwapOrderPlacement {
+    return TwapOrderPlacement.decode(message.value);
+  },
+  toProto(message: TwapOrderPlacement): Uint8Array {
+    return TwapOrderPlacement.encode(message).finish();
+  },
+  toProtoMsg(message: TwapOrderPlacement): TwapOrderPlacementProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.clob.TwapOrderPlacement",
+      value: TwapOrderPlacement.encode(message).finish()
+    };
+  }
+};
 function createBaseConditionalOrderPlacement(): ConditionalOrderPlacement {
   return {
     order: Order.fromPartial({}),
@@ -1503,15 +1667,15 @@ function createBaseOrder(): Order {
   return {
     orderId: OrderId.fromPartial({}),
     side: 0,
-    quantums: BigInt(0),
-    subticks: BigInt(0),
+    quantums: new Uint8Array(),
+    subticks: new Uint8Array(),
     goodTilBlock: undefined,
     goodTilBlockTime: undefined,
     timeInForce: 0,
     reduceOnly: false,
     clientMetadata: 0,
     conditionType: 0,
-    conditionalOrderTriggerSubticks: BigInt(0),
+    conditionalOrderTriggerSubticks: new Uint8Array(),
     twapParameters: undefined,
     builderCodeParameters: undefined,
     orderRouterAddress: ""
@@ -1526,11 +1690,11 @@ export const Order = {
     if (message.side !== 0) {
       writer.uint32(16).int32(message.side);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(24).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(26).bytes(message.quantums);
     }
-    if (message.subticks !== BigInt(0)) {
-      writer.uint32(32).uint64(message.subticks);
+    if (message.subticks.length !== 0) {
+      writer.uint32(34).bytes(message.subticks);
     }
     if (message.goodTilBlock !== undefined) {
       writer.uint32(40).uint32(message.goodTilBlock);
@@ -1550,8 +1714,8 @@ export const Order = {
     if (message.conditionType !== 0) {
       writer.uint32(80).int32(message.conditionType);
     }
-    if (message.conditionalOrderTriggerSubticks !== BigInt(0)) {
-      writer.uint32(88).uint64(message.conditionalOrderTriggerSubticks);
+    if (message.conditionalOrderTriggerSubticks.length !== 0) {
+      writer.uint32(90).bytes(message.conditionalOrderTriggerSubticks);
     }
     if (message.twapParameters !== undefined) {
       TwapParameters.encode(message.twapParameters, writer.uint32(98).fork()).ldelim();
@@ -1578,10 +1742,10 @@ export const Order = {
           message.side = reader.int32() as any;
           break;
         case 3:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         case 4:
-          message.subticks = reader.uint64();
+          message.subticks = reader.bytes();
           break;
         case 5:
           message.goodTilBlock = reader.uint32();
@@ -1602,7 +1766,7 @@ export const Order = {
           message.conditionType = reader.int32() as any;
           break;
         case 11:
-          message.conditionalOrderTriggerSubticks = reader.uint64();
+          message.conditionalOrderTriggerSubticks = reader.bytes();
           break;
         case 12:
           message.twapParameters = TwapParameters.decode(reader, reader.uint32());
@@ -1624,15 +1788,15 @@ export const Order = {
     const message = createBaseOrder();
     message.orderId = object.orderId !== undefined && object.orderId !== null ? OrderId.fromPartial(object.orderId) : undefined;
     message.side = object.side ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
-    message.subticks = object.subticks !== undefined && object.subticks !== null ? BigInt(object.subticks.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
+    message.subticks = object.subticks ?? new Uint8Array();
     message.goodTilBlock = object.goodTilBlock ?? undefined;
     message.goodTilBlockTime = object.goodTilBlockTime ?? undefined;
     message.timeInForce = object.timeInForce ?? 0;
     message.reduceOnly = object.reduceOnly ?? false;
     message.clientMetadata = object.clientMetadata ?? 0;
     message.conditionType = object.conditionType ?? 0;
-    message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks !== undefined && object.conditionalOrderTriggerSubticks !== null ? BigInt(object.conditionalOrderTriggerSubticks.toString()) : BigInt(0);
+    message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks ?? new Uint8Array();
     message.twapParameters = object.twapParameters !== undefined && object.twapParameters !== null ? TwapParameters.fromPartial(object.twapParameters) : undefined;
     message.builderCodeParameters = object.builderCodeParameters !== undefined && object.builderCodeParameters !== null ? BuilderCodeParameters.fromPartial(object.builderCodeParameters) : undefined;
     message.orderRouterAddress = object.orderRouterAddress ?? "";
@@ -1647,10 +1811,10 @@ export const Order = {
       message.side = object.side;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     if (object.subticks !== undefined && object.subticks !== null) {
-      message.subticks = BigInt(object.subticks);
+      message.subticks = bytesFromBase64(object.subticks);
     }
     if (object.good_til_block !== undefined && object.good_til_block !== null) {
       message.goodTilBlock = object.good_til_block;
@@ -1671,7 +1835,7 @@ export const Order = {
       message.conditionType = object.condition_type;
     }
     if (object.conditional_order_trigger_subticks !== undefined && object.conditional_order_trigger_subticks !== null) {
-      message.conditionalOrderTriggerSubticks = BigInt(object.conditional_order_trigger_subticks);
+      message.conditionalOrderTriggerSubticks = bytesFromBase64(object.conditional_order_trigger_subticks);
     }
     if (object.twap_parameters !== undefined && object.twap_parameters !== null) {
       message.twapParameters = TwapParameters.fromAmino(object.twap_parameters);
@@ -1688,15 +1852,15 @@ export const Order = {
     const obj: any = {};
     obj.order_id = message.orderId ? OrderId.toAmino(message.orderId) : undefined;
     obj.side = message.side === 0 ? undefined : message.side;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
+    obj.subticks = message.subticks ? base64FromBytes(message.subticks) : undefined;
     obj.good_til_block = message.goodTilBlock === null ? undefined : message.goodTilBlock;
     obj.good_til_block_time = message.goodTilBlockTime === null ? undefined : message.goodTilBlockTime;
     obj.time_in_force = message.timeInForce === 0 ? undefined : message.timeInForce;
     obj.reduce_only = message.reduceOnly === false ? undefined : message.reduceOnly;
     obj.client_metadata = message.clientMetadata === 0 ? undefined : message.clientMetadata;
     obj.condition_type = message.conditionType === 0 ? undefined : message.conditionType;
-    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks?.toString() : undefined;
+    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks ? base64FromBytes(message.conditionalOrderTriggerSubticks) : undefined;
     obj.twap_parameters = message.twapParameters ? TwapParameters.toAmino(message.twapParameters) : undefined;
     obj.builder_code_parameters = message.builderCodeParameters ? BuilderCodeParameters.toAmino(message.builderCodeParameters) : undefined;
     obj.order_router_address = message.orderRouterAddress === "" ? undefined : message.orderRouterAddress;
@@ -1960,8 +2124,8 @@ function createBaseStreamLiquidationOrder(): StreamLiquidationOrder {
     liquidationInfo: undefined,
     clobPairId: 0,
     isBuy: false,
-    quantums: BigInt(0),
-    subticks: BigInt(0)
+    quantums: new Uint8Array(),
+    subticks: new Uint8Array()
   };
 }
 export const StreamLiquidationOrder = {
@@ -1976,11 +2140,11 @@ export const StreamLiquidationOrder = {
     if (message.isBuy === true) {
       writer.uint32(24).bool(message.isBuy);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(32).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(34).bytes(message.quantums);
     }
-    if (message.subticks !== BigInt(0)) {
-      writer.uint32(40).uint64(message.subticks);
+    if (message.subticks.length !== 0) {
+      writer.uint32(42).bytes(message.subticks);
     }
     return writer;
   },
@@ -2001,10 +2165,10 @@ export const StreamLiquidationOrder = {
           message.isBuy = reader.bool();
           break;
         case 4:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         case 5:
-          message.subticks = reader.uint64();
+          message.subticks = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2018,8 +2182,8 @@ export const StreamLiquidationOrder = {
     message.liquidationInfo = object.liquidationInfo !== undefined && object.liquidationInfo !== null ? PerpetualLiquidationInfo.fromPartial(object.liquidationInfo) : undefined;
     message.clobPairId = object.clobPairId ?? 0;
     message.isBuy = object.isBuy ?? false;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
-    message.subticks = object.subticks !== undefined && object.subticks !== null ? BigInt(object.subticks.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
+    message.subticks = object.subticks ?? new Uint8Array();
     return message;
   },
   fromAmino(object: StreamLiquidationOrderAmino): StreamLiquidationOrder {
@@ -2034,10 +2198,10 @@ export const StreamLiquidationOrder = {
       message.isBuy = object.is_buy;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     if (object.subticks !== undefined && object.subticks !== null) {
-      message.subticks = BigInt(object.subticks);
+      message.subticks = bytesFromBase64(object.subticks);
     }
     return message;
   },
@@ -2046,8 +2210,8 @@ export const StreamLiquidationOrder = {
     obj.liquidation_info = message.liquidationInfo ? PerpetualLiquidationInfo.toAmino(message.liquidationInfo) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
+    obj.subticks = message.subticks ? base64FromBytes(message.subticks) : undefined;
     return obj;
   },
   fromAminoMsg(object: StreamLiquidationOrderAminoMsg): StreamLiquidationOrder {

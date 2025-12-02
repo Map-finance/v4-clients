@@ -1,6 +1,7 @@
 syntax = "proto3";
 package dydxprotocol.vault;
 
+import "cosmos_proto/cosmos.proto";
 import "dydxprotocol/vault/vault.proto";
 import "gogoproto/gogo.proto";
 
@@ -46,6 +47,22 @@ message VaultParams {
   VaultStatus status = 1;
   // Quoting parameters of the vault.
   QuotingParams quoting_params = 2;
+}
+
+// OperatorParams stores parameters regarding megavault operator.
+message OperatorParams {
+  // Address of the operator.
+  string operator = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  // Metadata of the operator.
+  OperatorMetadata metadata = 2 [ (gogoproto.nullable) = false ];
+}
+
+// OperatorMetadata stores metadata regarding megavault operator.
+message OperatorMetadata {
+  // Name of the operator.
+  string name = 1;
+  // Description of the operator.
+  string description = 2;
 }
 
 // Deprecated: Params stores `x/vault` parameters.

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgSetMarketsHardCap, MsgCreateMarketPermissionless, MsgSetListingVaultDepositParams } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.listing.MsgSetMarketsHardCap", MsgSetMarketsHardCap], ["/dydxprotocol.listing.MsgCreateMarketPermissionless", MsgCreateMarketPermissionless], ["/dydxprotocol.listing.MsgSetListingVaultDepositParams", MsgSetListingVaultDepositParams]];
+import { MsgSetMarketsHardCap, MsgCreateMarketPermissionless, MsgSetListingVaultDepositParams, MsgUpgradeIsolatedPerpetualToCross } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.listing.MsgSetMarketsHardCap", MsgSetMarketsHardCap], ["/dydxprotocol.listing.MsgCreateMarketPermissionless", MsgCreateMarketPermissionless], ["/dydxprotocol.listing.MsgSetListingVaultDepositParams", MsgSetListingVaultDepositParams], ["/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross", MsgUpgradeIsolatedPerpetualToCross]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -26,6 +26,12 @@ export const MessageComposer = {
         typeUrl: "/dydxprotocol.listing.MsgSetListingVaultDepositParams",
         value: MsgSetListingVaultDepositParams.encode(value).finish()
       };
+    },
+    upgradeIsolatedPerpetualToCross(value: MsgUpgradeIsolatedPerpetualToCross) {
+      return {
+        typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross",
+        value: MsgUpgradeIsolatedPerpetualToCross.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -44,6 +50,12 @@ export const MessageComposer = {
     setListingVaultDepositParams(value: MsgSetListingVaultDepositParams) {
       return {
         typeUrl: "/dydxprotocol.listing.MsgSetListingVaultDepositParams",
+        value
+      };
+    },
+    upgradeIsolatedPerpetualToCross(value: MsgUpgradeIsolatedPerpetualToCross) {
+      return {
+        typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross",
         value
       };
     }
@@ -65,6 +77,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/dydxprotocol.listing.MsgSetListingVaultDepositParams",
         value: MsgSetListingVaultDepositParams.fromPartial(value)
+      };
+    },
+    upgradeIsolatedPerpetualToCross(value: MsgUpgradeIsolatedPerpetualToCross) {
+      return {
+        typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross",
+        value: MsgUpgradeIsolatedPerpetualToCross.fromPartial(value)
       };
     }
   }

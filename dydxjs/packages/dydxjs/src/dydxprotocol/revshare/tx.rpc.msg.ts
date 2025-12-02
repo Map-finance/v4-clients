@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
-import { MsgSetMarketMapperRevenueShare, MsgSetMarketMapperRevenueShareResponse, MsgSetMarketMapperRevShareDetailsForMarket, MsgSetMarketMapperRevShareDetailsForMarketResponse } from "./tx";
+import { MsgSetMarketMapperRevenueShare, MsgSetMarketMapperRevenueShareResponse, MsgSetMarketMapperRevShareDetailsForMarket, MsgSetMarketMapperRevShareDetailsForMarketResponse, MsgUpdateUnconditionalRevShareConfig, MsgUpdateUnconditionalRevShareConfigResponse, MsgSetOrderRouterRevShare, MsgSetOrderRouterRevShareResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -14,6 +14,10 @@ export interface Msg {
    * market mapper.
    */
   setMarketMapperRevShareDetailsForMarket(request: MsgSetMarketMapperRevShareDetailsForMarket): Promise<MsgSetMarketMapperRevShareDetailsForMarketResponse>;
+  /** UpdateUnconditionalRevShareConfig sets the unconditional revshare config */
+  updateUnconditionalRevShareConfig(request: MsgUpdateUnconditionalRevShareConfig): Promise<MsgUpdateUnconditionalRevShareConfigResponse>;
+  /** SetOrderRouterRevShare sets the revenue share for an order router. */
+  setOrderRouterRevShare(request: MsgSetOrderRouterRevShare): Promise<MsgSetOrderRouterRevShareResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -21,6 +25,8 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.setMarketMapperRevenueShare = this.setMarketMapperRevenueShare.bind(this);
     this.setMarketMapperRevShareDetailsForMarket = this.setMarketMapperRevShareDetailsForMarket.bind(this);
+    this.updateUnconditionalRevShareConfig = this.updateUnconditionalRevShareConfig.bind(this);
+    this.setOrderRouterRevShare = this.setOrderRouterRevShare.bind(this);
   }
   setMarketMapperRevenueShare(request: MsgSetMarketMapperRevenueShare): Promise<MsgSetMarketMapperRevenueShareResponse> {
     const data = MsgSetMarketMapperRevenueShare.encode(request).finish();
@@ -31,5 +37,15 @@ export class MsgClientImpl implements Msg {
     const data = MsgSetMarketMapperRevShareDetailsForMarket.encode(request).finish();
     const promise = this.rpc.request("dydxprotocol.revshare.Msg", "SetMarketMapperRevShareDetailsForMarket", data);
     return promise.then(data => MsgSetMarketMapperRevShareDetailsForMarketResponse.decode(new BinaryReader(data)));
+  }
+  updateUnconditionalRevShareConfig(request: MsgUpdateUnconditionalRevShareConfig): Promise<MsgUpdateUnconditionalRevShareConfigResponse> {
+    const data = MsgUpdateUnconditionalRevShareConfig.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.revshare.Msg", "UpdateUnconditionalRevShareConfig", data);
+    return promise.then(data => MsgUpdateUnconditionalRevShareConfigResponse.decode(new BinaryReader(data)));
+  }
+  setOrderRouterRevShare(request: MsgSetOrderRouterRevShare): Promise<MsgSetOrderRouterRevShareResponse> {
+    const data = MsgSetOrderRouterRevShare.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.revshare.Msg", "SetOrderRouterRevShare", data);
+    return promise.then(data => MsgSetOrderRouterRevShareResponse.decode(new BinaryReader(data)));
   }
 }

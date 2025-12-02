@@ -5,19 +5,31 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/dydxprotocol/v4-chain/protocol/x/subaccounts/types";
 
-// AssetPositions define an account’s positions of an `Asset`.
+// AssetPositions define an account's positions of an `Asset`.
 // Therefore they hold any information needed to trade on Spot and Margin.
 message AssetPosition {
   // The `Id` of the `Asset`.
   uint32 asset_id = 1;
-  // The absolute size of the position in base quantums.
+
+  // 可用余额（可转账、可下新订单）
   bytes quantums = 2 [
     (gogoproto.customtype) =
         "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
     (gogoproto.nullable) = false
   ];
+
   // The `Index` (either `LongIndex` or `ShortIndex`) of the `Asset` the last
   // time this position was settled
   // TODO(DEC-582): pending margin trading being added.
   uint64 index = 3;
+
+  // 总冻结余额（该资产所有订单冻结金额的总和）
+  // 用于快速查询和验证
+  // 详细的按订单冻结记录存储在单独的 KV store 中
+  // Key: OrderFrozenAmountKeyPrefix/<owner>/<number>/<asset_id>/<order_id>
+  bytes frozen_quantums = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }

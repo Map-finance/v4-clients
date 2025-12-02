@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
-import { MsgAcknowledgeBridges, MsgAcknowledgeBridgesResponse, MsgCompleteBridge, MsgCompleteBridgeResponse, MsgUpdateEventParams, MsgUpdateEventParamsResponse, MsgUpdateProposeParams, MsgUpdateProposeParamsResponse, MsgUpdateSafetyParams, MsgUpdateSafetyParamsResponse } from "./tx";
+import { MsgAcknowledgeBridges, MsgAcknowledgeBridgesResponse, MsgCompleteBridge, MsgCompleteBridgeResponse, MsgUpdateEventParams, MsgUpdateEventParamsResponse, MsgUpdateProposeParams, MsgUpdateProposeParamsResponse, MsgUpdateSafetyParams, MsgUpdateSafetyParamsResponse, MsgUpdateAcknowledgedEventInfo, MsgUpdateAcknowledgedEventInfoResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
   /**
@@ -17,6 +17,8 @@ export interface Msg {
   updateProposeParams(request: MsgUpdateProposeParams): Promise<MsgUpdateProposeParamsResponse>;
   /** UpdateSafetyParams updates the SafetyParams in state. */
   updateSafetyParams(request: MsgUpdateSafetyParams): Promise<MsgUpdateSafetyParamsResponse>;
+  /** UpdateAcknowledgedEventInfo updates the AcknowledgedEventInfo in state. */
+  updateAcknowledgedEventInfo(request: MsgUpdateAcknowledgedEventInfo): Promise<MsgUpdateAcknowledgedEventInfoResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -27,6 +29,7 @@ export class MsgClientImpl implements Msg {
     this.updateEventParams = this.updateEventParams.bind(this);
     this.updateProposeParams = this.updateProposeParams.bind(this);
     this.updateSafetyParams = this.updateSafetyParams.bind(this);
+    this.updateAcknowledgedEventInfo = this.updateAcknowledgedEventInfo.bind(this);
   }
   acknowledgeBridges(request: MsgAcknowledgeBridges): Promise<MsgAcknowledgeBridgesResponse> {
     const data = MsgAcknowledgeBridges.encode(request).finish();
@@ -52,5 +55,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateSafetyParams.encode(request).finish();
     const promise = this.rpc.request("dydxprotocol.bridge.Msg", "UpdateSafetyParams", data);
     return promise.then(data => MsgUpdateSafetyParamsResponse.decode(new BinaryReader(data)));
+  }
+  updateAcknowledgedEventInfo(request: MsgUpdateAcknowledgedEventInfo): Promise<MsgUpdateAcknowledgedEventInfoResponse> {
+    const data = MsgUpdateAcknowledgedEventInfo.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.bridge.Msg", "UpdateAcknowledgedEventInfo", data);
+    return promise.then(data => MsgUpdateAcknowledgedEventInfoResponse.decode(new BinaryReader(data)));
   }
 }

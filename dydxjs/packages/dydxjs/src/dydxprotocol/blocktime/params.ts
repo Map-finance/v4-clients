@@ -34,6 +34,47 @@ export interface DowntimeParamsAminoMsg {
 export interface DowntimeParamsSDKType {
   durations: DurationSDKType[];
 }
+/** SynchronyParams defines the parameters for block synchrony. */
+export interface SynchronyParams {
+  /**
+   * next_block_delay replaces the locally configured timeout_commit in
+   * CometBFT. It determines the amount of time the CometBFT waits after the
+   * `CommitTime` (subjective time when +2/3 precommits were received), before
+   * moving to next height.
+   * If the application sends next_block_delay = 0 to the consensus engine, the
+   * latter defaults back to using timeout_commit.
+   */
+  nextBlockDelay: Duration;
+}
+export interface SynchronyParamsProtoMsg {
+  typeUrl: "/dydxprotocol.blocktime.SynchronyParams";
+  value: Uint8Array;
+}
+/**
+ * SynchronyParams defines the parameters for block synchrony.
+ * @name SynchronyParamsAmino
+ * @package dydxprotocol.blocktime
+ * @see proto type: dydxprotocol.blocktime.SynchronyParams
+ */
+export interface SynchronyParamsAmino {
+  /**
+   * next_block_delay replaces the locally configured timeout_commit in
+   * CometBFT. It determines the amount of time the CometBFT waits after the
+   * `CommitTime` (subjective time when +2/3 precommits were received), before
+   * moving to next height.
+   * If the application sends next_block_delay = 0 to the consensus engine, the
+   * latter defaults back to using timeout_commit.
+   */
+  next_block_delay?: DurationAmino;
+}
+export interface SynchronyParamsAminoMsg {
+  type: "/dydxprotocol.blocktime.SynchronyParams";
+  value: SynchronyParamsAmino;
+}
+/** SynchronyParams defines the parameters for block synchrony. */
+export interface SynchronyParamsSDKType {
+  next_block_delay: DurationSDKType;
+}
 function createBaseDowntimeParams(): DowntimeParams {
   return {
     durations: []
@@ -96,6 +137,69 @@ export const DowntimeParams = {
     return {
       typeUrl: "/dydxprotocol.blocktime.DowntimeParams",
       value: DowntimeParams.encode(message).finish()
+    };
+  }
+};
+function createBaseSynchronyParams(): SynchronyParams {
+  return {
+    nextBlockDelay: Duration.fromPartial({})
+  };
+}
+export const SynchronyParams = {
+  typeUrl: "/dydxprotocol.blocktime.SynchronyParams",
+  encode(message: SynchronyParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.nextBlockDelay !== undefined) {
+      Duration.encode(message.nextBlockDelay, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): SynchronyParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSynchronyParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nextBlockDelay = Duration.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<SynchronyParams>): SynchronyParams {
+    const message = createBaseSynchronyParams();
+    message.nextBlockDelay = object.nextBlockDelay !== undefined && object.nextBlockDelay !== null ? Duration.fromPartial(object.nextBlockDelay) : undefined;
+    return message;
+  },
+  fromAmino(object: SynchronyParamsAmino): SynchronyParams {
+    const message = createBaseSynchronyParams();
+    if (object.next_block_delay !== undefined && object.next_block_delay !== null) {
+      message.nextBlockDelay = Duration.fromAmino(object.next_block_delay);
+    }
+    return message;
+  },
+  toAmino(message: SynchronyParams): SynchronyParamsAmino {
+    const obj: any = {};
+    obj.next_block_delay = message.nextBlockDelay ? Duration.toAmino(message.nextBlockDelay) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SynchronyParamsAminoMsg): SynchronyParams {
+    return SynchronyParams.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SynchronyParamsProtoMsg): SynchronyParams {
+    return SynchronyParams.decode(message.value);
+  },
+  toProto(message: SynchronyParams): Uint8Array {
+    return SynchronyParams.encode(message).finish();
+  },
+  toProtoMsg(message: SynchronyParams): SynchronyParamsProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.blocktime.SynchronyParams",
+      value: SynchronyParams.encode(message).finish()
     };
   }
 };

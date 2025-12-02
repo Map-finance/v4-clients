@@ -2,7 +2,7 @@
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryMarketMapperRevenueShareParams, QueryMarketMapperRevenueShareParamsResponse, QueryMarketMapperRevShareDetails, QueryMarketMapperRevShareDetailsResponse } from "./query";
+import { QueryMarketMapperRevenueShareParams, QueryMarketMapperRevenueShareParamsResponse, QueryMarketMapperRevShareDetails, QueryMarketMapperRevShareDetailsResponse, QueryUnconditionalRevShareConfig, QueryUnconditionalRevShareConfigResponse, QueryOrderRouterRevShare, QueryOrderRouterRevShareResponse } from "./query";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /**
@@ -12,6 +12,10 @@ export interface Query {
   marketMapperRevenueShareParams(request?: QueryMarketMapperRevenueShareParams): Promise<QueryMarketMapperRevenueShareParamsResponse>;
   /** Queries market mapper revenue share details for a specific market */
   marketMapperRevShareDetails(request: QueryMarketMapperRevShareDetails): Promise<QueryMarketMapperRevShareDetailsResponse>;
+  /** Queries unconditional revenue share config */
+  unconditionalRevShareConfig(request?: QueryUnconditionalRevShareConfig): Promise<QueryUnconditionalRevShareConfigResponse>;
+  /** Queries order router rev share */
+  orderRouterRevShare(request: QueryOrderRouterRevShare): Promise<QueryOrderRouterRevShareResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -19,6 +23,8 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.marketMapperRevenueShareParams = this.marketMapperRevenueShareParams.bind(this);
     this.marketMapperRevShareDetails = this.marketMapperRevShareDetails.bind(this);
+    this.unconditionalRevShareConfig = this.unconditionalRevShareConfig.bind(this);
+    this.orderRouterRevShare = this.orderRouterRevShare.bind(this);
   }
   marketMapperRevenueShareParams(request: QueryMarketMapperRevenueShareParams = {}): Promise<QueryMarketMapperRevenueShareParamsResponse> {
     const data = QueryMarketMapperRevenueShareParams.encode(request).finish();
@@ -30,6 +36,16 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("dydxprotocol.revshare.Query", "MarketMapperRevShareDetails", data);
     return promise.then(data => QueryMarketMapperRevShareDetailsResponse.decode(new BinaryReader(data)));
   }
+  unconditionalRevShareConfig(request: QueryUnconditionalRevShareConfig = {}): Promise<QueryUnconditionalRevShareConfigResponse> {
+    const data = QueryUnconditionalRevShareConfig.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.revshare.Query", "UnconditionalRevShareConfig", data);
+    return promise.then(data => QueryUnconditionalRevShareConfigResponse.decode(new BinaryReader(data)));
+  }
+  orderRouterRevShare(request: QueryOrderRouterRevShare): Promise<QueryOrderRouterRevShareResponse> {
+    const data = QueryOrderRouterRevShare.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.revshare.Query", "OrderRouterRevShare", data);
+    return promise.then(data => QueryOrderRouterRevShareResponse.decode(new BinaryReader(data)));
+  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -40,6 +56,12 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     marketMapperRevShareDetails(request: QueryMarketMapperRevShareDetails): Promise<QueryMarketMapperRevShareDetailsResponse> {
       return queryService.marketMapperRevShareDetails(request);
+    },
+    unconditionalRevShareConfig(request?: QueryUnconditionalRevShareConfig): Promise<QueryUnconditionalRevShareConfigResponse> {
+      return queryService.unconditionalRevShareConfig(request);
+    },
+    orderRouterRevShare(request: QueryOrderRouterRevShare): Promise<QueryOrderRouterRevShareResponse> {
+      return queryService.orderRouterRevShare(request);
     }
   };
 };

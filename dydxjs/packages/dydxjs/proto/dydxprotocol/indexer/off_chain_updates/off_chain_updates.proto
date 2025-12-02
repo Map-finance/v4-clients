@@ -85,7 +85,13 @@ message OrderRemoveV1 {
 // updated total filled quantums of the order.
 message OrderUpdateV1 {
   dydxprotocol.indexer.protocol.v1.IndexerOrderId order_id = 1;
-  uint64 total_filled_quantums = 2;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes total_filled_quantums = 2 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // OrderReplace messages contain the old order ID and the replacement order.

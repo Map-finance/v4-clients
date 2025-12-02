@@ -16,11 +16,16 @@ export interface MarketParam {
    * For example if `Exponent == -5` then a `Value` of `1,000,000,000`
    * represents ``$10,000`. Therefore `10 ^ Exponent` represents the smallest
    * price step (in dollars) that can be recorded.
+   * 
+   * Deprecated since v8.x. This value is now determined from the marketmap.
    */
+  /** @deprecated */
   exponent: number;
   /**
    * The minimum number of exchanges that should be reporting a live price for
    * a price update to be considered valid.
+   * 
+   * Deprecated since v8.x. This value is now determined from the marketmap.
    */
   minExchanges: number;
   /**
@@ -31,6 +36,8 @@ export interface MarketParam {
   /**
    * A string of json that encodes the configuration for resolving the price
    * of this market on various exchanges.
+   * 
+   * Deprecated since v8.x. This is now determined from the marketmap.
    */
   exchangeConfigJson: string;
 }
@@ -61,11 +68,16 @@ export interface MarketParamAmino {
    * For example if `Exponent == -5` then a `Value` of `1,000,000,000`
    * represents ``$10,000`. Therefore `10 ^ Exponent` represents the smallest
    * price step (in dollars) that can be recorded.
+   * 
+   * Deprecated since v8.x. This value is now determined from the marketmap.
+   * @deprecated
    */
   exponent?: number;
   /**
    * The minimum number of exchanges that should be reporting a live price for
    * a price update to be considered valid.
+   * 
+   * Deprecated since v8.x. This value is now determined from the marketmap.
    */
   min_exchanges?: number;
   /**
@@ -76,6 +88,8 @@ export interface MarketParamAmino {
   /**
    * A string of json that encodes the configuration for resolving the price
    * of this market on various exchanges.
+   * 
+   * Deprecated since v8.x. This is now determined from the marketmap.
    */
   exchange_config_json?: string;
 }
@@ -92,6 +106,7 @@ export interface MarketParamAminoMsg {
 export interface MarketParamSDKType {
   id: number;
   pair: string;
+  /** @deprecated */
   exponent: number;
   min_exchanges: number;
   min_price_change_ppm: number;

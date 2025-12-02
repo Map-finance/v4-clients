@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { MarketMapperRevenueShareParams, MarketMapperRevenueShareParamsAmino, MarketMapperRevenueShareParamsSDKType } from "./params";
-import { MarketMapperRevShareDetails, MarketMapperRevShareDetailsAmino, MarketMapperRevShareDetailsSDKType } from "./revshare";
+import { MarketMapperRevShareDetails, MarketMapperRevShareDetailsAmino, MarketMapperRevShareDetailsSDKType, UnconditionalRevShareConfig, UnconditionalRevShareConfigAmino, UnconditionalRevShareConfigSDKType, OrderRouterRevShare, OrderRouterRevShareAmino, OrderRouterRevShareSDKType } from "./revshare";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** Message to set the market mapper revenue share */
 export interface MsgSetMarketMapperRevenueShare {
@@ -121,6 +121,108 @@ export interface MsgSetMarketMapperRevShareDetailsForMarketResponseAminoMsg {
 }
 /** Response to a MsgSetMarketMapperRevShareDetailsForMarket */
 export interface MsgSetMarketMapperRevShareDetailsForMarketResponseSDKType {}
+/** Message to update the unconditional revenue share config. */
+export interface MsgUpdateUnconditionalRevShareConfig {
+  authority: string;
+  /** The config to update. */
+  config: UnconditionalRevShareConfig;
+}
+export interface MsgUpdateUnconditionalRevShareConfigProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfig";
+  value: Uint8Array;
+}
+/**
+ * Message to update the unconditional revenue share config.
+ * @name MsgUpdateUnconditionalRevShareConfigAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfig
+ */
+export interface MsgUpdateUnconditionalRevShareConfigAmino {
+  authority?: string;
+  /**
+   * The config to update.
+   */
+  config?: UnconditionalRevShareConfigAmino;
+}
+export interface MsgUpdateUnconditionalRevShareConfigAminoMsg {
+  type: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfig";
+  value: MsgUpdateUnconditionalRevShareConfigAmino;
+}
+/** Message to update the unconditional revenue share config. */
+export interface MsgUpdateUnconditionalRevShareConfigSDKType {
+  authority: string;
+  config: UnconditionalRevShareConfigSDKType;
+}
+/** Response to MsgUpdateUnconditionalRevShareConfig */
+export interface MsgUpdateUnconditionalRevShareConfigResponse {}
+export interface MsgUpdateUnconditionalRevShareConfigResponseProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfigResponse";
+  value: Uint8Array;
+}
+/**
+ * Response to MsgUpdateUnconditionalRevShareConfig
+ * @name MsgUpdateUnconditionalRevShareConfigResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfigResponse
+ */
+export interface MsgUpdateUnconditionalRevShareConfigResponseAmino {}
+export interface MsgUpdateUnconditionalRevShareConfigResponseAminoMsg {
+  type: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfigResponse";
+  value: MsgUpdateUnconditionalRevShareConfigResponseAmino;
+}
+/** Response to MsgUpdateUnconditionalRevShareConfig */
+export interface MsgUpdateUnconditionalRevShareConfigResponseSDKType {}
+/** Governance message to create or update the order router revenue share */
+export interface MsgSetOrderRouterRevShare {
+  authority: string;
+  /** The order router rev share to create or update. */
+  orderRouterRevShare: OrderRouterRevShare;
+}
+export interface MsgSetOrderRouterRevShareProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShare";
+  value: Uint8Array;
+}
+/**
+ * Governance message to create or update the order router revenue share
+ * @name MsgSetOrderRouterRevShareAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetOrderRouterRevShare
+ */
+export interface MsgSetOrderRouterRevShareAmino {
+  authority?: string;
+  /**
+   * The order router rev share to create or update.
+   */
+  order_router_rev_share?: OrderRouterRevShareAmino;
+}
+export interface MsgSetOrderRouterRevShareAminoMsg {
+  type: "/dydxprotocol.revshare.MsgSetOrderRouterRevShare";
+  value: MsgSetOrderRouterRevShareAmino;
+}
+/** Governance message to create or update the order router revenue share */
+export interface MsgSetOrderRouterRevShareSDKType {
+  authority: string;
+  order_router_rev_share: OrderRouterRevShareSDKType;
+}
+/** Response to MsgSetOrderRouterRevShare */
+export interface MsgSetOrderRouterRevShareResponse {}
+export interface MsgSetOrderRouterRevShareResponseProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShareResponse";
+  value: Uint8Array;
+}
+/**
+ * Response to MsgSetOrderRouterRevShare
+ * @name MsgSetOrderRouterRevShareResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.MsgSetOrderRouterRevShareResponse
+ */
+export interface MsgSetOrderRouterRevShareResponseAmino {}
+export interface MsgSetOrderRouterRevShareResponseAminoMsg {
+  type: "/dydxprotocol.revshare.MsgSetOrderRouterRevShareResponse";
+  value: MsgSetOrderRouterRevShareResponseAmino;
+}
+/** Response to MsgSetOrderRouterRevShare */
+export interface MsgSetOrderRouterRevShareResponseSDKType {}
 function createBaseMsgSetMarketMapperRevenueShare(): MsgSetMarketMapperRevenueShare {
   return {
     authority: "",
@@ -380,6 +482,256 @@ export const MsgSetMarketMapperRevShareDetailsForMarketResponse = {
     return {
       typeUrl: "/dydxprotocol.revshare.MsgSetMarketMapperRevShareDetailsForMarketResponse",
       value: MsgSetMarketMapperRevShareDetailsForMarketResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpdateUnconditionalRevShareConfig(): MsgUpdateUnconditionalRevShareConfig {
+  return {
+    authority: "",
+    config: UnconditionalRevShareConfig.fromPartial({})
+  };
+}
+export const MsgUpdateUnconditionalRevShareConfig = {
+  typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfig",
+  encode(message: MsgUpdateUnconditionalRevShareConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.config !== undefined) {
+      UnconditionalRevShareConfig.encode(message.config, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateUnconditionalRevShareConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateUnconditionalRevShareConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.config = UnconditionalRevShareConfig.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<MsgUpdateUnconditionalRevShareConfig>): MsgUpdateUnconditionalRevShareConfig {
+    const message = createBaseMsgUpdateUnconditionalRevShareConfig();
+    message.authority = object.authority ?? "";
+    message.config = object.config !== undefined && object.config !== null ? UnconditionalRevShareConfig.fromPartial(object.config) : undefined;
+    return message;
+  },
+  fromAmino(object: MsgUpdateUnconditionalRevShareConfigAmino): MsgUpdateUnconditionalRevShareConfig {
+    const message = createBaseMsgUpdateUnconditionalRevShareConfig();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.config !== undefined && object.config !== null) {
+      message.config = UnconditionalRevShareConfig.fromAmino(object.config);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateUnconditionalRevShareConfig): MsgUpdateUnconditionalRevShareConfigAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.config = message.config ? UnconditionalRevShareConfig.toAmino(message.config) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateUnconditionalRevShareConfigAminoMsg): MsgUpdateUnconditionalRevShareConfig {
+    return MsgUpdateUnconditionalRevShareConfig.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateUnconditionalRevShareConfigProtoMsg): MsgUpdateUnconditionalRevShareConfig {
+    return MsgUpdateUnconditionalRevShareConfig.decode(message.value);
+  },
+  toProto(message: MsgUpdateUnconditionalRevShareConfig): Uint8Array {
+    return MsgUpdateUnconditionalRevShareConfig.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateUnconditionalRevShareConfig): MsgUpdateUnconditionalRevShareConfigProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfig",
+      value: MsgUpdateUnconditionalRevShareConfig.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpdateUnconditionalRevShareConfigResponse(): MsgUpdateUnconditionalRevShareConfigResponse {
+  return {};
+}
+export const MsgUpdateUnconditionalRevShareConfigResponse = {
+  typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfigResponse",
+  encode(_: MsgUpdateUnconditionalRevShareConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateUnconditionalRevShareConfigResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateUnconditionalRevShareConfigResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgUpdateUnconditionalRevShareConfigResponse>): MsgUpdateUnconditionalRevShareConfigResponse {
+    const message = createBaseMsgUpdateUnconditionalRevShareConfigResponse();
+    return message;
+  },
+  fromAmino(_: MsgUpdateUnconditionalRevShareConfigResponseAmino): MsgUpdateUnconditionalRevShareConfigResponse {
+    const message = createBaseMsgUpdateUnconditionalRevShareConfigResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateUnconditionalRevShareConfigResponse): MsgUpdateUnconditionalRevShareConfigResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateUnconditionalRevShareConfigResponseAminoMsg): MsgUpdateUnconditionalRevShareConfigResponse {
+    return MsgUpdateUnconditionalRevShareConfigResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateUnconditionalRevShareConfigResponseProtoMsg): MsgUpdateUnconditionalRevShareConfigResponse {
+    return MsgUpdateUnconditionalRevShareConfigResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateUnconditionalRevShareConfigResponse): Uint8Array {
+    return MsgUpdateUnconditionalRevShareConfigResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateUnconditionalRevShareConfigResponse): MsgUpdateUnconditionalRevShareConfigResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.MsgUpdateUnconditionalRevShareConfigResponse",
+      value: MsgUpdateUnconditionalRevShareConfigResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgSetOrderRouterRevShare(): MsgSetOrderRouterRevShare {
+  return {
+    authority: "",
+    orderRouterRevShare: OrderRouterRevShare.fromPartial({})
+  };
+}
+export const MsgSetOrderRouterRevShare = {
+  typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShare",
+  encode(message: MsgSetOrderRouterRevShare, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.orderRouterRevShare !== undefined) {
+      OrderRouterRevShare.encode(message.orderRouterRevShare, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetOrderRouterRevShare {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSetOrderRouterRevShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.orderRouterRevShare = OrderRouterRevShare.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<MsgSetOrderRouterRevShare>): MsgSetOrderRouterRevShare {
+    const message = createBaseMsgSetOrderRouterRevShare();
+    message.authority = object.authority ?? "";
+    message.orderRouterRevShare = object.orderRouterRevShare !== undefined && object.orderRouterRevShare !== null ? OrderRouterRevShare.fromPartial(object.orderRouterRevShare) : undefined;
+    return message;
+  },
+  fromAmino(object: MsgSetOrderRouterRevShareAmino): MsgSetOrderRouterRevShare {
+    const message = createBaseMsgSetOrderRouterRevShare();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.order_router_rev_share !== undefined && object.order_router_rev_share !== null) {
+      message.orderRouterRevShare = OrderRouterRevShare.fromAmino(object.order_router_rev_share);
+    }
+    return message;
+  },
+  toAmino(message: MsgSetOrderRouterRevShare): MsgSetOrderRouterRevShareAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.order_router_rev_share = message.orderRouterRevShare ? OrderRouterRevShare.toAmino(message.orderRouterRevShare) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgSetOrderRouterRevShareAminoMsg): MsgSetOrderRouterRevShare {
+    return MsgSetOrderRouterRevShare.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgSetOrderRouterRevShareProtoMsg): MsgSetOrderRouterRevShare {
+    return MsgSetOrderRouterRevShare.decode(message.value);
+  },
+  toProto(message: MsgSetOrderRouterRevShare): Uint8Array {
+    return MsgSetOrderRouterRevShare.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSetOrderRouterRevShare): MsgSetOrderRouterRevShareProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShare",
+      value: MsgSetOrderRouterRevShare.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgSetOrderRouterRevShareResponse(): MsgSetOrderRouterRevShareResponse {
+  return {};
+}
+export const MsgSetOrderRouterRevShareResponse = {
+  typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShareResponse",
+  encode(_: MsgSetOrderRouterRevShareResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetOrderRouterRevShareResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgSetOrderRouterRevShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgSetOrderRouterRevShareResponse>): MsgSetOrderRouterRevShareResponse {
+    const message = createBaseMsgSetOrderRouterRevShareResponse();
+    return message;
+  },
+  fromAmino(_: MsgSetOrderRouterRevShareResponseAmino): MsgSetOrderRouterRevShareResponse {
+    const message = createBaseMsgSetOrderRouterRevShareResponse();
+    return message;
+  },
+  toAmino(_: MsgSetOrderRouterRevShareResponse): MsgSetOrderRouterRevShareResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgSetOrderRouterRevShareResponseAminoMsg): MsgSetOrderRouterRevShareResponse {
+    return MsgSetOrderRouterRevShareResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgSetOrderRouterRevShareResponseProtoMsg): MsgSetOrderRouterRevShareResponse {
+    return MsgSetOrderRouterRevShareResponse.decode(message.value);
+  },
+  toProto(message: MsgSetOrderRouterRevShareResponse): Uint8Array {
+    return MsgSetOrderRouterRevShareResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSetOrderRouterRevShareResponse): MsgSetOrderRouterRevShareResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.MsgSetOrderRouterRevShareResponse",
+      value: MsgSetOrderRouterRevShareResponse.encode(message).finish()
     };
   }
 };

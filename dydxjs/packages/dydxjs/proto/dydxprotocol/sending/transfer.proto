@@ -23,7 +23,8 @@ message Transfer {
   uint32 asset_id = 3;
 
   // The amount of asset to transfer (in quantums)
-  // Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals)
   bytes amount = 4 [
     (gogoproto.customtype) =
         "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
@@ -47,7 +48,13 @@ message MsgDepositToSubaccount {
   uint32 asset_id = 3;
 
   // The number of quantums of asset to transfer.
-  uint64 quantums = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals)
+  bytes quantums = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgWithdrawFromSubaccount represents a single transfer from an
@@ -66,7 +73,13 @@ message MsgWithdrawFromSubaccount {
   uint32 asset_id = 3;
 
   // The number of quantums of asset to transfer.
-  uint64 quantums = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals)
+  bytes quantums = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // MsgSendFromModuleToAccount represents a single transfer from a module
@@ -89,7 +102,6 @@ message MsgSendFromModuleToAccount {
   cosmos.base.v1beta1.Coin coin = 4 [ (gogoproto.nullable) = false ];
 }
 
-
 message MsgCreateBridgeTransfer {
   option (cosmos.msg.v1.signer) = "sender_address";
 
@@ -97,13 +109,19 @@ message MsgCreateBridgeTransfer {
 
   // The sender subaccount ID.
   dydxprotocol.subaccounts.SubaccountId sender = 2
-  [ (gogoproto.nullable) = false ];
+      [ (gogoproto.nullable) = false ];
 
   // Id of the asset to transfer.
   int32 asset_id = 3;
 
   // The number of quantums of asset to transfer.
-  uint64 quantums = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals)
+  bytes quantums = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   string chain_id = 5;
 

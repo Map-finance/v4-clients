@@ -2,6 +2,7 @@ syntax = "proto3";
 package dydxprotocol.clob;
 
 import "amino/amino.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "github.com/dydxprotocol/v4-chain/protocol/x/clob/types";
 
@@ -16,14 +17,28 @@ message PerpetualClobMetadata {
 
 // PerpetualClobMetadata contains metadata for a `ClobPair`
 // representing a Spot product.
+// PerpetualClobMetadata 包含 `ClobPair` 的元数据
+// 代表现货产品。
 message SpotClobMetadata {
   option (amino.name) = "dydxprotocol/clob/SpotClobMetadata";
 
   // Id of the base Asset in the trading pair.
+  // 交易对中基础资产的 ID。
   uint32 base_asset_id = 1;
 
   // Id of the quote Asset in the trading pair.
+  // 交易对中报价资产的 ID。
   uint32 quote_asset_id = 2;
+
+  // Optional: Custodian address to receive minted base assets.
+  // Empty string means no minting will occur.
+  // 可选：接收mint的基础资产的托管地址。空字符串表示不mint。
+  string custodian_address = 3;
+
+  // Optional: Initial supply of base asset in quantums.
+  // Empty string means no minting will occur.
+  // 可选：基础资产的初始供应量（quantums）。空字符串表示不mint。
+  string initial_supply = 4;
 }
 
 // ClobPair represents a single CLOB pair for a given product
@@ -42,7 +57,13 @@ message ClobPair {
   }
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
-  uint64 step_base_quantums = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // Defines the tick size of the orderbook by defining how many subticks
   // are in one tick. That is, the subticks of any valid order must be a

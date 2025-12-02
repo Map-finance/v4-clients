@@ -127,6 +127,78 @@ export interface VaultParamsSDKType {
   status: VaultStatus;
   quoting_params?: QuotingParamsSDKType;
 }
+/** OperatorParams stores parameters regarding megavault operator. */
+export interface OperatorParams {
+  /** Address of the operator. */
+  operator: string;
+  /** Metadata of the operator. */
+  metadata: OperatorMetadata;
+}
+export interface OperatorParamsProtoMsg {
+  typeUrl: "/dydxprotocol.vault.OperatorParams";
+  value: Uint8Array;
+}
+/**
+ * OperatorParams stores parameters regarding megavault operator.
+ * @name OperatorParamsAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.OperatorParams
+ */
+export interface OperatorParamsAmino {
+  /**
+   * Address of the operator.
+   */
+  operator?: string;
+  /**
+   * Metadata of the operator.
+   */
+  metadata?: OperatorMetadataAmino;
+}
+export interface OperatorParamsAminoMsg {
+  type: "/dydxprotocol.vault.OperatorParams";
+  value: OperatorParamsAmino;
+}
+/** OperatorParams stores parameters regarding megavault operator. */
+export interface OperatorParamsSDKType {
+  operator: string;
+  metadata: OperatorMetadataSDKType;
+}
+/** OperatorMetadata stores metadata regarding megavault operator. */
+export interface OperatorMetadata {
+  /** Name of the operator. */
+  name: string;
+  /** Description of the operator. */
+  description: string;
+}
+export interface OperatorMetadataProtoMsg {
+  typeUrl: "/dydxprotocol.vault.OperatorMetadata";
+  value: Uint8Array;
+}
+/**
+ * OperatorMetadata stores metadata regarding megavault operator.
+ * @name OperatorMetadataAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.OperatorMetadata
+ */
+export interface OperatorMetadataAmino {
+  /**
+   * Name of the operator.
+   */
+  name?: string;
+  /**
+   * Description of the operator.
+   */
+  description?: string;
+}
+export interface OperatorMetadataAminoMsg {
+  type: "/dydxprotocol.vault.OperatorMetadata";
+  value: OperatorMetadataAmino;
+}
+/** OperatorMetadata stores metadata regarding megavault operator. */
+export interface OperatorMetadataSDKType {
+  name: string;
+  description: string;
+}
 /**
  * Deprecated: Params stores `x/vault` parameters.
  * Deprecated since v6.x as is replaced by QuotingParams.
@@ -430,6 +502,156 @@ export const VaultParams = {
     return {
       typeUrl: "/dydxprotocol.vault.VaultParams",
       value: VaultParams.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorParams(): OperatorParams {
+  return {
+    operator: "",
+    metadata: OperatorMetadata.fromPartial({})
+  };
+}
+export const OperatorParams = {
+  typeUrl: "/dydxprotocol.vault.OperatorParams",
+  encode(message: OperatorParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+    if (message.metadata !== undefined) {
+      OperatorMetadata.encode(message.metadata, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorParams();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+        case 2:
+          message.metadata = OperatorMetadata.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorParams>): OperatorParams {
+    const message = createBaseOperatorParams();
+    message.operator = object.operator ?? "";
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? OperatorMetadata.fromPartial(object.metadata) : undefined;
+    return message;
+  },
+  fromAmino(object: OperatorParamsAmino): OperatorParams {
+    const message = createBaseOperatorParams();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.metadata !== undefined && object.metadata !== null) {
+      message.metadata = OperatorMetadata.fromAmino(object.metadata);
+    }
+    return message;
+  },
+  toAmino(message: OperatorParams): OperatorParamsAmino {
+    const obj: any = {};
+    obj.operator = message.operator === "" ? undefined : message.operator;
+    obj.metadata = message.metadata ? OperatorMetadata.toAmino(message.metadata) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: OperatorParamsAminoMsg): OperatorParams {
+    return OperatorParams.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorParamsProtoMsg): OperatorParams {
+    return OperatorParams.decode(message.value);
+  },
+  toProto(message: OperatorParams): Uint8Array {
+    return OperatorParams.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorParams): OperatorParamsProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.OperatorParams",
+      value: OperatorParams.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorMetadata(): OperatorMetadata {
+  return {
+    name: "",
+    description: ""
+  };
+}
+export const OperatorMetadata = {
+  typeUrl: "/dydxprotocol.vault.OperatorMetadata",
+  encode(message: OperatorMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorMetadata();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.description = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorMetadata>): OperatorMetadata {
+    const message = createBaseOperatorMetadata();
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    return message;
+  },
+  fromAmino(object: OperatorMetadataAmino): OperatorMetadata {
+    const message = createBaseOperatorMetadata();
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    return message;
+  },
+  toAmino(message: OperatorMetadata): OperatorMetadataAmino {
+    const obj: any = {};
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.description = message.description === "" ? undefined : message.description;
+    return obj;
+  },
+  fromAminoMsg(object: OperatorMetadataAminoMsg): OperatorMetadata {
+    return OperatorMetadata.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorMetadataProtoMsg): OperatorMetadata {
+    return OperatorMetadata.decode(message.value);
+  },
+  toProto(message: OperatorMetadata): Uint8Array {
+    return OperatorMetadata.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorMetadata): OperatorMetadataProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.OperatorMetadata",
+      value: OperatorMetadata.encode(message).finish()
     };
   }
 };

@@ -2,13 +2,13 @@
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /**
- * AssetPositions define an account’s positions of an `Asset`.
+ * AssetPositions define an account's positions of an `Asset`.
  * Therefore they hold any information needed to trade on Spot and Margin.
  */
 export interface AssetPosition {
   /** The `Id` of the `Asset`. */
   assetId: number;
-  /** The absolute size of the position in base quantums. */
+  /** 可用余额（可转账、可下新订单） */
   quantums: Uint8Array;
   /**
    * The `Index` (either `LongIndex` or `ShortIndex`) of the `Asset` the last
@@ -16,13 +16,20 @@ export interface AssetPosition {
    * TODO(DEC-582): pending margin trading being added.
    */
   index: bigint;
+  /**
+   * 总冻结余额（该资产所有订单冻结金额的总和）
+   * 用于快速查询和验证
+   * 详细的按订单冻结记录存储在单独的 KV store 中
+   * Key: OrderFrozenAmountKeyPrefix/<owner>/<number>/<asset_id>/<order_id>
+   */
+  frozenQuantums: Uint8Array;
 }
 export interface AssetPositionProtoMsg {
   typeUrl: "/dydxprotocol.subaccounts.AssetPosition";
   value: Uint8Array;
 }
 /**
- * AssetPositions define an account’s positions of an `Asset`.
+ * AssetPositions define an account's positions of an `Asset`.
  * Therefore they hold any information needed to trade on Spot and Margin.
  * @name AssetPositionAmino
  * @package dydxprotocol.subaccounts
@@ -34,7 +41,7 @@ export interface AssetPositionAmino {
    */
   asset_id?: number;
   /**
-   * The absolute size of the position in base quantums.
+   * 可用余额（可转账、可下新订单）
    */
   quantums?: string;
   /**
@@ -43,25 +50,34 @@ export interface AssetPositionAmino {
    * TODO(DEC-582): pending margin trading being added.
    */
   index?: string;
+  /**
+   * 总冻结余额（该资产所有订单冻结金额的总和）
+   * 用于快速查询和验证
+   * 详细的按订单冻结记录存储在单独的 KV store 中
+   * Key: OrderFrozenAmountKeyPrefix/<owner>/<number>/<asset_id>/<order_id>
+   */
+  frozen_quantums?: string;
 }
 export interface AssetPositionAminoMsg {
   type: "/dydxprotocol.subaccounts.AssetPosition";
   value: AssetPositionAmino;
 }
 /**
- * AssetPositions define an account’s positions of an `Asset`.
+ * AssetPositions define an account's positions of an `Asset`.
  * Therefore they hold any information needed to trade on Spot and Margin.
  */
 export interface AssetPositionSDKType {
   asset_id: number;
   quantums: Uint8Array;
   index: bigint;
+  frozen_quantums: Uint8Array;
 }
 function createBaseAssetPosition(): AssetPosition {
   return {
     assetId: 0,
     quantums: new Uint8Array(),
-    index: BigInt(0)
+    index: BigInt(0),
+    frozenQuantums: new Uint8Array()
   };
 }
 export const AssetPosition = {
@@ -75,6 +91,9 @@ export const AssetPosition = {
     }
     if (message.index !== BigInt(0)) {
       writer.uint32(24).uint64(message.index);
+    }
+    if (message.frozenQuantums.length !== 0) {
+      writer.uint32(34).bytes(message.frozenQuantums);
     }
     return writer;
   },
@@ -94,6 +113,9 @@ export const AssetPosition = {
         case 3:
           message.index = reader.uint64();
           break;
+        case 4:
+          message.frozenQuantums = reader.bytes();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -106,6 +128,7 @@ export const AssetPosition = {
     message.assetId = object.assetId ?? 0;
     message.quantums = object.quantums ?? new Uint8Array();
     message.index = object.index !== undefined && object.index !== null ? BigInt(object.index.toString()) : BigInt(0);
+    message.frozenQuantums = object.frozenQuantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: AssetPositionAmino): AssetPosition {
@@ -119,6 +142,9 @@ export const AssetPosition = {
     if (object.index !== undefined && object.index !== null) {
       message.index = BigInt(object.index);
     }
+    if (object.frozen_quantums !== undefined && object.frozen_quantums !== null) {
+      message.frozenQuantums = bytesFromBase64(object.frozen_quantums);
+    }
     return message;
   },
   toAmino(message: AssetPosition): AssetPositionAmino {
@@ -126,6 +152,7 @@ export const AssetPosition = {
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
     obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     obj.index = message.index !== BigInt(0) ? message.index?.toString() : undefined;
+    obj.frozen_quantums = message.frozenQuantums ? base64FromBytes(message.frozenQuantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: AssetPositionAminoMsg): AssetPosition {

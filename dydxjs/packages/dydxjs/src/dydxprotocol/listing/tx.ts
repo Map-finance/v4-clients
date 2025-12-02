@@ -2,7 +2,6 @@
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "../subaccounts/subaccount";
 import { ListingVaultDepositParams, ListingVaultDepositParamsAmino, ListingVaultDepositParamsSDKType } from "./params";
 import { BinaryReader, BinaryWriter } from "../../binary";
-import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /**
  * MsgSetMarketsHardCap is used to set a hard cap on the number of markets
  * listed
@@ -70,8 +69,6 @@ export interface MsgCreateMarketPermissionless {
   ticker: string;
   /** The subaccount to deposit from. */
   subaccountId?: SubaccountId;
-  /** Number of quote quantums to deposit. */
-  quoteQuantums: Uint8Array;
 }
 export interface MsgCreateMarketPermissionlessProtoMsg {
   typeUrl: "/dydxprotocol.listing.MsgCreateMarketPermissionless";
@@ -93,10 +90,6 @@ export interface MsgCreateMarketPermissionlessAmino {
    * The subaccount to deposit from.
    */
   subaccount_id?: SubaccountIdAmino;
-  /**
-   * Number of quote quantums to deposit.
-   */
-  quote_quantums?: string;
 }
 export interface MsgCreateMarketPermissionlessAminoMsg {
   type: "/dydxprotocol.listing.MsgCreateMarketPermissionless";
@@ -109,7 +102,6 @@ export interface MsgCreateMarketPermissionlessAminoMsg {
 export interface MsgCreateMarketPermissionlessSDKType {
   ticker: string;
   subaccount_id?: SubaccountIdSDKType;
-  quote_quantums: Uint8Array;
 }
 /**
  * MsgCreateMarketPermissionlessResponse defines the
@@ -202,6 +194,71 @@ export interface MsgSetListingVaultDepositParamsResponseAminoMsg {
  * MsgSetListingVaultDepositParams response
  */
 export interface MsgSetListingVaultDepositParamsResponseSDKType {}
+/**
+ * MsgUpgradeIsolatedPerpetualToCross is used to upgrade a market from
+ * isolated margin to cross margin.
+ */
+export interface MsgUpgradeIsolatedPerpetualToCross {
+  authority: string;
+  /** ID of the perpetual to be upgraded to CROSS */
+  perpetualId: number;
+}
+export interface MsgUpgradeIsolatedPerpetualToCrossProtoMsg {
+  typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross";
+  value: Uint8Array;
+}
+/**
+ * MsgUpgradeIsolatedPerpetualToCross is used to upgrade a market from
+ * isolated margin to cross margin.
+ * @name MsgUpgradeIsolatedPerpetualToCrossAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross
+ */
+export interface MsgUpgradeIsolatedPerpetualToCrossAmino {
+  authority?: string;
+  /**
+   * ID of the perpetual to be upgraded to CROSS
+   */
+  perpetual_id?: number;
+}
+export interface MsgUpgradeIsolatedPerpetualToCrossAminoMsg {
+  type: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross";
+  value: MsgUpgradeIsolatedPerpetualToCrossAmino;
+}
+/**
+ * MsgUpgradeIsolatedPerpetualToCross is used to upgrade a market from
+ * isolated margin to cross margin.
+ */
+export interface MsgUpgradeIsolatedPerpetualToCrossSDKType {
+  authority: string;
+  perpetual_id: number;
+}
+/**
+ * MsgUpgradeIsolatedPerpetualToCrossResponse defines the
+ * UpgradeIsolatedPerpetualToCross response type.
+ */
+export interface MsgUpgradeIsolatedPerpetualToCrossResponse {}
+export interface MsgUpgradeIsolatedPerpetualToCrossResponseProtoMsg {
+  typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCrossResponse";
+  value: Uint8Array;
+}
+/**
+ * MsgUpgradeIsolatedPerpetualToCrossResponse defines the
+ * UpgradeIsolatedPerpetualToCross response type.
+ * @name MsgUpgradeIsolatedPerpetualToCrossResponseAmino
+ * @package dydxprotocol.listing
+ * @see proto type: dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCrossResponse
+ */
+export interface MsgUpgradeIsolatedPerpetualToCrossResponseAmino {}
+export interface MsgUpgradeIsolatedPerpetualToCrossResponseAminoMsg {
+  type: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCrossResponse";
+  value: MsgUpgradeIsolatedPerpetualToCrossResponseAmino;
+}
+/**
+ * MsgUpgradeIsolatedPerpetualToCrossResponse defines the
+ * UpgradeIsolatedPerpetualToCross response type.
+ */
+export interface MsgUpgradeIsolatedPerpetualToCrossResponseSDKType {}
 function createBaseMsgSetMarketsHardCap(): MsgSetMarketsHardCap {
   return {
     authority: "",
@@ -330,8 +387,7 @@ export const MsgSetMarketsHardCapResponse = {
 function createBaseMsgCreateMarketPermissionless(): MsgCreateMarketPermissionless {
   return {
     ticker: "",
-    subaccountId: undefined,
-    quoteQuantums: new Uint8Array()
+    subaccountId: undefined
   };
 }
 export const MsgCreateMarketPermissionless = {
@@ -342,9 +398,6 @@ export const MsgCreateMarketPermissionless = {
     }
     if (message.subaccountId !== undefined) {
       SubaccountId.encode(message.subaccountId, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.quoteQuantums.length !== 0) {
-      writer.uint32(26).bytes(message.quoteQuantums);
     }
     return writer;
   },
@@ -361,9 +414,6 @@ export const MsgCreateMarketPermissionless = {
         case 2:
           message.subaccountId = SubaccountId.decode(reader, reader.uint32());
           break;
-        case 3:
-          message.quoteQuantums = reader.bytes();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -375,7 +425,6 @@ export const MsgCreateMarketPermissionless = {
     const message = createBaseMsgCreateMarketPermissionless();
     message.ticker = object.ticker ?? "";
     message.subaccountId = object.subaccountId !== undefined && object.subaccountId !== null ? SubaccountId.fromPartial(object.subaccountId) : undefined;
-    message.quoteQuantums = object.quoteQuantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MsgCreateMarketPermissionlessAmino): MsgCreateMarketPermissionless {
@@ -386,16 +435,12 @@ export const MsgCreateMarketPermissionless = {
     if (object.subaccount_id !== undefined && object.subaccount_id !== null) {
       message.subaccountId = SubaccountId.fromAmino(object.subaccount_id);
     }
-    if (object.quote_quantums !== undefined && object.quote_quantums !== null) {
-      message.quoteQuantums = bytesFromBase64(object.quote_quantums);
-    }
     return message;
   },
   toAmino(message: MsgCreateMarketPermissionless): MsgCreateMarketPermissionlessAmino {
     const obj: any = {};
     obj.ticker = message.ticker === "" ? undefined : message.ticker;
     obj.subaccount_id = message.subaccountId ? SubaccountId.toAmino(message.subaccountId) : undefined;
-    obj.quote_quantums = message.quoteQuantums ? base64FromBytes(message.quoteQuantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateMarketPermissionlessAminoMsg): MsgCreateMarketPermissionless {
@@ -586,6 +631,131 @@ export const MsgSetListingVaultDepositParamsResponse = {
     return {
       typeUrl: "/dydxprotocol.listing.MsgSetListingVaultDepositParamsResponse",
       value: MsgSetListingVaultDepositParamsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpgradeIsolatedPerpetualToCross(): MsgUpgradeIsolatedPerpetualToCross {
+  return {
+    authority: "",
+    perpetualId: 0
+  };
+}
+export const MsgUpgradeIsolatedPerpetualToCross = {
+  typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross",
+  encode(message: MsgUpgradeIsolatedPerpetualToCross, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.perpetualId !== 0) {
+      writer.uint32(16).uint32(message.perpetualId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpgradeIsolatedPerpetualToCross {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCross();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.perpetualId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<MsgUpgradeIsolatedPerpetualToCross>): MsgUpgradeIsolatedPerpetualToCross {
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCross();
+    message.authority = object.authority ?? "";
+    message.perpetualId = object.perpetualId ?? 0;
+    return message;
+  },
+  fromAmino(object: MsgUpgradeIsolatedPerpetualToCrossAmino): MsgUpgradeIsolatedPerpetualToCross {
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCross();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.perpetual_id !== undefined && object.perpetual_id !== null) {
+      message.perpetualId = object.perpetual_id;
+    }
+    return message;
+  },
+  toAmino(message: MsgUpgradeIsolatedPerpetualToCross): MsgUpgradeIsolatedPerpetualToCrossAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpgradeIsolatedPerpetualToCrossAminoMsg): MsgUpgradeIsolatedPerpetualToCross {
+    return MsgUpgradeIsolatedPerpetualToCross.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpgradeIsolatedPerpetualToCrossProtoMsg): MsgUpgradeIsolatedPerpetualToCross {
+    return MsgUpgradeIsolatedPerpetualToCross.decode(message.value);
+  },
+  toProto(message: MsgUpgradeIsolatedPerpetualToCross): Uint8Array {
+    return MsgUpgradeIsolatedPerpetualToCross.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpgradeIsolatedPerpetualToCross): MsgUpgradeIsolatedPerpetualToCrossProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCross",
+      value: MsgUpgradeIsolatedPerpetualToCross.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpgradeIsolatedPerpetualToCrossResponse(): MsgUpgradeIsolatedPerpetualToCrossResponse {
+  return {};
+}
+export const MsgUpgradeIsolatedPerpetualToCrossResponse = {
+  typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCrossResponse",
+  encode(_: MsgUpgradeIsolatedPerpetualToCrossResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpgradeIsolatedPerpetualToCrossResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCrossResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgUpgradeIsolatedPerpetualToCrossResponse>): MsgUpgradeIsolatedPerpetualToCrossResponse {
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCrossResponse();
+    return message;
+  },
+  fromAmino(_: MsgUpgradeIsolatedPerpetualToCrossResponseAmino): MsgUpgradeIsolatedPerpetualToCrossResponse {
+    const message = createBaseMsgUpgradeIsolatedPerpetualToCrossResponse();
+    return message;
+  },
+  toAmino(_: MsgUpgradeIsolatedPerpetualToCrossResponse): MsgUpgradeIsolatedPerpetualToCrossResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpgradeIsolatedPerpetualToCrossResponseAminoMsg): MsgUpgradeIsolatedPerpetualToCrossResponse {
+    return MsgUpgradeIsolatedPerpetualToCrossResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpgradeIsolatedPerpetualToCrossResponseProtoMsg): MsgUpgradeIsolatedPerpetualToCrossResponse {
+    return MsgUpgradeIsolatedPerpetualToCrossResponse.decode(message.value);
+  },
+  toProto(message: MsgUpgradeIsolatedPerpetualToCrossResponse): Uint8Array {
+    return MsgUpgradeIsolatedPerpetualToCrossResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpgradeIsolatedPerpetualToCrossResponse): MsgUpgradeIsolatedPerpetualToCrossResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.listing.MsgUpgradeIsolatedPerpetualToCrossResponse",
+      value: MsgUpgradeIsolatedPerpetualToCrossResponse.encode(message).finish()
     };
   }
 };

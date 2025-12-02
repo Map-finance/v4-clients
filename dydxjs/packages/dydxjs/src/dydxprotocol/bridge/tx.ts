@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { BridgeEvent, BridgeEventAmino, BridgeEventSDKType } from "./bridge_event";
 import { EventParams, EventParamsAmino, EventParamsSDKType, ProposeParams, ProposeParamsAmino, ProposeParamsSDKType, SafetyParams, SafetyParamsAmino, SafetyParamsSDKType } from "./params";
+import { BridgeEventInfo, BridgeEventInfoAmino, BridgeEventInfoSDKType } from "./bridge_event_info";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** MsgAcknowledgeBridges is the Msg/AcknowledgeBridges request type. */
 export interface MsgAcknowledgeBridges {
@@ -261,6 +262,71 @@ export interface MsgUpdateSafetyParamsResponseAminoMsg {
 }
 /** MsgUpdateSafetyParamsResponse is the Msg/UpdateSafetyParams response type. */
 export interface MsgUpdateSafetyParamsResponseSDKType {}
+/**
+ * MsgUpdateAcknowledgedEventInfo is the Msg/UpdateAcknowledgedEventInfo request
+ * type.
+ */
+export interface MsgUpdateAcknowledgedEventInfo {
+  authority: string;
+  /** The event info to update. Each field must be set. */
+  eventInfo: BridgeEventInfo;
+}
+export interface MsgUpdateAcknowledgedEventInfoProtoMsg {
+  typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo";
+  value: Uint8Array;
+}
+/**
+ * MsgUpdateAcknowledgedEventInfo is the Msg/UpdateAcknowledgedEventInfo request
+ * type.
+ * @name MsgUpdateAcknowledgedEventInfoAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo
+ */
+export interface MsgUpdateAcknowledgedEventInfoAmino {
+  authority?: string;
+  /**
+   * The event info to update. Each field must be set.
+   */
+  event_info?: BridgeEventInfoAmino;
+}
+export interface MsgUpdateAcknowledgedEventInfoAminoMsg {
+  type: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo";
+  value: MsgUpdateAcknowledgedEventInfoAmino;
+}
+/**
+ * MsgUpdateAcknowledgedEventInfo is the Msg/UpdateAcknowledgedEventInfo request
+ * type.
+ */
+export interface MsgUpdateAcknowledgedEventInfoSDKType {
+  authority: string;
+  event_info: BridgeEventInfoSDKType;
+}
+/**
+ * MsgUpdateAcknowledgedEventInfoResponse is the Msg/UpdateAcknowledgedEventInfo
+ * response type.
+ */
+export interface MsgUpdateAcknowledgedEventInfoResponse {}
+export interface MsgUpdateAcknowledgedEventInfoResponseProtoMsg {
+  typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfoResponse";
+  value: Uint8Array;
+}
+/**
+ * MsgUpdateAcknowledgedEventInfoResponse is the Msg/UpdateAcknowledgedEventInfo
+ * response type.
+ * @name MsgUpdateAcknowledgedEventInfoResponseAmino
+ * @package dydxprotocol.bridge
+ * @see proto type: dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfoResponse
+ */
+export interface MsgUpdateAcknowledgedEventInfoResponseAmino {}
+export interface MsgUpdateAcknowledgedEventInfoResponseAminoMsg {
+  type: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfoResponse";
+  value: MsgUpdateAcknowledgedEventInfoResponseAmino;
+}
+/**
+ * MsgUpdateAcknowledgedEventInfoResponse is the Msg/UpdateAcknowledgedEventInfo
+ * response type.
+ */
+export interface MsgUpdateAcknowledgedEventInfoResponseSDKType {}
 function createBaseMsgAcknowledgeBridges(): MsgAcknowledgeBridges {
   return {
     events: []
@@ -873,6 +939,131 @@ export const MsgUpdateSafetyParamsResponse = {
     return {
       typeUrl: "/dydxprotocol.bridge.MsgUpdateSafetyParamsResponse",
       value: MsgUpdateSafetyParamsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpdateAcknowledgedEventInfo(): MsgUpdateAcknowledgedEventInfo {
+  return {
+    authority: "",
+    eventInfo: BridgeEventInfo.fromPartial({})
+  };
+}
+export const MsgUpdateAcknowledgedEventInfo = {
+  typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
+  encode(message: MsgUpdateAcknowledgedEventInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.eventInfo !== undefined) {
+      BridgeEventInfo.encode(message.eventInfo, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateAcknowledgedEventInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAcknowledgedEventInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.eventInfo = BridgeEventInfo.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<MsgUpdateAcknowledgedEventInfo>): MsgUpdateAcknowledgedEventInfo {
+    const message = createBaseMsgUpdateAcknowledgedEventInfo();
+    message.authority = object.authority ?? "";
+    message.eventInfo = object.eventInfo !== undefined && object.eventInfo !== null ? BridgeEventInfo.fromPartial(object.eventInfo) : undefined;
+    return message;
+  },
+  fromAmino(object: MsgUpdateAcknowledgedEventInfoAmino): MsgUpdateAcknowledgedEventInfo {
+    const message = createBaseMsgUpdateAcknowledgedEventInfo();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.event_info !== undefined && object.event_info !== null) {
+      message.eventInfo = BridgeEventInfo.fromAmino(object.event_info);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateAcknowledgedEventInfo): MsgUpdateAcknowledgedEventInfoAmino {
+    const obj: any = {};
+    obj.authority = message.authority === "" ? undefined : message.authority;
+    obj.event_info = message.eventInfo ? BridgeEventInfo.toAmino(message.eventInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateAcknowledgedEventInfoAminoMsg): MsgUpdateAcknowledgedEventInfo {
+    return MsgUpdateAcknowledgedEventInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateAcknowledgedEventInfoProtoMsg): MsgUpdateAcknowledgedEventInfo {
+    return MsgUpdateAcknowledgedEventInfo.decode(message.value);
+  },
+  toProto(message: MsgUpdateAcknowledgedEventInfo): Uint8Array {
+    return MsgUpdateAcknowledgedEventInfo.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateAcknowledgedEventInfo): MsgUpdateAcknowledgedEventInfoProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
+      value: MsgUpdateAcknowledgedEventInfo.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgUpdateAcknowledgedEventInfoResponse(): MsgUpdateAcknowledgedEventInfoResponse {
+  return {};
+}
+export const MsgUpdateAcknowledgedEventInfoResponse = {
+  typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfoResponse",
+  encode(_: MsgUpdateAcknowledgedEventInfoResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateAcknowledgedEventInfoResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateAcknowledgedEventInfoResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgUpdateAcknowledgedEventInfoResponse>): MsgUpdateAcknowledgedEventInfoResponse {
+    const message = createBaseMsgUpdateAcknowledgedEventInfoResponse();
+    return message;
+  },
+  fromAmino(_: MsgUpdateAcknowledgedEventInfoResponseAmino): MsgUpdateAcknowledgedEventInfoResponse {
+    const message = createBaseMsgUpdateAcknowledgedEventInfoResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateAcknowledgedEventInfoResponse): MsgUpdateAcknowledgedEventInfoResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateAcknowledgedEventInfoResponseAminoMsg): MsgUpdateAcknowledgedEventInfoResponse {
+    return MsgUpdateAcknowledgedEventInfoResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateAcknowledgedEventInfoResponseProtoMsg): MsgUpdateAcknowledgedEventInfoResponse {
+    return MsgUpdateAcknowledgedEventInfoResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateAcknowledgedEventInfoResponse): Uint8Array {
+    return MsgUpdateAcknowledgedEventInfoResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateAcknowledgedEventInfoResponse): MsgUpdateAcknowledgedEventInfoResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfoResponse",
+      value: MsgUpdateAcknowledgedEventInfoResponse.encode(message).finish()
     };
   }
 };

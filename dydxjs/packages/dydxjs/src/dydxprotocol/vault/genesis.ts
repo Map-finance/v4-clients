@@ -1,18 +1,22 @@
 //@ts-nocheck
-import { NumShares, NumSharesAmino, NumSharesSDKType, OwnerShare, OwnerShareAmino, OwnerShareSDKType } from "./share";
-import { QuotingParams, QuotingParamsAmino, QuotingParamsSDKType, VaultParams, VaultParamsAmino, VaultParamsSDKType } from "./params";
+import { NumShares, NumSharesAmino, NumSharesSDKType, OwnerShare, OwnerShareAmino, OwnerShareSDKType, OwnerShareUnlocks, OwnerShareUnlocksAmino, OwnerShareUnlocksSDKType } from "./share";
+import { QuotingParams, QuotingParamsAmino, QuotingParamsSDKType, OperatorParams, OperatorParamsAmino, OperatorParamsSDKType, VaultParams, VaultParamsAmino, VaultParamsSDKType } from "./params";
 import { VaultId, VaultIdAmino, VaultIdSDKType } from "./vault";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** GenesisState defines `x/vault`'s genesis state. */
 export interface GenesisState {
-  /** The total number of shares. */
+  /** The total number of shares, including any locked ones. */
   totalShares: NumShares;
-  /** The shares of each owner. */
+  /** The shares of each owner, including any locked ones. */
   ownerShares: OwnerShare[];
   /** The vaults. */
   vaults: Vault[];
   /** The default quoting parameters for all vaults. */
   defaultQuotingParams: QuotingParams;
+  /** All owner share unlocks. */
+  allOwnerShareUnlocks: OwnerShareUnlocks[];
+  /** The parameters regarding megavault operator. */
+  operatorParams: OperatorParams;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.vault.GenesisState";
@@ -26,11 +30,11 @@ export interface GenesisStateProtoMsg {
  */
 export interface GenesisStateAmino {
   /**
-   * The total number of shares.
+   * The total number of shares, including any locked ones.
    */
   total_shares?: NumSharesAmino;
   /**
-   * The shares of each owner.
+   * The shares of each owner, including any locked ones.
    */
   owner_shares?: OwnerShareAmino[];
   /**
@@ -41,6 +45,14 @@ export interface GenesisStateAmino {
    * The default quoting parameters for all vaults.
    */
   default_quoting_params?: QuotingParamsAmino;
+  /**
+   * All owner share unlocks.
+   */
+  all_owner_share_unlocks?: OwnerShareUnlocksAmino[];
+  /**
+   * The parameters regarding megavault operator.
+   */
+  operator_params?: OperatorParamsAmino;
 }
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.vault.GenesisState";
@@ -52,6 +64,8 @@ export interface GenesisStateSDKType {
   owner_shares: OwnerShareSDKType[];
   vaults: VaultSDKType[];
   default_quoting_params: QuotingParamsSDKType;
+  all_owner_share_unlocks: OwnerShareUnlocksSDKType[];
+  operator_params: OperatorParamsSDKType;
 }
 /** Vault defines the state of a vault. */
 export interface Vault {
@@ -208,7 +222,9 @@ function createBaseGenesisState(): GenesisState {
     totalShares: NumShares.fromPartial({}),
     ownerShares: [],
     vaults: [],
-    defaultQuotingParams: QuotingParams.fromPartial({})
+    defaultQuotingParams: QuotingParams.fromPartial({}),
+    allOwnerShareUnlocks: [],
+    operatorParams: OperatorParams.fromPartial({})
   };
 }
 export const GenesisState = {
@@ -225,6 +241,12 @@ export const GenesisState = {
     }
     if (message.defaultQuotingParams !== undefined) {
       QuotingParams.encode(message.defaultQuotingParams, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.allOwnerShareUnlocks) {
+      OwnerShareUnlocks.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.operatorParams !== undefined) {
+      OperatorParams.encode(message.operatorParams, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -247,6 +269,12 @@ export const GenesisState = {
         case 4:
           message.defaultQuotingParams = QuotingParams.decode(reader, reader.uint32());
           break;
+        case 5:
+          message.allOwnerShareUnlocks.push(OwnerShareUnlocks.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.operatorParams = OperatorParams.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -260,6 +288,8 @@ export const GenesisState = {
     message.ownerShares = object.ownerShares?.map(e => OwnerShare.fromPartial(e)) || [];
     message.vaults = object.vaults?.map(e => Vault.fromPartial(e)) || [];
     message.defaultQuotingParams = object.defaultQuotingParams !== undefined && object.defaultQuotingParams !== null ? QuotingParams.fromPartial(object.defaultQuotingParams) : undefined;
+    message.allOwnerShareUnlocks = object.allOwnerShareUnlocks?.map(e => OwnerShareUnlocks.fromPartial(e)) || [];
+    message.operatorParams = object.operatorParams !== undefined && object.operatorParams !== null ? OperatorParams.fromPartial(object.operatorParams) : undefined;
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -271,6 +301,10 @@ export const GenesisState = {
     message.vaults = object.vaults?.map(e => Vault.fromAmino(e)) || [];
     if (object.default_quoting_params !== undefined && object.default_quoting_params !== null) {
       message.defaultQuotingParams = QuotingParams.fromAmino(object.default_quoting_params);
+    }
+    message.allOwnerShareUnlocks = object.all_owner_share_unlocks?.map(e => OwnerShareUnlocks.fromAmino(e)) || [];
+    if (object.operator_params !== undefined && object.operator_params !== null) {
+      message.operatorParams = OperatorParams.fromAmino(object.operator_params);
     }
     return message;
   },
@@ -288,6 +322,12 @@ export const GenesisState = {
       obj.vaults = message.vaults;
     }
     obj.default_quoting_params = message.defaultQuotingParams ? QuotingParams.toAmino(message.defaultQuotingParams) : undefined;
+    if (message.allOwnerShareUnlocks) {
+      obj.all_owner_share_unlocks = message.allOwnerShareUnlocks.map(e => e ? OwnerShareUnlocks.toAmino(e) : undefined);
+    } else {
+      obj.all_owner_share_unlocks = message.allOwnerShareUnlocks;
+    }
+    obj.operator_params = message.operatorParams ? OperatorParams.toAmino(message.operatorParams) : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

@@ -1,9 +1,70 @@
 //@ts-nocheck
+import { AccountAuthenticator, AccountAuthenticatorAmino, AccountAuthenticatorSDKType } from "./models";
 import { AccountState, AccountStateAmino, AccountStateSDKType } from "./accountplus";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import { BinaryReader, BinaryWriter } from "../../binary";
+/**
+ * AuthenticatorData represents a genesis exported account with Authenticators.
+ * The address is used as the key, and the account authenticators are stored in
+ * the authenticators field.
+ */
+export interface AuthenticatorData {
+  /** address is an account address, one address can have many authenticators */
+  address: string;
+  /**
+   * authenticators are the account's authenticators, these can be multiple
+   * types including SignatureVerification, AllOfs, CosmWasmAuthenticators, etc
+   */
+  authenticators: AccountAuthenticator[];
+}
+export interface AuthenticatorDataProtoMsg {
+  typeUrl: "/dydxprotocol.accountplus.AuthenticatorData";
+  value: Uint8Array;
+}
+/**
+ * AuthenticatorData represents a genesis exported account with Authenticators.
+ * The address is used as the key, and the account authenticators are stored in
+ * the authenticators field.
+ * @name AuthenticatorDataAmino
+ * @package dydxprotocol.accountplus
+ * @see proto type: dydxprotocol.accountplus.AuthenticatorData
+ */
+export interface AuthenticatorDataAmino {
+  /**
+   * address is an account address, one address can have many authenticators
+   */
+  address?: string;
+  /**
+   * authenticators are the account's authenticators, these can be multiple
+   * types including SignatureVerification, AllOfs, CosmWasmAuthenticators, etc
+   */
+  authenticators?: AccountAuthenticatorAmino[];
+}
+export interface AuthenticatorDataAminoMsg {
+  type: "/dydxprotocol.accountplus.AuthenticatorData";
+  value: AuthenticatorDataAmino;
+}
+/**
+ * AuthenticatorData represents a genesis exported account with Authenticators.
+ * The address is used as the key, and the account authenticators are stored in
+ * the authenticators field.
+ */
+export interface AuthenticatorDataSDKType {
+  address: string;
+  authenticators: AccountAuthenticatorSDKType[];
+}
 /** Module genesis state */
 export interface GenesisState {
   accounts: AccountState[];
+  /** params define the parameters for the authenticator module. */
+  params: Params;
+  /** next_authenticator_id is the next available authenticator ID. */
+  nextAuthenticatorId: bigint;
+  /**
+   * authenticator_data contains the data for multiple accounts, each with their
+   * authenticators.
+   */
+  authenticatorData: AuthenticatorData[];
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.accountplus.GenesisState";
@@ -17,6 +78,19 @@ export interface GenesisStateProtoMsg {
  */
 export interface GenesisStateAmino {
   accounts?: AccountStateAmino[];
+  /**
+   * params define the parameters for the authenticator module.
+   */
+  params?: ParamsAmino;
+  /**
+   * next_authenticator_id is the next available authenticator ID.
+   */
+  next_authenticator_id?: string;
+  /**
+   * authenticator_data contains the data for multiple accounts, each with their
+   * authenticators.
+   */
+  authenticator_data?: AuthenticatorDataAmino[];
 }
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.accountplus.GenesisState";
@@ -25,10 +99,93 @@ export interface GenesisStateAminoMsg {
 /** Module genesis state */
 export interface GenesisStateSDKType {
   accounts: AccountStateSDKType[];
+  params: ParamsSDKType;
+  next_authenticator_id: bigint;
+  authenticator_data: AuthenticatorDataSDKType[];
 }
+function createBaseAuthenticatorData(): AuthenticatorData {
+  return {
+    address: "",
+    authenticators: []
+  };
+}
+export const AuthenticatorData = {
+  typeUrl: "/dydxprotocol.accountplus.AuthenticatorData",
+  encode(message: AuthenticatorData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    for (const v of message.authenticators) {
+      AccountAuthenticator.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): AuthenticatorData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAuthenticatorData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.authenticators.push(AccountAuthenticator.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<AuthenticatorData>): AuthenticatorData {
+    const message = createBaseAuthenticatorData();
+    message.address = object.address ?? "";
+    message.authenticators = object.authenticators?.map(e => AccountAuthenticator.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: AuthenticatorDataAmino): AuthenticatorData {
+    const message = createBaseAuthenticatorData();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    message.authenticators = object.authenticators?.map(e => AccountAuthenticator.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: AuthenticatorData): AuthenticatorDataAmino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    if (message.authenticators) {
+      obj.authenticators = message.authenticators.map(e => e ? AccountAuthenticator.toAmino(e) : undefined);
+    } else {
+      obj.authenticators = message.authenticators;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: AuthenticatorDataAminoMsg): AuthenticatorData {
+    return AuthenticatorData.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AuthenticatorDataProtoMsg): AuthenticatorData {
+    return AuthenticatorData.decode(message.value);
+  },
+  toProto(message: AuthenticatorData): Uint8Array {
+    return AuthenticatorData.encode(message).finish();
+  },
+  toProtoMsg(message: AuthenticatorData): AuthenticatorDataProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.accountplus.AuthenticatorData",
+      value: AuthenticatorData.encode(message).finish()
+    };
+  }
+};
 function createBaseGenesisState(): GenesisState {
   return {
-    accounts: []
+    accounts: [],
+    params: Params.fromPartial({}),
+    nextAuthenticatorId: BigInt(0),
+    authenticatorData: []
   };
 }
 export const GenesisState = {
@@ -36,6 +193,15 @@ export const GenesisState = {
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
       AccountState.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.nextAuthenticatorId !== BigInt(0)) {
+      writer.uint32(24).uint64(message.nextAuthenticatorId);
+    }
+    for (const v of message.authenticatorData) {
+      AuthenticatorData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -49,6 +215,15 @@ export const GenesisState = {
         case 1:
           message.accounts.push(AccountState.decode(reader, reader.uint32()));
           break;
+        case 2:
+          message.params = Params.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.nextAuthenticatorId = reader.uint64();
+          break;
+        case 4:
+          message.authenticatorData.push(AuthenticatorData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -59,11 +234,21 @@ export const GenesisState = {
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
     message.accounts = object.accounts?.map(e => AccountState.fromPartial(e)) || [];
+    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    message.nextAuthenticatorId = object.nextAuthenticatorId !== undefined && object.nextAuthenticatorId !== null ? BigInt(object.nextAuthenticatorId.toString()) : BigInt(0);
+    message.authenticatorData = object.authenticatorData?.map(e => AuthenticatorData.fromPartial(e)) || [];
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
     message.accounts = object.accounts?.map(e => AccountState.fromAmino(e)) || [];
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    if (object.next_authenticator_id !== undefined && object.next_authenticator_id !== null) {
+      message.nextAuthenticatorId = BigInt(object.next_authenticator_id);
+    }
+    message.authenticatorData = object.authenticator_data?.map(e => AuthenticatorData.fromAmino(e)) || [];
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
@@ -72,6 +257,13 @@ export const GenesisState = {
       obj.accounts = message.accounts.map(e => e ? AccountState.toAmino(e) : undefined);
     } else {
       obj.accounts = message.accounts;
+    }
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    obj.next_authenticator_id = message.nextAuthenticatorId !== BigInt(0) ? message.nextAuthenticatorId?.toString() : undefined;
+    if (message.authenticatorData) {
+      obj.authenticator_data = message.authenticatorData.map(e => e ? AuthenticatorData.toAmino(e) : undefined);
+    } else {
+      obj.authenticator_data = message.authenticatorData;
     }
     return obj;
   },

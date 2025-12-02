@@ -319,6 +319,50 @@ export interface QueryParamsResponseAminoMsg {
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
+/** QueryNextPerpetualIdRequest is the request type for the NextPerpetualId RPC */
+export interface QueryNextPerpetualIdRequest {}
+export interface QueryNextPerpetualIdRequestProtoMsg {
+  typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryNextPerpetualIdRequest is the request type for the NextPerpetualId RPC
+ * @name QueryNextPerpetualIdRequestAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryNextPerpetualIdRequest
+ */
+export interface QueryNextPerpetualIdRequestAmino {}
+export interface QueryNextPerpetualIdRequestAminoMsg {
+  type: "/dydxprotocol.perpetuals.QueryNextPerpetualIdRequest";
+  value: QueryNextPerpetualIdRequestAmino;
+}
+/** QueryNextPerpetualIdRequest is the request type for the NextPerpetualId RPC */
+export interface QueryNextPerpetualIdRequestSDKType {}
+/** QueryNextPerpetualIdResponse is the response type for the NextPerpetualId RPC */
+export interface QueryNextPerpetualIdResponse {
+  nextPerpetualId: number;
+}
+export interface QueryNextPerpetualIdResponseProtoMsg {
+  typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryNextPerpetualIdResponse is the response type for the NextPerpetualId RPC
+ * @name QueryNextPerpetualIdResponseAmino
+ * @package dydxprotocol.perpetuals
+ * @see proto type: dydxprotocol.perpetuals.QueryNextPerpetualIdResponse
+ */
+export interface QueryNextPerpetualIdResponseAmino {
+  next_perpetual_id?: number;
+}
+export interface QueryNextPerpetualIdResponseAminoMsg {
+  type: "/dydxprotocol.perpetuals.QueryNextPerpetualIdResponse";
+  value: QueryNextPerpetualIdResponseAmino;
+}
+/** QueryNextPerpetualIdResponse is the response type for the NextPerpetualId RPC */
+export interface QueryNextPerpetualIdResponseSDKType {
+  next_perpetual_id: number;
+}
 function createBaseQueryPerpetualRequest(): QueryPerpetualRequest {
   return {
     id: 0
@@ -1061,6 +1105,119 @@ export const QueryParamsResponse = {
     return {
       typeUrl: "/dydxprotocol.perpetuals.QueryParamsResponse",
       value: QueryParamsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryNextPerpetualIdRequest(): QueryNextPerpetualIdRequest {
+  return {};
+}
+export const QueryNextPerpetualIdRequest = {
+  typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdRequest",
+  encode(_: QueryNextPerpetualIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNextPerpetualIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNextPerpetualIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<QueryNextPerpetualIdRequest>): QueryNextPerpetualIdRequest {
+    const message = createBaseQueryNextPerpetualIdRequest();
+    return message;
+  },
+  fromAmino(_: QueryNextPerpetualIdRequestAmino): QueryNextPerpetualIdRequest {
+    const message = createBaseQueryNextPerpetualIdRequest();
+    return message;
+  },
+  toAmino(_: QueryNextPerpetualIdRequest): QueryNextPerpetualIdRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryNextPerpetualIdRequestAminoMsg): QueryNextPerpetualIdRequest {
+    return QueryNextPerpetualIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryNextPerpetualIdRequestProtoMsg): QueryNextPerpetualIdRequest {
+    return QueryNextPerpetualIdRequest.decode(message.value);
+  },
+  toProto(message: QueryNextPerpetualIdRequest): Uint8Array {
+    return QueryNextPerpetualIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNextPerpetualIdRequest): QueryNextPerpetualIdRequestProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdRequest",
+      value: QueryNextPerpetualIdRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryNextPerpetualIdResponse(): QueryNextPerpetualIdResponse {
+  return {
+    nextPerpetualId: 0
+  };
+}
+export const QueryNextPerpetualIdResponse = {
+  typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdResponse",
+  encode(message: QueryNextPerpetualIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.nextPerpetualId !== 0) {
+      writer.uint32(8).uint32(message.nextPerpetualId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNextPerpetualIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNextPerpetualIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nextPerpetualId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryNextPerpetualIdResponse>): QueryNextPerpetualIdResponse {
+    const message = createBaseQueryNextPerpetualIdResponse();
+    message.nextPerpetualId = object.nextPerpetualId ?? 0;
+    return message;
+  },
+  fromAmino(object: QueryNextPerpetualIdResponseAmino): QueryNextPerpetualIdResponse {
+    const message = createBaseQueryNextPerpetualIdResponse();
+    if (object.next_perpetual_id !== undefined && object.next_perpetual_id !== null) {
+      message.nextPerpetualId = object.next_perpetual_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryNextPerpetualIdResponse): QueryNextPerpetualIdResponseAmino {
+    const obj: any = {};
+    obj.next_perpetual_id = message.nextPerpetualId === 0 ? undefined : message.nextPerpetualId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryNextPerpetualIdResponseAminoMsg): QueryNextPerpetualIdResponse {
+    return QueryNextPerpetualIdResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryNextPerpetualIdResponseProtoMsg): QueryNextPerpetualIdResponse {
+    return QueryNextPerpetualIdResponse.decode(message.value);
+  },
+  toProto(message: QueryNextPerpetualIdResponse): Uint8Array {
+    return QueryNextPerpetualIdResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNextPerpetualIdResponse): QueryNextPerpetualIdResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.perpetuals.QueryNextPerpetualIdResponse",
+      value: QueryNextPerpetualIdResponse.encode(message).finish()
     };
   }
 };

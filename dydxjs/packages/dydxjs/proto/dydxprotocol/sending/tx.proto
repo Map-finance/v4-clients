@@ -7,8 +7,8 @@ option go_package = "github.com/dydxprotocol/v4-chain/protocol/x/sending/types";
 
 // Msg defines the Msg service.
 service Msg {
-  // CreateBridgeTransfer initiates a new cross-chain bridge transfer.
-  rpc CreateBridgeTransfer(MsgCreateBridgeTransfer) returns (MsgCreateBridgeTransferResponse);
+  rpc CreateBridgeTransfer(MsgCreateBridgeTransfer)
+      returns (MsgCreateBridgeTransferResponse);
 
   // CreateTransfer initiates a new transfer between subaccounts.
   rpc CreateTransfer(MsgCreateTransfer) returns (MsgCreateTransferResponse);
@@ -44,5 +44,4 @@ message MsgWithdrawFromSubaccountResponse {}
 // module-to-account transfers.
 message MsgSendFromModuleToAccountResponse {}
 
-// MsgCreateBridgeTransferResponse is a response type used for new bridge transfers.
 message MsgCreateBridgeTransferResponse {}

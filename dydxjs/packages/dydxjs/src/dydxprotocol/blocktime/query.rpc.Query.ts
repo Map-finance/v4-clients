@@ -2,7 +2,7 @@
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryDowntimeParamsRequest, QueryDowntimeParamsResponse, QueryPreviousBlockInfoRequest, QueryPreviousBlockInfoResponse, QueryAllDowntimeInfoRequest, QueryAllDowntimeInfoResponse } from "./query";
+import { QueryDowntimeParamsRequest, QueryDowntimeParamsResponse, QueryPreviousBlockInfoRequest, QueryPreviousBlockInfoResponse, QueryAllDowntimeInfoRequest, QueryAllDowntimeInfoResponse, QuerySynchronyParamsRequest, QuerySynchronyParamsResponse } from "./query";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Queries the DowntimeParams. */
@@ -11,6 +11,8 @@ export interface Query {
   previousBlockInfo(request?: QueryPreviousBlockInfoRequest): Promise<QueryPreviousBlockInfoResponse>;
   /** Queries all recorded downtime info. */
   allDowntimeInfo(request?: QueryAllDowntimeInfoRequest): Promise<QueryAllDowntimeInfoResponse>;
+  /** Queries the SynchronyParams. */
+  synchronyParams(request?: QuerySynchronyParamsRequest): Promise<QuerySynchronyParamsResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -19,6 +21,7 @@ export class QueryClientImpl implements Query {
     this.downtimeParams = this.downtimeParams.bind(this);
     this.previousBlockInfo = this.previousBlockInfo.bind(this);
     this.allDowntimeInfo = this.allDowntimeInfo.bind(this);
+    this.synchronyParams = this.synchronyParams.bind(this);
   }
   downtimeParams(request: QueryDowntimeParamsRequest = {}): Promise<QueryDowntimeParamsResponse> {
     const data = QueryDowntimeParamsRequest.encode(request).finish();
@@ -35,6 +38,11 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("dydxprotocol.blocktime.Query", "AllDowntimeInfo", data);
     return promise.then(data => QueryAllDowntimeInfoResponse.decode(new BinaryReader(data)));
   }
+  synchronyParams(request: QuerySynchronyParamsRequest = {}): Promise<QuerySynchronyParamsResponse> {
+    const data = QuerySynchronyParamsRequest.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.blocktime.Query", "SynchronyParams", data);
+    return promise.then(data => QuerySynchronyParamsResponse.decode(new BinaryReader(data)));
+  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -48,6 +56,9 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     allDowntimeInfo(request?: QueryAllDowntimeInfoRequest): Promise<QueryAllDowntimeInfoResponse> {
       return queryService.allDowntimeInfo(request);
+    },
+    synchronyParams(request?: QuerySynchronyParamsRequest): Promise<QuerySynchronyParamsResponse> {
+      return queryService.synchronyParams(request);
     }
   };
 };

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package dydxprotocol.subaccounts;
 
+import "gogoproto/gogo.proto";
 import "dydxprotocol/subaccounts/subaccount.proto";
 
 option go_package = "github.com/dydxprotocol/v4-chain/protocol/x/subaccounts/types";
@@ -28,8 +29,14 @@ message StreamSubaccountUpdate {
 message SubaccountPerpetualPosition {
   // The `Id` of the `Perpetual`.
   uint32 perpetual_id = 1;
-  // The size of the position in base quantums.
-  uint64 quantums = 2;
+  // The size of the position in base quantums. Negative means short.
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes quantums = 2 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // SubaccountAssetPosition provides information on a subaccount's updated asset
@@ -38,5 +45,11 @@ message SubaccountAssetPosition {
   // The `Id` of the `Asset`.
   uint32 asset_id = 1;
   // The absolute size of the position in base quantums.
-  uint64 quantums = 2;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes quantums = 2 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }

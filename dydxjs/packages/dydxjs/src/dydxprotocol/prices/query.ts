@@ -265,6 +265,57 @@ export interface QueryAllMarketParamsResponseSDKType {
   market_params: MarketParamSDKType[];
   pagination?: PageResponseSDKType;
 }
+/** QueryNextMarketIdRequest is request type for the Query/Params `NextMarketId` */
+export interface QueryNextMarketIdRequest {}
+export interface QueryNextMarketIdRequestProtoMsg {
+  typeUrl: "/dydxprotocol.prices.QueryNextMarketIdRequest";
+  value: Uint8Array;
+}
+/**
+ * QueryNextMarketIdRequest is request type for the Query/Params `NextMarketId`
+ * @name QueryNextMarketIdRequestAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.QueryNextMarketIdRequest
+ */
+export interface QueryNextMarketIdRequestAmino {}
+export interface QueryNextMarketIdRequestAminoMsg {
+  type: "/dydxprotocol.prices.QueryNextMarketIdRequest";
+  value: QueryNextMarketIdRequestAmino;
+}
+/** QueryNextMarketIdRequest is request type for the Query/Params `NextMarketId` */
+export interface QueryNextMarketIdRequestSDKType {}
+/**
+ * QueryNextMarketIdResponse is response type for the Query/Params
+ * `NextMarketId`
+ */
+export interface QueryNextMarketIdResponse {
+  nextMarketId: number;
+}
+export interface QueryNextMarketIdResponseProtoMsg {
+  typeUrl: "/dydxprotocol.prices.QueryNextMarketIdResponse";
+  value: Uint8Array;
+}
+/**
+ * QueryNextMarketIdResponse is response type for the Query/Params
+ * `NextMarketId`
+ * @name QueryNextMarketIdResponseAmino
+ * @package dydxprotocol.prices
+ * @see proto type: dydxprotocol.prices.QueryNextMarketIdResponse
+ */
+export interface QueryNextMarketIdResponseAmino {
+  next_market_id?: number;
+}
+export interface QueryNextMarketIdResponseAminoMsg {
+  type: "/dydxprotocol.prices.QueryNextMarketIdResponse";
+  value: QueryNextMarketIdResponseAmino;
+}
+/**
+ * QueryNextMarketIdResponse is response type for the Query/Params
+ * `NextMarketId`
+ */
+export interface QueryNextMarketIdResponseSDKType {
+  next_market_id: number;
+}
 function createBaseQueryMarketPriceRequest(): QueryMarketPriceRequest {
   return {
     id: 0
@@ -794,6 +845,119 @@ export const QueryAllMarketParamsResponse = {
     return {
       typeUrl: "/dydxprotocol.prices.QueryAllMarketParamsResponse",
       value: QueryAllMarketParamsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryNextMarketIdRequest(): QueryNextMarketIdRequest {
+  return {};
+}
+export const QueryNextMarketIdRequest = {
+  typeUrl: "/dydxprotocol.prices.QueryNextMarketIdRequest",
+  encode(_: QueryNextMarketIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNextMarketIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNextMarketIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<QueryNextMarketIdRequest>): QueryNextMarketIdRequest {
+    const message = createBaseQueryNextMarketIdRequest();
+    return message;
+  },
+  fromAmino(_: QueryNextMarketIdRequestAmino): QueryNextMarketIdRequest {
+    const message = createBaseQueryNextMarketIdRequest();
+    return message;
+  },
+  toAmino(_: QueryNextMarketIdRequest): QueryNextMarketIdRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryNextMarketIdRequestAminoMsg): QueryNextMarketIdRequest {
+    return QueryNextMarketIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryNextMarketIdRequestProtoMsg): QueryNextMarketIdRequest {
+    return QueryNextMarketIdRequest.decode(message.value);
+  },
+  toProto(message: QueryNextMarketIdRequest): Uint8Array {
+    return QueryNextMarketIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNextMarketIdRequest): QueryNextMarketIdRequestProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.prices.QueryNextMarketIdRequest",
+      value: QueryNextMarketIdRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryNextMarketIdResponse(): QueryNextMarketIdResponse {
+  return {
+    nextMarketId: 0
+  };
+}
+export const QueryNextMarketIdResponse = {
+  typeUrl: "/dydxprotocol.prices.QueryNextMarketIdResponse",
+  encode(message: QueryNextMarketIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.nextMarketId !== 0) {
+      writer.uint32(8).uint32(message.nextMarketId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNextMarketIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNextMarketIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nextMarketId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryNextMarketIdResponse>): QueryNextMarketIdResponse {
+    const message = createBaseQueryNextMarketIdResponse();
+    message.nextMarketId = object.nextMarketId ?? 0;
+    return message;
+  },
+  fromAmino(object: QueryNextMarketIdResponseAmino): QueryNextMarketIdResponse {
+    const message = createBaseQueryNextMarketIdResponse();
+    if (object.next_market_id !== undefined && object.next_market_id !== null) {
+      message.nextMarketId = object.next_market_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryNextMarketIdResponse): QueryNextMarketIdResponseAmino {
+    const obj: any = {};
+    obj.next_market_id = message.nextMarketId === 0 ? undefined : message.nextMarketId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryNextMarketIdResponseAminoMsg): QueryNextMarketIdResponse {
+    return QueryNextMarketIdResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryNextMarketIdResponseProtoMsg): QueryNextMarketIdResponse {
+    return QueryNextMarketIdResponse.decode(message.value);
+  },
+  toProto(message: QueryNextMarketIdResponse): Uint8Array {
+    return QueryNextMarketIdResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNextMarketIdResponse): QueryNextMarketIdResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.prices.QueryNextMarketIdResponse",
+      value: QueryNextMarketIdResponse.encode(message).finish()
     };
   }
 };

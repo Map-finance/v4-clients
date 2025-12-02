@@ -1,7 +1,11 @@
 //@ts-nocheck
+import { AffiliateTiers, AffiliateTiersAmino, AffiliateTiersSDKType } from "./affiliates";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** GenesisState defines generis state of `x/affiliates` */
-export interface GenesisState {}
+export interface GenesisState {
+  /** The list of affiliate tiers */
+  affiliateTiers: AffiliateTiers;
+}
 export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.affiliates.GenesisState";
   value: Uint8Array;
@@ -12,19 +16,31 @@ export interface GenesisStateProtoMsg {
  * @package dydxprotocol.affiliates
  * @see proto type: dydxprotocol.affiliates.GenesisState
  */
-export interface GenesisStateAmino {}
+export interface GenesisStateAmino {
+  /**
+   * The list of affiliate tiers
+   */
+  affiliate_tiers?: AffiliateTiersAmino;
+}
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.affiliates.GenesisState";
   value: GenesisStateAmino;
 }
 /** GenesisState defines generis state of `x/affiliates` */
-export interface GenesisStateSDKType {}
+export interface GenesisStateSDKType {
+  affiliate_tiers: AffiliateTiersSDKType;
+}
 function createBaseGenesisState(): GenesisState {
-  return {};
+  return {
+    affiliateTiers: AffiliateTiers.fromPartial({})
+  };
 }
 export const GenesisState = {
   typeUrl: "/dydxprotocol.affiliates.GenesisState",
-  encode(_: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.affiliateTiers !== undefined) {
+      AffiliateTiers.encode(message.affiliateTiers, writer.uint32(10).fork()).ldelim();
+    }
     return writer;
   },
   decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
@@ -34,6 +50,9 @@ export const GenesisState = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.affiliateTiers = AffiliateTiers.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -41,16 +60,21 @@ export const GenesisState = {
     }
     return message;
   },
-  fromPartial(_: Partial<GenesisState>): GenesisState {
+  fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
+    message.affiliateTiers = object.affiliateTiers !== undefined && object.affiliateTiers !== null ? AffiliateTiers.fromPartial(object.affiliateTiers) : undefined;
     return message;
   },
-  fromAmino(_: GenesisStateAmino): GenesisState {
+  fromAmino(object: GenesisStateAmino): GenesisState {
     const message = createBaseGenesisState();
+    if (object.affiliate_tiers !== undefined && object.affiliate_tiers !== null) {
+      message.affiliateTiers = AffiliateTiers.fromAmino(object.affiliate_tiers);
+    }
     return message;
   },
-  toAmino(_: GenesisState): GenesisStateAmino {
+  toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
+    obj.affiliate_tiers = message.affiliateTiers ? AffiliateTiers.toAmino(message.affiliateTiers) : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

@@ -26,15 +26,14 @@ message IndexerOrderId {
   fixed32 client_id = 2;
 
   // order_flags represent order flags for the order. This field is invalid if
-  // it's greater than 127 (larger than one byte). Each bit in the first byte
-  // represents a different flag. Currently only two flags are supported.
+  // it's greater than 257. Each bit represents a different flag.
   //
-  // Starting from the bit after the most MSB (note that the MSB is used in
-  // proto varint encoding, and therefore cannot be used): Bit 1 is set if this
-  // order is a Long-Term order (0x40, or 64 as a uint8). Bit 2 is set if this
-  // order is a Conditional order (0x20, or 32 as a uint8).
-  //
-  // If neither bit is set, the order is assumed to be a Short-Term order.
+  // The following are the valid orderId flags:
+  // ShortTerm    = uint32(0)
+  // Conditional  = uint32(32)
+  // LongTerm     = uint32(64)
+  // Twap         = uint32(128)
+  // TwapSuborder = uint32(256) (for internal use only)
   //
   // If both bits are set or bits other than the 2nd and 3rd are set, the order
   // ID is invalid.
@@ -66,12 +65,18 @@ message IndexerOrder {
 
   // The size of this order in base quantums. Must be a multiple of
   // `ClobPair.StepBaseQuantums` (where `ClobPair.Id = orderId.ClobPairId`).
-  uint64 quantums = 3;
+  bytes quantums = 3 [
+    (gogoproto.customtype) = "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The price level that this order will be placed at on the orderbook,
   // in subticks. Must be a multiple of ClobPair.SubticksPerTick
   // (where `ClobPair.Id = orderId.ClobPairId`).
-  uint64 subticks = 4;
+  bytes subticks = 4 [
+    (gogoproto.customtype) = "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // Information about when the order expires.
   oneof good_til_oneof {
@@ -149,7 +154,49 @@ message IndexerOrder {
   // cannot be CONDITION_TYPE_UNSPECIFIED. Value is in subticks.
   // Must be a multiple of ClobPair.SubticksPerTick (where `ClobPair.Id =
   // orderId.ClobPairId`).
-  uint64 conditional_order_trigger_subticks = 11;
+  bytes conditional_order_trigger_subticks = 11 [
+    (gogoproto.customtype) = "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
+
+  // builder_code_params is the metadata for the partner or builder of an order.
+  BuilderCodeParameters builder_code_params = 12;
+
+  // order_router_address is the address of the order router that forwarded this
+  // order.
+  string order_router_address = 13;
+
+  // twap_parameters represent the configuration for a TWAP order. This must be
+  // set for twap orders and will be ignored for all other order types.
+  TwapParameters twap_parameters = 14;
+}
+
+// TwapParameters represents the necessary configuration for a TWAP order.
+message TwapParameters {
+  // Duration of the TWAP order execution in seconds. Must be in the range
+  // [300 (5 minutes), 86400 (24 hours)].
+  uint32 duration = 1;
+
+  // Interval in seconds for each suborder to execute. Must be a
+  // whole number, a factor of the duration, and in the range
+  // [30 (30 seconds), 3600 (1 hour)].
+  uint32 interval = 2;
+
+  // Price tolerance in ppm for each suborder. This will be applied to
+  // the oracle price each time a suborder is triggered. Must be
+  // be in the range [0, 1_000_000).
+  uint32 price_tolerance = 3;
+}
+
+// BuilderCodeParameters represents the metadata for the partner or builder of
+// an order. This allows them to specify a fee for providing there service which
+// will be paid out in the event of an order fill.
+message BuilderCodeParameters {
+  // The address of the builder to which the fee will be paid.
+  string builder_address = 1;
+
+  // The fee enforced on the order in ppm.
+  uint32 fee_ppm = 2;
 }
 
 // Status of the CLOB.

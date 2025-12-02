@@ -3,7 +3,7 @@ import { IndexerOrder, IndexerOrderAmino, IndexerOrderSDKType, IndexerOrderId, I
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { OrderRemovalReason } from "../shared/removal_reason";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { toTimestamp, fromTimestamp } from "../../../helpers";
+import { toTimestamp, fromTimestamp, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /**
  * OrderPlacementStatus is an enum for the resulting status after an order is
  * placed.
@@ -219,7 +219,11 @@ export interface OrderRemoveV1SDKType {
  */
 export interface OrderUpdateV1 {
   orderId?: IndexerOrderId;
-  totalFilledQuantums: bigint;
+  /**
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  totalFilledQuantums: Uint8Array;
 }
 export interface OrderUpdateV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.off_chain_updates.OrderUpdateV1";
@@ -234,6 +238,10 @@ export interface OrderUpdateV1ProtoMsg {
  */
 export interface OrderUpdateV1Amino {
   order_id?: IndexerOrderIdAmino;
+  /**
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
   total_filled_quantums?: string;
 }
 export interface OrderUpdateV1AminoMsg {
@@ -246,7 +254,7 @@ export interface OrderUpdateV1AminoMsg {
  */
 export interface OrderUpdateV1SDKType {
   order_id?: IndexerOrderIdSDKType;
-  total_filled_quantums: bigint;
+  total_filled_quantums: Uint8Array;
 }
 /** OrderReplace messages contain the old order ID and the replacement order. */
 export interface OrderReplaceV1 {
@@ -516,7 +524,7 @@ export const OrderRemoveV1 = {
 function createBaseOrderUpdateV1(): OrderUpdateV1 {
   return {
     orderId: undefined,
-    totalFilledQuantums: BigInt(0)
+    totalFilledQuantums: new Uint8Array()
   };
 }
 export const OrderUpdateV1 = {
@@ -525,8 +533,8 @@ export const OrderUpdateV1 = {
     if (message.orderId !== undefined) {
       IndexerOrderId.encode(message.orderId, writer.uint32(10).fork()).ldelim();
     }
-    if (message.totalFilledQuantums !== BigInt(0)) {
-      writer.uint32(16).uint64(message.totalFilledQuantums);
+    if (message.totalFilledQuantums.length !== 0) {
+      writer.uint32(18).bytes(message.totalFilledQuantums);
     }
     return writer;
   },
@@ -541,7 +549,7 @@ export const OrderUpdateV1 = {
           message.orderId = IndexerOrderId.decode(reader, reader.uint32());
           break;
         case 2:
-          message.totalFilledQuantums = reader.uint64();
+          message.totalFilledQuantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -553,7 +561,7 @@ export const OrderUpdateV1 = {
   fromPartial(object: Partial<OrderUpdateV1>): OrderUpdateV1 {
     const message = createBaseOrderUpdateV1();
     message.orderId = object.orderId !== undefined && object.orderId !== null ? IndexerOrderId.fromPartial(object.orderId) : undefined;
-    message.totalFilledQuantums = object.totalFilledQuantums !== undefined && object.totalFilledQuantums !== null ? BigInt(object.totalFilledQuantums.toString()) : BigInt(0);
+    message.totalFilledQuantums = object.totalFilledQuantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: OrderUpdateV1Amino): OrderUpdateV1 {
@@ -562,14 +570,14 @@ export const OrderUpdateV1 = {
       message.orderId = IndexerOrderId.fromAmino(object.order_id);
     }
     if (object.total_filled_quantums !== undefined && object.total_filled_quantums !== null) {
-      message.totalFilledQuantums = BigInt(object.total_filled_quantums);
+      message.totalFilledQuantums = bytesFromBase64(object.total_filled_quantums);
     }
     return message;
   },
   toAmino(message: OrderUpdateV1): OrderUpdateV1Amino {
     const obj: any = {};
     obj.order_id = message.orderId ? IndexerOrderId.toAmino(message.orderId) : undefined;
-    obj.total_filled_quantums = message.totalFilledQuantums !== BigInt(0) ? message.totalFilledQuantums?.toString() : undefined;
+    obj.total_filled_quantums = message.totalFilledQuantums ? base64FromBytes(message.totalFilledQuantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: OrderUpdateV1AminoMsg): OrderUpdateV1 {

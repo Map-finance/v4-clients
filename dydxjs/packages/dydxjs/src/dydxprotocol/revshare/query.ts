@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { MarketMapperRevenueShareParams, MarketMapperRevenueShareParamsAmino, MarketMapperRevenueShareParamsSDKType } from "./params";
-import { MarketMapperRevShareDetails, MarketMapperRevShareDetailsAmino, MarketMapperRevShareDetailsSDKType } from "./revshare";
+import { MarketMapperRevShareDetails, MarketMapperRevShareDetailsAmino, MarketMapperRevShareDetailsSDKType, UnconditionalRevShareConfig, UnconditionalRevShareConfigAmino, UnconditionalRevShareConfigSDKType, OrderRouterRevShare, OrderRouterRevShareAmino, OrderRouterRevShareSDKType } from "./revshare";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** Queries for the default market mapper revenue share params */
 export interface QueryMarketMapperRevenueShareParams {}
@@ -95,6 +95,100 @@ export interface QueryMarketMapperRevShareDetailsResponseAminoMsg {
 /** Response type for QueryMarketMapperRevShareDetails */
 export interface QueryMarketMapperRevShareDetailsResponseSDKType {
   details: MarketMapperRevShareDetailsSDKType;
+}
+/** Queries unconditional revenue share details */
+export interface QueryUnconditionalRevShareConfig {}
+export interface QueryUnconditionalRevShareConfigProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfig";
+  value: Uint8Array;
+}
+/**
+ * Queries unconditional revenue share details
+ * @name QueryUnconditionalRevShareConfigAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryUnconditionalRevShareConfig
+ */
+export interface QueryUnconditionalRevShareConfigAmino {}
+export interface QueryUnconditionalRevShareConfigAminoMsg {
+  type: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfig";
+  value: QueryUnconditionalRevShareConfigAmino;
+}
+/** Queries unconditional revenue share details */
+export interface QueryUnconditionalRevShareConfigSDKType {}
+/** Response type for QueryUnconditionalRevShareConfig */
+export interface QueryUnconditionalRevShareConfigResponse {
+  config: UnconditionalRevShareConfig;
+}
+export interface QueryUnconditionalRevShareConfigResponseProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfigResponse";
+  value: Uint8Array;
+}
+/**
+ * Response type for QueryUnconditionalRevShareConfig
+ * @name QueryUnconditionalRevShareConfigResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryUnconditionalRevShareConfigResponse
+ */
+export interface QueryUnconditionalRevShareConfigResponseAmino {
+  config?: UnconditionalRevShareConfigAmino;
+}
+export interface QueryUnconditionalRevShareConfigResponseAminoMsg {
+  type: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfigResponse";
+  value: QueryUnconditionalRevShareConfigResponseAmino;
+}
+/** Response type for QueryUnconditionalRevShareConfig */
+export interface QueryUnconditionalRevShareConfigResponseSDKType {
+  config: UnconditionalRevShareConfigSDKType;
+}
+/** Queries order router rev shares */
+export interface QueryOrderRouterRevShare {
+  address: string;
+}
+export interface QueryOrderRouterRevShareProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShare";
+  value: Uint8Array;
+}
+/**
+ * Queries order router rev shares
+ * @name QueryOrderRouterRevShareAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryOrderRouterRevShare
+ */
+export interface QueryOrderRouterRevShareAmino {
+  address?: string;
+}
+export interface QueryOrderRouterRevShareAminoMsg {
+  type: "/dydxprotocol.revshare.QueryOrderRouterRevShare";
+  value: QueryOrderRouterRevShareAmino;
+}
+/** Queries order router rev shares */
+export interface QueryOrderRouterRevShareSDKType {
+  address: string;
+}
+/** Response type for QueryOrderRouterRevShare */
+export interface QueryOrderRouterRevShareResponse {
+  orderRouterRevShare: OrderRouterRevShare;
+}
+export interface QueryOrderRouterRevShareResponseProtoMsg {
+  typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShareResponse";
+  value: Uint8Array;
+}
+/**
+ * Response type for QueryOrderRouterRevShare
+ * @name QueryOrderRouterRevShareResponseAmino
+ * @package dydxprotocol.revshare
+ * @see proto type: dydxprotocol.revshare.QueryOrderRouterRevShareResponse
+ */
+export interface QueryOrderRouterRevShareResponseAmino {
+  order_router_rev_share?: OrderRouterRevShareAmino;
+}
+export interface QueryOrderRouterRevShareResponseAminoMsg {
+  type: "/dydxprotocol.revshare.QueryOrderRouterRevShareResponse";
+  value: QueryOrderRouterRevShareResponseAmino;
+}
+/** Response type for QueryOrderRouterRevShare */
+export interface QueryOrderRouterRevShareResponseSDKType {
+  order_router_rev_share: OrderRouterRevShareSDKType;
 }
 function createBaseQueryMarketMapperRevenueShareParams(): QueryMarketMapperRevenueShareParams {
   return {};
@@ -332,6 +426,245 @@ export const QueryMarketMapperRevShareDetailsResponse = {
     return {
       typeUrl: "/dydxprotocol.revshare.QueryMarketMapperRevShareDetailsResponse",
       value: QueryMarketMapperRevShareDetailsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryUnconditionalRevShareConfig(): QueryUnconditionalRevShareConfig {
+  return {};
+}
+export const QueryUnconditionalRevShareConfig = {
+  typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfig",
+  encode(_: QueryUnconditionalRevShareConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryUnconditionalRevShareConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryUnconditionalRevShareConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<QueryUnconditionalRevShareConfig>): QueryUnconditionalRevShareConfig {
+    const message = createBaseQueryUnconditionalRevShareConfig();
+    return message;
+  },
+  fromAmino(_: QueryUnconditionalRevShareConfigAmino): QueryUnconditionalRevShareConfig {
+    const message = createBaseQueryUnconditionalRevShareConfig();
+    return message;
+  },
+  toAmino(_: QueryUnconditionalRevShareConfig): QueryUnconditionalRevShareConfigAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryUnconditionalRevShareConfigAminoMsg): QueryUnconditionalRevShareConfig {
+    return QueryUnconditionalRevShareConfig.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryUnconditionalRevShareConfigProtoMsg): QueryUnconditionalRevShareConfig {
+    return QueryUnconditionalRevShareConfig.decode(message.value);
+  },
+  toProto(message: QueryUnconditionalRevShareConfig): Uint8Array {
+    return QueryUnconditionalRevShareConfig.encode(message).finish();
+  },
+  toProtoMsg(message: QueryUnconditionalRevShareConfig): QueryUnconditionalRevShareConfigProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfig",
+      value: QueryUnconditionalRevShareConfig.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryUnconditionalRevShareConfigResponse(): QueryUnconditionalRevShareConfigResponse {
+  return {
+    config: UnconditionalRevShareConfig.fromPartial({})
+  };
+}
+export const QueryUnconditionalRevShareConfigResponse = {
+  typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfigResponse",
+  encode(message: QueryUnconditionalRevShareConfigResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.config !== undefined) {
+      UnconditionalRevShareConfig.encode(message.config, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryUnconditionalRevShareConfigResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryUnconditionalRevShareConfigResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.config = UnconditionalRevShareConfig.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryUnconditionalRevShareConfigResponse>): QueryUnconditionalRevShareConfigResponse {
+    const message = createBaseQueryUnconditionalRevShareConfigResponse();
+    message.config = object.config !== undefined && object.config !== null ? UnconditionalRevShareConfig.fromPartial(object.config) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryUnconditionalRevShareConfigResponseAmino): QueryUnconditionalRevShareConfigResponse {
+    const message = createBaseQueryUnconditionalRevShareConfigResponse();
+    if (object.config !== undefined && object.config !== null) {
+      message.config = UnconditionalRevShareConfig.fromAmino(object.config);
+    }
+    return message;
+  },
+  toAmino(message: QueryUnconditionalRevShareConfigResponse): QueryUnconditionalRevShareConfigResponseAmino {
+    const obj: any = {};
+    obj.config = message.config ? UnconditionalRevShareConfig.toAmino(message.config) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryUnconditionalRevShareConfigResponseAminoMsg): QueryUnconditionalRevShareConfigResponse {
+    return QueryUnconditionalRevShareConfigResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryUnconditionalRevShareConfigResponseProtoMsg): QueryUnconditionalRevShareConfigResponse {
+    return QueryUnconditionalRevShareConfigResponse.decode(message.value);
+  },
+  toProto(message: QueryUnconditionalRevShareConfigResponse): Uint8Array {
+    return QueryUnconditionalRevShareConfigResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryUnconditionalRevShareConfigResponse): QueryUnconditionalRevShareConfigResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.QueryUnconditionalRevShareConfigResponse",
+      value: QueryUnconditionalRevShareConfigResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryOrderRouterRevShare(): QueryOrderRouterRevShare {
+  return {
+    address: ""
+  };
+}
+export const QueryOrderRouterRevShare = {
+  typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShare",
+  encode(message: QueryOrderRouterRevShare, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrderRouterRevShare {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderRouterRevShare();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryOrderRouterRevShare>): QueryOrderRouterRevShare {
+    const message = createBaseQueryOrderRouterRevShare();
+    message.address = object.address ?? "";
+    return message;
+  },
+  fromAmino(object: QueryOrderRouterRevShareAmino): QueryOrderRouterRevShare {
+    const message = createBaseQueryOrderRouterRevShare();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderRouterRevShare): QueryOrderRouterRevShareAmino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderRouterRevShareAminoMsg): QueryOrderRouterRevShare {
+    return QueryOrderRouterRevShare.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderRouterRevShareProtoMsg): QueryOrderRouterRevShare {
+    return QueryOrderRouterRevShare.decode(message.value);
+  },
+  toProto(message: QueryOrderRouterRevShare): Uint8Array {
+    return QueryOrderRouterRevShare.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderRouterRevShare): QueryOrderRouterRevShareProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShare",
+      value: QueryOrderRouterRevShare.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryOrderRouterRevShareResponse(): QueryOrderRouterRevShareResponse {
+  return {
+    orderRouterRevShare: OrderRouterRevShare.fromPartial({})
+  };
+}
+export const QueryOrderRouterRevShareResponse = {
+  typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShareResponse",
+  encode(message: QueryOrderRouterRevShareResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.orderRouterRevShare !== undefined) {
+      OrderRouterRevShare.encode(message.orderRouterRevShare, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryOrderRouterRevShareResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOrderRouterRevShareResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.orderRouterRevShare = OrderRouterRevShare.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<QueryOrderRouterRevShareResponse>): QueryOrderRouterRevShareResponse {
+    const message = createBaseQueryOrderRouterRevShareResponse();
+    message.orderRouterRevShare = object.orderRouterRevShare !== undefined && object.orderRouterRevShare !== null ? OrderRouterRevShare.fromPartial(object.orderRouterRevShare) : undefined;
+    return message;
+  },
+  fromAmino(object: QueryOrderRouterRevShareResponseAmino): QueryOrderRouterRevShareResponse {
+    const message = createBaseQueryOrderRouterRevShareResponse();
+    if (object.order_router_rev_share !== undefined && object.order_router_rev_share !== null) {
+      message.orderRouterRevShare = OrderRouterRevShare.fromAmino(object.order_router_rev_share);
+    }
+    return message;
+  },
+  toAmino(message: QueryOrderRouterRevShareResponse): QueryOrderRouterRevShareResponseAmino {
+    const obj: any = {};
+    obj.order_router_rev_share = message.orderRouterRevShare ? OrderRouterRevShare.toAmino(message.orderRouterRevShare) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryOrderRouterRevShareResponseAminoMsg): QueryOrderRouterRevShareResponse {
+    return QueryOrderRouterRevShareResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryOrderRouterRevShareResponseProtoMsg): QueryOrderRouterRevShareResponse {
+    return QueryOrderRouterRevShareResponse.decode(message.value);
+  },
+  toProto(message: QueryOrderRouterRevShareResponse): Uint8Array {
+    return QueryOrderRouterRevShareResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryOrderRouterRevShareResponse): QueryOrderRouterRevShareResponseProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.revshare.QueryOrderRouterRevShareResponse",
+      value: QueryOrderRouterRevShareResponse.encode(message).finish()
     };
   }
 };

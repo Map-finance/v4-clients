@@ -2,16 +2,19 @@
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "../subaccounts/subaccount";
 import { ClobPair, ClobPairAmino, ClobPairSDKType } from "./clob_pair";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /** MEVMatch represents all necessary data to calculate MEV for a regular match. */
 export interface MEVMatch {
   takerOrderSubaccountId?: SubaccountId;
   takerFeePpm: number;
   makerOrderSubaccountId?: SubaccountId;
-  makerOrderSubticks: bigint;
+  /** Supports arbitrary precision for high-precision price calculations. */
+  makerOrderSubticks: Uint8Array;
   makerOrderIsBuy: boolean;
   makerFeePpm: number;
   clobPairId: number;
-  fillAmount: bigint;
+  /** Supports arbitrary precision for tokens with high decimal places. */
+  fillAmount: Uint8Array;
 }
 export interface MEVMatchProtoMsg {
   typeUrl: "/dydxprotocol.clob.MEVMatch";
@@ -27,10 +30,16 @@ export interface MEVMatchAmino {
   taker_order_subaccount_id?: SubaccountIdAmino;
   taker_fee_ppm?: number;
   maker_order_subaccount_id?: SubaccountIdAmino;
+  /**
+   * Supports arbitrary precision for high-precision price calculations.
+   */
   maker_order_subticks?: string;
   maker_order_is_buy?: boolean;
   maker_fee_ppm?: number;
   clob_pair_id?: number;
+  /**
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
   fill_amount?: string;
 }
 export interface MEVMatchAminoMsg {
@@ -42,11 +51,11 @@ export interface MEVMatchSDKType {
   taker_order_subaccount_id?: SubaccountIdSDKType;
   taker_fee_ppm: number;
   maker_order_subaccount_id?: SubaccountIdSDKType;
-  maker_order_subticks: bigint;
+  maker_order_subticks: Uint8Array;
   maker_order_is_buy: boolean;
   maker_fee_ppm: number;
   clob_pair_id: number;
-  fill_amount: bigint;
+  fill_amount: Uint8Array;
 }
 /**
  * MEVLiquidationMatch represents all necessary data to calculate MEV for a
@@ -56,11 +65,13 @@ export interface MEVLiquidationMatch {
   liquidatedSubaccountId: SubaccountId;
   insuranceFundDeltaQuoteQuantums: bigint;
   makerOrderSubaccountId: SubaccountId;
-  makerOrderSubticks: bigint;
+  /** Supports arbitrary precision for high-precision price calculations. */
+  makerOrderSubticks: Uint8Array;
   makerOrderIsBuy: boolean;
   makerFeePpm: number;
   clobPairId: number;
-  fillAmount: bigint;
+  /** Supports arbitrary precision for tokens with high decimal places. */
+  fillAmount: Uint8Array;
 }
 export interface MEVLiquidationMatchProtoMsg {
   typeUrl: "/dydxprotocol.clob.MEVLiquidationMatch";
@@ -77,10 +88,16 @@ export interface MEVLiquidationMatchAmino {
   liquidated_subaccount_id?: SubaccountIdAmino;
   insurance_fund_delta_quote_quantums?: string;
   maker_order_subaccount_id?: SubaccountIdAmino;
+  /**
+   * Supports arbitrary precision for high-precision price calculations.
+   */
   maker_order_subticks?: string;
   maker_order_is_buy?: boolean;
   maker_fee_ppm?: number;
   clob_pair_id?: number;
+  /**
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
   fill_amount?: string;
 }
 export interface MEVLiquidationMatchAminoMsg {
@@ -95,16 +112,17 @@ export interface MEVLiquidationMatchSDKType {
   liquidated_subaccount_id: SubaccountIdSDKType;
   insurance_fund_delta_quote_quantums: bigint;
   maker_order_subaccount_id: SubaccountIdSDKType;
-  maker_order_subticks: bigint;
+  maker_order_subticks: Uint8Array;
   maker_order_is_buy: boolean;
   maker_fee_ppm: number;
   clob_pair_id: number;
-  fill_amount: bigint;
+  fill_amount: Uint8Array;
 }
 /** ClobMidPrice contains the mid price of a CLOB pair, represented by it's ID. */
 export interface ClobMidPrice {
   clobPair: ClobPair;
-  subticks: bigint;
+  /** Supports arbitrary precision for high-precision price calculations. */
+  subticks: Uint8Array;
 }
 export interface ClobMidPriceProtoMsg {
   typeUrl: "/dydxprotocol.clob.ClobMidPrice";
@@ -118,6 +136,9 @@ export interface ClobMidPriceProtoMsg {
  */
 export interface ClobMidPriceAmino {
   clob_pair?: ClobPairAmino;
+  /**
+   * Supports arbitrary precision for high-precision price calculations.
+   */
   subticks?: string;
 }
 export interface ClobMidPriceAminoMsg {
@@ -127,7 +148,7 @@ export interface ClobMidPriceAminoMsg {
 /** ClobMidPrice contains the mid price of a CLOB pair, represented by it's ID. */
 export interface ClobMidPriceSDKType {
   clob_pair: ClobPairSDKType;
-  subticks: bigint;
+  subticks: Uint8Array;
 }
 /**
  * ValidatorMevMatches contains all matches from the validator's local
@@ -210,11 +231,11 @@ function createBaseMEVMatch(): MEVMatch {
     takerOrderSubaccountId: undefined,
     takerFeePpm: 0,
     makerOrderSubaccountId: undefined,
-    makerOrderSubticks: BigInt(0),
+    makerOrderSubticks: new Uint8Array(),
     makerOrderIsBuy: false,
     makerFeePpm: 0,
     clobPairId: 0,
-    fillAmount: BigInt(0)
+    fillAmount: new Uint8Array()
   };
 }
 export const MEVMatch = {
@@ -229,8 +250,8 @@ export const MEVMatch = {
     if (message.makerOrderSubaccountId !== undefined) {
       SubaccountId.encode(message.makerOrderSubaccountId, writer.uint32(26).fork()).ldelim();
     }
-    if (message.makerOrderSubticks !== BigInt(0)) {
-      writer.uint32(32).uint64(message.makerOrderSubticks);
+    if (message.makerOrderSubticks.length !== 0) {
+      writer.uint32(34).bytes(message.makerOrderSubticks);
     }
     if (message.makerOrderIsBuy === true) {
       writer.uint32(40).bool(message.makerOrderIsBuy);
@@ -241,8 +262,8 @@ export const MEVMatch = {
     if (message.clobPairId !== 0) {
       writer.uint32(56).uint32(message.clobPairId);
     }
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(64).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(66).bytes(message.fillAmount);
     }
     return writer;
   },
@@ -263,7 +284,7 @@ export const MEVMatch = {
           message.makerOrderSubaccountId = SubaccountId.decode(reader, reader.uint32());
           break;
         case 4:
-          message.makerOrderSubticks = reader.uint64();
+          message.makerOrderSubticks = reader.bytes();
           break;
         case 5:
           message.makerOrderIsBuy = reader.bool();
@@ -275,7 +296,7 @@ export const MEVMatch = {
           message.clobPairId = reader.uint32();
           break;
         case 8:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -289,11 +310,11 @@ export const MEVMatch = {
     message.takerOrderSubaccountId = object.takerOrderSubaccountId !== undefined && object.takerOrderSubaccountId !== null ? SubaccountId.fromPartial(object.takerOrderSubaccountId) : undefined;
     message.takerFeePpm = object.takerFeePpm ?? 0;
     message.makerOrderSubaccountId = object.makerOrderSubaccountId !== undefined && object.makerOrderSubaccountId !== null ? SubaccountId.fromPartial(object.makerOrderSubaccountId) : undefined;
-    message.makerOrderSubticks = object.makerOrderSubticks !== undefined && object.makerOrderSubticks !== null ? BigInt(object.makerOrderSubticks.toString()) : BigInt(0);
+    message.makerOrderSubticks = object.makerOrderSubticks ?? new Uint8Array();
     message.makerOrderIsBuy = object.makerOrderIsBuy ?? false;
     message.makerFeePpm = object.makerFeePpm ?? 0;
     message.clobPairId = object.clobPairId ?? 0;
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MEVMatchAmino): MEVMatch {
@@ -308,7 +329,7 @@ export const MEVMatch = {
       message.makerOrderSubaccountId = SubaccountId.fromAmino(object.maker_order_subaccount_id);
     }
     if (object.maker_order_subticks !== undefined && object.maker_order_subticks !== null) {
-      message.makerOrderSubticks = BigInt(object.maker_order_subticks);
+      message.makerOrderSubticks = bytesFromBase64(object.maker_order_subticks);
     }
     if (object.maker_order_is_buy !== undefined && object.maker_order_is_buy !== null) {
       message.makerOrderIsBuy = object.maker_order_is_buy;
@@ -320,7 +341,7 @@ export const MEVMatch = {
       message.clobPairId = object.clob_pair_id;
     }
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     return message;
   },
@@ -329,11 +350,11 @@ export const MEVMatch = {
     obj.taker_order_subaccount_id = message.takerOrderSubaccountId ? SubaccountId.toAmino(message.takerOrderSubaccountId) : undefined;
     obj.taker_fee_ppm = message.takerFeePpm === 0 ? undefined : message.takerFeePpm;
     obj.maker_order_subaccount_id = message.makerOrderSubaccountId ? SubaccountId.toAmino(message.makerOrderSubaccountId) : undefined;
-    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks?.toString() : undefined;
+    obj.maker_order_subticks = message.makerOrderSubticks ? base64FromBytes(message.makerOrderSubticks) : undefined;
     obj.maker_order_is_buy = message.makerOrderIsBuy === false ? undefined : message.makerOrderIsBuy;
     obj.maker_fee_ppm = message.makerFeePpm === 0 ? undefined : message.makerFeePpm;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
     return obj;
   },
   fromAminoMsg(object: MEVMatchAminoMsg): MEVMatch {
@@ -357,11 +378,11 @@ function createBaseMEVLiquidationMatch(): MEVLiquidationMatch {
     liquidatedSubaccountId: SubaccountId.fromPartial({}),
     insuranceFundDeltaQuoteQuantums: BigInt(0),
     makerOrderSubaccountId: SubaccountId.fromPartial({}),
-    makerOrderSubticks: BigInt(0),
+    makerOrderSubticks: new Uint8Array(),
     makerOrderIsBuy: false,
     makerFeePpm: 0,
     clobPairId: 0,
-    fillAmount: BigInt(0)
+    fillAmount: new Uint8Array()
   };
 }
 export const MEVLiquidationMatch = {
@@ -376,8 +397,8 @@ export const MEVLiquidationMatch = {
     if (message.makerOrderSubaccountId !== undefined) {
       SubaccountId.encode(message.makerOrderSubaccountId, writer.uint32(26).fork()).ldelim();
     }
-    if (message.makerOrderSubticks !== BigInt(0)) {
-      writer.uint32(32).uint64(message.makerOrderSubticks);
+    if (message.makerOrderSubticks.length !== 0) {
+      writer.uint32(34).bytes(message.makerOrderSubticks);
     }
     if (message.makerOrderIsBuy === true) {
       writer.uint32(40).bool(message.makerOrderIsBuy);
@@ -388,8 +409,8 @@ export const MEVLiquidationMatch = {
     if (message.clobPairId !== 0) {
       writer.uint32(56).uint32(message.clobPairId);
     }
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(64).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(66).bytes(message.fillAmount);
     }
     return writer;
   },
@@ -410,7 +431,7 @@ export const MEVLiquidationMatch = {
           message.makerOrderSubaccountId = SubaccountId.decode(reader, reader.uint32());
           break;
         case 4:
-          message.makerOrderSubticks = reader.uint64();
+          message.makerOrderSubticks = reader.bytes();
           break;
         case 5:
           message.makerOrderIsBuy = reader.bool();
@@ -422,7 +443,7 @@ export const MEVLiquidationMatch = {
           message.clobPairId = reader.uint32();
           break;
         case 8:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -436,11 +457,11 @@ export const MEVLiquidationMatch = {
     message.liquidatedSubaccountId = object.liquidatedSubaccountId !== undefined && object.liquidatedSubaccountId !== null ? SubaccountId.fromPartial(object.liquidatedSubaccountId) : undefined;
     message.insuranceFundDeltaQuoteQuantums = object.insuranceFundDeltaQuoteQuantums !== undefined && object.insuranceFundDeltaQuoteQuantums !== null ? BigInt(object.insuranceFundDeltaQuoteQuantums.toString()) : BigInt(0);
     message.makerOrderSubaccountId = object.makerOrderSubaccountId !== undefined && object.makerOrderSubaccountId !== null ? SubaccountId.fromPartial(object.makerOrderSubaccountId) : undefined;
-    message.makerOrderSubticks = object.makerOrderSubticks !== undefined && object.makerOrderSubticks !== null ? BigInt(object.makerOrderSubticks.toString()) : BigInt(0);
+    message.makerOrderSubticks = object.makerOrderSubticks ?? new Uint8Array();
     message.makerOrderIsBuy = object.makerOrderIsBuy ?? false;
     message.makerFeePpm = object.makerFeePpm ?? 0;
     message.clobPairId = object.clobPairId ?? 0;
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MEVLiquidationMatchAmino): MEVLiquidationMatch {
@@ -455,7 +476,7 @@ export const MEVLiquidationMatch = {
       message.makerOrderSubaccountId = SubaccountId.fromAmino(object.maker_order_subaccount_id);
     }
     if (object.maker_order_subticks !== undefined && object.maker_order_subticks !== null) {
-      message.makerOrderSubticks = BigInt(object.maker_order_subticks);
+      message.makerOrderSubticks = bytesFromBase64(object.maker_order_subticks);
     }
     if (object.maker_order_is_buy !== undefined && object.maker_order_is_buy !== null) {
       message.makerOrderIsBuy = object.maker_order_is_buy;
@@ -467,7 +488,7 @@ export const MEVLiquidationMatch = {
       message.clobPairId = object.clob_pair_id;
     }
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     return message;
   },
@@ -476,11 +497,11 @@ export const MEVLiquidationMatch = {
     obj.liquidated_subaccount_id = message.liquidatedSubaccountId ? SubaccountId.toAmino(message.liquidatedSubaccountId) : undefined;
     obj.insurance_fund_delta_quote_quantums = message.insuranceFundDeltaQuoteQuantums !== BigInt(0) ? message.insuranceFundDeltaQuoteQuantums?.toString() : undefined;
     obj.maker_order_subaccount_id = message.makerOrderSubaccountId ? SubaccountId.toAmino(message.makerOrderSubaccountId) : undefined;
-    obj.maker_order_subticks = message.makerOrderSubticks !== BigInt(0) ? message.makerOrderSubticks?.toString() : undefined;
+    obj.maker_order_subticks = message.makerOrderSubticks ? base64FromBytes(message.makerOrderSubticks) : undefined;
     obj.maker_order_is_buy = message.makerOrderIsBuy === false ? undefined : message.makerOrderIsBuy;
     obj.maker_fee_ppm = message.makerFeePpm === 0 ? undefined : message.makerFeePpm;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
     return obj;
   },
   fromAminoMsg(object: MEVLiquidationMatchAminoMsg): MEVLiquidationMatch {
@@ -502,7 +523,7 @@ export const MEVLiquidationMatch = {
 function createBaseClobMidPrice(): ClobMidPrice {
   return {
     clobPair: ClobPair.fromPartial({}),
-    subticks: BigInt(0)
+    subticks: new Uint8Array()
   };
 }
 export const ClobMidPrice = {
@@ -511,8 +532,8 @@ export const ClobMidPrice = {
     if (message.clobPair !== undefined) {
       ClobPair.encode(message.clobPair, writer.uint32(10).fork()).ldelim();
     }
-    if (message.subticks !== BigInt(0)) {
-      writer.uint32(16).uint64(message.subticks);
+    if (message.subticks.length !== 0) {
+      writer.uint32(18).bytes(message.subticks);
     }
     return writer;
   },
@@ -527,7 +548,7 @@ export const ClobMidPrice = {
           message.clobPair = ClobPair.decode(reader, reader.uint32());
           break;
         case 2:
-          message.subticks = reader.uint64();
+          message.subticks = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -539,7 +560,7 @@ export const ClobMidPrice = {
   fromPartial(object: Partial<ClobMidPrice>): ClobMidPrice {
     const message = createBaseClobMidPrice();
     message.clobPair = object.clobPair !== undefined && object.clobPair !== null ? ClobPair.fromPartial(object.clobPair) : undefined;
-    message.subticks = object.subticks !== undefined && object.subticks !== null ? BigInt(object.subticks.toString()) : BigInt(0);
+    message.subticks = object.subticks ?? new Uint8Array();
     return message;
   },
   fromAmino(object: ClobMidPriceAmino): ClobMidPrice {
@@ -548,14 +569,14 @@ export const ClobMidPrice = {
       message.clobPair = ClobPair.fromAmino(object.clob_pair);
     }
     if (object.subticks !== undefined && object.subticks !== null) {
-      message.subticks = BigInt(object.subticks);
+      message.subticks = bytesFromBase64(object.subticks);
     }
     return message;
   },
   toAmino(message: ClobMidPrice): ClobMidPriceAmino {
     const obj: any = {};
     obj.clob_pair = message.clobPair ? ClobPair.toAmino(message.clobPair) : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
+    obj.subticks = message.subticks ? base64FromBytes(message.subticks) : undefined;
     return obj;
   },
   fromAminoMsg(object: ClobMidPriceAminoMsg): ClobMidPrice {

@@ -2,6 +2,7 @@
 import { OrderId, OrderIdAmino, OrderIdSDKType } from "./order";
 import { SubaccountId, SubaccountIdAmino, SubaccountIdSDKType } from "../subaccounts/subaccount";
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /**
  * ClobMatch represents an operations queue entry around all different types
  * of matches, specifically regular matches, liquidation matches, and
@@ -47,9 +48,10 @@ export interface ClobMatchSDKType {
 export interface MakerFill {
   /**
    * The filled amount of the matched maker order, in base quantums.
-   * TODO(CLOB-571): update to use SerializableInt.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  fillAmount: bigint;
+  fillAmount: Uint8Array;
   /** The `OrderId` of the matched maker order. */
   makerOrderId: OrderId;
 }
@@ -66,7 +68,8 @@ export interface MakerFillProtoMsg {
 export interface MakerFillAmino {
   /**
    * The filled amount of the matched maker order, in base quantums.
-   * TODO(CLOB-571): update to use SerializableInt.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   fill_amount?: string;
   /**
@@ -80,7 +83,7 @@ export interface MakerFillAminoMsg {
 }
 /** MakerFill represents the filled amount of a matched maker order. */
 export interface MakerFillSDKType {
-  fill_amount: bigint;
+  fill_amount: Uint8Array;
   maker_order_id: OrderIdSDKType;
 }
 /** MatchOrders is an injected message used for matching orders. */
@@ -130,8 +133,11 @@ export interface MatchPerpetualLiquidation {
   clobPairId: number;
   /** The ID of the perpetual involved in the liquidation. */
   perpetualId: number;
-  /** The total size of the liquidation order including any unfilled size. */
-  totalSize: bigint;
+  /**
+   * The total size of the liquidation order including any unfilled size.
+   * Supports arbitrary precision for tokens with high decimal places.
+   */
+  totalSize: Uint8Array;
   /** `true` if liquidating a short position, `false` otherwise. */
   isBuy: boolean;
   /** An ordered list of fills created by this liquidation. */
@@ -163,6 +169,7 @@ export interface MatchPerpetualLiquidationAmino {
   perpetual_id?: number;
   /**
    * The total size of the liquidation order including any unfilled size.
+   * Supports arbitrary precision for tokens with high decimal places.
    */
   total_size?: string;
   /**
@@ -186,7 +193,7 @@ export interface MatchPerpetualLiquidationSDKType {
   liquidated: SubaccountIdSDKType;
   clob_pair_id: number;
   perpetual_id: number;
-  total_size: bigint;
+  total_size: Uint8Array;
   is_buy: boolean;
   fills: MakerFillSDKType[];
 }
@@ -265,9 +272,10 @@ export interface MatchPerpetualDeleveraging_Fill {
   /**
    * The amount filled between the liquidated and offsetting position, in
    * base quantums.
-   * TODO(CLOB-571): update to use SerializableInt.
+   * Supports arbitrary precision for tokens with high decimal places (e.g.,
+   * 18 decimals).
    */
-  fillAmount: bigint;
+  fillAmount: Uint8Array;
 }
 export interface MatchPerpetualDeleveraging_FillProtoMsg {
   typeUrl: "/dydxprotocol.clob.Fill";
@@ -288,7 +296,8 @@ export interface MatchPerpetualDeleveraging_FillAmino {
   /**
    * The amount filled between the liquidated and offsetting position, in
    * base quantums.
-   * TODO(CLOB-571): update to use SerializableInt.
+   * Supports arbitrary precision for tokens with high decimal places (e.g.,
+   * 18 decimals).
    */
   fill_amount?: string;
 }
@@ -299,7 +308,7 @@ export interface MatchPerpetualDeleveraging_FillAminoMsg {
 /** Fill represents a fill between the liquidated and offsetting subaccount. */
 export interface MatchPerpetualDeleveraging_FillSDKType {
   offsetting_subaccount_id: SubaccountIdSDKType;
-  fill_amount: bigint;
+  fill_amount: Uint8Array;
 }
 function createBaseClobMatch(): ClobMatch {
   return {
@@ -390,15 +399,15 @@ export const ClobMatch = {
 };
 function createBaseMakerFill(): MakerFill {
   return {
-    fillAmount: BigInt(0),
+    fillAmount: new Uint8Array(),
     makerOrderId: OrderId.fromPartial({})
   };
 }
 export const MakerFill = {
   typeUrl: "/dydxprotocol.clob.MakerFill",
   encode(message: MakerFill, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(8).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(10).bytes(message.fillAmount);
     }
     if (message.makerOrderId !== undefined) {
       OrderId.encode(message.makerOrderId, writer.uint32(18).fork()).ldelim();
@@ -413,7 +422,7 @@ export const MakerFill = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         case 2:
           message.makerOrderId = OrderId.decode(reader, reader.uint32());
@@ -427,14 +436,14 @@ export const MakerFill = {
   },
   fromPartial(object: Partial<MakerFill>): MakerFill {
     const message = createBaseMakerFill();
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
     message.makerOrderId = object.makerOrderId !== undefined && object.makerOrderId !== null ? OrderId.fromPartial(object.makerOrderId) : undefined;
     return message;
   },
   fromAmino(object: MakerFillAmino): MakerFill {
     const message = createBaseMakerFill();
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     if (object.maker_order_id !== undefined && object.maker_order_id !== null) {
       message.makerOrderId = OrderId.fromAmino(object.maker_order_id);
@@ -443,7 +452,7 @@ export const MakerFill = {
   },
   toAmino(message: MakerFill): MakerFillAmino {
     const obj: any = {};
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
     obj.maker_order_id = message.makerOrderId ? OrderId.toAmino(message.makerOrderId) : undefined;
     return obj;
   },
@@ -545,7 +554,7 @@ function createBaseMatchPerpetualLiquidation(): MatchPerpetualLiquidation {
     liquidated: SubaccountId.fromPartial({}),
     clobPairId: 0,
     perpetualId: 0,
-    totalSize: BigInt(0),
+    totalSize: new Uint8Array(),
     isBuy: false,
     fills: []
   };
@@ -562,8 +571,8 @@ export const MatchPerpetualLiquidation = {
     if (message.perpetualId !== 0) {
       writer.uint32(24).uint32(message.perpetualId);
     }
-    if (message.totalSize !== BigInt(0)) {
-      writer.uint32(32).uint64(message.totalSize);
+    if (message.totalSize.length !== 0) {
+      writer.uint32(34).bytes(message.totalSize);
     }
     if (message.isBuy === true) {
       writer.uint32(40).bool(message.isBuy);
@@ -590,7 +599,7 @@ export const MatchPerpetualLiquidation = {
           message.perpetualId = reader.uint32();
           break;
         case 4:
-          message.totalSize = reader.uint64();
+          message.totalSize = reader.bytes();
           break;
         case 5:
           message.isBuy = reader.bool();
@@ -610,7 +619,7 @@ export const MatchPerpetualLiquidation = {
     message.liquidated = object.liquidated !== undefined && object.liquidated !== null ? SubaccountId.fromPartial(object.liquidated) : undefined;
     message.clobPairId = object.clobPairId ?? 0;
     message.perpetualId = object.perpetualId ?? 0;
-    message.totalSize = object.totalSize !== undefined && object.totalSize !== null ? BigInt(object.totalSize.toString()) : BigInt(0);
+    message.totalSize = object.totalSize ?? new Uint8Array();
     message.isBuy = object.isBuy ?? false;
     message.fills = object.fills?.map(e => MakerFill.fromPartial(e)) || [];
     return message;
@@ -627,7 +636,7 @@ export const MatchPerpetualLiquidation = {
       message.perpetualId = object.perpetual_id;
     }
     if (object.total_size !== undefined && object.total_size !== null) {
-      message.totalSize = BigInt(object.total_size);
+      message.totalSize = bytesFromBase64(object.total_size);
     }
     if (object.is_buy !== undefined && object.is_buy !== null) {
       message.isBuy = object.is_buy;
@@ -640,7 +649,7 @@ export const MatchPerpetualLiquidation = {
     obj.liquidated = message.liquidated ? SubaccountId.toAmino(message.liquidated) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize?.toString() : undefined;
+    obj.total_size = message.totalSize ? base64FromBytes(message.totalSize) : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
     if (message.fills) {
       obj.fills = message.fills.map(e => e ? MakerFill.toAmino(e) : undefined);
@@ -769,7 +778,7 @@ export const MatchPerpetualDeleveraging = {
 function createBaseMatchPerpetualDeleveraging_Fill(): MatchPerpetualDeleveraging_Fill {
   return {
     offsettingSubaccountId: SubaccountId.fromPartial({}),
-    fillAmount: BigInt(0)
+    fillAmount: new Uint8Array()
   };
 }
 export const MatchPerpetualDeleveraging_Fill = {
@@ -778,8 +787,8 @@ export const MatchPerpetualDeleveraging_Fill = {
     if (message.offsettingSubaccountId !== undefined) {
       SubaccountId.encode(message.offsettingSubaccountId, writer.uint32(10).fork()).ldelim();
     }
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(16).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(18).bytes(message.fillAmount);
     }
     return writer;
   },
@@ -794,7 +803,7 @@ export const MatchPerpetualDeleveraging_Fill = {
           message.offsettingSubaccountId = SubaccountId.decode(reader, reader.uint32());
           break;
         case 2:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -806,7 +815,7 @@ export const MatchPerpetualDeleveraging_Fill = {
   fromPartial(object: Partial<MatchPerpetualDeleveraging_Fill>): MatchPerpetualDeleveraging_Fill {
     const message = createBaseMatchPerpetualDeleveraging_Fill();
     message.offsettingSubaccountId = object.offsettingSubaccountId !== undefined && object.offsettingSubaccountId !== null ? SubaccountId.fromPartial(object.offsettingSubaccountId) : undefined;
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MatchPerpetualDeleveraging_FillAmino): MatchPerpetualDeleveraging_Fill {
@@ -815,14 +824,14 @@ export const MatchPerpetualDeleveraging_Fill = {
       message.offsettingSubaccountId = SubaccountId.fromAmino(object.offsetting_subaccount_id);
     }
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     return message;
   },
   toAmino(message: MatchPerpetualDeleveraging_Fill): MatchPerpetualDeleveraging_FillAmino {
     const obj: any = {};
     obj.offsetting_subaccount_id = message.offsettingSubaccountId ? SubaccountId.toAmino(message.offsettingSubaccountId) : undefined;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
     return obj;
   },
   fromAminoMsg(object: MatchPerpetualDeleveraging_FillAminoMsg): MatchPerpetualDeleveraging_Fill {

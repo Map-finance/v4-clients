@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgAcknowledgeBridges, MsgCompleteBridge, MsgUpdateEventParams, MsgUpdateProposeParams, MsgUpdateSafetyParams } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.bridge.MsgAcknowledgeBridges", MsgAcknowledgeBridges], ["/dydxprotocol.bridge.MsgCompleteBridge", MsgCompleteBridge], ["/dydxprotocol.bridge.MsgUpdateEventParams", MsgUpdateEventParams], ["/dydxprotocol.bridge.MsgUpdateProposeParams", MsgUpdateProposeParams], ["/dydxprotocol.bridge.MsgUpdateSafetyParams", MsgUpdateSafetyParams]];
+import { MsgAcknowledgeBridges, MsgCompleteBridge, MsgUpdateEventParams, MsgUpdateProposeParams, MsgUpdateSafetyParams, MsgUpdateAcknowledgedEventInfo } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/dydxprotocol.bridge.MsgAcknowledgeBridges", MsgAcknowledgeBridges], ["/dydxprotocol.bridge.MsgCompleteBridge", MsgCompleteBridge], ["/dydxprotocol.bridge.MsgUpdateEventParams", MsgUpdateEventParams], ["/dydxprotocol.bridge.MsgUpdateProposeParams", MsgUpdateProposeParams], ["/dydxprotocol.bridge.MsgUpdateSafetyParams", MsgUpdateSafetyParams], ["/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo", MsgUpdateAcknowledgedEventInfo]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -38,6 +38,12 @@ export const MessageComposer = {
         typeUrl: "/dydxprotocol.bridge.MsgUpdateSafetyParams",
         value: MsgUpdateSafetyParams.encode(value).finish()
       };
+    },
+    updateAcknowledgedEventInfo(value: MsgUpdateAcknowledgedEventInfo) {
+      return {
+        typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
+        value: MsgUpdateAcknowledgedEventInfo.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -68,6 +74,12 @@ export const MessageComposer = {
     updateSafetyParams(value: MsgUpdateSafetyParams) {
       return {
         typeUrl: "/dydxprotocol.bridge.MsgUpdateSafetyParams",
+        value
+      };
+    },
+    updateAcknowledgedEventInfo(value: MsgUpdateAcknowledgedEventInfo) {
+      return {
+        typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
         value
       };
     }
@@ -101,6 +113,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/dydxprotocol.bridge.MsgUpdateSafetyParams",
         value: MsgUpdateSafetyParams.fromPartial(value)
+      };
+    },
+    updateAcknowledgedEventInfo(value: MsgUpdateAcknowledgedEventInfo) {
+      return {
+        typeUrl: "/dydxprotocol.bridge.MsgUpdateAcknowledgedEventInfo",
+        value: MsgUpdateAcknowledgedEventInfo.fromPartial(value)
       };
     }
   }

@@ -437,7 +437,8 @@ export interface TransferEventV1 {
   assetId: number;
   /**
    * The amount of asset in quantums to transfer.
-   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   amount: Uint8Array;
   /**
@@ -475,7 +476,8 @@ export interface TransferEventV1Amino {
   asset_id?: number;
   /**
    * The amount of asset in quantums to transfer.
-   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   amount?: string;
   /**
@@ -518,33 +520,71 @@ export interface OrderFillEventV1 {
   makerOrder: IndexerOrder;
   order?: IndexerOrder;
   liquidationOrder?: LiquidationOrderV1;
-  /** Fill amount in base quantums. */
-  fillAmount: bigint;
-  /** Maker fee in USDC quantums. */
-  makerFee: bigint;
+  /**
+   * Fill amount in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  fillAmount: Uint8Array;
+  /**
+   * Maker fee in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  makerFee: Uint8Array;
   /**
    * Taker fee in USDC quantums. If the taker order is a liquidation, then this
    * represents the special liquidation fee, not the standard taker fee.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  takerFee: bigint;
-  /** Total filled of the maker order in base quantums. */
-  totalFilledMaker: bigint;
-  /** Total filled of the taker order in base quantums. */
-  totalFilledTaker: bigint;
-  /** rev share for affiliates in USDC quantums. */
-  affiliateRevShare: bigint;
-  /** fee for maker builder in USDC quantums. */
-  makerBuilderFee: bigint;
-  /** fee for taker builder in USDC quantums. */
-  takerBuilderFee: bigint;
+  takerFee: Uint8Array;
+  /**
+   * Total filled of the maker order in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  totalFilledMaker: Uint8Array;
+  /**
+   * Total filled of the taker order in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  totalFilledTaker: Uint8Array;
+  /**
+   * rev share for affiliates in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  affiliateRevShare: Uint8Array;
+  /**
+   * fee for maker builder in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  makerBuilderFee: Uint8Array;
+  /**
+   * fee for taker builder in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  takerBuilderFee: Uint8Array;
   /** builder address for maker */
   makerBuilderAddress: string;
   /** builder address for taker */
   takerBuilderAddress: string;
-  /** fee for maker order router in USDC quantums */
-  makerOrderRouterFee: bigint;
-  /** fee for taker order router in USDC quantums */
-  takerOrderRouterFee: bigint;
+  /**
+   * fee for maker order router in USDC quantums
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  makerOrderRouterFee: Uint8Array;
+  /**
+   * fee for taker order router in USDC quantums
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  takerOrderRouterFee: Uint8Array;
   /** order router address for maker */
   makerOrderRouterAddress: string;
   /** order router address for taker */
@@ -568,35 +608,51 @@ export interface OrderFillEventV1Amino {
   liquidation_order?: LiquidationOrderV1Amino;
   /**
    * Fill amount in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   fill_amount?: string;
   /**
    * Maker fee in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   maker_fee?: string;
   /**
    * Taker fee in USDC quantums. If the taker order is a liquidation, then this
    * represents the special liquidation fee, not the standard taker fee.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   taker_fee?: string;
   /**
    * Total filled of the maker order in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   total_filled_maker?: string;
   /**
    * Total filled of the taker order in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   total_filled_taker?: string;
   /**
    * rev share for affiliates in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   affiliate_rev_share?: string;
   /**
    * fee for maker builder in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   maker_builder_fee?: string;
   /**
    * fee for taker builder in USDC quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   taker_builder_fee?: string;
   /**
@@ -609,10 +665,14 @@ export interface OrderFillEventV1Amino {
   taker_builder_address?: string;
   /**
    * fee for maker order router in USDC quantums
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   maker_order_router_fee?: string;
   /**
    * fee for taker order router in USDC quantums
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   taker_order_router_fee?: string;
   /**
@@ -637,18 +697,18 @@ export interface OrderFillEventV1SDKType {
   maker_order: IndexerOrderSDKType;
   order?: IndexerOrderSDKType;
   liquidation_order?: LiquidationOrderV1SDKType;
-  fill_amount: bigint;
-  maker_fee: bigint;
-  taker_fee: bigint;
-  total_filled_maker: bigint;
-  total_filled_taker: bigint;
-  affiliate_rev_share: bigint;
-  maker_builder_fee: bigint;
-  taker_builder_fee: bigint;
+  fill_amount: Uint8Array;
+  maker_fee: Uint8Array;
+  taker_fee: Uint8Array;
+  total_filled_maker: Uint8Array;
+  total_filled_taker: Uint8Array;
+  affiliate_rev_share: Uint8Array;
+  maker_builder_fee: Uint8Array;
+  taker_builder_fee: Uint8Array;
   maker_builder_address: string;
   taker_builder_address: string;
-  maker_order_router_fee: bigint;
-  taker_order_router_fee: bigint;
+  maker_order_router_fee: Uint8Array;
+  taker_order_router_fee: Uint8Array;
   maker_order_router_address: string;
   taker_order_router_address: string;
 }
@@ -667,10 +727,16 @@ export interface DeleveragingEventV1 {
   /**
    * The amount filled between the liquidated and offsetting position, in
    * base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  fillAmount: bigint;
-  /** Total quote quantums filled. */
-  totalQuoteQuantums: bigint;
+  fillAmount: Uint8Array;
+  /**
+   * Total quote quantums filled.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  totalQuoteQuantums: Uint8Array;
   /** `true` if liquidating a short position, `false` otherwise. */
   isBuy: boolean;
   /**
@@ -709,10 +775,14 @@ export interface DeleveragingEventV1Amino {
   /**
    * The amount filled between the liquidated and offsetting position, in
    * base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   fill_amount?: string;
   /**
    * Total quote quantums filled.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   total_quote_quantums?: string;
   /**
@@ -740,8 +810,8 @@ export interface DeleveragingEventV1SDKType {
   liquidated: IndexerSubaccountIdSDKType;
   offsetting: IndexerSubaccountIdSDKType;
   perpetual_id: number;
-  fill_amount: bigint;
-  total_quote_quantums: bigint;
+  fill_amount: Uint8Array;
+  total_quote_quantums: Uint8Array;
   is_buy: boolean;
   is_final_settlement: boolean;
 }
@@ -759,8 +829,10 @@ export interface LiquidationOrderV1 {
   /**
    * The total size of the liquidation order including any unfilled size,
    * in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  totalSize: bigint;
+  totalSize: Uint8Array;
   /** `true` if liquidating a short position, `false` otherwise. */
   isBuy: boolean;
   /**
@@ -769,8 +841,9 @@ export interface LiquidationOrderV1 {
    * and the upper-price-bound for liquidating shorts.
    * Must be a multiple of ClobPair.SubticksPerTick
    * (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
-  subticks: bigint;
+  subticks: Uint8Array;
 }
 export interface LiquidationOrderV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.LiquidationOrderV1";
@@ -799,6 +872,8 @@ export interface LiquidationOrderV1Amino {
   /**
    * The total size of the liquidation order including any unfilled size,
    * in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   total_size?: string;
   /**
@@ -811,6 +886,7 @@ export interface LiquidationOrderV1Amino {
    * and the upper-price-bound for liquidating shorts.
    * Must be a multiple of ClobPair.SubticksPerTick
    * (where `ClobPair.Id = orderId.ClobPairId`).
+   * Supports arbitrary precision for high-precision price calculations.
    */
   subticks?: string;
 }
@@ -826,9 +902,9 @@ export interface LiquidationOrderV1SDKType {
   liquidated: IndexerSubaccountIdSDKType;
   clob_pair_id: number;
   perpetual_id: number;
-  total_size: bigint;
+  total_size: Uint8Array;
   is_buy: boolean;
-  subticks: bigint;
+  subticks: Uint8Array;
 }
 /**
  * SubaccountUpdateEvent message contains information about an update to a
@@ -1275,8 +1351,10 @@ export interface SpotMarketCreateEventV1 {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Must be a power of 10.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  stepBaseQuantums: bigint;
+  stepBaseQuantums: Uint8Array;
 }
 export interface SpotMarketCreateEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.SpotMarketCreateEventV1";
@@ -1326,6 +1404,8 @@ export interface SpotMarketCreateEventV1Amino {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Must be a power of 10.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
 }
@@ -1345,7 +1425,7 @@ export interface SpotMarketCreateEventV1SDKType {
   quantum_conversion_exponent: number;
   atomic_resolution: number;
   subticks_per_tick: number;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
 }
 /** Spot-specific metadata */
 export interface SpotMarketCreateEventV1_SpotClobMetadata {
@@ -1438,8 +1518,10 @@ export interface PerpetualMarketCreateEventV1 {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  stepBaseQuantums: bigint;
+  stepBaseQuantums: Uint8Array;
   /**
    * The liquidity_tier that this perpetual is associated with.
    * Defined in perpetuals.perpetual
@@ -1510,6 +1592,8 @@ export interface PerpetualMarketCreateEventV1Amino {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
   /**
@@ -1538,7 +1622,7 @@ export interface PerpetualMarketCreateEventV1SDKType {
   quantum_conversion_exponent: number;
   atomic_resolution: number;
   subticks_per_tick: number;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
   liquidity_tier: number;
 }
 /**
@@ -1595,8 +1679,10 @@ export interface PerpetualMarketCreateEventV2 {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  stepBaseQuantums: bigint;
+  stepBaseQuantums: Uint8Array;
   /**
    * The liquidity_tier that this perpetual is associated with.
    * Defined in perpetuals.perpetual
@@ -1668,6 +1754,8 @@ export interface PerpetualMarketCreateEventV2Amino {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
   /**
@@ -1699,7 +1787,7 @@ export interface PerpetualMarketCreateEventV2SDKType {
   quantum_conversion_exponent: number;
   atomic_resolution: number;
   subticks_per_tick: number;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
   liquidity_tier: number;
   market_type: PerpetualMarketType;
 }
@@ -1755,8 +1843,10 @@ export interface PerpetualMarketCreateEventV3 {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  stepBaseQuantums: bigint;
+  stepBaseQuantums: Uint8Array;
   /**
    * The liquidity_tier that this perpetual is associated with.
    * Defined in perpetuals.perpetual
@@ -1828,6 +1918,8 @@ export interface PerpetualMarketCreateEventV3Amino {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
   /**
@@ -1861,7 +1953,7 @@ export interface PerpetualMarketCreateEventV3SDKType {
   quantum_conversion_exponent: number;
   atomic_resolution: number;
   subticks_per_tick: number;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
   liquidity_tier: number;
   market_type: PerpetualMarketType;
   default_funding8hr_ppm: number;
@@ -1980,8 +2072,10 @@ export interface UpdateClobPairEventV1 {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
-  stepBaseQuantums: bigint;
+  stepBaseQuantums: Uint8Array;
 }
 export interface UpdateClobPairEventV1ProtoMsg {
   typeUrl: "/dydxprotocol.indexer.events.UpdateClobPairEventV1";
@@ -2021,6 +2115,8 @@ export interface UpdateClobPairEventV1Amino {
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
    * Defined in clob.clob_pair
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
 }
@@ -2037,7 +2133,7 @@ export interface UpdateClobPairEventV1SDKType {
   status: ClobPairStatus;
   quantum_conversion_exponent: number;
   subticks_per_tick: number;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
 }
 /**
  * UpdatePerpetualEventV1 message contains all the information about an update
@@ -3428,18 +3524,18 @@ function createBaseOrderFillEventV1(): OrderFillEventV1 {
     makerOrder: IndexerOrder.fromPartial({}),
     order: undefined,
     liquidationOrder: undefined,
-    fillAmount: BigInt(0),
-    makerFee: BigInt(0),
-    takerFee: BigInt(0),
-    totalFilledMaker: BigInt(0),
-    totalFilledTaker: BigInt(0),
-    affiliateRevShare: BigInt(0),
-    makerBuilderFee: BigInt(0),
-    takerBuilderFee: BigInt(0),
+    fillAmount: new Uint8Array(),
+    makerFee: new Uint8Array(),
+    takerFee: new Uint8Array(),
+    totalFilledMaker: new Uint8Array(),
+    totalFilledTaker: new Uint8Array(),
+    affiliateRevShare: new Uint8Array(),
+    makerBuilderFee: new Uint8Array(),
+    takerBuilderFee: new Uint8Array(),
     makerBuilderAddress: "",
     takerBuilderAddress: "",
-    makerOrderRouterFee: BigInt(0),
-    takerOrderRouterFee: BigInt(0),
+    makerOrderRouterFee: new Uint8Array(),
+    takerOrderRouterFee: new Uint8Array(),
     makerOrderRouterAddress: "",
     takerOrderRouterAddress: ""
   };
@@ -3456,29 +3552,29 @@ export const OrderFillEventV1 = {
     if (message.liquidationOrder !== undefined) {
       LiquidationOrderV1.encode(message.liquidationOrder, writer.uint32(34).fork()).ldelim();
     }
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(24).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(26).bytes(message.fillAmount);
     }
-    if (message.makerFee !== BigInt(0)) {
-      writer.uint32(40).sint64(message.makerFee);
+    if (message.makerFee.length !== 0) {
+      writer.uint32(42).bytes(message.makerFee);
     }
-    if (message.takerFee !== BigInt(0)) {
-      writer.uint32(48).sint64(message.takerFee);
+    if (message.takerFee.length !== 0) {
+      writer.uint32(50).bytes(message.takerFee);
     }
-    if (message.totalFilledMaker !== BigInt(0)) {
-      writer.uint32(56).uint64(message.totalFilledMaker);
+    if (message.totalFilledMaker.length !== 0) {
+      writer.uint32(58).bytes(message.totalFilledMaker);
     }
-    if (message.totalFilledTaker !== BigInt(0)) {
-      writer.uint32(64).uint64(message.totalFilledTaker);
+    if (message.totalFilledTaker.length !== 0) {
+      writer.uint32(66).bytes(message.totalFilledTaker);
     }
-    if (message.affiliateRevShare !== BigInt(0)) {
-      writer.uint32(72).uint64(message.affiliateRevShare);
+    if (message.affiliateRevShare.length !== 0) {
+      writer.uint32(74).bytes(message.affiliateRevShare);
     }
-    if (message.makerBuilderFee !== BigInt(0)) {
-      writer.uint32(80).uint64(message.makerBuilderFee);
+    if (message.makerBuilderFee.length !== 0) {
+      writer.uint32(82).bytes(message.makerBuilderFee);
     }
-    if (message.takerBuilderFee !== BigInt(0)) {
-      writer.uint32(88).uint64(message.takerBuilderFee);
+    if (message.takerBuilderFee.length !== 0) {
+      writer.uint32(90).bytes(message.takerBuilderFee);
     }
     if (message.makerBuilderAddress !== "") {
       writer.uint32(98).string(message.makerBuilderAddress);
@@ -3486,11 +3582,11 @@ export const OrderFillEventV1 = {
     if (message.takerBuilderAddress !== "") {
       writer.uint32(106).string(message.takerBuilderAddress);
     }
-    if (message.makerOrderRouterFee !== BigInt(0)) {
-      writer.uint32(112).uint64(message.makerOrderRouterFee);
+    if (message.makerOrderRouterFee.length !== 0) {
+      writer.uint32(114).bytes(message.makerOrderRouterFee);
     }
-    if (message.takerOrderRouterFee !== BigInt(0)) {
-      writer.uint32(120).uint64(message.takerOrderRouterFee);
+    if (message.takerOrderRouterFee.length !== 0) {
+      writer.uint32(122).bytes(message.takerOrderRouterFee);
     }
     if (message.makerOrderRouterAddress !== "") {
       writer.uint32(130).string(message.makerOrderRouterAddress);
@@ -3517,28 +3613,28 @@ export const OrderFillEventV1 = {
           message.liquidationOrder = LiquidationOrderV1.decode(reader, reader.uint32());
           break;
         case 3:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         case 5:
-          message.makerFee = reader.sint64();
+          message.makerFee = reader.bytes();
           break;
         case 6:
-          message.takerFee = reader.sint64();
+          message.takerFee = reader.bytes();
           break;
         case 7:
-          message.totalFilledMaker = reader.uint64();
+          message.totalFilledMaker = reader.bytes();
           break;
         case 8:
-          message.totalFilledTaker = reader.uint64();
+          message.totalFilledTaker = reader.bytes();
           break;
         case 9:
-          message.affiliateRevShare = reader.uint64();
+          message.affiliateRevShare = reader.bytes();
           break;
         case 10:
-          message.makerBuilderFee = reader.uint64();
+          message.makerBuilderFee = reader.bytes();
           break;
         case 11:
-          message.takerBuilderFee = reader.uint64();
+          message.takerBuilderFee = reader.bytes();
           break;
         case 12:
           message.makerBuilderAddress = reader.string();
@@ -3547,10 +3643,10 @@ export const OrderFillEventV1 = {
           message.takerBuilderAddress = reader.string();
           break;
         case 14:
-          message.makerOrderRouterFee = reader.uint64();
+          message.makerOrderRouterFee = reader.bytes();
           break;
         case 15:
-          message.takerOrderRouterFee = reader.uint64();
+          message.takerOrderRouterFee = reader.bytes();
           break;
         case 16:
           message.makerOrderRouterAddress = reader.string();
@@ -3570,18 +3666,18 @@ export const OrderFillEventV1 = {
     message.makerOrder = object.makerOrder !== undefined && object.makerOrder !== null ? IndexerOrder.fromPartial(object.makerOrder) : undefined;
     message.order = object.order !== undefined && object.order !== null ? IndexerOrder.fromPartial(object.order) : undefined;
     message.liquidationOrder = object.liquidationOrder !== undefined && object.liquidationOrder !== null ? LiquidationOrderV1.fromPartial(object.liquidationOrder) : undefined;
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
-    message.makerFee = object.makerFee !== undefined && object.makerFee !== null ? BigInt(object.makerFee.toString()) : BigInt(0);
-    message.takerFee = object.takerFee !== undefined && object.takerFee !== null ? BigInt(object.takerFee.toString()) : BigInt(0);
-    message.totalFilledMaker = object.totalFilledMaker !== undefined && object.totalFilledMaker !== null ? BigInt(object.totalFilledMaker.toString()) : BigInt(0);
-    message.totalFilledTaker = object.totalFilledTaker !== undefined && object.totalFilledTaker !== null ? BigInt(object.totalFilledTaker.toString()) : BigInt(0);
-    message.affiliateRevShare = object.affiliateRevShare !== undefined && object.affiliateRevShare !== null ? BigInt(object.affiliateRevShare.toString()) : BigInt(0);
-    message.makerBuilderFee = object.makerBuilderFee !== undefined && object.makerBuilderFee !== null ? BigInt(object.makerBuilderFee.toString()) : BigInt(0);
-    message.takerBuilderFee = object.takerBuilderFee !== undefined && object.takerBuilderFee !== null ? BigInt(object.takerBuilderFee.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
+    message.makerFee = object.makerFee ?? new Uint8Array();
+    message.takerFee = object.takerFee ?? new Uint8Array();
+    message.totalFilledMaker = object.totalFilledMaker ?? new Uint8Array();
+    message.totalFilledTaker = object.totalFilledTaker ?? new Uint8Array();
+    message.affiliateRevShare = object.affiliateRevShare ?? new Uint8Array();
+    message.makerBuilderFee = object.makerBuilderFee ?? new Uint8Array();
+    message.takerBuilderFee = object.takerBuilderFee ?? new Uint8Array();
     message.makerBuilderAddress = object.makerBuilderAddress ?? "";
     message.takerBuilderAddress = object.takerBuilderAddress ?? "";
-    message.makerOrderRouterFee = object.makerOrderRouterFee !== undefined && object.makerOrderRouterFee !== null ? BigInt(object.makerOrderRouterFee.toString()) : BigInt(0);
-    message.takerOrderRouterFee = object.takerOrderRouterFee !== undefined && object.takerOrderRouterFee !== null ? BigInt(object.takerOrderRouterFee.toString()) : BigInt(0);
+    message.makerOrderRouterFee = object.makerOrderRouterFee ?? new Uint8Array();
+    message.takerOrderRouterFee = object.takerOrderRouterFee ?? new Uint8Array();
     message.makerOrderRouterAddress = object.makerOrderRouterAddress ?? "";
     message.takerOrderRouterAddress = object.takerOrderRouterAddress ?? "";
     return message;
@@ -3598,28 +3694,28 @@ export const OrderFillEventV1 = {
       message.liquidationOrder = LiquidationOrderV1.fromAmino(object.liquidation_order);
     }
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     if (object.maker_fee !== undefined && object.maker_fee !== null) {
-      message.makerFee = BigInt(object.maker_fee);
+      message.makerFee = bytesFromBase64(object.maker_fee);
     }
     if (object.taker_fee !== undefined && object.taker_fee !== null) {
-      message.takerFee = BigInt(object.taker_fee);
+      message.takerFee = bytesFromBase64(object.taker_fee);
     }
     if (object.total_filled_maker !== undefined && object.total_filled_maker !== null) {
-      message.totalFilledMaker = BigInt(object.total_filled_maker);
+      message.totalFilledMaker = bytesFromBase64(object.total_filled_maker);
     }
     if (object.total_filled_taker !== undefined && object.total_filled_taker !== null) {
-      message.totalFilledTaker = BigInt(object.total_filled_taker);
+      message.totalFilledTaker = bytesFromBase64(object.total_filled_taker);
     }
     if (object.affiliate_rev_share !== undefined && object.affiliate_rev_share !== null) {
-      message.affiliateRevShare = BigInt(object.affiliate_rev_share);
+      message.affiliateRevShare = bytesFromBase64(object.affiliate_rev_share);
     }
     if (object.maker_builder_fee !== undefined && object.maker_builder_fee !== null) {
-      message.makerBuilderFee = BigInt(object.maker_builder_fee);
+      message.makerBuilderFee = bytesFromBase64(object.maker_builder_fee);
     }
     if (object.taker_builder_fee !== undefined && object.taker_builder_fee !== null) {
-      message.takerBuilderFee = BigInt(object.taker_builder_fee);
+      message.takerBuilderFee = bytesFromBase64(object.taker_builder_fee);
     }
     if (object.maker_builder_address !== undefined && object.maker_builder_address !== null) {
       message.makerBuilderAddress = object.maker_builder_address;
@@ -3628,10 +3724,10 @@ export const OrderFillEventV1 = {
       message.takerBuilderAddress = object.taker_builder_address;
     }
     if (object.maker_order_router_fee !== undefined && object.maker_order_router_fee !== null) {
-      message.makerOrderRouterFee = BigInt(object.maker_order_router_fee);
+      message.makerOrderRouterFee = bytesFromBase64(object.maker_order_router_fee);
     }
     if (object.taker_order_router_fee !== undefined && object.taker_order_router_fee !== null) {
-      message.takerOrderRouterFee = BigInt(object.taker_order_router_fee);
+      message.takerOrderRouterFee = bytesFromBase64(object.taker_order_router_fee);
     }
     if (object.maker_order_router_address !== undefined && object.maker_order_router_address !== null) {
       message.makerOrderRouterAddress = object.maker_order_router_address;
@@ -3646,18 +3742,18 @@ export const OrderFillEventV1 = {
     obj.maker_order = message.makerOrder ? IndexerOrder.toAmino(message.makerOrder) : undefined;
     obj.order = message.order ? IndexerOrder.toAmino(message.order) : undefined;
     obj.liquidation_order = message.liquidationOrder ? LiquidationOrderV1.toAmino(message.liquidationOrder) : undefined;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
-    obj.maker_fee = message.makerFee !== BigInt(0) ? message.makerFee?.toString() : undefined;
-    obj.taker_fee = message.takerFee !== BigInt(0) ? message.takerFee?.toString() : undefined;
-    obj.total_filled_maker = message.totalFilledMaker !== BigInt(0) ? message.totalFilledMaker?.toString() : undefined;
-    obj.total_filled_taker = message.totalFilledTaker !== BigInt(0) ? message.totalFilledTaker?.toString() : undefined;
-    obj.affiliate_rev_share = message.affiliateRevShare !== BigInt(0) ? message.affiliateRevShare?.toString() : undefined;
-    obj.maker_builder_fee = message.makerBuilderFee !== BigInt(0) ? message.makerBuilderFee?.toString() : undefined;
-    obj.taker_builder_fee = message.takerBuilderFee !== BigInt(0) ? message.takerBuilderFee?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
+    obj.maker_fee = message.makerFee ? base64FromBytes(message.makerFee) : undefined;
+    obj.taker_fee = message.takerFee ? base64FromBytes(message.takerFee) : undefined;
+    obj.total_filled_maker = message.totalFilledMaker ? base64FromBytes(message.totalFilledMaker) : undefined;
+    obj.total_filled_taker = message.totalFilledTaker ? base64FromBytes(message.totalFilledTaker) : undefined;
+    obj.affiliate_rev_share = message.affiliateRevShare ? base64FromBytes(message.affiliateRevShare) : undefined;
+    obj.maker_builder_fee = message.makerBuilderFee ? base64FromBytes(message.makerBuilderFee) : undefined;
+    obj.taker_builder_fee = message.takerBuilderFee ? base64FromBytes(message.takerBuilderFee) : undefined;
     obj.maker_builder_address = message.makerBuilderAddress === "" ? undefined : message.makerBuilderAddress;
     obj.taker_builder_address = message.takerBuilderAddress === "" ? undefined : message.takerBuilderAddress;
-    obj.maker_order_router_fee = message.makerOrderRouterFee !== BigInt(0) ? message.makerOrderRouterFee?.toString() : undefined;
-    obj.taker_order_router_fee = message.takerOrderRouterFee !== BigInt(0) ? message.takerOrderRouterFee?.toString() : undefined;
+    obj.maker_order_router_fee = message.makerOrderRouterFee ? base64FromBytes(message.makerOrderRouterFee) : undefined;
+    obj.taker_order_router_fee = message.takerOrderRouterFee ? base64FromBytes(message.takerOrderRouterFee) : undefined;
     obj.maker_order_router_address = message.makerOrderRouterAddress === "" ? undefined : message.makerOrderRouterAddress;
     obj.taker_order_router_address = message.takerOrderRouterAddress === "" ? undefined : message.takerOrderRouterAddress;
     return obj;
@@ -3683,8 +3779,8 @@ function createBaseDeleveragingEventV1(): DeleveragingEventV1 {
     liquidated: IndexerSubaccountId.fromPartial({}),
     offsetting: IndexerSubaccountId.fromPartial({}),
     perpetualId: 0,
-    fillAmount: BigInt(0),
-    totalQuoteQuantums: BigInt(0),
+    fillAmount: new Uint8Array(),
+    totalQuoteQuantums: new Uint8Array(),
     isBuy: false,
     isFinalSettlement: false
   };
@@ -3701,11 +3797,11 @@ export const DeleveragingEventV1 = {
     if (message.perpetualId !== 0) {
       writer.uint32(24).uint32(message.perpetualId);
     }
-    if (message.fillAmount !== BigInt(0)) {
-      writer.uint32(32).uint64(message.fillAmount);
+    if (message.fillAmount.length !== 0) {
+      writer.uint32(34).bytes(message.fillAmount);
     }
-    if (message.totalQuoteQuantums !== BigInt(0)) {
-      writer.uint32(40).uint64(message.totalQuoteQuantums);
+    if (message.totalQuoteQuantums.length !== 0) {
+      writer.uint32(42).bytes(message.totalQuoteQuantums);
     }
     if (message.isBuy === true) {
       writer.uint32(48).bool(message.isBuy);
@@ -3732,10 +3828,10 @@ export const DeleveragingEventV1 = {
           message.perpetualId = reader.uint32();
           break;
         case 4:
-          message.fillAmount = reader.uint64();
+          message.fillAmount = reader.bytes();
           break;
         case 5:
-          message.totalQuoteQuantums = reader.uint64();
+          message.totalQuoteQuantums = reader.bytes();
           break;
         case 6:
           message.isBuy = reader.bool();
@@ -3755,8 +3851,8 @@ export const DeleveragingEventV1 = {
     message.liquidated = object.liquidated !== undefined && object.liquidated !== null ? IndexerSubaccountId.fromPartial(object.liquidated) : undefined;
     message.offsetting = object.offsetting !== undefined && object.offsetting !== null ? IndexerSubaccountId.fromPartial(object.offsetting) : undefined;
     message.perpetualId = object.perpetualId ?? 0;
-    message.fillAmount = object.fillAmount !== undefined && object.fillAmount !== null ? BigInt(object.fillAmount.toString()) : BigInt(0);
-    message.totalQuoteQuantums = object.totalQuoteQuantums !== undefined && object.totalQuoteQuantums !== null ? BigInt(object.totalQuoteQuantums.toString()) : BigInt(0);
+    message.fillAmount = object.fillAmount ?? new Uint8Array();
+    message.totalQuoteQuantums = object.totalQuoteQuantums ?? new Uint8Array();
     message.isBuy = object.isBuy ?? false;
     message.isFinalSettlement = object.isFinalSettlement ?? false;
     return message;
@@ -3773,10 +3869,10 @@ export const DeleveragingEventV1 = {
       message.perpetualId = object.perpetual_id;
     }
     if (object.fill_amount !== undefined && object.fill_amount !== null) {
-      message.fillAmount = BigInt(object.fill_amount);
+      message.fillAmount = bytesFromBase64(object.fill_amount);
     }
     if (object.total_quote_quantums !== undefined && object.total_quote_quantums !== null) {
-      message.totalQuoteQuantums = BigInt(object.total_quote_quantums);
+      message.totalQuoteQuantums = bytesFromBase64(object.total_quote_quantums);
     }
     if (object.is_buy !== undefined && object.is_buy !== null) {
       message.isBuy = object.is_buy;
@@ -3791,8 +3887,8 @@ export const DeleveragingEventV1 = {
     obj.liquidated = message.liquidated ? IndexerSubaccountId.toAmino(message.liquidated) : undefined;
     obj.offsetting = message.offsetting ? IndexerSubaccountId.toAmino(message.offsetting) : undefined;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.fill_amount = message.fillAmount !== BigInt(0) ? message.fillAmount?.toString() : undefined;
-    obj.total_quote_quantums = message.totalQuoteQuantums !== BigInt(0) ? message.totalQuoteQuantums?.toString() : undefined;
+    obj.fill_amount = message.fillAmount ? base64FromBytes(message.fillAmount) : undefined;
+    obj.total_quote_quantums = message.totalQuoteQuantums ? base64FromBytes(message.totalQuoteQuantums) : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
     obj.is_final_settlement = message.isFinalSettlement === false ? undefined : message.isFinalSettlement;
     return obj;
@@ -3818,9 +3914,9 @@ function createBaseLiquidationOrderV1(): LiquidationOrderV1 {
     liquidated: IndexerSubaccountId.fromPartial({}),
     clobPairId: 0,
     perpetualId: 0,
-    totalSize: BigInt(0),
+    totalSize: new Uint8Array(),
     isBuy: false,
-    subticks: BigInt(0)
+    subticks: new Uint8Array()
   };
 }
 export const LiquidationOrderV1 = {
@@ -3835,14 +3931,14 @@ export const LiquidationOrderV1 = {
     if (message.perpetualId !== 0) {
       writer.uint32(24).uint32(message.perpetualId);
     }
-    if (message.totalSize !== BigInt(0)) {
-      writer.uint32(32).uint64(message.totalSize);
+    if (message.totalSize.length !== 0) {
+      writer.uint32(34).bytes(message.totalSize);
     }
     if (message.isBuy === true) {
       writer.uint32(40).bool(message.isBuy);
     }
-    if (message.subticks !== BigInt(0)) {
-      writer.uint32(48).uint64(message.subticks);
+    if (message.subticks.length !== 0) {
+      writer.uint32(50).bytes(message.subticks);
     }
     return writer;
   },
@@ -3863,13 +3959,13 @@ export const LiquidationOrderV1 = {
           message.perpetualId = reader.uint32();
           break;
         case 4:
-          message.totalSize = reader.uint64();
+          message.totalSize = reader.bytes();
           break;
         case 5:
           message.isBuy = reader.bool();
           break;
         case 6:
-          message.subticks = reader.uint64();
+          message.subticks = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -3883,9 +3979,9 @@ export const LiquidationOrderV1 = {
     message.liquidated = object.liquidated !== undefined && object.liquidated !== null ? IndexerSubaccountId.fromPartial(object.liquidated) : undefined;
     message.clobPairId = object.clobPairId ?? 0;
     message.perpetualId = object.perpetualId ?? 0;
-    message.totalSize = object.totalSize !== undefined && object.totalSize !== null ? BigInt(object.totalSize.toString()) : BigInt(0);
+    message.totalSize = object.totalSize ?? new Uint8Array();
     message.isBuy = object.isBuy ?? false;
-    message.subticks = object.subticks !== undefined && object.subticks !== null ? BigInt(object.subticks.toString()) : BigInt(0);
+    message.subticks = object.subticks ?? new Uint8Array();
     return message;
   },
   fromAmino(object: LiquidationOrderV1Amino): LiquidationOrderV1 {
@@ -3900,13 +3996,13 @@ export const LiquidationOrderV1 = {
       message.perpetualId = object.perpetual_id;
     }
     if (object.total_size !== undefined && object.total_size !== null) {
-      message.totalSize = BigInt(object.total_size);
+      message.totalSize = bytesFromBase64(object.total_size);
     }
     if (object.is_buy !== undefined && object.is_buy !== null) {
       message.isBuy = object.is_buy;
     }
     if (object.subticks !== undefined && object.subticks !== null) {
-      message.subticks = BigInt(object.subticks);
+      message.subticks = bytesFromBase64(object.subticks);
     }
     return message;
   },
@@ -3915,9 +4011,9 @@ export const LiquidationOrderV1 = {
     obj.liquidated = message.liquidated ? IndexerSubaccountId.toAmino(message.liquidated) : undefined;
     obj.clob_pair_id = message.clobPairId === 0 ? undefined : message.clobPairId;
     obj.perpetual_id = message.perpetualId === 0 ? undefined : message.perpetualId;
-    obj.total_size = message.totalSize !== BigInt(0) ? message.totalSize?.toString() : undefined;
+    obj.total_size = message.totalSize ? base64FromBytes(message.totalSize) : undefined;
     obj.is_buy = message.isBuy === false ? undefined : message.isBuy;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
+    obj.subticks = message.subticks ? base64FromBytes(message.subticks) : undefined;
     return obj;
   },
   fromAminoMsg(object: LiquidationOrderV1AminoMsg): LiquidationOrderV1 {
@@ -4747,7 +4843,7 @@ function createBaseSpotMarketCreateEventV1(): SpotMarketCreateEventV1 {
     quantumConversionExponent: 0,
     atomicResolution: 0,
     subticksPerTick: 0,
-    stepBaseQuantums: BigInt(0)
+    stepBaseQuantums: new Uint8Array()
   };
 }
 export const SpotMarketCreateEventV1 = {
@@ -4774,8 +4870,8 @@ export const SpotMarketCreateEventV1 = {
     if (message.subticksPerTick !== 0) {
       writer.uint32(56).uint32(message.subticksPerTick);
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(64).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(66).bytes(message.stepBaseQuantums);
     }
     return writer;
   },
@@ -4808,7 +4904,7 @@ export const SpotMarketCreateEventV1 = {
           message.subticksPerTick = reader.uint32();
           break;
         case 8:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -4826,7 +4922,7 @@ export const SpotMarketCreateEventV1 = {
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
     message.subticksPerTick = object.subticksPerTick ?? 0;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: SpotMarketCreateEventV1Amino): SpotMarketCreateEventV1 {
@@ -4853,7 +4949,7 @@ export const SpotMarketCreateEventV1 = {
       message.subticksPerTick = object.subticks_per_tick;
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     return message;
   },
@@ -4866,7 +4962,7 @@ export const SpotMarketCreateEventV1 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: SpotMarketCreateEventV1AminoMsg): SpotMarketCreateEventV1 {
@@ -4970,7 +5066,7 @@ function createBasePerpetualMarketCreateEventV1(): PerpetualMarketCreateEventV1 
     quantumConversionExponent: 0,
     atomicResolution: 0,
     subticksPerTick: 0,
-    stepBaseQuantums: BigInt(0),
+    stepBaseQuantums: new Uint8Array(),
     liquidityTier: 0
   };
 }
@@ -5001,8 +5097,8 @@ export const PerpetualMarketCreateEventV1 = {
     if (message.subticksPerTick !== 0) {
       writer.uint32(64).uint32(message.subticksPerTick);
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(72).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(74).bytes(message.stepBaseQuantums);
     }
     if (message.liquidityTier !== 0) {
       writer.uint32(80).uint32(message.liquidityTier);
@@ -5041,7 +5137,7 @@ export const PerpetualMarketCreateEventV1 = {
           message.subticksPerTick = reader.uint32();
           break;
         case 9:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         case 10:
           message.liquidityTier = reader.uint32();
@@ -5063,7 +5159,7 @@ export const PerpetualMarketCreateEventV1 = {
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
     message.subticksPerTick = object.subticksPerTick ?? 0;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     message.liquidityTier = object.liquidityTier ?? 0;
     return message;
   },
@@ -5094,7 +5190,7 @@ export const PerpetualMarketCreateEventV1 = {
       message.subticksPerTick = object.subticks_per_tick;
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
       message.liquidityTier = object.liquidity_tier;
@@ -5111,7 +5207,7 @@ export const PerpetualMarketCreateEventV1 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
     return obj;
   },
@@ -5141,7 +5237,7 @@ function createBasePerpetualMarketCreateEventV2(): PerpetualMarketCreateEventV2 
     quantumConversionExponent: 0,
     atomicResolution: 0,
     subticksPerTick: 0,
-    stepBaseQuantums: BigInt(0),
+    stepBaseQuantums: new Uint8Array(),
     liquidityTier: 0,
     marketType: 0
   };
@@ -5173,8 +5269,8 @@ export const PerpetualMarketCreateEventV2 = {
     if (message.subticksPerTick !== 0) {
       writer.uint32(64).uint32(message.subticksPerTick);
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(72).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(74).bytes(message.stepBaseQuantums);
     }
     if (message.liquidityTier !== 0) {
       writer.uint32(80).uint32(message.liquidityTier);
@@ -5216,7 +5312,7 @@ export const PerpetualMarketCreateEventV2 = {
           message.subticksPerTick = reader.uint32();
           break;
         case 9:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         case 10:
           message.liquidityTier = reader.uint32();
@@ -5241,7 +5337,7 @@ export const PerpetualMarketCreateEventV2 = {
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
     message.subticksPerTick = object.subticksPerTick ?? 0;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     message.liquidityTier = object.liquidityTier ?? 0;
     message.marketType = object.marketType ?? 0;
     return message;
@@ -5273,7 +5369,7 @@ export const PerpetualMarketCreateEventV2 = {
       message.subticksPerTick = object.subticks_per_tick;
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
       message.liquidityTier = object.liquidity_tier;
@@ -5293,7 +5389,7 @@ export const PerpetualMarketCreateEventV2 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
     obj.market_type = message.marketType === 0 ? undefined : message.marketType;
     return obj;
@@ -5324,7 +5420,7 @@ function createBasePerpetualMarketCreateEventV3(): PerpetualMarketCreateEventV3 
     quantumConversionExponent: 0,
     atomicResolution: 0,
     subticksPerTick: 0,
-    stepBaseQuantums: BigInt(0),
+    stepBaseQuantums: new Uint8Array(),
     liquidityTier: 0,
     marketType: 0,
     defaultFunding8hrPpm: 0
@@ -5357,8 +5453,8 @@ export const PerpetualMarketCreateEventV3 = {
     if (message.subticksPerTick !== 0) {
       writer.uint32(64).uint32(message.subticksPerTick);
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(72).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(74).bytes(message.stepBaseQuantums);
     }
     if (message.liquidityTier !== 0) {
       writer.uint32(80).uint32(message.liquidityTier);
@@ -5403,7 +5499,7 @@ export const PerpetualMarketCreateEventV3 = {
           message.subticksPerTick = reader.uint32();
           break;
         case 9:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         case 10:
           message.liquidityTier = reader.uint32();
@@ -5431,7 +5527,7 @@ export const PerpetualMarketCreateEventV3 = {
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
     message.subticksPerTick = object.subticksPerTick ?? 0;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     message.liquidityTier = object.liquidityTier ?? 0;
     message.marketType = object.marketType ?? 0;
     message.defaultFunding8hrPpm = object.defaultFunding8hrPpm ?? 0;
@@ -5464,7 +5560,7 @@ export const PerpetualMarketCreateEventV3 = {
       message.subticksPerTick = object.subticks_per_tick;
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     if (object.liquidity_tier !== undefined && object.liquidity_tier !== null) {
       message.liquidityTier = object.liquidity_tier;
@@ -5487,7 +5583,7 @@ export const PerpetualMarketCreateEventV3 = {
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     obj.liquidity_tier = message.liquidityTier === 0 ? undefined : message.liquidityTier;
     obj.market_type = message.marketType === 0 ? undefined : message.marketType;
     obj.default_funding8hr_ppm = message.defaultFunding8hrPpm === 0 ? undefined : message.defaultFunding8hrPpm;
@@ -5626,7 +5722,7 @@ function createBaseUpdateClobPairEventV1(): UpdateClobPairEventV1 {
     status: 0,
     quantumConversionExponent: 0,
     subticksPerTick: 0,
-    stepBaseQuantums: BigInt(0)
+    stepBaseQuantums: new Uint8Array()
   };
 }
 export const UpdateClobPairEventV1 = {
@@ -5644,8 +5740,8 @@ export const UpdateClobPairEventV1 = {
     if (message.subticksPerTick !== 0) {
       writer.uint32(32).uint32(message.subticksPerTick);
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(40).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(42).bytes(message.stepBaseQuantums);
     }
     return writer;
   },
@@ -5669,7 +5765,7 @@ export const UpdateClobPairEventV1 = {
           message.subticksPerTick = reader.uint32();
           break;
         case 5:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -5684,7 +5780,7 @@ export const UpdateClobPairEventV1 = {
     message.status = object.status ?? 0;
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.subticksPerTick = object.subticksPerTick ?? 0;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: UpdateClobPairEventV1Amino): UpdateClobPairEventV1 {
@@ -5702,7 +5798,7 @@ export const UpdateClobPairEventV1 = {
       message.subticksPerTick = object.subticks_per_tick;
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     return message;
   },
@@ -5712,7 +5808,7 @@ export const UpdateClobPairEventV1 = {
     obj.status = message.status === 0 ? undefined : message.status;
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: UpdateClobPairEventV1AminoMsg): UpdateClobPairEventV1 {

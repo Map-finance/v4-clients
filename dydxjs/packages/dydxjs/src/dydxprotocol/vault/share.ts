@@ -58,6 +58,85 @@ export interface OwnerShareSDKType {
   owner: string;
   shares: NumSharesSDKType;
 }
+/** OwnerShareUnlocks stores share unlocks for an owner. */
+export interface OwnerShareUnlocks {
+  /** Address of the owner of below shares. */
+  ownerAddress: string;
+  /** All share unlocks. */
+  shareUnlocks: ShareUnlock[];
+}
+export interface OwnerShareUnlocksProtoMsg {
+  typeUrl: "/dydxprotocol.vault.OwnerShareUnlocks";
+  value: Uint8Array;
+}
+/**
+ * OwnerShareUnlocks stores share unlocks for an owner.
+ * @name OwnerShareUnlocksAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.OwnerShareUnlocks
+ */
+export interface OwnerShareUnlocksAmino {
+  /**
+   * Address of the owner of below shares.
+   */
+  owner_address?: string;
+  /**
+   * All share unlocks.
+   */
+  share_unlocks?: ShareUnlockAmino[];
+}
+export interface OwnerShareUnlocksAminoMsg {
+  type: "/dydxprotocol.vault.OwnerShareUnlocks";
+  value: OwnerShareUnlocksAmino;
+}
+/** OwnerShareUnlocks stores share unlocks for an owner. */
+export interface OwnerShareUnlocksSDKType {
+  owner_address: string;
+  share_unlocks: ShareUnlockSDKType[];
+}
+/**
+ * ShareUnlock stores a single instance of `shares` number of shares
+ * unlocking at block height `unlock_block_height`.
+ */
+export interface ShareUnlock {
+  /** Number of shares to unlock. */
+  shares: NumShares;
+  /** Block height at which above shares unlock. */
+  unlockBlockHeight: number;
+}
+export interface ShareUnlockProtoMsg {
+  typeUrl: "/dydxprotocol.vault.ShareUnlock";
+  value: Uint8Array;
+}
+/**
+ * ShareUnlock stores a single instance of `shares` number of shares
+ * unlocking at block height `unlock_block_height`.
+ * @name ShareUnlockAmino
+ * @package dydxprotocol.vault
+ * @see proto type: dydxprotocol.vault.ShareUnlock
+ */
+export interface ShareUnlockAmino {
+  /**
+   * Number of shares to unlock.
+   */
+  shares?: NumSharesAmino;
+  /**
+   * Block height at which above shares unlock.
+   */
+  unlock_block_height?: number;
+}
+export interface ShareUnlockAminoMsg {
+  type: "/dydxprotocol.vault.ShareUnlock";
+  value: ShareUnlockAmino;
+}
+/**
+ * ShareUnlock stores a single instance of `shares` number of shares
+ * unlocking at block height `unlock_block_height`.
+ */
+export interface ShareUnlockSDKType {
+  shares: NumSharesSDKType;
+  unlock_block_height: number;
+}
 function createBaseNumShares(): NumShares {
   return {
     numShares: new Uint8Array()
@@ -193,6 +272,158 @@ export const OwnerShare = {
     return {
       typeUrl: "/dydxprotocol.vault.OwnerShare",
       value: OwnerShare.encode(message).finish()
+    };
+  }
+};
+function createBaseOwnerShareUnlocks(): OwnerShareUnlocks {
+  return {
+    ownerAddress: "",
+    shareUnlocks: []
+  };
+}
+export const OwnerShareUnlocks = {
+  typeUrl: "/dydxprotocol.vault.OwnerShareUnlocks",
+  encode(message: OwnerShareUnlocks, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.ownerAddress !== "") {
+      writer.uint32(10).string(message.ownerAddress);
+    }
+    for (const v of message.shareUnlocks) {
+      ShareUnlock.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OwnerShareUnlocks {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOwnerShareUnlocks();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.ownerAddress = reader.string();
+          break;
+        case 2:
+          message.shareUnlocks.push(ShareUnlock.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OwnerShareUnlocks>): OwnerShareUnlocks {
+    const message = createBaseOwnerShareUnlocks();
+    message.ownerAddress = object.ownerAddress ?? "";
+    message.shareUnlocks = object.shareUnlocks?.map(e => ShareUnlock.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: OwnerShareUnlocksAmino): OwnerShareUnlocks {
+    const message = createBaseOwnerShareUnlocks();
+    if (object.owner_address !== undefined && object.owner_address !== null) {
+      message.ownerAddress = object.owner_address;
+    }
+    message.shareUnlocks = object.share_unlocks?.map(e => ShareUnlock.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: OwnerShareUnlocks): OwnerShareUnlocksAmino {
+    const obj: any = {};
+    obj.owner_address = message.ownerAddress === "" ? undefined : message.ownerAddress;
+    if (message.shareUnlocks) {
+      obj.share_unlocks = message.shareUnlocks.map(e => e ? ShareUnlock.toAmino(e) : undefined);
+    } else {
+      obj.share_unlocks = message.shareUnlocks;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: OwnerShareUnlocksAminoMsg): OwnerShareUnlocks {
+    return OwnerShareUnlocks.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OwnerShareUnlocksProtoMsg): OwnerShareUnlocks {
+    return OwnerShareUnlocks.decode(message.value);
+  },
+  toProto(message: OwnerShareUnlocks): Uint8Array {
+    return OwnerShareUnlocks.encode(message).finish();
+  },
+  toProtoMsg(message: OwnerShareUnlocks): OwnerShareUnlocksProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.OwnerShareUnlocks",
+      value: OwnerShareUnlocks.encode(message).finish()
+    };
+  }
+};
+function createBaseShareUnlock(): ShareUnlock {
+  return {
+    shares: NumShares.fromPartial({}),
+    unlockBlockHeight: 0
+  };
+}
+export const ShareUnlock = {
+  typeUrl: "/dydxprotocol.vault.ShareUnlock",
+  encode(message: ShareUnlock, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.shares !== undefined) {
+      NumShares.encode(message.shares, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.unlockBlockHeight !== 0) {
+      writer.uint32(16).uint32(message.unlockBlockHeight);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): ShareUnlock {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseShareUnlock();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.shares = NumShares.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.unlockBlockHeight = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<ShareUnlock>): ShareUnlock {
+    const message = createBaseShareUnlock();
+    message.shares = object.shares !== undefined && object.shares !== null ? NumShares.fromPartial(object.shares) : undefined;
+    message.unlockBlockHeight = object.unlockBlockHeight ?? 0;
+    return message;
+  },
+  fromAmino(object: ShareUnlockAmino): ShareUnlock {
+    const message = createBaseShareUnlock();
+    if (object.shares !== undefined && object.shares !== null) {
+      message.shares = NumShares.fromAmino(object.shares);
+    }
+    if (object.unlock_block_height !== undefined && object.unlock_block_height !== null) {
+      message.unlockBlockHeight = object.unlock_block_height;
+    }
+    return message;
+  },
+  toAmino(message: ShareUnlock): ShareUnlockAmino {
+    const obj: any = {};
+    obj.shares = message.shares ? NumShares.toAmino(message.shares) : undefined;
+    obj.unlock_block_height = message.unlockBlockHeight === 0 ? undefined : message.unlockBlockHeight;
+    return obj;
+  },
+  fromAminoMsg(object: ShareUnlockAminoMsg): ShareUnlock {
+    return ShareUnlock.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ShareUnlockProtoMsg): ShareUnlock {
+    return ShareUnlock.decode(message.value);
+  },
+  toProto(message: ShareUnlock): Uint8Array {
+    return ShareUnlock.encode(message).finish();
+  },
+  toProtoMsg(message: ShareUnlock): ShareUnlockProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.vault.ShareUnlock",
+      value: ShareUnlock.encode(message).finish()
     };
   }
 };

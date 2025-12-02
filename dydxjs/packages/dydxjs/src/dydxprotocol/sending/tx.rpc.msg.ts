@@ -5,7 +5,6 @@ import { BinaryReader } from "../../binary";
 import { MsgCreateBridgeTransferResponse, MsgCreateTransfer, MsgCreateTransferResponse, MsgDepositToSubaccountResponse, MsgWithdrawFromSubaccountResponse, MsgSendFromModuleToAccountResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** CreateBridgeTransfer initiates a new cross-chain bridge transfer. */
   createBridgeTransfer(request: MsgCreateBridgeTransfer): Promise<MsgCreateBridgeTransferResponse>;
   /** CreateTransfer initiates a new transfer between subaccounts. */
   createTransfer(request: MsgCreateTransfer): Promise<MsgCreateTransferResponse>;

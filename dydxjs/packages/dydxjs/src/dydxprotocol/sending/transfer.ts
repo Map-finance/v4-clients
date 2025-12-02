@@ -13,7 +13,8 @@ export interface Transfer {
   assetId: number;
   /**
    * The amount of asset to transfer (in quantums)
-   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   amount: Uint8Array;
 }
@@ -42,7 +43,8 @@ export interface TransferAmino {
   asset_id?: number;
   /**
    * The amount of asset to transfer (in quantums)
-   * Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   amount?: string;
 }
@@ -68,8 +70,12 @@ export interface MsgDepositToSubaccount {
   recipient: SubaccountId;
   /** Id of the asset to transfer. */
   assetId: number;
-  /** The number of quantums of asset to transfer. */
-  quantums: bigint;
+  /**
+   * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
+   */
+  quantums: Uint8Array;
 }
 export interface MsgDepositToSubaccountProtoMsg {
   typeUrl: "/dydxprotocol.sending.MsgDepositToSubaccount";
@@ -97,6 +103,8 @@ export interface MsgDepositToSubaccountAmino {
   asset_id?: number;
   /**
    * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   quantums?: string;
 }
@@ -112,7 +120,7 @@ export interface MsgDepositToSubaccountSDKType {
   sender: string;
   recipient: SubaccountIdSDKType;
   asset_id: number;
-  quantums: bigint;
+  quantums: Uint8Array;
 }
 /**
  * MsgWithdrawFromSubaccount represents a single transfer from an
@@ -125,8 +133,12 @@ export interface MsgWithdrawFromSubaccount {
   recipient: string;
   /** Id of the asset to transfer. */
   assetId: number;
-  /** The number of quantums of asset to transfer. */
-  quantums: bigint;
+  /**
+   * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
+   */
+  quantums: Uint8Array;
 }
 export interface MsgWithdrawFromSubaccountProtoMsg {
   typeUrl: "/dydxprotocol.sending.MsgWithdrawFromSubaccount";
@@ -154,6 +166,8 @@ export interface MsgWithdrawFromSubaccountAmino {
   asset_id?: number;
   /**
    * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   quantums?: string;
 }
@@ -169,7 +183,7 @@ export interface MsgWithdrawFromSubaccountSDKType {
   sender: SubaccountIdSDKType;
   recipient: string;
   asset_id: number;
-  quantums: bigint;
+  quantums: Uint8Array;
 }
 /**
  * MsgSendFromModuleToAccount represents a single transfer from a module
@@ -240,8 +254,12 @@ export interface MsgCreateBridgeTransfer {
   sender: SubaccountId;
   /** Id of the asset to transfer. */
   assetId: number;
-  /** The number of quantums of asset to transfer. */
-  quantums: bigint;
+  /**
+   * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
+   */
+  quantums: Uint8Array;
   chainId: string;
   receiveAddress: string;
 }
@@ -266,6 +284,8 @@ export interface MsgCreateBridgeTransferAmino {
   asset_id?: number;
   /**
    * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
    */
   quantums?: string;
   chain_id?: string;
@@ -279,7 +299,7 @@ export interface MsgCreateBridgeTransferSDKType {
   sender_address: string;
   sender: SubaccountIdSDKType;
   asset_id: number;
-  quantums: bigint;
+  quantums: Uint8Array;
   chain_id: string;
   receive_address: string;
 }
@@ -387,7 +407,7 @@ function createBaseMsgDepositToSubaccount(): MsgDepositToSubaccount {
     sender: "",
     recipient: SubaccountId.fromPartial({}),
     assetId: 0,
-    quantums: BigInt(0)
+    quantums: new Uint8Array()
   };
 }
 export const MsgDepositToSubaccount = {
@@ -402,8 +422,8 @@ export const MsgDepositToSubaccount = {
     if (message.assetId !== 0) {
       writer.uint32(24).uint32(message.assetId);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(32).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(34).bytes(message.quantums);
     }
     return writer;
   },
@@ -424,7 +444,7 @@ export const MsgDepositToSubaccount = {
           message.assetId = reader.uint32();
           break;
         case 4:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -438,7 +458,7 @@ export const MsgDepositToSubaccount = {
     message.sender = object.sender ?? "";
     message.recipient = object.recipient !== undefined && object.recipient !== null ? SubaccountId.fromPartial(object.recipient) : undefined;
     message.assetId = object.assetId ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MsgDepositToSubaccountAmino): MsgDepositToSubaccount {
@@ -453,7 +473,7 @@ export const MsgDepositToSubaccount = {
       message.assetId = object.asset_id;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     return message;
   },
@@ -462,7 +482,7 @@ export const MsgDepositToSubaccount = {
     obj.sender = message.sender === "" ? undefined : message.sender;
     obj.recipient = message.recipient ? SubaccountId.toAmino(message.recipient) : undefined;
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgDepositToSubaccountAminoMsg): MsgDepositToSubaccount {
@@ -486,7 +506,7 @@ function createBaseMsgWithdrawFromSubaccount(): MsgWithdrawFromSubaccount {
     sender: SubaccountId.fromPartial({}),
     recipient: "",
     assetId: 0,
-    quantums: BigInt(0)
+    quantums: new Uint8Array()
   };
 }
 export const MsgWithdrawFromSubaccount = {
@@ -501,8 +521,8 @@ export const MsgWithdrawFromSubaccount = {
     if (message.assetId !== 0) {
       writer.uint32(24).uint32(message.assetId);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(32).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(34).bytes(message.quantums);
     }
     return writer;
   },
@@ -523,7 +543,7 @@ export const MsgWithdrawFromSubaccount = {
           message.assetId = reader.uint32();
           break;
         case 4:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -537,7 +557,7 @@ export const MsgWithdrawFromSubaccount = {
     message.sender = object.sender !== undefined && object.sender !== null ? SubaccountId.fromPartial(object.sender) : undefined;
     message.recipient = object.recipient ?? "";
     message.assetId = object.assetId ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
     return message;
   },
   fromAmino(object: MsgWithdrawFromSubaccountAmino): MsgWithdrawFromSubaccount {
@@ -552,7 +572,7 @@ export const MsgWithdrawFromSubaccount = {
       message.assetId = object.asset_id;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     return message;
   },
@@ -561,7 +581,7 @@ export const MsgWithdrawFromSubaccount = {
     obj.sender = message.sender ? SubaccountId.toAmino(message.sender) : undefined;
     obj.recipient = message.recipient === "" ? undefined : message.recipient;
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgWithdrawFromSubaccountAminoMsg): MsgWithdrawFromSubaccount {
@@ -684,7 +704,7 @@ function createBaseMsgCreateBridgeTransfer(): MsgCreateBridgeTransfer {
     senderAddress: "",
     sender: SubaccountId.fromPartial({}),
     assetId: 0,
-    quantums: BigInt(0),
+    quantums: new Uint8Array(),
     chainId: "",
     receiveAddress: ""
   };
@@ -701,8 +721,8 @@ export const MsgCreateBridgeTransfer = {
     if (message.assetId !== 0) {
       writer.uint32(24).int32(message.assetId);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(32).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(34).bytes(message.quantums);
     }
     if (message.chainId !== "") {
       writer.uint32(42).string(message.chainId);
@@ -729,7 +749,7 @@ export const MsgCreateBridgeTransfer = {
           message.assetId = reader.int32();
           break;
         case 4:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         case 5:
           message.chainId = reader.string();
@@ -749,7 +769,7 @@ export const MsgCreateBridgeTransfer = {
     message.senderAddress = object.senderAddress ?? "";
     message.sender = object.sender !== undefined && object.sender !== null ? SubaccountId.fromPartial(object.sender) : undefined;
     message.assetId = object.assetId ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
     message.chainId = object.chainId ?? "";
     message.receiveAddress = object.receiveAddress ?? "";
     return message;
@@ -766,7 +786,7 @@ export const MsgCreateBridgeTransfer = {
       message.assetId = object.asset_id;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     if (object.chain_id !== undefined && object.chain_id !== null) {
       message.chainId = object.chain_id;
@@ -781,7 +801,7 @@ export const MsgCreateBridgeTransfer = {
     obj.sender_address = message.senderAddress === "" ? undefined : message.senderAddress;
     obj.sender = message.sender ? SubaccountId.toAmino(message.sender) : undefined;
     obj.asset_id = message.assetId === 0 ? undefined : message.assetId;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
     obj.chain_id = message.chainId === "" ? undefined : message.chainId;
     obj.receive_address = message.receiveAddress === "" ? undefined : message.receiveAddress;
     return obj;

@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
-import { MsgSetMarketsHardCap, MsgSetMarketsHardCapResponse, MsgCreateMarketPermissionless, MsgCreateMarketPermissionlessResponse, MsgSetListingVaultDepositParams, MsgSetListingVaultDepositParamsResponse } from "./tx";
+import { MsgSetMarketsHardCap, MsgSetMarketsHardCapResponse, MsgCreateMarketPermissionless, MsgCreateMarketPermissionlessResponse, MsgSetListingVaultDepositParams, MsgSetListingVaultDepositParamsResponse, MsgUpgradeIsolatedPerpetualToCross, MsgUpgradeIsolatedPerpetualToCrossResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
   /** SetMarketsHardCap sets a hard cap on the number of markets listed */
@@ -10,6 +10,11 @@ export interface Msg {
   createMarketPermissionless(request: MsgCreateMarketPermissionless): Promise<MsgCreateMarketPermissionlessResponse>;
   /** SetListingVaultDepositParams sets PML megavault deposit params */
   setListingVaultDepositParams(request: MsgSetListingVaultDepositParams): Promise<MsgSetListingVaultDepositParamsResponse>;
+  /**
+   * UpgradeIsolatedPerpetualToCross upgrades a perpetual from isolated to cross
+   * margin
+   */
+  upgradeIsolatedPerpetualToCross(request: MsgUpgradeIsolatedPerpetualToCross): Promise<MsgUpgradeIsolatedPerpetualToCrossResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -18,6 +23,7 @@ export class MsgClientImpl implements Msg {
     this.setMarketsHardCap = this.setMarketsHardCap.bind(this);
     this.createMarketPermissionless = this.createMarketPermissionless.bind(this);
     this.setListingVaultDepositParams = this.setListingVaultDepositParams.bind(this);
+    this.upgradeIsolatedPerpetualToCross = this.upgradeIsolatedPerpetualToCross.bind(this);
   }
   setMarketsHardCap(request: MsgSetMarketsHardCap): Promise<MsgSetMarketsHardCapResponse> {
     const data = MsgSetMarketsHardCap.encode(request).finish();
@@ -33,5 +39,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgSetListingVaultDepositParams.encode(request).finish();
     const promise = this.rpc.request("dydxprotocol.listing.Msg", "SetListingVaultDepositParams", data);
     return promise.then(data => MsgSetListingVaultDepositParamsResponse.decode(new BinaryReader(data)));
+  }
+  upgradeIsolatedPerpetualToCross(request: MsgUpgradeIsolatedPerpetualToCross): Promise<MsgUpgradeIsolatedPerpetualToCrossResponse> {
+    const data = MsgUpgradeIsolatedPerpetualToCross.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.listing.Msg", "UpgradeIsolatedPerpetualToCross", data);
+    return promise.then(data => MsgUpgradeIsolatedPerpetualToCrossResponse.decode(new BinaryReader(data)));
   }
 }

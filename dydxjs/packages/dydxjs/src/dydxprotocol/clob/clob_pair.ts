@@ -1,5 +1,6 @@
 //@ts-nocheck
 import { BinaryReader, BinaryWriter } from "../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../helpers";
 /** Status of the CLOB. */
 export enum ClobPair_Status {
   /** STATUS_UNSPECIFIED - Default value. This value is invalid and unused. */
@@ -127,12 +128,32 @@ export interface PerpetualClobMetadataSDKType {
 /**
  * PerpetualClobMetadata contains metadata for a `ClobPair`
  * representing a Spot product.
+ * PerpetualClobMetadata 包含 `ClobPair` 的元数据
+ * 代表现货产品。
  */
 export interface SpotClobMetadata {
-  /** Id of the base Asset in the trading pair. */
+  /**
+   * Id of the base Asset in the trading pair.
+   * 交易对中基础资产的 ID。
+   */
   baseAssetId: number;
-  /** Id of the quote Asset in the trading pair. */
+  /**
+   * Id of the quote Asset in the trading pair.
+   * 交易对中报价资产的 ID。
+   */
   quoteAssetId: number;
+  /**
+   * Optional: Custodian address to receive minted base assets.
+   * Empty string means no minting will occur.
+   * 可选：接收mint的基础资产的托管地址。空字符串表示不mint。
+   */
+  custodianAddress: string;
+  /**
+   * Optional: Initial supply of base asset in quantums.
+   * Empty string means no minting will occur.
+   * 可选：基础资产的初始供应量（quantums）。空字符串表示不mint。
+   */
+  initialSupply: string;
 }
 export interface SpotClobMetadataProtoMsg {
   typeUrl: "/dydxprotocol.clob.SpotClobMetadata";
@@ -141,6 +162,8 @@ export interface SpotClobMetadataProtoMsg {
 /**
  * PerpetualClobMetadata contains metadata for a `ClobPair`
  * representing a Spot product.
+ * PerpetualClobMetadata 包含 `ClobPair` 的元数据
+ * 代表现货产品。
  * @name SpotClobMetadataAmino
  * @package dydxprotocol.clob
  * @see proto type: dydxprotocol.clob.SpotClobMetadata
@@ -148,12 +171,26 @@ export interface SpotClobMetadataProtoMsg {
 export interface SpotClobMetadataAmino {
   /**
    * Id of the base Asset in the trading pair.
+   * 交易对中基础资产的 ID。
    */
   base_asset_id?: number;
   /**
    * Id of the quote Asset in the trading pair.
+   * 交易对中报价资产的 ID。
    */
   quote_asset_id?: number;
+  /**
+   * Optional: Custodian address to receive minted base assets.
+   * Empty string means no minting will occur.
+   * 可选：接收mint的基础资产的托管地址。空字符串表示不mint。
+   */
+  custodian_address?: string;
+  /**
+   * Optional: Initial supply of base asset in quantums.
+   * Empty string means no minting will occur.
+   * 可选：基础资产的初始供应量（quantums）。空字符串表示不mint。
+   */
+  initial_supply?: string;
 }
 export interface SpotClobMetadataAminoMsg {
   type: "dydxprotocol/clob/SpotClobMetadata";
@@ -162,10 +199,14 @@ export interface SpotClobMetadataAminoMsg {
 /**
  * PerpetualClobMetadata contains metadata for a `ClobPair`
  * representing a Spot product.
+ * PerpetualClobMetadata 包含 `ClobPair` 的元数据
+ * 代表现货产品。
  */
 export interface SpotClobMetadataSDKType {
   base_asset_id: number;
   quote_asset_id: number;
+  custodian_address: string;
+  initial_supply: string;
 }
 /**
  * ClobPair represents a single CLOB pair for a given product
@@ -176,8 +217,12 @@ export interface ClobPair {
   id: number;
   perpetualClobMetadata?: PerpetualClobMetadata;
   spotClobMetadata?: SpotClobMetadata;
-  /** Minimum increment in the size of orders on the CLOB, in base quantums. */
-  stepBaseQuantums: bigint;
+  /**
+   * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
+   */
+  stepBaseQuantums: Uint8Array;
   /**
    * Defines the tick size of the orderbook by defining how many subticks
    * are in one tick. That is, the subticks of any valid order must be a
@@ -212,6 +257,8 @@ export interface ClobPairAmino {
   spot_clob_metadata?: SpotClobMetadataAmino;
   /**
    * Minimum increment in the size of orders on the CLOB, in base quantums.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals).
    */
   step_base_quantums?: string;
   /**
@@ -240,7 +287,7 @@ export interface ClobPairSDKType {
   id: number;
   perpetual_clob_metadata?: PerpetualClobMetadataSDKType;
   spot_clob_metadata?: SpotClobMetadataSDKType;
-  step_base_quantums: bigint;
+  step_base_quantums: Uint8Array;
   subticks_per_tick: number;
   quantum_conversion_exponent: number;
   status: ClobPair_Status;
@@ -317,7 +364,9 @@ export const PerpetualClobMetadata = {
 function createBaseSpotClobMetadata(): SpotClobMetadata {
   return {
     baseAssetId: 0,
-    quoteAssetId: 0
+    quoteAssetId: 0,
+    custodianAddress: "",
+    initialSupply: ""
   };
 }
 export const SpotClobMetadata = {
@@ -328,6 +377,12 @@ export const SpotClobMetadata = {
     }
     if (message.quoteAssetId !== 0) {
       writer.uint32(16).uint32(message.quoteAssetId);
+    }
+    if (message.custodianAddress !== "") {
+      writer.uint32(26).string(message.custodianAddress);
+    }
+    if (message.initialSupply !== "") {
+      writer.uint32(34).string(message.initialSupply);
     }
     return writer;
   },
@@ -344,6 +399,12 @@ export const SpotClobMetadata = {
         case 2:
           message.quoteAssetId = reader.uint32();
           break;
+        case 3:
+          message.custodianAddress = reader.string();
+          break;
+        case 4:
+          message.initialSupply = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -355,6 +416,8 @@ export const SpotClobMetadata = {
     const message = createBaseSpotClobMetadata();
     message.baseAssetId = object.baseAssetId ?? 0;
     message.quoteAssetId = object.quoteAssetId ?? 0;
+    message.custodianAddress = object.custodianAddress ?? "";
+    message.initialSupply = object.initialSupply ?? "";
     return message;
   },
   fromAmino(object: SpotClobMetadataAmino): SpotClobMetadata {
@@ -365,12 +428,20 @@ export const SpotClobMetadata = {
     if (object.quote_asset_id !== undefined && object.quote_asset_id !== null) {
       message.quoteAssetId = object.quote_asset_id;
     }
+    if (object.custodian_address !== undefined && object.custodian_address !== null) {
+      message.custodianAddress = object.custodian_address;
+    }
+    if (object.initial_supply !== undefined && object.initial_supply !== null) {
+      message.initialSupply = object.initial_supply;
+    }
     return message;
   },
   toAmino(message: SpotClobMetadata): SpotClobMetadataAmino {
     const obj: any = {};
     obj.base_asset_id = message.baseAssetId === 0 ? undefined : message.baseAssetId;
     obj.quote_asset_id = message.quoteAssetId === 0 ? undefined : message.quoteAssetId;
+    obj.custodian_address = message.custodianAddress === "" ? undefined : message.custodianAddress;
+    obj.initial_supply = message.initialSupply === "" ? undefined : message.initialSupply;
     return obj;
   },
   fromAminoMsg(object: SpotClobMetadataAminoMsg): SpotClobMetadata {
@@ -400,7 +471,7 @@ function createBaseClobPair(): ClobPair {
     id: 0,
     perpetualClobMetadata: undefined,
     spotClobMetadata: undefined,
-    stepBaseQuantums: BigInt(0),
+    stepBaseQuantums: new Uint8Array(),
     subticksPerTick: 0,
     quantumConversionExponent: 0,
     status: 0
@@ -418,8 +489,8 @@ export const ClobPair = {
     if (message.spotClobMetadata !== undefined) {
       SpotClobMetadata.encode(message.spotClobMetadata, writer.uint32(26).fork()).ldelim();
     }
-    if (message.stepBaseQuantums !== BigInt(0)) {
-      writer.uint32(32).uint64(message.stepBaseQuantums);
+    if (message.stepBaseQuantums.length !== 0) {
+      writer.uint32(34).bytes(message.stepBaseQuantums);
     }
     if (message.subticksPerTick !== 0) {
       writer.uint32(40).uint32(message.subticksPerTick);
@@ -449,7 +520,7 @@ export const ClobPair = {
           message.spotClobMetadata = SpotClobMetadata.decode(reader, reader.uint32());
           break;
         case 4:
-          message.stepBaseQuantums = reader.uint64();
+          message.stepBaseQuantums = reader.bytes();
           break;
         case 5:
           message.subticksPerTick = reader.uint32();
@@ -472,7 +543,7 @@ export const ClobPair = {
     message.id = object.id ?? 0;
     message.perpetualClobMetadata = object.perpetualClobMetadata !== undefined && object.perpetualClobMetadata !== null ? PerpetualClobMetadata.fromPartial(object.perpetualClobMetadata) : undefined;
     message.spotClobMetadata = object.spotClobMetadata !== undefined && object.spotClobMetadata !== null ? SpotClobMetadata.fromPartial(object.spotClobMetadata) : undefined;
-    message.stepBaseQuantums = object.stepBaseQuantums !== undefined && object.stepBaseQuantums !== null ? BigInt(object.stepBaseQuantums.toString()) : BigInt(0);
+    message.stepBaseQuantums = object.stepBaseQuantums ?? new Uint8Array();
     message.subticksPerTick = object.subticksPerTick ?? 0;
     message.quantumConversionExponent = object.quantumConversionExponent ?? 0;
     message.status = object.status ?? 0;
@@ -490,7 +561,7 @@ export const ClobPair = {
       message.spotClobMetadata = SpotClobMetadata.fromAmino(object.spot_clob_metadata);
     }
     if (object.step_base_quantums !== undefined && object.step_base_quantums !== null) {
-      message.stepBaseQuantums = BigInt(object.step_base_quantums);
+      message.stepBaseQuantums = bytesFromBase64(object.step_base_quantums);
     }
     if (object.subticks_per_tick !== undefined && object.subticks_per_tick !== null) {
       message.subticksPerTick = object.subticks_per_tick;
@@ -508,7 +579,7 @@ export const ClobPair = {
     obj.id = message.id === 0 ? undefined : message.id;
     obj.perpetual_clob_metadata = message.perpetualClobMetadata ? PerpetualClobMetadata.toAmino(message.perpetualClobMetadata) : undefined;
     obj.spot_clob_metadata = message.spotClobMetadata ? SpotClobMetadata.toAmino(message.spotClobMetadata) : undefined;
-    obj.step_base_quantums = message.stepBaseQuantums !== BigInt(0) ? message.stepBaseQuantums?.toString() : undefined;
+    obj.step_base_quantums = message.stepBaseQuantums ? base64FromBytes(message.stepBaseQuantums) : undefined;
     obj.subticks_per_tick = message.subticksPerTick === 0 ? undefined : message.subticksPerTick;
     obj.quantum_conversion_exponent = message.quantumConversionExponent === 0 ? undefined : message.quantumConversionExponent;
     obj.status = message.status === 0 ? undefined : message.status;

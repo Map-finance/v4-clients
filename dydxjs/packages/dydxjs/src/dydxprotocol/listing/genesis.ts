@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { ListingVaultDepositParams, ListingVaultDepositParamsAmino, ListingVaultDepositParamsSDKType } from "./params";
 import { BinaryReader, BinaryWriter } from "../../binary";
 /** GenesisState defines `x/listing`'s genesis state. */
 export interface GenesisState {
@@ -7,6 +8,8 @@ export interface GenesisState {
    * listed
    */
   hardCapForMarkets: number;
+  /** listing_vault_deposit_params is the params for PML megavault deposits */
+  listingVaultDepositParams: ListingVaultDepositParams;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/dydxprotocol.listing.GenesisState";
@@ -24,6 +27,10 @@ export interface GenesisStateAmino {
    * listed
    */
   hard_cap_for_markets?: number;
+  /**
+   * listing_vault_deposit_params is the params for PML megavault deposits
+   */
+  listing_vault_deposit_params?: ListingVaultDepositParamsAmino;
 }
 export interface GenesisStateAminoMsg {
   type: "/dydxprotocol.listing.GenesisState";
@@ -32,10 +39,12 @@ export interface GenesisStateAminoMsg {
 /** GenesisState defines `x/listing`'s genesis state. */
 export interface GenesisStateSDKType {
   hard_cap_for_markets: number;
+  listing_vault_deposit_params: ListingVaultDepositParamsSDKType;
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    hardCapForMarkets: 0
+    hardCapForMarkets: 0,
+    listingVaultDepositParams: ListingVaultDepositParams.fromPartial({})
   };
 }
 export const GenesisState = {
@@ -43,6 +52,9 @@ export const GenesisState = {
   encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.hardCapForMarkets !== 0) {
       writer.uint32(8).uint32(message.hardCapForMarkets);
+    }
+    if (message.listingVaultDepositParams !== undefined) {
+      ListingVaultDepositParams.encode(message.listingVaultDepositParams, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -56,6 +68,9 @@ export const GenesisState = {
         case 1:
           message.hardCapForMarkets = reader.uint32();
           break;
+        case 2:
+          message.listingVaultDepositParams = ListingVaultDepositParams.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -66,6 +81,7 @@ export const GenesisState = {
   fromPartial(object: Partial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
     message.hardCapForMarkets = object.hardCapForMarkets ?? 0;
+    message.listingVaultDepositParams = object.listingVaultDepositParams !== undefined && object.listingVaultDepositParams !== null ? ListingVaultDepositParams.fromPartial(object.listingVaultDepositParams) : undefined;
     return message;
   },
   fromAmino(object: GenesisStateAmino): GenesisState {
@@ -73,11 +89,15 @@ export const GenesisState = {
     if (object.hard_cap_for_markets !== undefined && object.hard_cap_for_markets !== null) {
       message.hardCapForMarkets = object.hard_cap_for_markets;
     }
+    if (object.listing_vault_deposit_params !== undefined && object.listing_vault_deposit_params !== null) {
+      message.listingVaultDepositParams = ListingVaultDepositParams.fromAmino(object.listing_vault_deposit_params);
+    }
     return message;
   },
   toAmino(message: GenesisState): GenesisStateAmino {
     const obj: any = {};
     obj.hard_cap_for_markets = message.hardCapForMarkets === 0 ? undefined : message.hardCapForMarkets;
+    obj.listing_vault_deposit_params = message.listingVaultDepositParams ? ListingVaultDepositParams.toAmino(message.listingVaultDepositParams) : undefined;
     return obj;
   },
   fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {

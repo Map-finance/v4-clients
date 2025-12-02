@@ -2,7 +2,7 @@
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryPerpetualRequest, QueryPerpetualResponse, QueryAllPerpetualsRequest, QueryAllPerpetualsResponse, QueryAllLiquidityTiersRequest, QueryAllLiquidityTiersResponse, QueryPremiumVotesRequest, QueryPremiumVotesResponse, QueryPremiumSamplesRequest, QueryPremiumSamplesResponse, QueryParamsRequest, QueryParamsResponse } from "./query";
+import { QueryPerpetualRequest, QueryPerpetualResponse, QueryAllPerpetualsRequest, QueryAllPerpetualsResponse, QueryAllLiquidityTiersRequest, QueryAllLiquidityTiersResponse, QueryPremiumVotesRequest, QueryPremiumVotesResponse, QueryPremiumSamplesRequest, QueryPremiumSamplesResponse, QueryParamsRequest, QueryParamsResponse, QueryNextPerpetualIdRequest, QueryNextPerpetualIdResponse } from "./query";
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Queries a Perpetual by id. */
@@ -17,6 +17,8 @@ export interface Query {
   premiumSamples(request?: QueryPremiumSamplesRequest): Promise<QueryPremiumSamplesResponse>;
   /** Queries the perpetual params. */
   params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries the next perpetual id. */
+  nextPerpetualId(request?: QueryNextPerpetualIdRequest): Promise<QueryNextPerpetualIdResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -28,6 +30,7 @@ export class QueryClientImpl implements Query {
     this.premiumVotes = this.premiumVotes.bind(this);
     this.premiumSamples = this.premiumSamples.bind(this);
     this.params = this.params.bind(this);
+    this.nextPerpetualId = this.nextPerpetualId.bind(this);
   }
   perpetual(request: QueryPerpetualRequest): Promise<QueryPerpetualResponse> {
     const data = QueryPerpetualRequest.encode(request).finish();
@@ -63,6 +66,11 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("dydxprotocol.perpetuals.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
+  nextPerpetualId(request: QueryNextPerpetualIdRequest = {}): Promise<QueryNextPerpetualIdResponse> {
+    const data = QueryNextPerpetualIdRequest.encode(request).finish();
+    const promise = this.rpc.request("dydxprotocol.perpetuals.Query", "NextPerpetualId", data);
+    return promise.then(data => QueryNextPerpetualIdResponse.decode(new BinaryReader(data)));
+  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -85,6 +93,9 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     params(request?: QueryParamsRequest): Promise<QueryParamsResponse> {
       return queryService.params(request);
+    },
+    nextPerpetualId(request?: QueryNextPerpetualIdRequest): Promise<QueryNextPerpetualIdResponse> {
+      return queryService.nextPerpetualId(request);
     }
   };
 };

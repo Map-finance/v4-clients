@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Timestamp } from "../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../binary";
-import { toTimestamp, fromTimestamp } from "../../helpers";
+import { toTimestamp, fromTimestamp, bytesFromBase64, base64FromBytes } from "../../helpers";
 /** BlockStats is used to store stats transiently within the scope of a block. */
 export interface BlockStats {
   /** The fills that occured on this block. */
@@ -235,6 +235,46 @@ export interface UserStatsAminoMsg {
 export interface UserStatsSDKType {
   taker_notional: bigint;
   maker_notional: bigint;
+}
+/** CachedStakeAmount stores the last calculated total staked amount for address */
+export interface CachedStakeAmount {
+  /** Last calculated total staked amount by the delegator (in coin amount). */
+  stakedAmount: Uint8Array;
+  /**
+   * Block time at which the calculation is cached (in Unix Epoch seconds)
+   * Rounded down to nearest second.
+   */
+  cachedAt: bigint;
+}
+export interface CachedStakeAmountProtoMsg {
+  typeUrl: "/dydxprotocol.stats.CachedStakeAmount";
+  value: Uint8Array;
+}
+/**
+ * CachedStakeAmount stores the last calculated total staked amount for address
+ * @name CachedStakeAmountAmino
+ * @package dydxprotocol.stats
+ * @see proto type: dydxprotocol.stats.CachedStakeAmount
+ */
+export interface CachedStakeAmountAmino {
+  /**
+   * Last calculated total staked amount by the delegator (in coin amount).
+   */
+  staked_amount?: string;
+  /**
+   * Block time at which the calculation is cached (in Unix Epoch seconds)
+   * Rounded down to nearest second.
+   */
+  cached_at?: string;
+}
+export interface CachedStakeAmountAminoMsg {
+  type: "/dydxprotocol.stats.CachedStakeAmount";
+  value: CachedStakeAmountAmino;
+}
+/** CachedStakeAmount stores the last calculated total staked amount for address */
+export interface CachedStakeAmountSDKType {
+  staked_amount: Uint8Array;
+  cached_at: bigint;
 }
 function createBaseBlockStats(): BlockStats {
   return {
@@ -738,6 +778,81 @@ export const UserStats = {
     return {
       typeUrl: "/dydxprotocol.stats.UserStats",
       value: UserStats.encode(message).finish()
+    };
+  }
+};
+function createBaseCachedStakeAmount(): CachedStakeAmount {
+  return {
+    stakedAmount: new Uint8Array(),
+    cachedAt: BigInt(0)
+  };
+}
+export const CachedStakeAmount = {
+  typeUrl: "/dydxprotocol.stats.CachedStakeAmount",
+  encode(message: CachedStakeAmount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.stakedAmount.length !== 0) {
+      writer.uint32(10).bytes(message.stakedAmount);
+    }
+    if (message.cachedAt !== BigInt(0)) {
+      writer.uint32(16).int64(message.cachedAt);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): CachedStakeAmount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCachedStakeAmount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.stakedAmount = reader.bytes();
+          break;
+        case 2:
+          message.cachedAt = reader.int64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<CachedStakeAmount>): CachedStakeAmount {
+    const message = createBaseCachedStakeAmount();
+    message.stakedAmount = object.stakedAmount ?? new Uint8Array();
+    message.cachedAt = object.cachedAt !== undefined && object.cachedAt !== null ? BigInt(object.cachedAt.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: CachedStakeAmountAmino): CachedStakeAmount {
+    const message = createBaseCachedStakeAmount();
+    if (object.staked_amount !== undefined && object.staked_amount !== null) {
+      message.stakedAmount = bytesFromBase64(object.staked_amount);
+    }
+    if (object.cached_at !== undefined && object.cached_at !== null) {
+      message.cachedAt = BigInt(object.cached_at);
+    }
+    return message;
+  },
+  toAmino(message: CachedStakeAmount): CachedStakeAmountAmino {
+    const obj: any = {};
+    obj.staked_amount = message.stakedAmount ? base64FromBytes(message.stakedAmount) : undefined;
+    obj.cached_at = message.cachedAt !== BigInt(0) ? message.cachedAt?.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: CachedStakeAmountAminoMsg): CachedStakeAmount {
+    return CachedStakeAmount.fromAmino(object.value);
+  },
+  fromProtoMsg(message: CachedStakeAmountProtoMsg): CachedStakeAmount {
+    return CachedStakeAmount.decode(message.value);
+  },
+  toProto(message: CachedStakeAmount): Uint8Array {
+    return CachedStakeAmount.encode(message).finish();
+  },
+  toProtoMsg(message: CachedStakeAmount): CachedStakeAmountProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.stats.CachedStakeAmount",
+      value: CachedStakeAmount.encode(message).finish()
     };
   }
 };

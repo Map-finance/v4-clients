@@ -1,15 +1,15 @@
 //@ts-nocheck
-import * as _191 from "./protobuf/any";
-import * as _192 from "./protobuf/descriptor";
-import * as _193 from "./protobuf/duration";
-import * as _194 from "./protobuf/empty";
-import * as _195 from "./protobuf/timestamp";
+import * as _316 from "./protobuf/any";
+import * as _317 from "./protobuf/descriptor";
+import * as _318 from "./protobuf/duration";
+import * as _319 from "./protobuf/empty";
+import * as _320 from "./protobuf/timestamp";
 export namespace google {
   export const protobuf = {
-    ..._191,
-    ..._192,
-    ..._193,
-    ..._194,
-    ..._195
+    ..._316,
+    ..._317,
+    ..._318,
+    ..._319,
+    ..._320
   };
 }

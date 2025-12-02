@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { IndexerSubaccountId, IndexerSubaccountIdAmino, IndexerSubaccountIdSDKType } from "./subaccount";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { bytesFromBase64, base64FromBytes } from "../../../../helpers";
 /**
  * Represents the side of the orderbook the order will be placed on.
  * Note that Side.SIDE_UNSPECIFIED is an invalid order and cannot be
@@ -282,15 +283,14 @@ export interface IndexerOrderId {
   clientId: number;
   /**
    * order_flags represent order flags for the order. This field is invalid if
-   * it's greater than 127 (larger than one byte). Each bit in the first byte
-   * represents a different flag. Currently only two flags are supported.
+   * it's greater than 257. Each bit represents a different flag.
    * 
-   * Starting from the bit after the most MSB (note that the MSB is used in
-   * proto varint encoding, and therefore cannot be used): Bit 1 is set if this
-   * order is a Long-Term order (0x40, or 64 as a uint8). Bit 2 is set if this
-   * order is a Conditional order (0x20, or 32 as a uint8).
-   * 
-   * If neither bit is set, the order is assumed to be a Short-Term order.
+   * The following are the valid orderId flags:
+   * ShortTerm    = uint32(0)
+   * Conditional  = uint32(32)
+   * LongTerm     = uint32(64)
+   * Twap         = uint32(128)
+   * TwapSuborder = uint32(256) (for internal use only)
    * 
    * If both bits are set or bits other than the 2nd and 3rd are set, the order
    * ID is invalid.
@@ -326,15 +326,14 @@ export interface IndexerOrderIdAmino {
   client_id?: number;
   /**
    * order_flags represent order flags for the order. This field is invalid if
-   * it's greater than 127 (larger than one byte). Each bit in the first byte
-   * represents a different flag. Currently only two flags are supported.
+   * it's greater than 257. Each bit represents a different flag.
    * 
-   * Starting from the bit after the most MSB (note that the MSB is used in
-   * proto varint encoding, and therefore cannot be used): Bit 1 is set if this
-   * order is a Long-Term order (0x40, or 64 as a uint8). Bit 2 is set if this
-   * order is a Conditional order (0x20, or 32 as a uint8).
-   * 
-   * If neither bit is set, the order is assumed to be a Short-Term order.
+   * The following are the valid orderId flags:
+   * ShortTerm    = uint32(0)
+   * Conditional  = uint32(32)
+   * LongTerm     = uint32(64)
+   * Twap         = uint32(128)
+   * TwapSuborder = uint32(256) (for internal use only)
    * 
    * If both bits are set or bits other than the 2nd and 3rd are set, the order
    * ID is invalid.
@@ -368,13 +367,13 @@ export interface IndexerOrder {
    * The size of this order in base quantums. Must be a multiple of
    * `ClobPair.StepBaseQuantums` (where `ClobPair.Id = orderId.ClobPairId`).
    */
-  quantums: bigint;
+  quantums: Uint8Array;
   /**
    * The price level that this order will be placed at on the orderbook,
    * in subticks. Must be a multiple of ClobPair.SubticksPerTick
    * (where `ClobPair.Id = orderId.ClobPairId`).
    */
-  subticks: bigint;
+  subticks: Uint8Array;
   /**
    * The last block this order can be executed at (after which it will be
    * unfillable). Used only for Short-Term orders. If this value is non-zero
@@ -415,7 +414,19 @@ export interface IndexerOrder {
    * Must be a multiple of ClobPair.SubticksPerTick (where `ClobPair.Id =
    * orderId.ClobPairId`).
    */
-  conditionalOrderTriggerSubticks: bigint;
+  conditionalOrderTriggerSubticks: Uint8Array;
+  /** builder_code_params is the metadata for the partner or builder of an order. */
+  builderCodeParams?: BuilderCodeParameters;
+  /**
+   * order_router_address is the address of the order router that forwarded this
+   * order.
+   */
+  orderRouterAddress: string;
+  /**
+   * twap_parameters represent the configuration for a TWAP order. This must be
+   * set for twap orders and will be ignored for all other order types.
+   */
+  twapParameters?: TwapParameters;
 }
 export interface IndexerOrderProtoMsg {
   typeUrl: "/dydxprotocol.indexer.protocol.v1.IndexerOrder";
@@ -488,6 +499,20 @@ export interface IndexerOrderAmino {
    * orderId.ClobPairId`).
    */
   conditional_order_trigger_subticks?: string;
+  /**
+   * builder_code_params is the metadata for the partner or builder of an order.
+   */
+  builder_code_params?: BuilderCodeParametersAmino;
+  /**
+   * order_router_address is the address of the order router that forwarded this
+   * order.
+   */
+  order_router_address?: string;
+  /**
+   * twap_parameters represent the configuration for a TWAP order. This must be
+   * set for twap orders and will be ignored for all other order types.
+   */
+  twap_parameters?: TwapParametersAmino;
 }
 export interface IndexerOrderAminoMsg {
   type: "/dydxprotocol.indexer.protocol.v1.IndexerOrder";
@@ -500,15 +525,123 @@ export interface IndexerOrderAminoMsg {
 export interface IndexerOrderSDKType {
   order_id: IndexerOrderIdSDKType;
   side: IndexerOrder_Side;
-  quantums: bigint;
-  subticks: bigint;
+  quantums: Uint8Array;
+  subticks: Uint8Array;
   good_til_block?: number;
   good_til_block_time?: number;
   time_in_force: IndexerOrder_TimeInForce;
   reduce_only: boolean;
   client_metadata: number;
   condition_type: IndexerOrder_ConditionType;
-  conditional_order_trigger_subticks: bigint;
+  conditional_order_trigger_subticks: Uint8Array;
+  builder_code_params?: BuilderCodeParametersSDKType;
+  order_router_address: string;
+  twap_parameters?: TwapParametersSDKType;
+}
+/** TwapParameters represents the necessary configuration for a TWAP order. */
+export interface TwapParameters {
+  /**
+   * Duration of the TWAP order execution in seconds. Must be in the range
+   * [300 (5 minutes), 86400 (24 hours)].
+   */
+  duration: number;
+  /**
+   * Interval in seconds for each suborder to execute. Must be a
+   * whole number, a factor of the duration, and in the range
+   * [30 (30 seconds), 3600 (1 hour)].
+   */
+  interval: number;
+  /**
+   * Price tolerance in ppm for each suborder. This will be applied to
+   * the oracle price each time a suborder is triggered. Must be
+   * be in the range [0, 1_000_000).
+   */
+  priceTolerance: number;
+}
+export interface TwapParametersProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.protocol.v1.TwapParameters";
+  value: Uint8Array;
+}
+/**
+ * TwapParameters represents the necessary configuration for a TWAP order.
+ * @name TwapParametersAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.TwapParameters
+ */
+export interface TwapParametersAmino {
+  /**
+   * Duration of the TWAP order execution in seconds. Must be in the range
+   * [300 (5 minutes), 86400 (24 hours)].
+   */
+  duration?: number;
+  /**
+   * Interval in seconds for each suborder to execute. Must be a
+   * whole number, a factor of the duration, and in the range
+   * [30 (30 seconds), 3600 (1 hour)].
+   */
+  interval?: number;
+  /**
+   * Price tolerance in ppm for each suborder. This will be applied to
+   * the oracle price each time a suborder is triggered. Must be
+   * be in the range [0, 1_000_000).
+   */
+  price_tolerance?: number;
+}
+export interface TwapParametersAminoMsg {
+  type: "/dydxprotocol.indexer.protocol.v1.TwapParameters";
+  value: TwapParametersAmino;
+}
+/** TwapParameters represents the necessary configuration for a TWAP order. */
+export interface TwapParametersSDKType {
+  duration: number;
+  interval: number;
+  price_tolerance: number;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ */
+export interface BuilderCodeParameters {
+  /** The address of the builder to which the fee will be paid. */
+  builderAddress: string;
+  /** The fee enforced on the order in ppm. */
+  feePpm: number;
+}
+export interface BuilderCodeParametersProtoMsg {
+  typeUrl: "/dydxprotocol.indexer.protocol.v1.BuilderCodeParameters";
+  value: Uint8Array;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ * @name BuilderCodeParametersAmino
+ * @package dydxprotocol.indexer.protocol.v1
+ * @see proto type: dydxprotocol.indexer.protocol.v1.BuilderCodeParameters
+ */
+export interface BuilderCodeParametersAmino {
+  /**
+   * The address of the builder to which the fee will be paid.
+   */
+  builder_address?: string;
+  /**
+   * The fee enforced on the order in ppm.
+   */
+  fee_ppm?: number;
+}
+export interface BuilderCodeParametersAminoMsg {
+  type: "/dydxprotocol.indexer.protocol.v1.BuilderCodeParameters";
+  value: BuilderCodeParametersAmino;
+}
+/**
+ * BuilderCodeParameters represents the metadata for the partner or builder of
+ * an order. This allows them to specify a fee for providing there service which
+ * will be paid out in the event of an order fill.
+ */
+export interface BuilderCodeParametersSDKType {
+  builder_address: string;
+  fee_ppm: number;
 }
 function createBaseIndexerOrderId(): IndexerOrderId {
   return {
@@ -613,15 +746,18 @@ function createBaseIndexerOrder(): IndexerOrder {
   return {
     orderId: IndexerOrderId.fromPartial({}),
     side: 0,
-    quantums: BigInt(0),
-    subticks: BigInt(0),
+    quantums: new Uint8Array(),
+    subticks: new Uint8Array(),
     goodTilBlock: undefined,
     goodTilBlockTime: undefined,
     timeInForce: 0,
     reduceOnly: false,
     clientMetadata: 0,
     conditionType: 0,
-    conditionalOrderTriggerSubticks: BigInt(0)
+    conditionalOrderTriggerSubticks: new Uint8Array(),
+    builderCodeParams: undefined,
+    orderRouterAddress: "",
+    twapParameters: undefined
   };
 }
 export const IndexerOrder = {
@@ -633,11 +769,11 @@ export const IndexerOrder = {
     if (message.side !== 0) {
       writer.uint32(16).int32(message.side);
     }
-    if (message.quantums !== BigInt(0)) {
-      writer.uint32(24).uint64(message.quantums);
+    if (message.quantums.length !== 0) {
+      writer.uint32(26).bytes(message.quantums);
     }
-    if (message.subticks !== BigInt(0)) {
-      writer.uint32(32).uint64(message.subticks);
+    if (message.subticks.length !== 0) {
+      writer.uint32(34).bytes(message.subticks);
     }
     if (message.goodTilBlock !== undefined) {
       writer.uint32(40).uint32(message.goodTilBlock);
@@ -657,8 +793,17 @@ export const IndexerOrder = {
     if (message.conditionType !== 0) {
       writer.uint32(80).int32(message.conditionType);
     }
-    if (message.conditionalOrderTriggerSubticks !== BigInt(0)) {
-      writer.uint32(88).uint64(message.conditionalOrderTriggerSubticks);
+    if (message.conditionalOrderTriggerSubticks.length !== 0) {
+      writer.uint32(90).bytes(message.conditionalOrderTriggerSubticks);
+    }
+    if (message.builderCodeParams !== undefined) {
+      BuilderCodeParameters.encode(message.builderCodeParams, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.orderRouterAddress !== "") {
+      writer.uint32(106).string(message.orderRouterAddress);
+    }
+    if (message.twapParameters !== undefined) {
+      TwapParameters.encode(message.twapParameters, writer.uint32(114).fork()).ldelim();
     }
     return writer;
   },
@@ -676,10 +821,10 @@ export const IndexerOrder = {
           message.side = reader.int32() as any;
           break;
         case 3:
-          message.quantums = reader.uint64();
+          message.quantums = reader.bytes();
           break;
         case 4:
-          message.subticks = reader.uint64();
+          message.subticks = reader.bytes();
           break;
         case 5:
           message.goodTilBlock = reader.uint32();
@@ -700,7 +845,16 @@ export const IndexerOrder = {
           message.conditionType = reader.int32() as any;
           break;
         case 11:
-          message.conditionalOrderTriggerSubticks = reader.uint64();
+          message.conditionalOrderTriggerSubticks = reader.bytes();
+          break;
+        case 12:
+          message.builderCodeParams = BuilderCodeParameters.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.orderRouterAddress = reader.string();
+          break;
+        case 14:
+          message.twapParameters = TwapParameters.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -713,15 +867,18 @@ export const IndexerOrder = {
     const message = createBaseIndexerOrder();
     message.orderId = object.orderId !== undefined && object.orderId !== null ? IndexerOrderId.fromPartial(object.orderId) : undefined;
     message.side = object.side ?? 0;
-    message.quantums = object.quantums !== undefined && object.quantums !== null ? BigInt(object.quantums.toString()) : BigInt(0);
-    message.subticks = object.subticks !== undefined && object.subticks !== null ? BigInt(object.subticks.toString()) : BigInt(0);
+    message.quantums = object.quantums ?? new Uint8Array();
+    message.subticks = object.subticks ?? new Uint8Array();
     message.goodTilBlock = object.goodTilBlock ?? undefined;
     message.goodTilBlockTime = object.goodTilBlockTime ?? undefined;
     message.timeInForce = object.timeInForce ?? 0;
     message.reduceOnly = object.reduceOnly ?? false;
     message.clientMetadata = object.clientMetadata ?? 0;
     message.conditionType = object.conditionType ?? 0;
-    message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks !== undefined && object.conditionalOrderTriggerSubticks !== null ? BigInt(object.conditionalOrderTriggerSubticks.toString()) : BigInt(0);
+    message.conditionalOrderTriggerSubticks = object.conditionalOrderTriggerSubticks ?? new Uint8Array();
+    message.builderCodeParams = object.builderCodeParams !== undefined && object.builderCodeParams !== null ? BuilderCodeParameters.fromPartial(object.builderCodeParams) : undefined;
+    message.orderRouterAddress = object.orderRouterAddress ?? "";
+    message.twapParameters = object.twapParameters !== undefined && object.twapParameters !== null ? TwapParameters.fromPartial(object.twapParameters) : undefined;
     return message;
   },
   fromAmino(object: IndexerOrderAmino): IndexerOrder {
@@ -733,10 +890,10 @@ export const IndexerOrder = {
       message.side = object.side;
     }
     if (object.quantums !== undefined && object.quantums !== null) {
-      message.quantums = BigInt(object.quantums);
+      message.quantums = bytesFromBase64(object.quantums);
     }
     if (object.subticks !== undefined && object.subticks !== null) {
-      message.subticks = BigInt(object.subticks);
+      message.subticks = bytesFromBase64(object.subticks);
     }
     if (object.good_til_block !== undefined && object.good_til_block !== null) {
       message.goodTilBlock = object.good_til_block;
@@ -757,7 +914,16 @@ export const IndexerOrder = {
       message.conditionType = object.condition_type;
     }
     if (object.conditional_order_trigger_subticks !== undefined && object.conditional_order_trigger_subticks !== null) {
-      message.conditionalOrderTriggerSubticks = BigInt(object.conditional_order_trigger_subticks);
+      message.conditionalOrderTriggerSubticks = bytesFromBase64(object.conditional_order_trigger_subticks);
+    }
+    if (object.builder_code_params !== undefined && object.builder_code_params !== null) {
+      message.builderCodeParams = BuilderCodeParameters.fromAmino(object.builder_code_params);
+    }
+    if (object.order_router_address !== undefined && object.order_router_address !== null) {
+      message.orderRouterAddress = object.order_router_address;
+    }
+    if (object.twap_parameters !== undefined && object.twap_parameters !== null) {
+      message.twapParameters = TwapParameters.fromAmino(object.twap_parameters);
     }
     return message;
   },
@@ -765,15 +931,18 @@ export const IndexerOrder = {
     const obj: any = {};
     obj.order_id = message.orderId ? IndexerOrderId.toAmino(message.orderId) : undefined;
     obj.side = message.side === 0 ? undefined : message.side;
-    obj.quantums = message.quantums !== BigInt(0) ? message.quantums?.toString() : undefined;
-    obj.subticks = message.subticks !== BigInt(0) ? message.subticks?.toString() : undefined;
+    obj.quantums = message.quantums ? base64FromBytes(message.quantums) : undefined;
+    obj.subticks = message.subticks ? base64FromBytes(message.subticks) : undefined;
     obj.good_til_block = message.goodTilBlock === null ? undefined : message.goodTilBlock;
     obj.good_til_block_time = message.goodTilBlockTime === null ? undefined : message.goodTilBlockTime;
     obj.time_in_force = message.timeInForce === 0 ? undefined : message.timeInForce;
     obj.reduce_only = message.reduceOnly === false ? undefined : message.reduceOnly;
     obj.client_metadata = message.clientMetadata === 0 ? undefined : message.clientMetadata;
     obj.condition_type = message.conditionType === 0 ? undefined : message.conditionType;
-    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks !== BigInt(0) ? message.conditionalOrderTriggerSubticks?.toString() : undefined;
+    obj.conditional_order_trigger_subticks = message.conditionalOrderTriggerSubticks ? base64FromBytes(message.conditionalOrderTriggerSubticks) : undefined;
+    obj.builder_code_params = message.builderCodeParams ? BuilderCodeParameters.toAmino(message.builderCodeParams) : undefined;
+    obj.order_router_address = message.orderRouterAddress === "" ? undefined : message.orderRouterAddress;
+    obj.twap_parameters = message.twapParameters ? TwapParameters.toAmino(message.twapParameters) : undefined;
     return obj;
   },
   fromAminoMsg(object: IndexerOrderAminoMsg): IndexerOrder {
@@ -789,6 +958,168 @@ export const IndexerOrder = {
     return {
       typeUrl: "/dydxprotocol.indexer.protocol.v1.IndexerOrder",
       value: IndexerOrder.encode(message).finish()
+    };
+  }
+};
+function createBaseTwapParameters(): TwapParameters {
+  return {
+    duration: 0,
+    interval: 0,
+    priceTolerance: 0
+  };
+}
+export const TwapParameters = {
+  typeUrl: "/dydxprotocol.indexer.protocol.v1.TwapParameters",
+  encode(message: TwapParameters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.duration !== 0) {
+      writer.uint32(8).uint32(message.duration);
+    }
+    if (message.interval !== 0) {
+      writer.uint32(16).uint32(message.interval);
+    }
+    if (message.priceTolerance !== 0) {
+      writer.uint32(24).uint32(message.priceTolerance);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): TwapParameters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTwapParameters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.duration = reader.uint32();
+          break;
+        case 2:
+          message.interval = reader.uint32();
+          break;
+        case 3:
+          message.priceTolerance = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<TwapParameters>): TwapParameters {
+    const message = createBaseTwapParameters();
+    message.duration = object.duration ?? 0;
+    message.interval = object.interval ?? 0;
+    message.priceTolerance = object.priceTolerance ?? 0;
+    return message;
+  },
+  fromAmino(object: TwapParametersAmino): TwapParameters {
+    const message = createBaseTwapParameters();
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = object.duration;
+    }
+    if (object.interval !== undefined && object.interval !== null) {
+      message.interval = object.interval;
+    }
+    if (object.price_tolerance !== undefined && object.price_tolerance !== null) {
+      message.priceTolerance = object.price_tolerance;
+    }
+    return message;
+  },
+  toAmino(message: TwapParameters): TwapParametersAmino {
+    const obj: any = {};
+    obj.duration = message.duration === 0 ? undefined : message.duration;
+    obj.interval = message.interval === 0 ? undefined : message.interval;
+    obj.price_tolerance = message.priceTolerance === 0 ? undefined : message.priceTolerance;
+    return obj;
+  },
+  fromAminoMsg(object: TwapParametersAminoMsg): TwapParameters {
+    return TwapParameters.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TwapParametersProtoMsg): TwapParameters {
+    return TwapParameters.decode(message.value);
+  },
+  toProto(message: TwapParameters): Uint8Array {
+    return TwapParameters.encode(message).finish();
+  },
+  toProtoMsg(message: TwapParameters): TwapParametersProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.protocol.v1.TwapParameters",
+      value: TwapParameters.encode(message).finish()
+    };
+  }
+};
+function createBaseBuilderCodeParameters(): BuilderCodeParameters {
+  return {
+    builderAddress: "",
+    feePpm: 0
+  };
+}
+export const BuilderCodeParameters = {
+  typeUrl: "/dydxprotocol.indexer.protocol.v1.BuilderCodeParameters",
+  encode(message: BuilderCodeParameters, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.builderAddress !== "") {
+      writer.uint32(10).string(message.builderAddress);
+    }
+    if (message.feePpm !== 0) {
+      writer.uint32(16).uint32(message.feePpm);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): BuilderCodeParameters {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBuilderCodeParameters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.builderAddress = reader.string();
+          break;
+        case 2:
+          message.feePpm = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<BuilderCodeParameters>): BuilderCodeParameters {
+    const message = createBaseBuilderCodeParameters();
+    message.builderAddress = object.builderAddress ?? "";
+    message.feePpm = object.feePpm ?? 0;
+    return message;
+  },
+  fromAmino(object: BuilderCodeParametersAmino): BuilderCodeParameters {
+    const message = createBaseBuilderCodeParameters();
+    if (object.builder_address !== undefined && object.builder_address !== null) {
+      message.builderAddress = object.builder_address;
+    }
+    if (object.fee_ppm !== undefined && object.fee_ppm !== null) {
+      message.feePpm = object.fee_ppm;
+    }
+    return message;
+  },
+  toAmino(message: BuilderCodeParameters): BuilderCodeParametersAmino {
+    const obj: any = {};
+    obj.builder_address = message.builderAddress === "" ? undefined : message.builderAddress;
+    obj.fee_ppm = message.feePpm === 0 ? undefined : message.feePpm;
+    return obj;
+  },
+  fromAminoMsg(object: BuilderCodeParametersAminoMsg): BuilderCodeParameters {
+    return BuilderCodeParameters.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BuilderCodeParametersProtoMsg): BuilderCodeParameters {
+    return BuilderCodeParameters.decode(message.value);
+  },
+  toProto(message: BuilderCodeParameters): Uint8Array {
+    return BuilderCodeParameters.encode(message).finish();
+  },
+  toProtoMsg(message: BuilderCodeParameters): BuilderCodeParametersProtoMsg {
+    return {
+      typeUrl: "/dydxprotocol.indexer.protocol.v1.BuilderCodeParameters",
+      value: BuilderCodeParameters.encode(message).finish()
     };
   }
 };

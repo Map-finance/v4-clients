@@ -123,14 +123,12 @@ export interface MsgSendFromModuleToAccountResponseAminoMsg {
  * module-to-account transfers.
  */
 export interface MsgSendFromModuleToAccountResponseSDKType {}
-/** MsgCreateBridgeTransferResponse is a response type used for new bridge transfers. */
 export interface MsgCreateBridgeTransferResponse {}
 export interface MsgCreateBridgeTransferResponseProtoMsg {
   typeUrl: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse";
   value: Uint8Array;
 }
 /**
- * MsgCreateBridgeTransferResponse is a response type used for new bridge transfers.
  * @name MsgCreateBridgeTransferResponseAmino
  * @package dydxprotocol.sending
  * @see proto type: dydxprotocol.sending.MsgCreateBridgeTransferResponse
@@ -140,7 +138,6 @@ export interface MsgCreateBridgeTransferResponseAminoMsg {
   type: "/dydxprotocol.sending.MsgCreateBridgeTransferResponse";
   value: MsgCreateBridgeTransferResponseAmino;
 }
-/** MsgCreateBridgeTransferResponse is a response type used for new bridge transfers. */
 export interface MsgCreateBridgeTransferResponseSDKType {}
 function createBaseMsgCreateTransfer(): MsgCreateTransfer {
   return {

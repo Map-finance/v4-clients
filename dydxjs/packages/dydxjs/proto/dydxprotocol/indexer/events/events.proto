@@ -132,7 +132,8 @@ message TransferEventV1 {
   // Id of the asset transfered.
   uint32 asset_id = 3;
   // The amount of asset in quantums to transfer.
-  // Supports arbitrary precision for tokens with high decimal places (e.g., 18 decimals)
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals)
   bytes amount = 4 [
     (gogoproto.customtype) =
         "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
@@ -160,30 +161,90 @@ message OrderFillEventV1 {
     LiquidationOrderV1 liquidation_order = 4;
   }
   // Fill amount in base quantums.
-  uint64 fill_amount = 3;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes fill_amount = 3 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // Maker fee in USDC quantums.
-  sint64 maker_fee = 5;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes maker_fee = 5 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // Taker fee in USDC quantums. If the taker order is a liquidation, then this
   // represents the special liquidation fee, not the standard taker fee.
-  sint64 taker_fee = 6;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes taker_fee = 6 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // Total filled of the maker order in base quantums.
-  uint64 total_filled_maker = 7;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes total_filled_maker = 7 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // Total filled of the taker order in base quantums.
-  uint64 total_filled_taker = 8;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes total_filled_taker = 8 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // rev share for affiliates in USDC quantums.
-  uint64 affiliate_rev_share = 9;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes affiliate_rev_share = 9 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // fee for maker builder in USDC quantums.
-  uint64 maker_builder_fee = 10;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes maker_builder_fee = 10 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // fee for taker builder in USDC quantums.
-  uint64 taker_builder_fee = 11;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes taker_builder_fee = 11 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // builder address for maker
   string maker_builder_address = 12;
   // builder address for taker
   string taker_builder_address = 13;
   // fee for maker order router in USDC quantums
-  uint64 maker_order_router_fee = 14;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes maker_order_router_fee = 14 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // fee for taker order router in USDC quantums
-  uint64 taker_order_router_fee = 15;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes taker_order_router_fee = 15 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // order router address for maker
   string maker_order_router_address = 16;
   // order router address for taker
@@ -204,9 +265,21 @@ message DeleveragingEventV1 {
   uint32 perpetual_id = 3;
   // The amount filled between the liquidated and offsetting position, in
   // base quantums.
-  uint64 fill_amount = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes fill_amount = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // Total quote quantums filled.
-  uint64 total_quote_quantums = 5;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes total_quote_quantums = 5 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // `true` if liquidating a short position, `false` otherwise.
   bool is_buy = 6;
   // `true` if the deleveraging event is for final settlement, indicating
@@ -228,7 +301,13 @@ message LiquidationOrderV1 {
   uint32 perpetual_id = 3;
   // The total size of the liquidation order including any unfilled size,
   // in base quantums.
-  uint64 total_size = 4;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes total_size = 4 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
   // `true` if liquidating a short position, `false` otherwise.
   bool is_buy = 5;
   // The fillable price in subticks.
@@ -236,7 +315,12 @@ message LiquidationOrderV1 {
   // and the upper-price-bound for liquidating shorts.
   // Must be a multiple of ClobPair.SubticksPerTick
   // (where `ClobPair.Id = orderId.ClobPairId`).
-  uint64 subticks = 6;
+  // Supports arbitrary precision for high-precision price calculations.
+  bytes subticks = 6 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // SubaccountUpdateEvent message contains information about an update to a
@@ -386,7 +470,13 @@ message SpotMarketCreateEventV1 {
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
   // Must be a power of 10.
-  uint64 step_base_quantums = 8;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 8 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // PerpetualMarketCreateEventV1 message contains all the information about a
@@ -435,7 +525,13 @@ message PerpetualMarketCreateEventV1 {
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
   // Defined in clob.clob_pair
-  uint64 step_base_quantums = 9;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 9 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The liquidity_tier that this perpetual is associated with.
   // Defined in perpetuals.perpetual
@@ -488,7 +584,13 @@ message PerpetualMarketCreateEventV2 {
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
   // Defined in clob.clob_pair
-  uint64 step_base_quantums = 9;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 9 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The liquidity_tier that this perpetual is associated with.
   // Defined in perpetuals.perpetual
@@ -541,7 +643,13 @@ message PerpetualMarketCreateEventV3 {
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
   // Defined in clob.clob_pair
-  uint64 step_base_quantums = 9;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 9 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 
   // The liquidity_tier that this perpetual is associated with.
   // Defined in perpetuals.perpetual
@@ -610,7 +718,13 @@ message UpdateClobPairEventV1 {
 
   // Minimum increment in the size of orders on the CLOB, in base quantums.
   // Defined in clob.clob_pair
-  uint64 step_base_quantums = 5;
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes step_base_quantums = 5 [
+    (gogoproto.customtype) =
+        "github.com/dydxprotocol/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
 }
 
 // UpdatePerpetualEventV1 message contains all the information about an update
