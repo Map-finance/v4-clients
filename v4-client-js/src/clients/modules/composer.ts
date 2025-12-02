@@ -75,35 +75,18 @@ import {
   MsgDepositToSubaccount,
   MsgWithdrawFromSubaccount,
 } from './proto-includes';
+import {
+  Transfer,
+  MsgCreateBridgeTransfer,
+} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
+import { MsgCreateTransfer } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/tx';
 import { bigIntToBytes } from '../../lib/helpers';
 
 protobuf.util.Long = Long as any;
 protobuf.configure();
 
-// Manual type definition for Transfer
-// This will be used instead of the generated type from proto
-export interface Transfer {
-  sender: SubaccountId;
-  recipient: SubaccountId;
-  assetId: number;
-  amount: Uint8Array; // Changed from Long to Uint8Array (bytes)
-}
-
-// Manual type definition for MsgCreateTransfer
-export interface MsgCreateTransfer {
-  transfer: Transfer;
-}
-
-// Manual type definition for MsgCreateBridgeTransfer
-// This will be replaced when the proto file is generated
-export interface MsgCreateBridgeTransfer {
-  senderAddress: string;
-  sender: SubaccountId;
-  assetId: number;
-  quantums: Long;
-  chainId: string;
-  receiveAddress: string;
-}
+// Re-export manually imported types to maintain compatibility with other modules
+export { Transfer, MsgCreateTransfer, MsgCreateBridgeTransfer };
 
 export class Composer {
   // ------------ x/clob ------------
@@ -405,7 +388,7 @@ export class Composer {
       senderAddress,
       sender,
       assetId,
-      quantums,
+      quantums: bigIntToBytes(BigInt(quantums.toString())),
       chainId,
       receiveAddress,
     };
