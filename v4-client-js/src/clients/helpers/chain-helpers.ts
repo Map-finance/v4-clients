@@ -13,6 +13,16 @@ export function round(input: number, base: number): number {
     .toNumber();
 }
 
+/**
+ * Round a BigNumber to the nearest multiple of base, using BigNumber to avoid precision loss
+ */
+function roundBigNumber(input: BigNumber, base: number | BigNumber): BigNumber {
+  return BigNumber(input)
+    .div(BigNumber(base))
+    .integerValue(BigNumber.ROUND_FLOOR)
+    .times(BigNumber(base));
+}
+
 export function calculateQuantums(
   size: number,
   atomicResolution: number,
@@ -21,14 +31,15 @@ export function calculateQuantums(
   const rawQuantums = BigNumber(size).times(
     BigNumber(10).pow(BigNumber(atomicResolution).negated()),
   );
-  // 使用字符串形式避免精度丢失，然后进行 round 计算
-  // 如果 rawQuantums 超过安全整数范围，先转换为字符串再处理
-  const rawQuantumsStr = rawQuantums.toFixed(0, BigNumber.ROUND_FLOOR);
-  const quantums = round(Number(rawQuantumsStr), stepBaseQuantums);
+  // 使用 BigNumber 进行 round 计算，避免转换为 number 时丢失精度
+  const quantums = roundBigNumber(rawQuantums, stepBaseQuantums);
   // stepBaseQuantums functions as minimum order size
-  const result = Math.max(quantums, stepBaseQuantums);
+  const stepBaseQuantumsBN = BigNumber(stepBaseQuantums);
+  const result = BigNumber.max(quantums, stepBaseQuantumsBN);
+  // 使用 toFixed(0) 确保转换为整数字符串，避免科学计数法
+  const resultStr = result.toFixed(0, BigNumber.ROUND_FLOOR);
   // 使用 fromString 保持精度，避免 fromNumber 可能的精度丢失
-  return Long.fromString(String(result));
+  return Long.fromString(resultStr);
 }
 
 export function calculateVaultQuantums(size: number): bigint {
@@ -44,13 +55,14 @@ export function calculateSubticks(
   const QUOTE_QUANTUMS_ATOMIC_RESOLUTION = -6;
   const exponent = atomicResolution - quantumConversionExponent - QUOTE_QUANTUMS_ATOMIC_RESOLUTION;
   const rawSubticks = BigNumber(price).times(BigNumber(10).pow(exponent));
-  // 使用字符串形式避免精度丢失，然后进行 round 计算
-  // 如果 rawSubticks 超过安全整数范围，先转换为字符串再处理
-  const rawSubticksStr = rawSubticks.toFixed(0, BigNumber.ROUND_FLOOR);
-  const subticks = round(Number(rawSubticksStr), subticksPerTick);
-  const result = Math.max(subticks, subticksPerTick);
+  // 使用 BigNumber 进行 round 计算，避免转换为 number 时丢失精度
+  const subticks = roundBigNumber(rawSubticks, subticksPerTick);
+  const subticksPerTickBN = BigNumber(subticksPerTick);
+  const result = BigNumber.max(subticks, subticksPerTickBN);
+  // 使用 toFixed(0) 确保转换为整数字符串，避免科学计数法
+  const resultStr = result.toFixed(0, BigNumber.ROUND_FLOOR);
   // 使用 fromString 保持精度，避免 fromNumber 可能的精度丢失
-  return Long.fromString(String(result));
+  return Long.fromString(resultStr);
 }
 
 export function calculateSide(side: OrderSide): Order_Side {
