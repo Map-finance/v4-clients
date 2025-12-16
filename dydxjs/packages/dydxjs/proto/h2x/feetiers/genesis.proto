@@ -1,0 +1,13 @@
+syntax = "proto3";
+package h2x.feetiers;
+
+import "gogoproto/gogo.proto";
+import "h2x/feetiers/params.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/feetiers/types";
+
+// GenesisState defines the feetiers module's genesis state.
+message GenesisState {
+  // The parameters for perpetual fees.
+  PerpetualFeeParams params = 1 [ (gogoproto.nullable) = false ];
+}

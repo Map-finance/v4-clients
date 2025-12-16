@@ -1,0 +1,55 @@
+syntax = "proto3";
+package h2x.subaccounts;
+
+import "gogoproto/gogo.proto";
+import "h2x/subaccounts/subaccount.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/subaccounts/types";
+
+// StreamSubaccountUpdate provides information on a subaccount update. Used in
+// the full node GRPC stream.
+message StreamSubaccountUpdate {
+  SubaccountId subaccount_id = 1;
+  // updated_perpetual_positions will each be for unique perpetuals.
+  repeated SubaccountPerpetualPosition updated_perpetual_positions = 2;
+  // updated_asset_positions will each be for unique assets.
+  repeated SubaccountAssetPosition updated_asset_positions = 3;
+  // Snapshot indicates if the response is from a snapshot of the subaccount.
+  // All updates should be ignored until snapshot is received.
+  // If the snapshot is true, then all previous entries should be
+  // discarded and the subaccount should be resynced.
+  // For a snapshot subaccount update, the `updated_perpetual_positions` and
+  // `updated_asset_positions` fields will contain the full state of the
+  // subaccount.
+  bool snapshot = 4;
+}
+
+// SubaccountPerpetualPosition provides information on a subaccount's updated
+// perpetual positions.
+message SubaccountPerpetualPosition {
+  // The `Id` of the `Perpetual`.
+  uint32 perpetual_id = 1;
+  // The size of the position in base quantums. Negative means short.
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes quantums = 2 [
+    (gogoproto.customtype) =
+        "github.com/h2x/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
+}
+
+// SubaccountAssetPosition provides information on a subaccount's updated asset
+// positions.
+message SubaccountAssetPosition {
+  // The `Id` of the `Asset`.
+  uint32 asset_id = 1;
+  // The absolute size of the position in base quantums.
+  // Supports arbitrary precision for tokens with high decimal places (e.g., 18
+  // decimals).
+  bytes quantums = 2 [
+    (gogoproto.customtype) =
+        "github.com/h2x/v4-chain/protocol/dtypes.SerializableInt",
+    (gogoproto.nullable) = false
+  ];
+}

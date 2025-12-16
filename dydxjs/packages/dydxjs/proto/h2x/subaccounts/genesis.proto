@@ -1,0 +1,15 @@
+syntax = "proto3";
+package h2x.subaccounts;
+
+import "gogoproto/gogo.proto";
+import "h2x/subaccounts/subaccount.proto";
+import "h2x/subaccounts/params.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/subaccounts/types";
+
+// GenesisState defines the subaccounts module's genesis state.
+message GenesisState {
+  repeated Subaccount subaccounts = 1 [ (gogoproto.nullable) = false ];
+  // params defines the parameters for the subaccounts module
+  Params params = 2 [ (gogoproto.nullable) = false ];
+}

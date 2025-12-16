@@ -1,0 +1,12 @@
+syntax = "proto3";
+package h2x.affiliates;
+import "gogoproto/gogo.proto";
+import "h2x/affiliates/affiliates.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/affiliates/types";
+
+// GenesisState defines generis state of `x/affiliates`
+message GenesisState {
+  // The list of affiliate tiers
+  AffiliateTiers affiliate_tiers = 1 [ (gogoproto.nullable) = false ];
+}

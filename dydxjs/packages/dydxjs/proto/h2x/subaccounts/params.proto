@@ -1,0 +1,11 @@
+syntax = "proto3";
+package h2x.subaccounts;
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/subaccounts/types";
+
+// Params defines the parameters for the subaccounts module.
+message Params {
+  // transfer_fee_quantums defines the fee charged for transfers between subaccounts
+  // in quantums (e.g., 1_000_000 = 1 USDC with 6 decimals)
+  uint64 transfer_fee_quantums = 1;
+}
