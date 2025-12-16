@@ -89,9 +89,14 @@ export interface BroadcastOptions {
 }
 
 export interface DenomConfig {
-  USDC_DENOM: string;
-  USDC_DECIMALS: number;
+  USDC_DENOM?: string;
+  USDC_DECIMALS?: number;
   USDC_GAS_DENOM?: string;
+
+  // USDT support
+  USDT_DENOM?: string;
+  USDT_DECIMALS?: number;
+  USDT_GAS_DENOM?: string;
 
   CHAINTOKEN_DENOM: string;
   CHAINTOKEN_DECIMALS: number;

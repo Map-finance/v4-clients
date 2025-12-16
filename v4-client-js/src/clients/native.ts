@@ -80,6 +80,9 @@ export async function connectNetwork(paramsJSON: string): Promise<string> {
       USDC_DENOM,
       USDC_DECIMALS,
       USDC_GAS_DENOM,
+      USDT_DENOM,
+      USDT_DECIMALS,
+      USDT_GAS_DENOM,
       CHAINTOKEN_DENOM,
       CHAINTOKEN_DECIMALS,
       CHAINTOKEN_GAS_DENOM,
@@ -94,9 +97,14 @@ export async function connectNetwork(paramsJSON: string): Promise<string> {
     ) {
       throw new UserError('Missing required network params');
     }
+    // Support USDT or USDC (at least one required)
     if (
-      USDC_DENOM === undefined ||
-      USDC_DECIMALS === undefined ||
+      (USDC_DENOM === undefined || USDC_DECIMALS === undefined) &&
+      (USDT_DENOM === undefined || USDT_DECIMALS === undefined)
+    ) {
+      throw new UserError('Missing required token params (USDC or USDT)');
+    }
+    if (
       CHAINTOKEN_DENOM === undefined ||
       CHAINTOKEN_DECIMALS === undefined
     ) {
@@ -110,6 +118,9 @@ export async function connectNetwork(paramsJSON: string): Promise<string> {
       USDC_DENOM,
       USDC_DECIMALS,
       USDC_GAS_DENOM,
+      USDT_DENOM,
+      USDT_DECIMALS,
+      USDT_GAS_DENOM,
       CHAINTOKEN_DENOM,
       CHAINTOKEN_DECIMALS,
       CHAINTOKEN_GAS_DENOM,
@@ -602,9 +613,15 @@ export async function getAccountBalance(): Promise<String> {
     }
     const address = globalThis.wallet.address!;
 
+    // Prefer USDT, fallback to USDC
+    const quoteDenom = client.validatorClient.config.denoms.USDT_DENOM 
+      ?? client.validatorClient.config.denoms.USDC_DENOM;
+    if (!quoteDenom) {
+      throw new UserError('Quote denom (USDT or USDC) not configured');
+    }
     const tx = await client.validatorClient.get.getAccountBalance(
       address,
-      client.validatorClient.config.denoms.USDC_DENOM,
+      quoteDenom,
     );
     return encodeJson(tx);
   } catch (error) {
@@ -908,7 +925,7 @@ export async function decodeAccountResponseValue(value: string): Promise<string>
   return new Promise((resolve, reject) => {
     try {
       const rawData = Buffer.from(value, 'base64');
-      const rawAccount = AuthModule.QueryAccountResponse.decode(rawData).account;
+      const rawAccount = AuthModule.QueryAccountResponse.decode(new Uint8Array(rawData)).account;
       // The promise should have been rejected if the rawAccount was undefined.
       if (rawAccount === undefined) {
         throw Error('rawAccount is undefined');
@@ -1136,9 +1153,13 @@ export async function withdrawToNobleIBC(payload: string): Promise<String> {
 
     const subaccount = SubaccountInfo.forLocalWallet(wallet, subaccountNumber);
     // 使用 BigNumber 避免 parseFloat 精度丢失（支持 18+ 位精度）
+    // Prefer USDT, fallback to USDC
+    const quoteDecimals = client.validatorClient.config.denoms.USDT_DECIMALS 
+      ?? client.validatorClient.config.denoms.USDC_DECIMALS 
+      ?? 6;
     const msg = client.withdrawFromSubaccountMessage(
       subaccount,
-      BigNumber(amount).toFixed(client.validatorClient.config.denoms.USDC_DECIMALS, BigNumber.ROUND_FLOOR),
+      BigNumber(amount).toFixed(quoteDecimals, BigNumber.ROUND_FLOOR),
     );
     const ibcMsg: MsgTransferEncodeObject = {
       typeUrl: parsedIbcPayload.msgTypeUrl,
@@ -1330,7 +1351,7 @@ export async function signCompliancePayload(payload: string): Promise<string> {
 
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const messageToSign: string = `${message}:${action}"${currentStatus ?? ''}:${timestampInSeconds}`;
-    const messageHash = sha256(Buffer.from(messageToSign));
+    const messageHash = sha256(new Uint8Array(Buffer.from(messageToSign)));
 
     const signed = await Secp256k1.createSignature(messageHash, globalThis.hdKey.privateKey);
     const signedMessage = signed.toFixedLength();
@@ -1360,7 +1381,7 @@ export async function signPushNotificationTokenRegistrationPayload(
 
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const messageToSign: string = `${message}:REGISTER_TOKEN"${''}:${timestampInSeconds}`;
-    const messageHash = sha256(Buffer.from(messageToSign));
+    const messageHash = sha256(new Uint8Array(Buffer.from(messageToSign)));
 
     const signed = await Secp256k1.createSignature(messageHash, globalThis.hdKey.privateKey);
     const signedMessage = signed.toFixedLength();

@@ -51,7 +51,7 @@ export class Post {
   public readonly denoms: DenomConfig;
   public readonly defaultClientMemo?: string;
 
-  public selectedGasDenom: SelectedGasDenom = SelectedGasDenom.USDC;
+  public selectedGasDenom: SelectedGasDenom = SelectedGasDenom.USDT;
   public readonly defaultGasPrice: GasPrice;
   public readonly defaultDydxGasPrice: GasPrice;
 
@@ -73,9 +73,9 @@ export class Post {
     this.composer = new Composer();
     this.denoms = denoms;
     this.defaultClientMemo = defaultClientMemo;
-    this.defaultGasPrice = GasPrice.fromString(
-      `0.025${denoms.USDC_GAS_DENOM !== undefined ? denoms.USDC_GAS_DENOM : denoms.USDC_DENOM}`,
-    );
+    // Prefer USDT, fallback to USDC
+    const quoteGasDenom = denoms.USDT_GAS_DENOM ?? denoms.USDT_DENOM ?? denoms.USDC_GAS_DENOM ?? denoms.USDC_DENOM;
+    this.defaultGasPrice = GasPrice.fromString(`0.025${quoteGasDenom}`);
     this.defaultDydxGasPrice = GasPrice.fromString(
       `25000000000${
         denoms.CHAINTOKEN_GAS_DENOM !== undefined
@@ -106,7 +106,7 @@ export class Post {
   }
 
   getGasPrice(): GasPrice {
-    return this.selectedGasDenom === SelectedGasDenom.USDC
+    return this.selectedGasDenom === SelectedGasDenom.USDC || this.selectedGasDenom === SelectedGasDenom.USDT
       ? this.defaultGasPrice
       : this.defaultDydxGasPrice;
   }
@@ -379,13 +379,19 @@ export class Post {
 
     // TODO(TRCL-2550): Temporary workaround before IBC denom is supported in '@cosmjs/stargate'.
     // The '@cosmjs/stargate' does not support denom with '/', so currently GAS_PRICE is
-    // represented in 'uusdc', and the output of `calculateFee` is in '', which is replaced
-    // below by USDC_DENOM string.
+    // represented in 'uusdc' or 'uusdt', and the output of `calculateFee` is in '', which is replaced
+    // below by USDT_DENOM or USDC_DENOM string.
     const amount: Coin[] = fee.amount.map((coin: Coin) => {
+      if (coin.denom === 'uusdt') {
+        return {
+          amount: coin.amount,
+          denom: this.denoms.USDT_DENOM ?? this.denoms.USDC_DENOM!,
+        };
+      }
       if (coin.denom === 'uusdc') {
         return {
           amount: coin.amount,
-          denom: this.denoms.USDC_DENOM,
+          denom: this.denoms.USDC_DENOM ?? this.denoms.USDT_DENOM!,
         };
       }
       return coin;
@@ -783,7 +789,11 @@ export class Post {
     coinDenom: string,
     quantums: string,
   ): Promise<EncodeObject> {
-    if (coinDenom !== this.denoms.CHAINTOKEN_DENOM && coinDenom !== this.denoms.USDC_DENOM) {
+    if (
+      coinDenom !== this.denoms.CHAINTOKEN_DENOM &&
+      coinDenom !== this.denoms.USDC_DENOM &&
+      coinDenom !== this.denoms.USDT_DENOM
+    ) {
       throw new Error('Unsupported coinDenom');
     }
 

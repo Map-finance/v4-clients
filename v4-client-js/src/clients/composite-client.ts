@@ -10,6 +10,7 @@ import {
   Order_ConditionType,
   Order_TimeInForce,
 } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers';
 import { Long } from '../lib/long';
 import protobuf from 'protobufjs';
@@ -105,7 +106,7 @@ export type TransferToSubaccountPayload = {
 
 export class CompositeClient {
   public readonly network: Network;
-  public gasDenom: SelectedGasDenom = SelectedGasDenom.USDC;
+  public gasDenom: SelectedGasDenom = SelectedGasDenom.USDT;
   private _indexerClient: IndexerClient;
   private _validatorClient?: ValidatorClient;
 
@@ -146,6 +147,18 @@ export class CompositeClient {
   setSelectedGasDenom(gasDenom: SelectedGasDenom): void {
     if (!this._validatorClient) throw new Error('Validator client not initialized');
     this._validatorClient.setSelectedGasDenom(gasDenom);
+  }
+
+  /**
+   * Get quote asset decimals (USDT first, fallback to USDC)
+   */
+  private getQuoteDecimals(): number {
+    const denoms = this._validatorClient?.config.denoms;
+    if (!denoms) {
+      throw new Error('Validator client not initialized');
+    }
+    // Prefer USDT, fallback to USDC
+    return denoms.USDT_DECIMALS ?? denoms.USDC_DECIMALS ?? 6;
   }
 
   async populateAccountNumberCache(address: string): Promise<void> {
@@ -443,8 +456,38 @@ export class CompositeClient {
         goodTilBlock,
       );
       msg
-        .then((it) => resolve([it]))
+        .then((it) => {
+          // 调试打印：最终消息内容
+          // 使用自定义 replacer 避免 BigInt 序列化问题
+          const safeStringify = (obj: any): string => {
+            return JSON.stringify(obj, (key, value) => {
+              if (typeof value === 'bigint') {
+                return value.toString();
+              }
+              if (value && typeof value === 'object' && value.constructor && value.constructor.name === 'Long') {
+                return value.toString();
+              }
+              return value;
+            }, 2);
+          };
+          
+          try {
+            console.log('[DEBUG placeOrder] 最终订单消息:', {
+              type: it.typeUrl,
+              value: safeStringify(it.value),
+            });
+          } catch (e) {
+            // 如果序列化失败，只打印类型
+            console.log('[DEBUG placeOrder] 最终订单消息 (序列化失败):', {
+              type: it.typeUrl,
+              valueType: typeof it.value,
+              error: e instanceof Error ? e.message : String(e),
+            });
+          }
+          resolve([it]);
+        })
         .catch((err) => {
+          console.error('[DEBUG placeOrder] 下单消息构建失败:', err);
           throw err;
         });
     });
@@ -461,7 +504,9 @@ export class CompositeClient {
       memo,
       broadcastMode,
       () => account,
-    );
+    ).then((result) => {
+      return result;
+    });
   }
 
   /**
@@ -865,7 +910,7 @@ export class CompositeClient {
     if (validatorClient === undefined) {
       throw new Error('validatorClient not set');
     }
-    const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
+    const quantums = parseUnits(amount, this.getQuoteDecimals());
     
     // Remove Long.MAX_VALUE check - Uint8Array can represent arbitrarily large integers
     // This allows support for tokens with high decimal places (e.g., 18 decimals)
@@ -921,7 +966,7 @@ export class CompositeClient {
     if (validatorClient === undefined) {
       throw new Error('validatorClient not set');
     }
-    const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
+    const quantums = parseUnits(amount, this.getQuoteDecimals());
     // Note: With bigint-based Long, we can handle much larger values than the original Long.MAX_VALUE
     // The check is kept for backward compatibility but now supports 18+ decimal precision
     if (quantums < 0) {
@@ -981,7 +1026,7 @@ export class CompositeClient {
     if (validatorClient === undefined) {
       throw new Error('validatorClient not set');
     }
-    const quantums = parseUnits(amount, validatorClient.config.denoms.USDC_DECIMALS);
+    const quantums = parseUnits(amount, this.getQuoteDecimals());
     // Note: With bigint-based Long, we can handle much larger values than the original Long.MAX_VALUE
     // The check is kept for backward compatibility but now supports 18+ decimal precision
     if (quantums < 0) {
@@ -1325,9 +1370,11 @@ export class CompositeClient {
     minAmount: number,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    // 使用 BigNumber 处理 shares，避免大数字转换为科学计数法
+    const sharesBN = BigNumber(shares).integerValue(BigNumber.ROUND_FLOOR);
     return this.validatorClient.post.withdrawFromMegavault(
       subaccount,
-      bigIntToBytes(BigInt(Math.floor(shares))),
+      bigIntToBytes(BigInt(sharesBN.toFixed(0, BigNumber.ROUND_FLOOR))),
       bigIntToBytes(calculateVaultQuantums(minAmount)),
       broadcastMode,
     );
@@ -1338,10 +1385,12 @@ export class CompositeClient {
     shares: number,
     minAmount: number,
   ): EncodeObject {
+    // 使用 BigNumber 处理 shares，避免大数字转换为科学计数法
+    const sharesBN = BigNumber(shares).integerValue(BigNumber.ROUND_FLOOR);
     return this.validatorClient.post.withdrawFromMegavaultMsg(
       subaccount.address,
       subaccount.subaccountNumber,
-      bigIntToBytes(BigInt(Math.floor(shares))),
+      bigIntToBytes(BigInt(sharesBN.toFixed(0, BigNumber.ROUND_FLOOR))),
       bigIntToBytes(calculateVaultQuantums(minAmount)),
     );
   }
