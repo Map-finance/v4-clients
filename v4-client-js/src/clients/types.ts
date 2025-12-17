@@ -4,8 +4,8 @@ import {
   Order_ConditionType,
   Order_Side,
   Order_TimeInForce,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
-import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/perpetual';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
+import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/h2x/perpetuals/perpetual';
 import BigNumber from 'bignumber.js';
 import { Long } from '../lib/long';
 

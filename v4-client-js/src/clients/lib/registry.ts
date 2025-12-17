@@ -3,30 +3,30 @@ import { defaultRegistryTypes } from '@cosmjs/stargate';
 import {
   MsgAddAuthenticator,
   MsgRemoveAuthenticator,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
-import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/affiliates/tx';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/tx';
+import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/h2x/affiliates/tx';
 import {
   MsgPlaceOrder,
   MsgCancelOrder,
   MsgCreateClobPair,
   MsgUpdateClobPair,
   MsgBatchCancel,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/tx';
-import { Order, OrderId, TwapParameters } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
-import { SubaccountId } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/subaccounts/subaccount';
-import { MsgDelayMessage } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/delaymsg/tx';
-import { MsgCreateMarketPermissionless } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/listing/tx';
-import { MsgCreatePerpetual } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/tx';
-import { MsgCreateOracleMarket } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/prices/tx';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/tx';
+import { Order, OrderId, TwapParameters } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
+import { SubaccountId } from '@dydxprotocol/v4-proto/src/codegen/h2x/subaccounts/subaccount';
+import { MsgDelayMessage } from '@dydxprotocol/v4-proto/src/codegen/h2x/delaymsg/tx';
+import { MsgCreateMarketPermissionless } from '@dydxprotocol/v4-proto/src/codegen/h2x/listing/tx';
+import { MsgCreatePerpetual } from '@dydxprotocol/v4-proto/src/codegen/h2x/perpetuals/tx';
+import { MsgCreateOracleMarket } from '@dydxprotocol/v4-proto/src/codegen/h2x/prices/tx';
 import {
   MsgWithdrawFromSubaccount,
   MsgDepositToSubaccount,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/sending/transfer';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/sending/transfer';
 import { MsgCreateBridgeTransfer, Transfer, MsgCreateTransfer } from '../modules/composer';
 import {
   MsgDepositToMegavault,
   MsgWithdrawFromMegavault,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/vault/tx';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/vault/tx';
 import { BinaryWriter } from 'cosmjs-types/binary';
 import {
   TYPE_URL_MSG_PLACE_ORDER,
@@ -55,10 +55,7 @@ export const registry: ReadonlyArray<[string, GeneratedType]> = [];
 
 // Transfer 编码解码器
 const TransferCodec = {
-  encode(
-    message: Transfer,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: Transfer, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     // 编码 sender (field 1, SubaccountId)
     if (message.sender) {
       const senderWriter = writer.uint32(10).fork();
@@ -106,10 +103,7 @@ const TransferCodec = {
 
 // MsgCreateTransfer 编码解码器
 const MsgCreateTransferCodec = {
-  encode(
-    message: MsgCreateTransfer,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: MsgCreateTransfer, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     // 编码 transfer (field 1, Transfer)
     if (message.transfer) {
       const transferWriter = writer.uint32(10).fork();
@@ -203,10 +197,7 @@ const MsgCreateBridgeTransferCodec = {
 
 // Order 编码解码器 - 字段 3 (quantums) 和字段 4 (subticks) 使用 bytes (SerializableInt 格式)
 const OrderCodec = {
-  encode(
-    message: Order,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: Order, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     // 编码 orderId (field 1, OrderId)
     if (message.orderId) {
       const orderIdWriter = writer.uint32(10).fork();
@@ -321,7 +312,10 @@ const OrderCodec = {
         triggerSubticksBigInt = message.conditionalOrderTriggerSubticks;
       } else if (typeof message.conditionalOrderTriggerSubticks === 'string') {
         triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks);
-      } else if (typeof message.conditionalOrderTriggerSubticks === 'object' && 'toString' in message.conditionalOrderTriggerSubticks) {
+      } else if (
+        typeof message.conditionalOrderTriggerSubticks === 'object' &&
+        'toString' in message.conditionalOrderTriggerSubticks
+      ) {
         triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks.toString());
       } else {
         triggerSubticksBigInt = BigInt(message.conditionalOrderTriggerSubticks);
@@ -390,10 +384,7 @@ const OrderCodec = {
 
 // MsgPlaceOrder 编码解码器
 const MsgPlaceOrderCodec = {
-  encode(
-    message: MsgPlaceOrder,
-    writer: BinaryWriter = BinaryWriter.create(),
-  ): BinaryWriter {
+  encode(message: MsgPlaceOrder, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     // 编码 order (field 1, Order)
     if (message.order) {
       const orderWriter = writer.uint32(10).fork();

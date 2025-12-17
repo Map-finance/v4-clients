@@ -78,40 +78,39 @@ export const TYPE_URL_MSG_SUBMIT_PROPOSAL = '/cosmos.gov.v1.MsgSubmitProposal';
 
 // dYdX Specific
 // x/clob
-export const TYPE_URL_MSG_PLACE_ORDER = '/dydxprotocol.clob.MsgPlaceOrder';
-export const TYPE_URL_MSG_CANCEL_ORDER = '/dydxprotocol.clob.MsgCancelOrder';
-export const TYPE_URL_BATCH_CANCEL = '/dydxprotocol.clob.MsgBatchCancel';
-export const TYPE_URL_MSG_CREATE_CLOB_PAIR = '/dydxprotocol.clob.MsgCreateClobPair';
-export const TYPE_URL_MSG_UPDATE_CLOB_PAIR = '/dydxprotocol.clob.MsgUpdateClobPair';
+export const TYPE_URL_MSG_PLACE_ORDER = '/h2x.clob.MsgPlaceOrder';
+export const TYPE_URL_MSG_CANCEL_ORDER = '/h2x.clob.MsgCancelOrder';
+export const TYPE_URL_BATCH_CANCEL = '/h2x.clob.MsgBatchCancel';
+export const TYPE_URL_MSG_CREATE_CLOB_PAIR = '/h2x.clob.MsgCreateClobPair';
+export const TYPE_URL_MSG_UPDATE_CLOB_PAIR = '/h2x.clob.MsgUpdateClobPair';
 
 // x/delaymsg
-export const TYPE_URL_MSG_DELAY_MESSAGE = '/dydxprotocol.delaymsg.MsgDelayMessage';
+export const TYPE_URL_MSG_DELAY_MESSAGE = '/h2x.delaymsg.MsgDelayMessage';
 
 // x/listing
 export const TYPE_URL_MSG_CREATE_MARKET_PERMISSIONLESS =
-  '/dydxprotocol.listing.MsgCreateMarketPermissionless';
+  '/h2x.listing.MsgCreateMarketPermissionless';
 
 // x/perpetuals
-export const TYPE_URL_MSG_CREATE_PERPETUAL = '/dydxprotocol.perpetuals.MsgCreatePerpetual';
+export const TYPE_URL_MSG_CREATE_PERPETUAL = '/h2x.perpetuals.MsgCreatePerpetual';
 
 // x/prices
-export const TYPE_URL_MSG_CREATE_ORACLE_MARKET = '/dydxprotocol.prices.MsgCreateOracleMarket';
+export const TYPE_URL_MSG_CREATE_ORACLE_MARKET = '/h2x.prices.MsgCreateOracleMarket';
 
 // x/sending
-export const TYPE_URL_MSG_CREATE_TRANSFER = '/dydxprotocol.sending.MsgCreateTransfer';
-export const TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT =
-  '/dydxprotocol.sending.MsgWithdrawFromSubaccount';
-export const TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT = '/dydxprotocol.sending.MsgDepositToSubaccount';
+export const TYPE_URL_MSG_CREATE_TRANSFER = '/h2x.sending.MsgCreateTransfer';
+export const TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT = '/h2x.sending.MsgWithdrawFromSubaccount';
+export const TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT = '/h2x.sending.MsgDepositToSubaccount';
 
 // x/bridge (cross-chain transfer)
-export const TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER = '/dydxprotocol.sending.MsgCreateBridgeTransfer';
+export const TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER = '/h2x.sending.MsgCreateBridgeTransfer';
 
 // x/affiliates
-export const TYPE_URL_MSG_REGISTER_AFFILIATE = '/dydxprotocol.affiliates.MsgRegisterAffiliate';
+export const TYPE_URL_MSG_REGISTER_AFFILIATE = '/h2x.affiliates.MsgRegisterAffiliate';
 
 // x/vault
-export const TYPE_URL_MSG_DEPOSIT_TO_MEGAVAULT = '/dydxprotocol.vault.MsgDepositToMegavault';
-export const TYPE_URL_MSG_WITHDRAW_FROM_MEGAVAULT = '/dydxprotocol.vault.MsgWithdrawFromMegavault';
+export const TYPE_URL_MSG_DEPOSIT_TO_MEGAVAULT = '/h2x.vault.MsgDepositToMegavault';
+export const TYPE_URL_MSG_WITHDRAW_FROM_MEGAVAULT = '/h2x.vault.MsgWithdrawFromMegavault';
 
 // x/staking
 export const TYPE_URL_MSG_DELEGATE = '/cosmos.staking.v1beta1.MsgDelegate';
@@ -122,8 +121,8 @@ export const TYPE_URL_MSG_WITHDRAW_DELEGATOR_REWARD =
   '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward';
 
 // x/accountplus
-export const TYPE_URL_MSG_ADD_AUTHENTICATOR = '/dydxprotocol.accountplus.MsgAddAuthenticator';
-export const TYPE_URL_MSG_REMOVE_AUTHENTICATOR = '/dydxprotocol.accountplus.MsgRemoveAuthenticator';
+export const TYPE_URL_MSG_ADD_AUTHENTICATOR = '/h2x.accountplus.MsgAddAuthenticator';
+export const TYPE_URL_MSG_REMOVE_AUTHENTICATOR = '/h2x.accountplus.MsgRemoveAuthenticator';
 
 // ------------ Chain Constants ------------
 // The following are same across different networks / deployments.

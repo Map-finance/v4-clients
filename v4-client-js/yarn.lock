@@ -793,16 +793,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dydxprotocol/v4-proto@npm:@h2-v4-proto/dydxjs@^1.1.2":
-  version: 1.1.2
-  resolution: "@h2-v4-proto/dydxjs@npm:1.1.2"
+"@dydxprotocol/v4-proto@npm:@h2-v4-proto/dydxjs@^1.1.3":
+  version: 1.1.3
+  resolution: "@h2-v4-proto/dydxjs@npm:1.1.3"
   dependencies:
     "@cosmjs/amino": "npm:0.32.3"
     "@cosmjs/encoding": "npm:0.32.3"
     "@cosmjs/math": "npm:0.32.3"
     "@cosmjs/proto-signing": "npm:0.32.3"
     "@cosmjs/stargate": "npm:0.32.3"
-  checksum: 10c0/b143cfd082a6ebf7a0d8367b11dd29b2d24d931fccaaad7e16bb51159a4907b2074539777d07049ba306e6fbf077270bee53c53cd106d0ba38d9d344019018d9
+  checksum: 10c0/adedc13c0ae741c4f42957d51bc371e17e6d684c818ee0fc025faf1c1edf2e0d440b15da7563ca4f5ada153c504f17c0fd4345add05c949026f9d941fe885730
   languageName: node
   linkType: hard
 
@@ -838,7 +838,7 @@ __metadata:
     "@cosmjs/tendermint-rpc": "npm:0.32.3"
     "@cosmjs/utils": "npm:0.32.3"
     "@dydxprotocol/node-service-base-dev": "npm:^0.2.6"
-    "@dydxprotocol/v4-proto": "npm:@h2-v4-proto/dydxjs@^1.1.2"
+    "@dydxprotocol/v4-proto": "npm:@h2-v4-proto/dydxjs@^1.1.3"
     "@osmonauts/lcd": "npm:^0.6.0"
     "@protobufs/cosmos": "npm:^0.0.11"
     "@protobufs/gogoproto": "npm:^0.0.10"

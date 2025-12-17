@@ -5,11 +5,11 @@ import {
   BroadcastTxAsyncResponse,
   BroadcastTxSyncResponse,
 } from '@cosmjs/tendermint-rpc/build/tendermint37';
-import { GetAuthenticatorsResponse } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/query';
+import { GetAuthenticatorsResponse } from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/query';
 import {
   Order_ConditionType,
   Order_TimeInForce,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
 import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers';
 import { Long } from '../lib/long';
@@ -460,17 +460,26 @@ export class CompositeClient {
           // 调试打印：最终消息内容
           // 使用自定义 replacer 避免 BigInt 序列化问题
           const safeStringify = (obj: any): string => {
-            return JSON.stringify(obj, (key, value) => {
-              if (typeof value === 'bigint') {
-                return value.toString();
-              }
-              if (value && typeof value === 'object' && value.constructor && value.constructor.name === 'Long') {
-                return value.toString();
-              }
-              return value;
-            }, 2);
+            return JSON.stringify(
+              obj,
+              (key, value) => {
+                if (typeof value === 'bigint') {
+                  return value.toString();
+                }
+                if (
+                  value &&
+                  typeof value === 'object' &&
+                  value.constructor &&
+                  value.constructor.name === 'Long'
+                ) {
+                  return value.toString();
+                }
+                return value;
+              },
+              2,
+            );
           };
-          
+
           try {
             console.log('[DEBUG placeOrder] 最终订单消息:', {
               type: it.typeUrl,
@@ -911,7 +920,7 @@ export class CompositeClient {
       throw new Error('validatorClient not set');
     }
     const quantums = parseUnits(amount, this.getQuoteDecimals());
-    
+
     // Remove Long.MAX_VALUE check - Uint8Array can represent arbitrarily large integers
     // This allows support for tokens with high decimal places (e.g., 18 decimals)
     if (quantums < 0) {
@@ -1068,13 +1077,15 @@ export class CompositeClient {
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
-      console.log('bridgeTransferMessage',{ subaccount,
+      console.log('bridgeTransferMessage', {
+        subaccount,
         destinationChainId,
         receiveAddress,
         amount,
         assetId,
-        atomicResolution,});
-      
+        atomicResolution,
+      });
+
       const msg = this.bridgeTransferMessage(
         subaccount,
         destinationChainId,
@@ -1084,8 +1095,8 @@ export class CompositeClient {
         atomicResolution,
       );
 
-      console.log('bridgeTransferMessage',msg);
-      
+      console.log('bridgeTransferMessage', msg);
+
       resolve([msg]);
     });
     return this.send(

@@ -4,7 +4,7 @@
   "summary": "Add the x/prices, x/perpetuals and x/clob parameters needed for a BONK-USD perpetual market. Create the market in INITIALIZING status and transition it to ACTIVE status after 5 blocks.",
   "messages": [
     {
-      "@type": "/dydxprotocol.prices.MsgCreateOracleMarket",
+      "@type": "/h2x.prices.MsgCreateOracleMarket",
       "authority": "dydx10d07y265gmmuvt4z0w9aw880jnsr700jnmapky",
       "params": {
         "id": 34,
@@ -16,7 +16,7 @@
       }
     },
     {
-      "@type": "/dydxprotocol.perpetuals.MsgCreatePerpetual",
+      "@type": "/h2x.perpetuals.MsgCreatePerpetual",
       "authority": "dydx10d07y265gmmuvt4z0w9aw880jnsr700jnmapky",
       "params": {
         "id": 34,
@@ -28,7 +28,7 @@
       }
     },
     {
-      "@type": "/dydxprotocol.clob.MsgCreateClobPair",
+      "@type": "/h2x.clob.MsgCreateClobPair",
       "authority": "dydx10d07y265gmmuvt4z0w9aw880jnsr700jnmapky",
       "clob_pair": {
         "id": 34,
@@ -42,10 +42,10 @@
       }
     },
     {
-      "@type": "/dydxprotocol.delaymsg.MsgDelayMessage",
+      "@type": "/h2x.delaymsg.MsgDelayMessage",
       "authority": "dydx10d07y265gmmuvt4z0w9aw880jnsr700jnmapky",
       "msg": {
-        "@type": "/dydxprotocol.clob.MsgUpdateClobPair",
+        "@type": "/h2x.clob.MsgUpdateClobPair",
         "authority": "dydx1mkkvp26dngu6n8rmalaxyp3gwkjuzztq5zx6tr",
         "clob_pair": {
           "id": 34,

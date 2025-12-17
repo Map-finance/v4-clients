@@ -10,7 +10,7 @@ import {
   OfflineSigner,
 } from '@cosmjs/proto-signing';
 import { SigningStargateClient, StdFee } from '@cosmjs/stargate';
-import { TxExtension } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
+import { TxExtension } from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/tx';
 import { TxBody, TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx';
 import { Any } from 'cosmjs-types/google/protobuf/any';
 import { Long } from '../../lib/long';
@@ -72,7 +72,7 @@ export class TransactionSigner {
     // Create the non-critical extension message
     const nonCriticalExtensionOptions: Any[] = [
       Any.fromPartial({
-        typeUrl: '/dydxprotocol.accountplus.TxExtension',
+        typeUrl: '/h2x.accountplus.TxExtension',
         value: txExtension,
       }),
     ];

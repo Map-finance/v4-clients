@@ -7,7 +7,10 @@ import {
   TxExtension,
   QueryAbciResponse,
 } from '@cosmjs/stargate';
-import { GetAuthenticatorsRequest, GetAuthenticatorsResponse } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/query';
+import {
+  GetAuthenticatorsRequest,
+  GetAuthenticatorsResponse,
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/query';
 import * as AuthModule from 'cosmjs-types/cosmos/auth/v1beta1/query';
 import * as BankModule from 'cosmjs-types/cosmos/bank/v1beta1/query';
 import { Any } from 'cosmjs-types/google/protobuf/any';
@@ -85,7 +88,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.feetiers.Query/PerpetualFeeParams',
+      '/h2x.feetiers.Query/PerpetualFeeParams',
       requestData,
     );
     return FeeTierModule.QueryPerpetualFeeParamsResponse.decode(data);
@@ -101,10 +104,7 @@ export class Get {
       FeeTierModule.QueryUserFeeTierRequest.encode({ user: address }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.feetiers.Query/UserFeeTier',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.feetiers.Query/UserFeeTier', requestData);
     return FeeTierModule.QueryUserFeeTierResponse.decode(data);
   }
 
@@ -120,11 +120,10 @@ export class Get {
       StatsModule.QueryUserStatsRequest.encode({ user: address }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.stats.Query/UserStats',
-      requestData,
-    );
-    return StatsModule.QueryUserStatsResponse.decode(data).stats as { takerNotional: Long; makerNotional: Long } | undefined;
+    const data: Uint8Array = await this.sendQuery('/h2x.stats.Query/UserStats', requestData);
+    return StatsModule.QueryUserStatsResponse.decode(data).stats as
+      | { takerNotional: Long; makerNotional: Long }
+      | undefined;
   }
 
   /**
@@ -176,7 +175,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.subaccounts.Query/SubaccountAll',
+      '/h2x.subaccounts.Query/SubaccountAll',
       requestData,
     );
     return SubaccountsModule.QuerySubaccountAllResponse.decode(data);
@@ -198,10 +197,7 @@ export class Get {
       }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.subaccounts.Query/Subaccount',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.subaccounts.Query/Subaccount', requestData);
     return SubaccountsModule.QuerySubaccountResponse.decode(data);
   }
 
@@ -213,10 +209,7 @@ export class Get {
   async getRewardsParams(): Promise<RewardsModule.QueryParamsResponse> {
     const requestData = Uint8Array.from(RewardsModule.QueryParamsRequest.encode({}).finish());
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.rewards.Query/Params',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.rewards.Query/Params', requestData);
     return RewardsModule.QueryParamsResponse.decode(data);
   }
 
@@ -230,10 +223,7 @@ export class Get {
       ClobModule.QueryAllClobPairRequest.encode({ pagination: PAGE_REQUEST }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.clob.Query/ClobPairAll',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.clob.Query/ClobPairAll', requestData);
     return ClobModule.QueryClobPairAllResponse.decode(data);
   }
 
@@ -247,7 +237,7 @@ export class Get {
       ClobModule.QueryGetClobPairRequest.encode({ id: pairId }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery('/dydxprotocol.clob.Query/ClobPair', requestData);
+    const data: Uint8Array = await this.sendQuery('/h2x.clob.Query/ClobPair', requestData);
     return ClobModule.QueryClobPairResponse.decode(data);
   }
 
@@ -261,10 +251,7 @@ export class Get {
       PricesModule.QueryAllMarketPricesRequest.encode({ pagination: PAGE_REQUEST }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.prices.Query/AllMarketPrices',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.prices.Query/AllMarketPrices', requestData);
     return PricesModule.QueryAllMarketPricesResponse.decode(data);
   }
 
@@ -278,10 +265,7 @@ export class Get {
       PricesModule.QueryMarketPriceRequest.encode({ id: marketId }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.prices.Query/MarketPrice',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.prices.Query/MarketPrice', requestData);
     return PricesModule.QueryMarketPriceResponse.decode(data);
   }
 
@@ -296,7 +280,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.perpetuals.Query/AllPerpetuals',
+      '/h2x.perpetuals.Query/AllPerpetuals',
       requestData,
     );
     return PerpetualsModule.QueryAllPerpetualsResponse.decode(data);
@@ -312,10 +296,7 @@ export class Get {
       PerpetualsModule.QueryPerpetualRequest.encode({ id: perpetualId }).finish(),
     );
 
-    const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.perpetuals.Query/Perpetual',
-      requestData,
-    );
+    const data: Uint8Array = await this.sendQuery('/h2x.perpetuals.Query/Perpetual', requestData);
     return PerpetualsModule.QueryPerpetualResponse.decode(data);
   }
 
@@ -355,7 +336,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.clob.Query/EquityTierLimitConfiguration',
+      '/h2x.clob.Query/EquityTierLimitConfiguration',
       requestData,
     );
     return ClobModule.QueryEquityTierLimitConfigurationResponse.decode(data);
@@ -442,7 +423,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.bridge.Query/DelayedCompleteBridgeMessages',
+      '/h2x.bridge.Query/DelayedCompleteBridgeMessages',
       requestData,
     );
     return BridgeModule.QueryDelayedCompleteBridgeMessagesResponse.decode(data);
@@ -504,7 +485,7 @@ export class Get {
     );
 
     const data = await this.sendQuery(
-      '/dydxprotocol.subaccounts.Query/GetWithdrawalAndTransfersBlockedInfo',
+      '/h2x.subaccounts.Query/GetWithdrawalAndTransfersBlockedInfo',
       requestData,
     );
 
@@ -520,7 +501,7 @@ export class Get {
       }).finish(),
     );
 
-    const data = await this.sendQuery('/dydxprotocol.ratelimit.Query/CapacityByDenom', requestData);
+    const data = await this.sendQuery('/h2x.ratelimit.Query/CapacityByDenom', requestData);
 
     return RateLimitModule.QueryCapacityByDenomResponse.decode(data);
   }
@@ -535,7 +516,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.vault.Query/MegavaultOwnerShares',
+      '/h2x.vault.Query/MegavaultOwnerShares',
       requestData,
     );
 
@@ -554,7 +535,7 @@ export class Get {
     );
 
     const data: Uint8Array = await this.sendQuery(
-      '/dydxprotocol.vault.Query/MegavaultWithdrawalInfo',
+      '/h2x.vault.Query/MegavaultWithdrawalInfo',
       requestData,
     );
 
@@ -568,7 +549,7 @@ export class Get {
       }).finish(),
     );
 
-    const data = await this.sendQuery('/dydxprotocol.affiliates.Query/AffiliateInfo', requestData);
+    const data = await this.sendQuery('/h2x.affiliates.Query/AffiliateInfo', requestData);
 
     return AffiliateModule.AffiliateInfoResponse.decode(data);
   }
@@ -580,7 +561,7 @@ export class Get {
       }).finish(),
     );
 
-    const data = await this.sendQuery('/dydxprotocol.affiliates.Query/ReferredBy', requestData);
+    const data = await this.sendQuery('/h2x.affiliates.Query/ReferredBy', requestData);
 
     return AffiliateModule.ReferredByResponse.decode(data);
   }
@@ -590,10 +571,7 @@ export class Get {
       AffiliateModule.AllAffiliateTiersRequest.encode({}).finish(),
     );
 
-    const data = await this.sendQuery(
-      '/dydxprotocol.affiliates.Query/AllAffiliateTiers',
-      requestData,
-    );
+    const data = await this.sendQuery('/h2x.affiliates.Query/AllAffiliateTiers', requestData);
 
     return AffiliateModule.AllAffiliateTiersResponse.decode(data);
   }
@@ -603,10 +581,7 @@ export class Get {
       AffiliateModule.AffiliateWhitelistRequest.encode({}).finish(),
     );
 
-    const data = await this.sendQuery(
-      '/dydxprotocol.affiliates.Query/AffiliateWhitelist',
-      requestData,
-    );
+    const data = await this.sendQuery('/h2x.affiliates.Query/AffiliateWhitelist', requestData);
 
     return AffiliateModule.AffiliateWhitelistResponse.decode(data);
   }
@@ -618,10 +593,7 @@ export class Get {
       }).finish(),
     );
 
-    const data = await this.sendQuery(
-      '/dydxprotocol.accountplus.Query/GetAuthenticators',
-      requestData,
-    );
+    const data = await this.sendQuery('/h2x.accountplus.Query/GetAuthenticators', requestData);
 
     return GetAuthenticatorsResponse.decode(data);
   }

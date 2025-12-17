@@ -1,4 +1,4 @@
-import { Order_Side } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+import { Order_Side } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
 
 import { Network } from '../../../src/clients/constants';
 import LocalWallet from '../../../src/clients/modules/local-wallet';

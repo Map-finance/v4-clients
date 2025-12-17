@@ -74,7 +74,8 @@ export class Post {
     this.denoms = denoms;
     this.defaultClientMemo = defaultClientMemo;
     // Prefer USDT, fallback to USDC
-    const quoteGasDenom = denoms.USDT_GAS_DENOM ?? denoms.USDT_DENOM ?? denoms.USDC_GAS_DENOM ?? denoms.USDC_DENOM;
+    const quoteGasDenom =
+      denoms.USDT_GAS_DENOM ?? denoms.USDT_DENOM ?? denoms.USDC_GAS_DENOM ?? denoms.USDC_DENOM;
     this.defaultGasPrice = GasPrice.fromString(`0.025${quoteGasDenom}`);
     this.defaultDydxGasPrice = GasPrice.fromString(
       `25000000000${
@@ -106,7 +107,8 @@ export class Post {
   }
 
   getGasPrice(): GasPrice {
-    return this.selectedGasDenom === SelectedGasDenom.USDC || this.selectedGasDenom === SelectedGasDenom.USDT
+    return this.selectedGasDenom === SelectedGasDenom.USDC ||
+      this.selectedGasDenom === SelectedGasDenom.USDT
       ? this.defaultGasPrice
       : this.defaultDydxGasPrice;
   }
@@ -213,11 +215,11 @@ export class Post {
   private defaultBroadcastMode(msgs: EncodeObject[]): BroadcastMode {
     if (
       msgs.length === 1 &&
-      (msgs[0].typeUrl === '/dydxprotocol.clob.MsgPlaceOrder' ||
-        msgs[0].typeUrl === '/dydxprotocol.clob.MsgCancelOrder')
+      (msgs[0].typeUrl === '/h2x.clob.MsgPlaceOrder' ||
+        msgs[0].typeUrl === '/h2x.clob.MsgCancelOrder')
     ) {
       const orderFlags =
-        msgs[0].typeUrl === '/dydxprotocol.clob.MsgPlaceOrder'
+        msgs[0].typeUrl === '/h2x.clob.MsgPlaceOrder'
           ? (msgs[0].value as MsgPlaceOrder).order?.orderId?.orderFlags
           : (msgs[0].value as MsgCancelOrder).orderId?.orderFlags;
 

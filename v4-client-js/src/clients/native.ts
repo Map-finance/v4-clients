@@ -7,10 +7,7 @@ import { Secp256k1, sha256 } from '@cosmjs/crypto';
 import { EncodeObject, coin as createCoin } from '@cosmjs/proto-signing';
 import { MsgTransferEncodeObject, accountFromAny } from '@cosmjs/stargate';
 import { Method } from '@cosmjs/tendermint-rpc';
-import {
-  Order_Side,
-  Order_TimeInForce,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+import { Order_Side, Order_TimeInForce } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
 import * as AuthModule from 'cosmjs-types/cosmos/auth/v1beta1/query';
 import BigNumber from 'bignumber.js';
 import { Long } from '../lib/long';
@@ -104,10 +101,7 @@ export async function connectNetwork(paramsJSON: string): Promise<string> {
     ) {
       throw new UserError('Missing required token params (USDC or USDT)');
     }
-    if (
-      CHAINTOKEN_DENOM === undefined ||
-      CHAINTOKEN_DECIMALS === undefined
-    ) {
+    if (CHAINTOKEN_DENOM === undefined || CHAINTOKEN_DECIMALS === undefined) {
       throw new UserError('Missing required token params');
     }
     if (txnMemo === undefined) {
@@ -614,15 +608,13 @@ export async function getAccountBalance(): Promise<String> {
     const address = globalThis.wallet.address!;
 
     // Prefer USDT, fallback to USDC
-    const quoteDenom = client.validatorClient.config.denoms.USDT_DENOM 
-      ?? client.validatorClient.config.denoms.USDC_DENOM;
+    const quoteDenom =
+      client.validatorClient.config.denoms.USDT_DENOM ??
+      client.validatorClient.config.denoms.USDC_DENOM;
     if (!quoteDenom) {
       throw new UserError('Quote denom (USDT or USDC) not configured');
     }
-    const tx = await client.validatorClient.get.getAccountBalance(
-      address,
-      quoteDenom,
-    );
+    const tx = await client.validatorClient.get.getAccountBalance(address, quoteDenom);
     return encodeJson(tx);
   } catch (error) {
     return wrappedError(error);
@@ -1117,14 +1109,17 @@ export async function sendNobleIBC(squidPayload: string): Promise<String> {
     // take out fee from amount before sweeping
     // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
     const amountBN = BigNumber(ibcMsg.value.token.amount).minus(
-      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR),
     );
 
     if (amountBN.isLessThanOrEqualTo(0)) {
       throw new UserError('noble balance does not cover fees');
     }
 
-    ibcMsg.value.token = createCoin(amountBN.toFixed(0, BigNumber.ROUND_FLOOR), ibcMsg.value.token.denom);
+    ibcMsg.value.token = createCoin(
+      amountBN.toFixed(0, BigNumber.ROUND_FLOOR),
+      ibcMsg.value.token.denom,
+    );
     const tx = await client.IBCTransfer(ibcMsg);
     return encodeJson(tx);
   } catch (error) {
@@ -1154,9 +1149,10 @@ export async function withdrawToNobleIBC(payload: string): Promise<String> {
     const subaccount = SubaccountInfo.forLocalWallet(wallet, subaccountNumber);
     // 使用 BigNumber 避免 parseFloat 精度丢失（支持 18+ 位精度）
     // Prefer USDT, fallback to USDC
-    const quoteDecimals = client.validatorClient.config.denoms.USDT_DECIMALS 
-      ?? client.validatorClient.config.denoms.USDC_DECIMALS 
-      ?? 6;
+    const quoteDecimals =
+      client.validatorClient.config.denoms.USDT_DECIMALS ??
+      client.validatorClient.config.denoms.USDC_DECIMALS ??
+      6;
     const msg = client.withdrawFromSubaccountMessage(
       subaccount,
       BigNumber(amount).toFixed(quoteDecimals, BigNumber.ROUND_FLOOR),
@@ -1200,7 +1196,7 @@ export async function cctpWithdraw(squidPayload: string): Promise<String> {
     // take out fee from amount before sweeping
     // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
     const amountBN = BigNumber(ibcMsg.value.amount).minus(
-      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR),
     );
 
     if (amountBN.isLessThanOrEqualTo(0)) {
@@ -1234,7 +1230,7 @@ export async function cctpMultiMsgWithdraw(cosmosPayload: string): Promise<strin
     // take out fee from amount before sweeping
     // 使用 BigNumber 避免 parseInt 精度丢失（支持 18+ 位精度）
     const amountBN = BigNumber(ibcMsgs[0].value.amount).minus(
-      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR)
+      BigNumber(fee.amount[0].amount).times(GAS_MULTIPLIER).integerValue(BigNumber.ROUND_FLOOR),
     );
 
     if (amountBN.isLessThanOrEqualTo(0)) {

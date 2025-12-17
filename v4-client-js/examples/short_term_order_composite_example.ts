@@ -1,4 +1,4 @@
-import { Order_TimeInForce } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/order';
+import { Order_TimeInForce } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/order';
 
 import { BECH32_PREFIX } from '../src';
 import { CompositeClient } from '../src/clients/composite-client';

@@ -10,23 +10,23 @@ import {
 import {
   MsgAddAuthenticator,
   MsgRemoveAuthenticator,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/accountplus/tx';
-import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/affiliates/tx';
-import { ClobPair_Status } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/clob_pair';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/tx';
+import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/h2x/affiliates/tx';
+import { ClobPair_Status } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/clob_pair';
 import {
   MsgBatchCancel,
   MsgCreateClobPair,
   MsgUpdateClobPair,
   OrderBatch,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/clob/tx';
-import { MsgDelayMessage } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/delaymsg/tx';
-import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/perpetual';
-import { MsgCreatePerpetual } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/perpetuals/tx';
-import { MsgCreateOracleMarket } from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/prices/tx';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/tx';
+import { MsgDelayMessage } from '@dydxprotocol/v4-proto/src/codegen/h2x/delaymsg/tx';
+import { PerpetualMarketType } from '@dydxprotocol/v4-proto/src/codegen/h2x/perpetuals/perpetual';
+import { MsgCreatePerpetual } from '@dydxprotocol/v4-proto/src/codegen/h2x/perpetuals/tx';
+import { MsgCreateOracleMarket } from '@dydxprotocol/v4-proto/src/codegen/h2x/prices/tx';
 import {
   MsgDepositToMegavault,
   MsgWithdrawFromMegavault,
-} from '@dydxprotocol/v4-proto/src/codegen/dydxprotocol/vault/tx';
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/vault/tx';
 import { MsgSend } from 'cosmjs-types/cosmos/bank/v1beta1/tx';
 import { Coin } from 'cosmjs-types/cosmos/base/v1beta1/coin';
 import { Any } from 'cosmjs-types/google/protobuf/any';
