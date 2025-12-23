@@ -436,6 +436,8 @@ export class CompositeClient {
     memo?: string,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const DEBUG_ORDER =
+      process.env.DEBUG_ORDER === 'true' || process.env.NODE_ENV === 'development';
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.placeOrderMessage(
         subaccount,
@@ -481,17 +483,20 @@ export class CompositeClient {
           };
 
           try {
-            console.log('[DEBUG placeOrder] 最终订单消息:', {
-              type: it.typeUrl,
-              value: safeStringify(it.value),
-            });
+            if (DEBUG_ORDER) {
+              console.log('[DEBUG placeOrder] 最终订单消息:', {
+                type: it.typeUrl,
+                value: safeStringify(it.value),
+              });
+            }
           } catch (e) {
-            // 如果序列化失败，只打印类型
-            console.log('[DEBUG placeOrder] 最终订单消息 (序列化失败):', {
-              type: it.typeUrl,
-              valueType: typeof it.value,
-              error: e instanceof Error ? e.message : String(e),
-            });
+            if (DEBUG_ORDER) {
+              console.log('[DEBUG placeOrder] 最终订单消息 (序列化失败):', {
+                type: it.typeUrl,
+                valueType: typeof it.value,
+                error: e instanceof Error ? e.message : String(e),
+              });
+            }
           }
           resolve([it]);
         })
