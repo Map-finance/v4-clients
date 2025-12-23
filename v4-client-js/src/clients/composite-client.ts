@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { parseUnits } from 'ethers';
 import { Long } from '../lib/long';
 import protobuf from 'protobufjs';
-
+import createDebug from 'debug';
 import { bigIntToBytes } from '../lib/helpers';
 import { isStatefulOrder, verifyOrderFlags } from '../lib/validation';
 import { GovAddNewMarketParams, OrderFlags } from '../types';
@@ -55,6 +55,8 @@ import { ValidatorClient } from './validator-client';
 // Reference: https://github.com/protobufjs/protobuf.js/issues/921
 protobuf.util.Long = Long as any;
 protobuf.configure();
+
+const debug = createDebug('v4-client-js:composite-client');
 
 export interface MarketInfo {
   clobPairId: number;
@@ -436,8 +438,6 @@ export class CompositeClient {
     memo?: string,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
-    const DEBUG_ORDER =
-      process.env.DEBUG_ORDER === 'true' || process.env.NODE_ENV === 'development';
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.placeOrderMessage(
         subaccount,
@@ -482,22 +482,21 @@ export class CompositeClient {
             );
           };
 
-          try {
-            if (DEBUG_ORDER) {
-              console.log('[DEBUG placeOrder] 最终订单消息:', {
+          if (debug.enabled) {
+            try {
+              debug('[DEBUG placeOrder] 最终订单消息:', {
                 type: it.typeUrl,
                 value: safeStringify(it.value),
               });
-            }
-          } catch (e) {
-            if (DEBUG_ORDER) {
-              console.log('[DEBUG placeOrder] 最终订单消息 (序列化失败):', {
+            } catch (e) {
+              debug('[DEBUG placeOrder] 最终订单消息 (序列化失败):', {
                 type: it.typeUrl,
                 valueType: typeof it.value,
                 error: e instanceof Error ? e.message : String(e),
               });
             }
           }
+
           resolve([it]);
         })
         .catch((err) => {
