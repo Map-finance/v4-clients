@@ -1,0 +1,73 @@
+syntax = "proto3";
+package h2x.agent;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "h2x/agent/agent.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/agent/types";
+
+// Query defines the gRPC querier service for the agent module.
+service Query {
+  // GetAgentInfo queries the agent information by agent address.
+  rpc GetAgentInfo(QueryGetAgentInfoRequest)
+      returns (QueryGetAgentInfoResponse) {
+    option (google.api.http).get = "/h2x/agent/v1/info/{agent_address}";
+  }
+
+  // GetAgentsByMaster queries all agents for a given master address.
+  rpc GetAgentsByMaster(QueryGetAgentsByMasterRequest)
+      returns (QueryGetAgentsByMasterResponse) {
+    option (google.api.http).get = "/h2x/agent/v1/master/{master_address}";
+  }
+
+  // GetParams queries the module parameters.
+  rpc GetParams(QueryGetParamsRequest) returns (QueryGetParamsResponse) {
+    option (google.api.http).get = "/h2x/agent/v1/params";
+  }
+
+  // GetMasterByAgent queries the master address for a given agent address.
+  rpc GetMasterByAgent(QueryGetMasterByAgentRequest)
+      returns (QueryGetMasterByAgentResponse) {
+    option (google.api.http).get = "/h2x/agent/v1/master_of/{agent_address}";
+  }
+}
+
+// QueryGetAgentInfoRequest is the request type for GetAgentInfo.
+message QueryGetAgentInfoRequest {
+  string agent_address = 1;
+}
+
+// QueryGetAgentInfoResponse is the response type for GetAgentInfo.
+message QueryGetAgentInfoResponse {
+  AgentInfo agent_info = 1;
+}
+
+// QueryGetAgentsByMasterRequest is the request type for GetAgentsByMaster.
+message QueryGetAgentsByMasterRequest {
+  string master_address = 1;
+}
+
+// QueryGetAgentsByMasterResponse is the response type for GetAgentsByMaster.
+message QueryGetAgentsByMasterResponse {
+  repeated AgentInfo agents = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetParamsRequest is the request type for GetParams.
+message QueryGetParamsRequest {}
+
+// QueryGetParamsResponse is the response type for GetParams.
+message QueryGetParamsResponse {
+  AgentParams params = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetMasterByAgentRequest is the request type for GetMasterByAgent.
+message QueryGetMasterByAgentRequest {
+  string agent_address = 1;
+}
+
+// QueryGetMasterByAgentResponse is the response type for GetMasterByAgent.
+message QueryGetMasterByAgentResponse {
+  string master_address = 1;
+  bool is_valid = 2;
+}

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
+import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount, MsgCreateCtfBridgeTransfer } from "./transfer";
 import { MsgCreateTransfer } from "./tx";
 export const AminoConverter = {
   "/h2x.sending.MsgCreateBridgeTransfer": {
@@ -26,5 +26,10 @@ export const AminoConverter = {
     aminoType: "/h2x.sending.MsgSendFromModuleToAccount",
     toAmino: MsgSendFromModuleToAccount.toAmino,
     fromAmino: MsgSendFromModuleToAccount.fromAmino
+  },
+  "/h2x.sending.MsgCreateCtfBridgeTransfer": {
+    aminoType: "/h2x.sending.MsgCreateCtfBridgeTransfer",
+    toAmino: MsgCreateCtfBridgeTransfer.toAmino,
+    fromAmino: MsgCreateCtfBridgeTransfer.fromAmino
   }
 };

@@ -139,6 +139,22 @@ export interface MsgCreateBridgeTransferResponseAminoMsg {
   value: MsgCreateBridgeTransferResponseAmino;
 }
 export interface MsgCreateBridgeTransferResponseSDKType {}
+export interface MsgCreateCtfBridgeTransferResponse {}
+export interface MsgCreateCtfBridgeTransferResponseProtoMsg {
+  typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransferResponse";
+  value: Uint8Array;
+}
+/**
+ * @name MsgCreateCtfBridgeTransferResponseAmino
+ * @package h2x.sending
+ * @see proto type: h2x.sending.MsgCreateCtfBridgeTransferResponse
+ */
+export interface MsgCreateCtfBridgeTransferResponseAmino {}
+export interface MsgCreateCtfBridgeTransferResponseAminoMsg {
+  type: "/h2x.sending.MsgCreateCtfBridgeTransferResponse";
+  value: MsgCreateCtfBridgeTransferResponseAmino;
+}
+export interface MsgCreateCtfBridgeTransferResponseSDKType {}
 function createBaseMsgCreateTransfer(): MsgCreateTransfer {
   return {
     transfer: undefined
@@ -449,6 +465,56 @@ export const MsgCreateBridgeTransferResponse = {
     return {
       typeUrl: "/h2x.sending.MsgCreateBridgeTransferResponse",
       value: MsgCreateBridgeTransferResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCreateCtfBridgeTransferResponse(): MsgCreateCtfBridgeTransferResponse {
+  return {};
+}
+export const MsgCreateCtfBridgeTransferResponse = {
+  typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransferResponse",
+  encode(_: MsgCreateCtfBridgeTransferResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateCtfBridgeTransferResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateCtfBridgeTransferResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(_: Partial<MsgCreateCtfBridgeTransferResponse>): MsgCreateCtfBridgeTransferResponse {
+    const message = createBaseMsgCreateCtfBridgeTransferResponse();
+    return message;
+  },
+  fromAmino(_: MsgCreateCtfBridgeTransferResponseAmino): MsgCreateCtfBridgeTransferResponse {
+    const message = createBaseMsgCreateCtfBridgeTransferResponse();
+    return message;
+  },
+  toAmino(_: MsgCreateCtfBridgeTransferResponse): MsgCreateCtfBridgeTransferResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateCtfBridgeTransferResponseAminoMsg): MsgCreateCtfBridgeTransferResponse {
+    return MsgCreateCtfBridgeTransferResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateCtfBridgeTransferResponseProtoMsg): MsgCreateCtfBridgeTransferResponse {
+    return MsgCreateCtfBridgeTransferResponse.decode(message.value);
+  },
+  toProto(message: MsgCreateCtfBridgeTransferResponse): Uint8Array {
+    return MsgCreateCtfBridgeTransferResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateCtfBridgeTransferResponse): MsgCreateCtfBridgeTransferResponseProtoMsg {
+    return {
+      typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransferResponse",
+      value: MsgCreateCtfBridgeTransferResponse.encode(message).finish()
     };
   }
 };

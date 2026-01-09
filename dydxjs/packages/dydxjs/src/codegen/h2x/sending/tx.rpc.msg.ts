@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
+import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount, MsgCreateCtfBridgeTransfer } from "./transfer";
 import { Rpc } from "../../helpers";
 import { BinaryReader } from "../../binary";
-import { MsgCreateBridgeTransferResponse, MsgCreateTransfer, MsgCreateTransferResponse, MsgDepositToSubaccountResponse, MsgWithdrawFromSubaccountResponse, MsgSendFromModuleToAccountResponse } from "./tx";
+import { MsgCreateBridgeTransferResponse, MsgCreateTransfer, MsgCreateTransferResponse, MsgDepositToSubaccountResponse, MsgWithdrawFromSubaccountResponse, MsgSendFromModuleToAccountResponse, MsgCreateCtfBridgeTransferResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
   createBridgeTransfer(request: MsgCreateBridgeTransfer): Promise<MsgCreateBridgeTransferResponse>;
@@ -23,6 +23,7 @@ export interface Msg {
    * `x/bank` account (should only be executed by governance).
    */
   sendFromModuleToAccount(request: MsgSendFromModuleToAccount): Promise<MsgSendFromModuleToAccountResponse>;
+  createCtfBridgeTransfer(request: MsgCreateCtfBridgeTransfer): Promise<MsgCreateCtfBridgeTransferResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -33,6 +34,7 @@ export class MsgClientImpl implements Msg {
     this.depositToSubaccount = this.depositToSubaccount.bind(this);
     this.withdrawFromSubaccount = this.withdrawFromSubaccount.bind(this);
     this.sendFromModuleToAccount = this.sendFromModuleToAccount.bind(this);
+    this.createCtfBridgeTransfer = this.createCtfBridgeTransfer.bind(this);
   }
   createBridgeTransfer(request: MsgCreateBridgeTransfer): Promise<MsgCreateBridgeTransferResponse> {
     const data = MsgCreateBridgeTransfer.encode(request).finish();
@@ -58,5 +60,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgSendFromModuleToAccount.encode(request).finish();
     const promise = this.rpc.request("h2x.sending.Msg", "SendFromModuleToAccount", data);
     return promise.then(data => MsgSendFromModuleToAccountResponse.decode(new BinaryReader(data)));
+  }
+  createCtfBridgeTransfer(request: MsgCreateCtfBridgeTransfer): Promise<MsgCreateCtfBridgeTransferResponse> {
+    const data = MsgCreateCtfBridgeTransfer.encode(request).finish();
+    const promise = this.rpc.request("h2x.sending.Msg", "CreateCtfBridgeTransfer", data);
+    return promise.then(data => MsgCreateCtfBridgeTransferResponse.decode(new BinaryReader(data)));
   }
 }

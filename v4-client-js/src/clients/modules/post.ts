@@ -499,6 +499,7 @@ export class Post {
         twapParameters,
         builderCodeParameters,
         orderRouterAddress,
+        undefined, // agentAddress - will be set by caller if needed
       );
       resolve(msg);
     });
@@ -567,6 +568,7 @@ export class Post {
     clobPairId: number,
     goodTilBlock?: number,
     goodTilBlockTime?: number,
+    agentAddress?: string,
   ): Promise<EncodeObject> {
     return new Promise((resolve) => {
       const msg = this.composer.composeMsgCancelOrder(
@@ -577,6 +579,7 @@ export class Post {
         orderFlags,
         goodTilBlock ?? 0,
         goodTilBlockTime ?? 0,
+        agentAddress || '',
       );
       resolve(msg);
     });
@@ -1026,5 +1029,55 @@ export class Post {
       undefined,
       3,
     );
+  }
+
+  // ------------ x/agent ------------
+  async registerAgent(
+    masterSubaccount: SubaccountInfo,
+    agentAddress: string,
+    agentName: string = '',
+    expiryTimestamp: Long = Long.ZERO,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const msg = this.composer.composeMsgRegisterAgent(
+      masterSubaccount.address,
+      agentAddress,
+      agentName,
+      expiryTimestamp,
+    );
+
+    return this.send(
+      masterSubaccount,
+      () => Promise.resolve([msg]),
+      true,
+      undefined,
+      undefined,
+      broadcastMode,
+    );
+  }
+
+  async removeAgent(
+    masterSubaccount: SubaccountInfo,
+    agentAddress: string,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const msg = this.composer.composeMsgRemoveAgent(masterSubaccount.address, agentAddress);
+
+    return this.send(
+      masterSubaccount,
+      () => Promise.resolve([msg]),
+      true,
+      undefined,
+      undefined,
+      broadcastMode,
+    );
+  }
+
+  registerAgentMsg(...args: Parameters<Composer['composeMsgRegisterAgent']>): EncodeObject {
+    return this.composer.composeMsgRegisterAgent(...args);
+  }
+
+  removeAgentMsg(...args: Parameters<Composer['composeMsgRemoveAgent']>): EncodeObject {
+    return this.composer.composeMsgRemoveAgent(...args);
   }
 }

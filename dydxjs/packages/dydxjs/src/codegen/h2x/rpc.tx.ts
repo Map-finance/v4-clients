@@ -38,7 +38,9 @@ export const createRPCMsgClient = async ({
   h2x: {
     accountplus: new (await import("./accountplus/tx.rpc.msg")).MsgClientImpl(rpc),
     affiliates: new (await import("./affiliates/tx.rpc.msg")).MsgClientImpl(rpc),
+    agent: new (await import("./agent/tx.rpc.msg")).MsgClientImpl(rpc),
     assets: new (await import("./assets/tx.rpc.msg")).MsgClientImpl(rpc),
+    blacklist: new (await import("./blacklist/tx.rpc.msg")).MsgClientImpl(rpc),
     blocktime: new (await import("./blocktime/tx.rpc.msg")).MsgClientImpl(rpc),
     bridge: new (await import("./bridge/tx.rpc.msg")).MsgClientImpl(rpc),
     clob: new (await import("./clob/tx.rpc.msg")).MsgClientImpl(rpc),
@@ -46,6 +48,7 @@ export const createRPCMsgClient = async ({
     feetiers: new (await import("./feetiers/tx.rpc.msg")).MsgClientImpl(rpc),
     govplus: new (await import("./govplus/tx.rpc.msg")).MsgClientImpl(rpc),
     listing: new (await import("./listing/tx.rpc.msg")).MsgClientImpl(rpc),
+    operators: new (await import("./operators/tx.rpc.msg")).MsgClientImpl(rpc),
     perpetuals: new (await import("./perpetuals/tx.rpc.msg")).MsgClientImpl(rpc),
     prices: new (await import("./prices/tx.rpc.msg")).MsgClientImpl(rpc),
     ratelimit: new (await import("./ratelimit/tx.rpc.msg")).MsgClientImpl(rpc),

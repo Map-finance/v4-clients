@@ -4,9 +4,17 @@ import { BinaryReader, BinaryWriter } from "../../binary";
 export interface Params {
   /**
    * transfer_fee_quantums defines the fee charged for transfers between subaccounts
-   * in quantums (e.g., 1_000_000 = 1 USDC with 6 decimals)
+   * in quantums (e.g., 1_000_000 = 1 USDT with 6 decimals)
+   * 子账户间转账手续费（quantums），例如 1_000_000 = 1 USDT（6位精度）
+   * 同时也用于代理钱包注册费用
    */
   transferFeeQuantums: bigint;
+  /**
+   * min_transfer_quantums defines the minimum amount for transfers between subaccounts
+   * in quantums (e.g., 10_000_000 = 10 USDT with 6 decimals)
+   * 子账户间转账最小金额（quantums），例如 10_000_000 = 10 USDT（6位精度）
+   */
+  minTransferQuantums: bigint;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/h2x.subaccounts.Params";
@@ -21,9 +29,17 @@ export interface ParamsProtoMsg {
 export interface ParamsAmino {
   /**
    * transfer_fee_quantums defines the fee charged for transfers between subaccounts
-   * in quantums (e.g., 1_000_000 = 1 USDC with 6 decimals)
+   * in quantums (e.g., 1_000_000 = 1 USDT with 6 decimals)
+   * 子账户间转账手续费（quantums），例如 1_000_000 = 1 USDT（6位精度）
+   * 同时也用于代理钱包注册费用
    */
   transfer_fee_quantums?: string;
+  /**
+   * min_transfer_quantums defines the minimum amount for transfers between subaccounts
+   * in quantums (e.g., 10_000_000 = 10 USDT with 6 decimals)
+   * 子账户间转账最小金额（quantums），例如 10_000_000 = 10 USDT（6位精度）
+   */
+  min_transfer_quantums?: string;
 }
 export interface ParamsAminoMsg {
   type: "/h2x.subaccounts.Params";
@@ -32,10 +48,12 @@ export interface ParamsAminoMsg {
 /** Params defines the parameters for the subaccounts module. */
 export interface ParamsSDKType {
   transfer_fee_quantums: bigint;
+  min_transfer_quantums: bigint;
 }
 function createBaseParams(): Params {
   return {
-    transferFeeQuantums: BigInt(0)
+    transferFeeQuantums: BigInt(0),
+    minTransferQuantums: BigInt(0)
   };
 }
 export const Params = {
@@ -43,6 +61,9 @@ export const Params = {
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.transferFeeQuantums !== BigInt(0)) {
       writer.uint32(8).uint64(message.transferFeeQuantums);
+    }
+    if (message.minTransferQuantums !== BigInt(0)) {
+      writer.uint32(16).uint64(message.minTransferQuantums);
     }
     return writer;
   },
@@ -56,6 +77,9 @@ export const Params = {
         case 1:
           message.transferFeeQuantums = reader.uint64();
           break;
+        case 2:
+          message.minTransferQuantums = reader.uint64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -66,6 +90,7 @@ export const Params = {
   fromPartial(object: Partial<Params>): Params {
     const message = createBaseParams();
     message.transferFeeQuantums = object.transferFeeQuantums !== undefined && object.transferFeeQuantums !== null ? BigInt(object.transferFeeQuantums.toString()) : BigInt(0);
+    message.minTransferQuantums = object.minTransferQuantums !== undefined && object.minTransferQuantums !== null ? BigInt(object.minTransferQuantums.toString()) : BigInt(0);
     return message;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -73,11 +98,15 @@ export const Params = {
     if (object.transfer_fee_quantums !== undefined && object.transfer_fee_quantums !== null) {
       message.transferFeeQuantums = BigInt(object.transfer_fee_quantums);
     }
+    if (object.min_transfer_quantums !== undefined && object.min_transfer_quantums !== null) {
+      message.minTransferQuantums = BigInt(object.min_transfer_quantums);
+    }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
     const obj: any = {};
     obj.transfer_fee_quantums = message.transferFeeQuantums !== BigInt(0) ? message.transferFeeQuantums?.toString() : undefined;
+    obj.min_transfer_quantums = message.minTransferQuantums !== BigInt(0) ? message.minTransferQuantums?.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {

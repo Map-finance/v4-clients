@@ -12,6 +12,10 @@ import {
   MsgRemoveAuthenticator,
 } from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/tx';
 import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/h2x/affiliates/tx';
+import {
+  MsgRegisterAgent,
+  MsgRemoveAgent,
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/agent/tx';
 import { ClobPair_Status } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/clob_pair';
 import {
   MsgBatchCancel,
@@ -59,6 +63,8 @@ import {
   TYPE_URL_MSG_CREATE_MARKET_PERMISSIONLESS,
   TYPE_URL_MSG_ADD_AUTHENTICATOR,
   TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
+  TYPE_URL_MSG_REGISTER_AGENT,
+  TYPE_URL_MSG_REMOVE_AGENT,
   AuthenticatorType,
 } from '../constants';
 import { DenomConfig, ITwapParameters, IBuilderCodeParameters } from '../types';
@@ -127,6 +133,7 @@ export class Composer {
     twapParameters?: ITwapParameters,
     builderCodeParameters?: IBuilderCodeParameters,
     orderRouterAddress: string = '',
+    agentAddress: string = '',
   ): EncodeObject {
     this.validateGoodTilBlockAndTime(orderFlags, goodTilBlock, goodTilBlockTime);
 
@@ -157,6 +164,7 @@ export class Composer {
       twapParameters,
       builderCodeParameters,
       orderRouterAddress,
+      agentAddress: agentAddress || '',
     };
     const msg: MsgPlaceOrder = {
       order,
@@ -175,6 +183,7 @@ export class Composer {
     orderFlags: number,
     goodTilBlock: number,
     goodTilBlockTime: number,
+    agentAddress: string = '',
   ): EncodeObject {
     this.validateGoodTilBlockAndTime(orderFlags, goodTilBlock, goodTilBlockTime);
 
@@ -194,6 +203,7 @@ export class Composer {
       orderId,
       goodTilBlock: goodTilBlock === 0 ? undefined : goodTilBlock,
       goodTilBlockTime: goodTilBlock === 0 ? goodTilBlockTime : undefined,
+      agentAddress: agentAddress || '',
     };
 
     return {
@@ -217,6 +227,7 @@ export class Composer {
       subaccountId,
       shortTermCancels,
       goodTilBlock,
+      agentAddress: '',
     };
 
     return {
@@ -691,6 +702,38 @@ export class Composer {
 
     return {
       typeUrl: TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
+      value: msg,
+    };
+  }
+
+  // ------------ x/agent ------------
+  public composeMsgRegisterAgent(
+    masterAddress: string,
+    agentAddress: string,
+    agentName: string = '',
+    expiryTimestamp: Long = Long.ZERO,
+  ): EncodeObject {
+    const msg: MsgRegisterAgent = {
+      masterAddress,
+      agentAddress,
+      name: agentName,
+      expiryTimestamp: expiryTimestamp as any,
+    };
+
+    return {
+      typeUrl: TYPE_URL_MSG_REGISTER_AGENT,
+      value: msg,
+    };
+  }
+
+  public composeMsgRemoveAgent(masterAddress: string, agentAddress: string): EncodeObject {
+    const msg: MsgRemoveAgent = {
+      masterAddress,
+      agentAddress,
+    };
+
+    return {
+      typeUrl: TYPE_URL_MSG_REMOVE_AGENT,
       value: msg,
     };
   }

@@ -1,0 +1,91 @@
+syntax = "proto3";
+package h2x.blacklist;
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/blacklist/types";
+
+import "cosmos/msg/v1/msg.proto";
+
+// Msg defines the Msg service.
+service Msg {
+  // AddToBlacklist adds an address to the blacklist.
+  rpc AddToBlacklist(MsgAddToBlacklist) returns (MsgAddToBlacklistResponse);
+
+  // RemoveFromBlacklist removes an address from the blacklist.
+  rpc RemoveFromBlacklist(MsgRemoveFromBlacklist) returns (MsgRemoveFromBlacklistResponse);
+
+  // BatchAddToBlacklist adds multiple addresses to the blacklist.
+  rpc BatchAddToBlacklist(MsgBatchAddToBlacklist) returns (MsgBatchAddToBlacklistResponse);
+
+  // BatchRemoveFromBlacklist removes multiple addresses from the blacklist.
+  rpc BatchRemoveFromBlacklist(MsgBatchRemoveFromBlacklist) returns (MsgBatchRemoveFromBlacklistResponse);
+}
+
+// MsgAddToBlacklist is the Msg/AddToBlacklist request type.
+message MsgAddToBlacklist {
+  // The address that controls the module (gov module).
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+
+  // The address to add to the blacklist.
+  string address = 2;
+
+  // The reason for blacklisting (optional, max 500 chars).
+  string reason = 3;
+}
+
+// MsgAddToBlacklistResponse is the Msg/AddToBlacklist response type.
+message MsgAddToBlacklistResponse {}
+
+// MsgRemoveFromBlacklist is the Msg/RemoveFromBlacklist request type.
+message MsgRemoveFromBlacklist {
+  // The address that controls the module (gov module).
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+
+  // The address to remove from the blacklist.
+  string address = 2;
+
+  // The reason for unblocking (optional).
+  string reason = 3;
+}
+
+// MsgRemoveFromBlacklistResponse is the Msg/RemoveFromBlacklist response type.
+message MsgRemoveFromBlacklistResponse {}
+
+// BlacklistEntry represents a single blacklist entry with address and reason.
+message BlacklistEntry {
+  string address = 1;
+  string reason = 2;
+}
+
+// MsgBatchAddToBlacklist is the Msg/BatchAddToBlacklist request type.
+message MsgBatchAddToBlacklist {
+  // The address that controls the module (gov module).
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+
+  // The entries to add to the blacklist (each with address and optional reason).
+  repeated BlacklistEntry entries = 2;
+}
+
+// MsgBatchAddToBlacklistResponse is the Msg/BatchAddToBlacklist response type.
+message MsgBatchAddToBlacklistResponse {
+  // Number of addresses successfully added.
+  uint32 added_count = 1;
+}
+
+// MsgBatchRemoveFromBlacklist is the Msg/BatchRemoveFromBlacklist request type.
+message MsgBatchRemoveFromBlacklist {
+  // The address that controls the module (gov module).
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+
+  // The entries to remove from the blacklist (each with address and optional reason).
+  repeated BlacklistEntry entries = 2;
+}
+
+// MsgBatchRemoveFromBlacklistResponse is the Msg/BatchRemoveFromBlacklist response type.
+message MsgBatchRemoveFromBlacklistResponse {
+  // Number of addresses successfully removed.
+  uint32 removed_count = 1;
+}

@@ -41,6 +41,11 @@ export interface Asset {
    * a position size of one full coin.
    */
   atomicResolution: number;
+  /**
+   * Asset type for categorization. Default is 0.
+   * Business logic defines the meaning of each type value.
+   */
+  assetType: number;
 }
 export interface AssetProtoMsg {
   typeUrl: "/h2x.assets.Asset";
@@ -96,6 +101,11 @@ export interface AssetAmino {
    * a position size of one full coin.
    */
   atomic_resolution?: number;
+  /**
+   * Asset type for categorization. Default is 0.
+   * Business logic defines the meaning of each type value.
+   */
+  asset_type?: number;
 }
 export interface AssetAminoMsg {
   type: "/h2x.assets.Asset";
@@ -110,6 +120,7 @@ export interface AssetSDKType {
   has_market: boolean;
   market_id: number;
   atomic_resolution: number;
+  asset_type: number;
 }
 function createBaseAsset(): Asset {
   return {
@@ -119,7 +130,8 @@ function createBaseAsset(): Asset {
     denomExponent: 0,
     hasMarket: false,
     marketId: 0,
-    atomicResolution: 0
+    atomicResolution: 0,
+    assetType: 0
   };
 }
 export const Asset = {
@@ -145,6 +157,9 @@ export const Asset = {
     }
     if (message.atomicResolution !== 0) {
       writer.uint32(56).sint32(message.atomicResolution);
+    }
+    if (message.assetType !== 0) {
+      writer.uint32(64).uint32(message.assetType);
     }
     return writer;
   },
@@ -176,6 +191,9 @@ export const Asset = {
         case 7:
           message.atomicResolution = reader.sint32();
           break;
+        case 8:
+          message.assetType = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -192,6 +210,7 @@ export const Asset = {
     message.hasMarket = object.hasMarket ?? false;
     message.marketId = object.marketId ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
+    message.assetType = object.assetType ?? 0;
     return message;
   },
   fromAmino(object: AssetAmino): Asset {
@@ -217,6 +236,9 @@ export const Asset = {
     if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
       message.atomicResolution = object.atomic_resolution;
     }
+    if (object.asset_type !== undefined && object.asset_type !== null) {
+      message.assetType = object.asset_type;
+    }
     return message;
   },
   toAmino(message: Asset): AssetAmino {
@@ -228,6 +250,7 @@ export const Asset = {
     obj.has_market = message.hasMarket === false ? undefined : message.hasMarket;
     obj.market_id = message.marketId === 0 ? undefined : message.marketId;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.asset_type = message.assetType === 0 ? undefined : message.assetType;
     return obj;
   },
   fromAminoMsg(object: AssetAminoMsg): Asset {

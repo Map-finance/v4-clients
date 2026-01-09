@@ -1,0 +1,64 @@
+syntax = "proto3";
+package h2x.agent;
+
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "gogoproto/gogo.proto";
+import "h2x/agent/agent.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/agent/types";
+
+// Msg defines the agent module Msg service.
+service Msg {
+  // RegisterAgent registers a new agent for a master account.
+  // Must be signed by the master wallet.
+  rpc RegisterAgent(MsgRegisterAgent) returns (MsgRegisterAgentResponse);
+
+  // RemoveAgent removes an existing agent authorization.
+  // Must be signed by the master wallet.
+  rpc RemoveAgent(MsgRemoveAgent) returns (MsgRemoveAgentResponse);
+
+  // UpdateAgentParams updates the module parameters.
+  // Can only be called through governance.
+  rpc UpdateAgentParams(MsgUpdateAgentParams)
+      returns (MsgUpdateAgentParamsResponse);
+}
+
+// MsgRegisterAgent is the request type for registering a new agent.
+message MsgRegisterAgent {
+  // The master wallet address (signer).
+  string master_address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // The agent wallet address to authorize.
+  string agent_address = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // Optional name for the agent (max 20 characters).
+  string name = 3;
+  // Optional custom expiry timestamp. If 0, uses default duration.
+  uint64 expiry_timestamp = 4;
+}
+
+// MsgRegisterAgentResponse is the response type for RegisterAgent.
+message MsgRegisterAgentResponse {}
+
+// MsgRemoveAgent is the request type for removing an agent.
+message MsgRemoveAgent {
+  // The master wallet address (signer).
+  string master_address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // The agent wallet address to remove.
+  string agent_address = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// MsgRemoveAgentResponse is the response type for RemoveAgent.
+message MsgRemoveAgentResponse {}
+
+// MsgUpdateAgentParams is the request type for updating module parameters.
+message MsgUpdateAgentParams {
+  option (cosmos.msg.v1.signer) = "authority";
+
+  // The address that controls the module (governance module account).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // The new parameters to set.
+  AgentParams params = 2 [(gogoproto.nullable) = false];
+}
+
+// MsgUpdateAgentParamsResponse is the response type for UpdateAgentParams.
+message MsgUpdateAgentParamsResponse {}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package h2x.operators;
+
+import "google/api/annotations.proto";
+import "cosmos_proto/cosmos.proto";
+import "h2x/operators/operators.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/operators/types";
+
+// Query defines the gRPC querier service for the operators module.
+service Query {
+  // AllOperators queries all operators.
+  rpc AllOperators(QueryAllOperatorsRequest) returns (QueryAllOperatorsResponse) {
+    option (google.api.http).get = "/h2x/operators/v1/operators";
+  }
+
+  // IsOperator checks if an address is an operator.
+  rpc IsOperator(QueryIsOperatorRequest) returns (QueryIsOperatorResponse) {
+    option (google.api.http).get = "/h2x/operators/v1/is_operator/{address}";
+  }
+}
+
+// QueryAllOperatorsRequest is the request type for querying all operators.
+message QueryAllOperatorsRequest {}
+
+// QueryAllOperatorsResponse is the response type for querying all operators.
+message QueryAllOperatorsResponse {
+  repeated Operator operators = 1;
+}
+
+// QueryIsOperatorRequest is the request type for checking if an address is an operator.
+message QueryIsOperatorRequest {
+  string address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// QueryIsOperatorResponse is the response type for checking if an address is an operator.
+message QueryIsOperatorResponse {
+  bool is_operator = 1;
+}

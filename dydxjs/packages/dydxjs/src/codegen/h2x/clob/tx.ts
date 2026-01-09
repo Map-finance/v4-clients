@@ -193,6 +193,16 @@ export interface MsgCancelOrder {
    * This value must be zero for Short-Term orders.
    */
   goodTilBlockTime?: number;
+  /**
+   * agent_address is the address of the agent wallet that is sending this
+   * cancellation on behalf of the master wallet (subaccount owner).
+   * - If empty: normal cancel, signer must be the subaccount owner
+   * - If non-empty: agent cancel, signer must be this agent address
+   * 代理钱包地址：
+   * - 为空：普通撤单，签名者必须是 subaccount owner
+   * - 非空：代理撤单，签名者必须是该地址
+   */
+  agentAddress: string;
 }
 export interface MsgCancelOrderProtoMsg {
   typeUrl: "/h2x.clob.MsgCancelOrder";
@@ -219,6 +229,16 @@ export interface MsgCancelOrderAmino {
    * This value must be zero for Short-Term orders.
    */
   good_til_block_time?: number;
+  /**
+   * agent_address is the address of the agent wallet that is sending this
+   * cancellation on behalf of the master wallet (subaccount owner).
+   * - If empty: normal cancel, signer must be the subaccount owner
+   * - If non-empty: agent cancel, signer must be this agent address
+   * 代理钱包地址：
+   * - 为空：普通撤单，签名者必须是 subaccount owner
+   * - 非空：代理撤单，签名者必须是该地址
+   */
+  agent_address?: string;
 }
 export interface MsgCancelOrderAminoMsg {
   type: "/h2x.clob.MsgCancelOrder";
@@ -229,6 +249,7 @@ export interface MsgCancelOrderSDKType {
   order_id: OrderIdSDKType;
   good_til_block?: number;
   good_til_block_time?: number;
+  agent_address: string;
 }
 /** MsgCancelOrderResponse is a response type used for canceling orders. */
 export interface MsgCancelOrderResponse {}
@@ -261,6 +282,16 @@ export interface MsgBatchCancel {
   shortTermCancels: OrderBatch[];
   /** The last block the short term order cancellations can be executed at. */
   goodTilBlock: number;
+  /**
+   * agent_address is the address of the agent wallet that is sending this
+   * batch cancellation on behalf of the master wallet (subaccount owner).
+   * - If empty: normal batch cancel, signer must be the subaccount owner
+   * - If non-empty: agent batch cancel, signer must be this agent address
+   * 代理钱包地址：
+   * - 为空：普通批量撤单，签名者必须是 subaccount owner
+   * - 非空：代理批量撤单，签名者必须是该地址
+   */
+  agentAddress: string;
 }
 export interface MsgBatchCancelProtoMsg {
   typeUrl: "/h2x.clob.MsgBatchCancel";
@@ -287,6 +318,16 @@ export interface MsgBatchCancelAmino {
    * The last block the short term order cancellations can be executed at.
    */
   good_til_block?: number;
+  /**
+   * agent_address is the address of the agent wallet that is sending this
+   * batch cancellation on behalf of the master wallet (subaccount owner).
+   * - If empty: normal batch cancel, signer must be the subaccount owner
+   * - If non-empty: agent batch cancel, signer must be this agent address
+   * 代理钱包地址：
+   * - 为空：普通批量撤单，签名者必须是 subaccount owner
+   * - 非空：代理批量撤单，签名者必须是该地址
+   */
+  agent_address?: string;
 }
 export interface MsgBatchCancelAminoMsg {
   type: "/h2x.clob.MsgBatchCancel";
@@ -301,6 +342,7 @@ export interface MsgBatchCancelSDKType {
   subaccount_id: SubaccountIdSDKType;
   short_term_cancels: OrderBatchSDKType[];
   good_til_block: number;
+  agent_address: string;
 }
 /**
  * OrderBatch represents a batch of orders all belonging to a single clob pair
@@ -1069,7 +1111,8 @@ function createBaseMsgCancelOrder(): MsgCancelOrder {
   return {
     orderId: OrderId.fromPartial({}),
     goodTilBlock: undefined,
-    goodTilBlockTime: undefined
+    goodTilBlockTime: undefined,
+    agentAddress: ""
   };
 }
 export const MsgCancelOrder = {
@@ -1083,6 +1126,9 @@ export const MsgCancelOrder = {
     }
     if (message.goodTilBlockTime !== undefined) {
       writer.uint32(29).fixed32(message.goodTilBlockTime);
+    }
+    if (message.agentAddress !== "") {
+      writer.uint32(42).string(message.agentAddress);
     }
     return writer;
   },
@@ -1102,6 +1148,9 @@ export const MsgCancelOrder = {
         case 3:
           message.goodTilBlockTime = reader.fixed32();
           break;
+        case 5:
+          message.agentAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1114,6 +1163,7 @@ export const MsgCancelOrder = {
     message.orderId = object.orderId !== undefined && object.orderId !== null ? OrderId.fromPartial(object.orderId) : undefined;
     message.goodTilBlock = object.goodTilBlock ?? undefined;
     message.goodTilBlockTime = object.goodTilBlockTime ?? undefined;
+    message.agentAddress = object.agentAddress ?? "";
     return message;
   },
   fromAmino(object: MsgCancelOrderAmino): MsgCancelOrder {
@@ -1127,6 +1177,9 @@ export const MsgCancelOrder = {
     if (object.good_til_block_time !== undefined && object.good_til_block_time !== null) {
       message.goodTilBlockTime = object.good_til_block_time;
     }
+    if (object.agent_address !== undefined && object.agent_address !== null) {
+      message.agentAddress = object.agent_address;
+    }
     return message;
   },
   toAmino(message: MsgCancelOrder): MsgCancelOrderAmino {
@@ -1134,6 +1187,7 @@ export const MsgCancelOrder = {
     obj.order_id = message.orderId ? OrderId.toAmino(message.orderId) : undefined;
     obj.good_til_block = message.goodTilBlock === null ? undefined : message.goodTilBlock;
     obj.good_til_block_time = message.goodTilBlockTime === null ? undefined : message.goodTilBlockTime;
+    obj.agent_address = message.agentAddress === "" ? undefined : message.agentAddress;
     return obj;
   },
   fromAminoMsg(object: MsgCancelOrderAminoMsg): MsgCancelOrder {
@@ -1206,7 +1260,8 @@ function createBaseMsgBatchCancel(): MsgBatchCancel {
   return {
     subaccountId: SubaccountId.fromPartial({}),
     shortTermCancels: [],
-    goodTilBlock: 0
+    goodTilBlock: 0,
+    agentAddress: ""
   };
 }
 export const MsgBatchCancel = {
@@ -1220,6 +1275,9 @@ export const MsgBatchCancel = {
     }
     if (message.goodTilBlock !== 0) {
       writer.uint32(24).uint32(message.goodTilBlock);
+    }
+    if (message.agentAddress !== "") {
+      writer.uint32(42).string(message.agentAddress);
     }
     return writer;
   },
@@ -1239,6 +1297,9 @@ export const MsgBatchCancel = {
         case 3:
           message.goodTilBlock = reader.uint32();
           break;
+        case 5:
+          message.agentAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1251,6 +1312,7 @@ export const MsgBatchCancel = {
     message.subaccountId = object.subaccountId !== undefined && object.subaccountId !== null ? SubaccountId.fromPartial(object.subaccountId) : undefined;
     message.shortTermCancels = object.shortTermCancels?.map(e => OrderBatch.fromPartial(e)) || [];
     message.goodTilBlock = object.goodTilBlock ?? 0;
+    message.agentAddress = object.agentAddress ?? "";
     return message;
   },
   fromAmino(object: MsgBatchCancelAmino): MsgBatchCancel {
@@ -1261,6 +1323,9 @@ export const MsgBatchCancel = {
     message.shortTermCancels = object.short_term_cancels?.map(e => OrderBatch.fromAmino(e)) || [];
     if (object.good_til_block !== undefined && object.good_til_block !== null) {
       message.goodTilBlock = object.good_til_block;
+    }
+    if (object.agent_address !== undefined && object.agent_address !== null) {
+      message.agentAddress = object.agent_address;
     }
     return message;
   },
@@ -1273,6 +1338,7 @@ export const MsgBatchCancel = {
       obj.short_term_cancels = message.shortTermCancels;
     }
     obj.good_til_block = message.goodTilBlock === 0 ? undefined : message.goodTilBlock;
+    obj.agent_address = message.agentAddress === "" ? undefined : message.agentAddress;
     return obj;
   },
   fromAminoMsg(object: MsgBatchCancelAminoMsg): MsgBatchCancel {

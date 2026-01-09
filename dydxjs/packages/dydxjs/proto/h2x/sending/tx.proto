@@ -24,6 +24,9 @@ service Msg {
   // `x/bank` account (should only be executed by governance).
   rpc SendFromModuleToAccount(MsgSendFromModuleToAccount)
       returns (MsgSendFromModuleToAccountResponse);
+
+  rpc CreateCtfBridgeTransfer(MsgCreateCtfBridgeTransfer)
+      returns (MsgCreateCtfBridgeTransferResponse);
 }
 
 // MsgCreateTransfer is a request type used for initiating new transfers.
@@ -45,3 +48,5 @@ message MsgWithdrawFromSubaccountResponse {}
 message MsgSendFromModuleToAccountResponse {}
 
 message MsgCreateBridgeTransferResponse {}
+
+message MsgCreateCtfBridgeTransferResponse {}

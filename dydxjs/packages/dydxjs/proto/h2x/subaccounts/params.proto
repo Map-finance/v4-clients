@@ -6,6 +6,13 @@ option go_package = "github.com/h2x/v4-chain/protocol/x/subaccounts/types";
 // Params defines the parameters for the subaccounts module.
 message Params {
   // transfer_fee_quantums defines the fee charged for transfers between subaccounts
-  // in quantums (e.g., 1_000_000 = 1 USDC with 6 decimals)
+  // in quantums (e.g., 1_000_000 = 1 USDT with 6 decimals)
+  // 子账户间转账手续费（quantums），例如 1_000_000 = 1 USDT（6位精度）
+  // 同时也用于代理钱包注册费用
   uint64 transfer_fee_quantums = 1;
+
+  // min_transfer_quantums defines the minimum amount for transfers between subaccounts
+  // in quantums (e.g., 10_000_000 = 10 USDT with 6 decimals)
+  // 子账户间转账最小金额（quantums），例如 10_000_000 = 10 USDT（6位精度）
+  uint64 min_transfer_quantums = 2;
 }

@@ -1,0 +1,55 @@
+syntax = "proto3";
+package h2x.blacklist;
+
+import "google/api/annotations.proto";
+import "h2x/blacklist/genesis.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/blacklist/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // IsBlacklisted checks if an address is blacklisted.
+  rpc IsBlacklisted(QueryIsBlacklistedRequest) returns (QueryIsBlacklistedResponse) {
+    option (google.api.http).get = "/h2x/v4/blacklist/is_blacklisted/{address}";
+  }
+
+  // GetAllBlacklistedAddresses returns all blacklisted addresses.
+  rpc GetAllBlacklistedAddresses(QueryAllBlacklistedAddressesRequest)
+      returns (QueryAllBlacklistedAddressesResponse) {
+    option (google.api.http).get = "/h2x/v4/blacklist/all";
+  }
+}
+
+// QueryIsBlacklistedRequest is the request type for the IsBlacklisted RPC method.
+message QueryIsBlacklistedRequest {
+  string address = 1;
+}
+
+// QueryIsBlacklistedResponse is the response type for the IsBlacklisted RPC method.
+message QueryIsBlacklistedResponse {
+  // Whether the address is currently blacklisted.
+  bool is_blacklisted = 1;
+
+  // The reason for blacklisting.
+  string reason = 2;
+
+  // Unix timestamp when the address was blocked.
+  int64 blocked_at = 3;
+
+  // Unix timestamp when the address was unblocked (0 if still blocked).
+  int64 unblocked_at = 4;
+
+  // The reason for unblocking.
+  string unblock_reason = 5;
+}
+
+// QueryAllBlacklistedAddressesRequest is the request type for the
+// GetAllBlacklistedAddresses RPC method.
+message QueryAllBlacklistedAddressesRequest {}
+
+// QueryAllBlacklistedAddressesResponse is the response type for the
+// GetAllBlacklistedAddresses RPC method.
+message QueryAllBlacklistedAddressesResponse {
+  // All blacklist entries with full information.
+  repeated BlacklistedAddressInfo entries = 1;
+}

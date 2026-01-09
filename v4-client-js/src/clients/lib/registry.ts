@@ -6,6 +6,10 @@ import {
 } from '@dydxprotocol/v4-proto/src/codegen/h2x/accountplus/tx';
 import { MsgRegisterAffiliate } from '@dydxprotocol/v4-proto/src/codegen/h2x/affiliates/tx';
 import {
+  MsgRegisterAgent,
+  MsgRemoveAgent,
+} from '@dydxprotocol/v4-proto/src/codegen/h2x/agent/tx';
+import {
   MsgPlaceOrder,
   MsgCancelOrder,
   MsgCreateClobPair,
@@ -43,6 +47,8 @@ import {
   TYPE_URL_MSG_DEPOSIT_TO_MEGAVAULT,
   TYPE_URL_MSG_WITHDRAW_FROM_MEGAVAULT,
   TYPE_URL_MSG_REGISTER_AFFILIATE,
+  TYPE_URL_MSG_REGISTER_AGENT,
+  TYPE_URL_MSG_REMOVE_AGENT,
   TYPE_URL_MSG_CREATE_MARKET_PERMISSIONLESS,
   TYPE_URL_MSG_ADD_AUTHENTICATOR,
   TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
@@ -433,6 +439,10 @@ export function generateRegistry(): Registry {
 
     // affiliates
     [TYPE_URL_MSG_REGISTER_AFFILIATE, MsgRegisterAffiliate as GeneratedType],
+
+    // agent
+    [TYPE_URL_MSG_REGISTER_AGENT, MsgRegisterAgent as GeneratedType],
+    [TYPE_URL_MSG_REMOVE_AGENT, MsgRemoveAgent as GeneratedType],
 
     // authentication
     [TYPE_URL_MSG_ADD_AUTHENTICATOR, MsgAddAuthenticator as GeneratedType],

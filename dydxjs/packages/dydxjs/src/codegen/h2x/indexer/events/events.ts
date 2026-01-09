@@ -64,6 +64,125 @@ export function fundingEventV1_TypeToJSON(object: FundingEventV1_Type): string {
       return "UNRECOGNIZED";
   }
 }
+/** ActionType 定义运营账户可以执行的操作类型。 */
+export enum OperatorActionEventV1_ActionType {
+  /** ACTION_TYPE_UNSPECIFIED - 未指定 */
+  ACTION_TYPE_UNSPECIFIED = 0,
+  /** ACTION_TYPE_ADD_ASSET - 添加资产 */
+  ACTION_TYPE_ADD_ASSET = 1,
+  /** ACTION_TYPE_ADD_PERPETUAL - 添加永续合约交易对 */
+  ACTION_TYPE_ADD_PERPETUAL = 2,
+  /** ACTION_TYPE_ADD_SPOT_MARKET - 添加现货交易对 */
+  ACTION_TYPE_ADD_SPOT_MARKET = 3,
+  /** ACTION_TYPE_DELIST_PERPETUAL - 下架永续合约交易对 */
+  ACTION_TYPE_DELIST_PERPETUAL = 4,
+  /** ACTION_TYPE_DELIST_SPOT_MARKET - 下架现货交易对 */
+  ACTION_TYPE_DELIST_SPOT_MARKET = 5,
+  /** ACTION_TYPE_ADD_ORACLE_MARKET - 添加预言机价格市场 */
+  ACTION_TYPE_ADD_ORACLE_MARKET = 6,
+  /** ACTION_TYPE_UPDATE_ORACLE_MARKET - 更新预言机价格市场 */
+  ACTION_TYPE_UPDATE_ORACLE_MARKET = 7,
+  UNRECOGNIZED = -1,
+}
+export const OperatorActionEventV1_ActionTypeSDKType = OperatorActionEventV1_ActionType;
+export const OperatorActionEventV1_ActionTypeAmino = OperatorActionEventV1_ActionType;
+export function operatorActionEventV1_ActionTypeFromJSON(object: any): OperatorActionEventV1_ActionType {
+  switch (object) {
+    case 0:
+    case "ACTION_TYPE_UNSPECIFIED":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_UNSPECIFIED;
+    case 1:
+    case "ACTION_TYPE_ADD_ASSET":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_ASSET;
+    case 2:
+    case "ACTION_TYPE_ADD_PERPETUAL":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_PERPETUAL;
+    case 3:
+    case "ACTION_TYPE_ADD_SPOT_MARKET":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_SPOT_MARKET;
+    case 4:
+    case "ACTION_TYPE_DELIST_PERPETUAL":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_DELIST_PERPETUAL;
+    case 5:
+    case "ACTION_TYPE_DELIST_SPOT_MARKET":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_DELIST_SPOT_MARKET;
+    case 6:
+    case "ACTION_TYPE_ADD_ORACLE_MARKET":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_ORACLE_MARKET;
+    case 7:
+    case "ACTION_TYPE_UPDATE_ORACLE_MARKET":
+      return OperatorActionEventV1_ActionType.ACTION_TYPE_UPDATE_ORACLE_MARKET;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OperatorActionEventV1_ActionType.UNRECOGNIZED;
+  }
+}
+export function operatorActionEventV1_ActionTypeToJSON(object: OperatorActionEventV1_ActionType): string {
+  switch (object) {
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_UNSPECIFIED:
+      return "ACTION_TYPE_UNSPECIFIED";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_ASSET:
+      return "ACTION_TYPE_ADD_ASSET";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_PERPETUAL:
+      return "ACTION_TYPE_ADD_PERPETUAL";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_SPOT_MARKET:
+      return "ACTION_TYPE_ADD_SPOT_MARKET";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_DELIST_PERPETUAL:
+      return "ACTION_TYPE_DELIST_PERPETUAL";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_DELIST_SPOT_MARKET:
+      return "ACTION_TYPE_DELIST_SPOT_MARKET";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_ADD_ORACLE_MARKET:
+      return "ACTION_TYPE_ADD_ORACLE_MARKET";
+    case OperatorActionEventV1_ActionType.ACTION_TYPE_UPDATE_ORACLE_MARKET:
+      return "ACTION_TYPE_UPDATE_ORACLE_MARKET";
+    case OperatorActionEventV1_ActionType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+/** AgentRemovalType 代理钱包移除类型 */
+export enum AgentRemovalType {
+  /** AGENT_REMOVAL_TYPE_UNSPECIFIED - 未指定 */
+  AGENT_REMOVAL_TYPE_UNSPECIFIED = 0,
+  /** AGENT_REMOVAL_TYPE_MANUAL - 用户手动移除 */
+  AGENT_REMOVAL_TYPE_MANUAL = 1,
+  /** AGENT_REMOVAL_TYPE_EXPIRED - 过期自动移除（EndBlocker 清理） */
+  AGENT_REMOVAL_TYPE_EXPIRED = 2,
+  UNRECOGNIZED = -1,
+}
+export const AgentRemovalTypeSDKType = AgentRemovalType;
+export const AgentRemovalTypeAmino = AgentRemovalType;
+export function agentRemovalTypeFromJSON(object: any): AgentRemovalType {
+  switch (object) {
+    case 0:
+    case "AGENT_REMOVAL_TYPE_UNSPECIFIED":
+      return AgentRemovalType.AGENT_REMOVAL_TYPE_UNSPECIFIED;
+    case 1:
+    case "AGENT_REMOVAL_TYPE_MANUAL":
+      return AgentRemovalType.AGENT_REMOVAL_TYPE_MANUAL;
+    case 2:
+    case "AGENT_REMOVAL_TYPE_EXPIRED":
+      return AgentRemovalType.AGENT_REMOVAL_TYPE_EXPIRED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AgentRemovalType.UNRECOGNIZED;
+  }
+}
+export function agentRemovalTypeToJSON(object: AgentRemovalType): string {
+  switch (object) {
+    case AgentRemovalType.AGENT_REMOVAL_TYPE_UNSPECIFIED:
+      return "AGENT_REMOVAL_TYPE_UNSPECIFIED";
+    case AgentRemovalType.AGENT_REMOVAL_TYPE_MANUAL:
+      return "AGENT_REMOVAL_TYPE_MANUAL";
+    case AgentRemovalType.AGENT_REMOVAL_TYPE_EXPIRED:
+      return "AGENT_REMOVAL_TYPE_EXPIRED";
+    case AgentRemovalType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /**
  * FundingUpdate is used for funding update events and includes a funding
  * value and an optional funding index that correspond to a perpetual market.
@@ -1258,6 +1377,16 @@ export interface AssetCreateEventV1 {
    * a position size of one full coin.
    */
   atomicResolution: number;
+  /** The on-chain denomination of the asset (e.g. `uusdc`, `ibc/xxx`). */
+  denom: string;
+  /**
+   * The exponent for converting the smallest on-chain unit to a human readable
+   * amount. For example, if `denom_exponent = -6`, then 1e6 on-chain units
+   * equals 1 human readable unit (like USDC with 6 decimals).
+   */
+  denomExponent: number;
+  /** Asset type for categorization. Default is 0. */
+  assetType: number;
 }
 export interface AssetCreateEventV1ProtoMsg {
   typeUrl: "/h2x.indexer.events.AssetCreateEventV1";
@@ -1298,6 +1427,20 @@ export interface AssetCreateEventV1Amino {
    * a position size of one full coin.
    */
   atomic_resolution?: number;
+  /**
+   * The on-chain denomination of the asset (e.g. `uusdc`, `ibc/xxx`).
+   */
+  denom?: string;
+  /**
+   * The exponent for converting the smallest on-chain unit to a human readable
+   * amount. For example, if `denom_exponent = -6`, then 1e6 on-chain units
+   * equals 1 human readable unit (like USDC with 6 decimals).
+   */
+  denom_exponent?: number;
+  /**
+   * Asset type for categorization. Default is 0.
+   */
+  asset_type?: number;
 }
 export interface AssetCreateEventV1AminoMsg {
   type: "/h2x.indexer.events.AssetCreateEventV1";
@@ -1313,6 +1456,9 @@ export interface AssetCreateEventV1SDKType {
   has_market: boolean;
   market_id: number;
   atomic_resolution: number;
+  denom: string;
+  denom_exponent: number;
+  asset_type: number;
 }
 /**
  * SpotMarketCreateEventV1 message contains all the information about a
@@ -2781,6 +2927,394 @@ export interface UpsertVaultEventV1SDKType {
   address: string;
   clob_pair_id: number;
   status: VaultStatus;
+}
+/**
+ * OperatorAddedEventV1 运营账户添加事件。
+ * 当通过治理投票添加新的运营账户时触发。
+ */
+export interface OperatorAddedEventV1 {
+  /** 被添加的运营账户地址 */
+  operatorAddress: string;
+  /** 添加该运营账户的地址（通常是治理模块地址） */
+  addedBy: string;
+  /**
+   * 授予的权限列表。
+   * 权限值说明：
+   *   0 = ALL（全部权限）
+   *   1 = CREATE_ASSET（创建资产权限）
+   *   2 = UPDATE_ASSET（更新资产权限）
+   *   3 = CREATE_CLOB_PAIR（创建交易对权限）
+   *   4 = UPDATE_CLOB_PAIR（更新交易对权限）
+   *   5 = DELIST_CLOB_PAIR（下架交易对权限）
+   *   6 = CREATE_ORACLE_MARKET（创建预言机市场权限）
+   *   7 = UPDATE_ORACLE_MARKET（更新预言机市场权限）
+   */
+  permissions: number[];
+}
+export interface OperatorAddedEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.OperatorAddedEventV1";
+  value: Uint8Array;
+}
+/**
+ * OperatorAddedEventV1 运营账户添加事件。
+ * 当通过治理投票添加新的运营账户时触发。
+ * @name OperatorAddedEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.OperatorAddedEventV1
+ */
+export interface OperatorAddedEventV1Amino {
+  /**
+   * 被添加的运营账户地址
+   */
+  operator_address?: string;
+  /**
+   * 添加该运营账户的地址（通常是治理模块地址）
+   */
+  added_by?: string;
+  /**
+   * 授予的权限列表。
+   * 权限值说明：
+   *   0 = ALL（全部权限）
+   *   1 = CREATE_ASSET（创建资产权限）
+   *   2 = UPDATE_ASSET（更新资产权限）
+   *   3 = CREATE_CLOB_PAIR（创建交易对权限）
+   *   4 = UPDATE_CLOB_PAIR（更新交易对权限）
+   *   5 = DELIST_CLOB_PAIR（下架交易对权限）
+   *   6 = CREATE_ORACLE_MARKET（创建预言机市场权限）
+   *   7 = UPDATE_ORACLE_MARKET（更新预言机市场权限）
+   */
+  permissions?: number[];
+}
+export interface OperatorAddedEventV1AminoMsg {
+  type: "/h2x.indexer.events.OperatorAddedEventV1";
+  value: OperatorAddedEventV1Amino;
+}
+/**
+ * OperatorAddedEventV1 运营账户添加事件。
+ * 当通过治理投票添加新的运营账户时触发。
+ */
+export interface OperatorAddedEventV1SDKType {
+  operator_address: string;
+  added_by: string;
+  permissions: number[];
+}
+/**
+ * OperatorRemovedEventV1 运营账户移除事件。
+ * 当通过治理投票移除运营账户时触发。
+ */
+export interface OperatorRemovedEventV1 {
+  /** 被移除的运营账户地址 */
+  operatorAddress: string;
+  /** 移除该运营账户的地址（通常是治理模块地址） */
+  removedBy: string;
+}
+export interface OperatorRemovedEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.OperatorRemovedEventV1";
+  value: Uint8Array;
+}
+/**
+ * OperatorRemovedEventV1 运营账户移除事件。
+ * 当通过治理投票移除运营账户时触发。
+ * @name OperatorRemovedEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.OperatorRemovedEventV1
+ */
+export interface OperatorRemovedEventV1Amino {
+  /**
+   * 被移除的运营账户地址
+   */
+  operator_address?: string;
+  /**
+   * 移除该运营账户的地址（通常是治理模块地址）
+   */
+  removed_by?: string;
+}
+export interface OperatorRemovedEventV1AminoMsg {
+  type: "/h2x.indexer.events.OperatorRemovedEventV1";
+  value: OperatorRemovedEventV1Amino;
+}
+/**
+ * OperatorRemovedEventV1 运营账户移除事件。
+ * 当通过治理投票移除运营账户时触发。
+ */
+export interface OperatorRemovedEventV1SDKType {
+  operator_address: string;
+  removed_by: string;
+}
+/**
+ * OperatorPermissionsUpdatedEventV1 运营账户权限更新事件。
+ * 当通过治理投票修改运营账户权限时触发。
+ */
+export interface OperatorPermissionsUpdatedEventV1 {
+  /** 被更新权限的运营账户地址 */
+  operatorAddress: string;
+  /** 更新该运营账户权限的地址（通常是治理模块地址） */
+  updatedBy: string;
+  /** 更新前的权限列表 */
+  oldPermissions: number[];
+  /** 更新后的权限列表 */
+  newPermissions: number[];
+}
+export interface OperatorPermissionsUpdatedEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.OperatorPermissionsUpdatedEventV1";
+  value: Uint8Array;
+}
+/**
+ * OperatorPermissionsUpdatedEventV1 运营账户权限更新事件。
+ * 当通过治理投票修改运营账户权限时触发。
+ * @name OperatorPermissionsUpdatedEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.OperatorPermissionsUpdatedEventV1
+ */
+export interface OperatorPermissionsUpdatedEventV1Amino {
+  /**
+   * 被更新权限的运营账户地址
+   */
+  operator_address?: string;
+  /**
+   * 更新该运营账户权限的地址（通常是治理模块地址）
+   */
+  updated_by?: string;
+  /**
+   * 更新前的权限列表
+   */
+  old_permissions?: number[];
+  /**
+   * 更新后的权限列表
+   */
+  new_permissions?: number[];
+}
+export interface OperatorPermissionsUpdatedEventV1AminoMsg {
+  type: "/h2x.indexer.events.OperatorPermissionsUpdatedEventV1";
+  value: OperatorPermissionsUpdatedEventV1Amino;
+}
+/**
+ * OperatorPermissionsUpdatedEventV1 运营账户权限更新事件。
+ * 当通过治理投票修改运营账户权限时触发。
+ */
+export interface OperatorPermissionsUpdatedEventV1SDKType {
+  operator_address: string;
+  updated_by: string;
+  old_permissions: number[];
+  new_permissions: number[];
+}
+/**
+ * OperatorActionEventV1 运营账户操作事件。
+ * 当运营账户执行添加/下架资产或交易对等操作时触发。
+ */
+export interface OperatorActionEventV1 {
+  /** 执行的操作类型 */
+  actionType: OperatorActionEventV1_ActionType;
+  /** 执行此操作的运营账户地址 */
+  triggeredBy: string;
+  /** 与此操作关联的资源 ID（asset_id、perpetual_id 或 clob_pair_id、market_id） */
+  resourceId: number;
+}
+export interface OperatorActionEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.OperatorActionEventV1";
+  value: Uint8Array;
+}
+/**
+ * OperatorActionEventV1 运营账户操作事件。
+ * 当运营账户执行添加/下架资产或交易对等操作时触发。
+ * @name OperatorActionEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.OperatorActionEventV1
+ */
+export interface OperatorActionEventV1Amino {
+  /**
+   * 执行的操作类型
+   */
+  action_type?: OperatorActionEventV1_ActionType;
+  /**
+   * 执行此操作的运营账户地址
+   */
+  triggered_by?: string;
+  /**
+   * 与此操作关联的资源 ID（asset_id、perpetual_id 或 clob_pair_id、market_id）
+   */
+  resource_id?: number;
+}
+export interface OperatorActionEventV1AminoMsg {
+  type: "/h2x.indexer.events.OperatorActionEventV1";
+  value: OperatorActionEventV1Amino;
+}
+/**
+ * OperatorActionEventV1 运营账户操作事件。
+ * 当运营账户执行添加/下架资产或交易对等操作时触发。
+ */
+export interface OperatorActionEventV1SDKType {
+  action_type: OperatorActionEventV1_ActionType;
+  triggered_by: string;
+  resource_id: number;
+}
+/**
+ * AgentRegisteredEventV1 代理钱包注册事件。
+ * 当主钱包授权一个新的代理钱包时触发。
+ */
+export interface AgentRegisteredEventV1 {
+  /** 主钱包地址（授权方） */
+  masterAddress: string;
+  /** 代理钱包地址（被授权方） */
+  agentAddress: string;
+  /** 代理名称（可选，最多20个字符） */
+  name: string;
+  /** 授权过期时间戳（Unix 秒） */
+  expiryTimestamp: bigint;
+}
+export interface AgentRegisteredEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.AgentRegisteredEventV1";
+  value: Uint8Array;
+}
+/**
+ * AgentRegisteredEventV1 代理钱包注册事件。
+ * 当主钱包授权一个新的代理钱包时触发。
+ * @name AgentRegisteredEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.AgentRegisteredEventV1
+ */
+export interface AgentRegisteredEventV1Amino {
+  /**
+   * 主钱包地址（授权方）
+   */
+  master_address?: string;
+  /**
+   * 代理钱包地址（被授权方）
+   */
+  agent_address?: string;
+  /**
+   * 代理名称（可选，最多20个字符）
+   */
+  name?: string;
+  /**
+   * 授权过期时间戳（Unix 秒）
+   */
+  expiry_timestamp?: string;
+}
+export interface AgentRegisteredEventV1AminoMsg {
+  type: "/h2x.indexer.events.AgentRegisteredEventV1";
+  value: AgentRegisteredEventV1Amino;
+}
+/**
+ * AgentRegisteredEventV1 代理钱包注册事件。
+ * 当主钱包授权一个新的代理钱包时触发。
+ */
+export interface AgentRegisteredEventV1SDKType {
+  master_address: string;
+  agent_address: string;
+  name: string;
+  expiry_timestamp: bigint;
+}
+/**
+ * AgentRemovedEventV1 代理钱包移除事件。
+ * 当主钱包移除一个代理钱包的授权时触发。
+ */
+export interface AgentRemovedEventV1 {
+  /** 主钱包地址 */
+  masterAddress: string;
+  /** 被移除授权的代理钱包地址 */
+  agentAddress: string;
+  /** 移除类型：手动移除 或 过期自动移除 */
+  removalType: AgentRemovalType;
+}
+export interface AgentRemovedEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.AgentRemovedEventV1";
+  value: Uint8Array;
+}
+/**
+ * AgentRemovedEventV1 代理钱包移除事件。
+ * 当主钱包移除一个代理钱包的授权时触发。
+ * @name AgentRemovedEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.AgentRemovedEventV1
+ */
+export interface AgentRemovedEventV1Amino {
+  /**
+   * 主钱包地址
+   */
+  master_address?: string;
+  /**
+   * 被移除授权的代理钱包地址
+   */
+  agent_address?: string;
+  /**
+   * 移除类型：手动移除 或 过期自动移除
+   */
+  removal_type?: AgentRemovalType;
+}
+export interface AgentRemovedEventV1AminoMsg {
+  type: "/h2x.indexer.events.AgentRemovedEventV1";
+  value: AgentRemovedEventV1Amino;
+}
+/**
+ * AgentRemovedEventV1 代理钱包移除事件。
+ * 当主钱包移除一个代理钱包的授权时触发。
+ */
+export interface AgentRemovedEventV1SDKType {
+  master_address: string;
+  agent_address: string;
+  removal_type: AgentRemovalType;
+}
+/**
+ * BlacklistEventV1 黑名单事件。
+ * 当地址被添加到黑名单或从黑名单移除时触发。
+ */
+export interface BlacklistEventV1 {
+  /** 被操作的地址 */
+  address: string;
+  /** 封禁/解封原因 */
+  reason: string;
+  /**
+   * 操作时间戳（Unix 秒）
+   * 封禁时为 blocked_at，解封时为 unblocked_at
+   */
+  blockedAt: number;
+  /** 操作类型：true = 封禁，false = 解封 */
+  isBlocked: boolean;
+}
+export interface BlacklistEventV1ProtoMsg {
+  typeUrl: "/h2x.indexer.events.BlacklistEventV1";
+  value: Uint8Array;
+}
+/**
+ * BlacklistEventV1 黑名单事件。
+ * 当地址被添加到黑名单或从黑名单移除时触发。
+ * @name BlacklistEventV1Amino
+ * @package h2x.indexer.events
+ * @see proto type: h2x.indexer.events.BlacklistEventV1
+ */
+export interface BlacklistEventV1Amino {
+  /**
+   * 被操作的地址
+   */
+  address?: string;
+  /**
+   * 封禁/解封原因
+   */
+  reason?: string;
+  /**
+   * 操作时间戳（Unix 秒）
+   * 封禁时为 blocked_at，解封时为 unblocked_at
+   */
+  blocked_at?: number;
+  /**
+   * 操作类型：true = 封禁，false = 解封
+   */
+  is_blocked?: boolean;
+}
+export interface BlacklistEventV1AminoMsg {
+  type: "/h2x.indexer.events.BlacklistEventV1";
+  value: BlacklistEventV1Amino;
+}
+/**
+ * BlacklistEventV1 黑名单事件。
+ * 当地址被添加到黑名单或从黑名单移除时触发。
+ */
+export interface BlacklistEventV1SDKType {
+  address: string;
+  reason: string;
+  blocked_at: number;
+  is_blocked: boolean;
 }
 function createBaseFundingUpdateV1(): FundingUpdateV1 {
   return {
@@ -4729,7 +5263,10 @@ function createBaseAssetCreateEventV1(): AssetCreateEventV1 {
     symbol: "",
     hasMarket: false,
     marketId: 0,
-    atomicResolution: 0
+    atomicResolution: 0,
+    denom: "",
+    denomExponent: 0,
+    assetType: 0
   };
 }
 export const AssetCreateEventV1 = {
@@ -4749,6 +5286,15 @@ export const AssetCreateEventV1 = {
     }
     if (message.atomicResolution !== 0) {
       writer.uint32(40).sint32(message.atomicResolution);
+    }
+    if (message.denom !== "") {
+      writer.uint32(50).string(message.denom);
+    }
+    if (message.denomExponent !== 0) {
+      writer.uint32(56).sint32(message.denomExponent);
+    }
+    if (message.assetType !== 0) {
+      writer.uint32(64).uint32(message.assetType);
     }
     return writer;
   },
@@ -4774,6 +5320,15 @@ export const AssetCreateEventV1 = {
         case 5:
           message.atomicResolution = reader.sint32();
           break;
+        case 6:
+          message.denom = reader.string();
+          break;
+        case 7:
+          message.denomExponent = reader.sint32();
+          break;
+        case 8:
+          message.assetType = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4788,6 +5343,9 @@ export const AssetCreateEventV1 = {
     message.hasMarket = object.hasMarket ?? false;
     message.marketId = object.marketId ?? 0;
     message.atomicResolution = object.atomicResolution ?? 0;
+    message.denom = object.denom ?? "";
+    message.denomExponent = object.denomExponent ?? 0;
+    message.assetType = object.assetType ?? 0;
     return message;
   },
   fromAmino(object: AssetCreateEventV1Amino): AssetCreateEventV1 {
@@ -4807,6 +5365,15 @@ export const AssetCreateEventV1 = {
     if (object.atomic_resolution !== undefined && object.atomic_resolution !== null) {
       message.atomicResolution = object.atomic_resolution;
     }
+    if (object.denom !== undefined && object.denom !== null) {
+      message.denom = object.denom;
+    }
+    if (object.denom_exponent !== undefined && object.denom_exponent !== null) {
+      message.denomExponent = object.denom_exponent;
+    }
+    if (object.asset_type !== undefined && object.asset_type !== null) {
+      message.assetType = object.asset_type;
+    }
     return message;
   },
   toAmino(message: AssetCreateEventV1): AssetCreateEventV1Amino {
@@ -4816,6 +5383,9 @@ export const AssetCreateEventV1 = {
     obj.has_market = message.hasMarket === false ? undefined : message.hasMarket;
     obj.market_id = message.marketId === 0 ? undefined : message.marketId;
     obj.atomic_resolution = message.atomicResolution === 0 ? undefined : message.atomicResolution;
+    obj.denom = message.denom === "" ? undefined : message.denom;
+    obj.denom_exponent = message.denomExponent === 0 ? undefined : message.denomExponent;
+    obj.asset_type = message.assetType === 0 ? undefined : message.assetType;
     return obj;
   },
   fromAminoMsg(object: AssetCreateEventV1AminoMsg): AssetCreateEventV1 {
@@ -6770,6 +7340,672 @@ export const UpsertVaultEventV1 = {
     return {
       typeUrl: "/h2x.indexer.events.UpsertVaultEventV1",
       value: UpsertVaultEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorAddedEventV1(): OperatorAddedEventV1 {
+  return {
+    operatorAddress: "",
+    addedBy: "",
+    permissions: []
+  };
+}
+export const OperatorAddedEventV1 = {
+  typeUrl: "/h2x.indexer.events.OperatorAddedEventV1",
+  encode(message: OperatorAddedEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+    if (message.addedBy !== "") {
+      writer.uint32(18).string(message.addedBy);
+    }
+    writer.uint32(26).fork();
+    for (const v of message.permissions) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorAddedEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorAddedEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+        case 2:
+          message.addedBy = reader.string();
+          break;
+        case 3:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.permissions.push(reader.uint32());
+            }
+          } else {
+            message.permissions.push(reader.uint32());
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorAddedEventV1>): OperatorAddedEventV1 {
+    const message = createBaseOperatorAddedEventV1();
+    message.operatorAddress = object.operatorAddress ?? "";
+    message.addedBy = object.addedBy ?? "";
+    message.permissions = object.permissions?.map(e => e) || [];
+    return message;
+  },
+  fromAmino(object: OperatorAddedEventV1Amino): OperatorAddedEventV1 {
+    const message = createBaseOperatorAddedEventV1();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    if (object.added_by !== undefined && object.added_by !== null) {
+      message.addedBy = object.added_by;
+    }
+    message.permissions = object.permissions?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: OperatorAddedEventV1): OperatorAddedEventV1Amino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress === "" ? undefined : message.operatorAddress;
+    obj.added_by = message.addedBy === "" ? undefined : message.addedBy;
+    if (message.permissions) {
+      obj.permissions = message.permissions.map(e => e);
+    } else {
+      obj.permissions = message.permissions;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: OperatorAddedEventV1AminoMsg): OperatorAddedEventV1 {
+    return OperatorAddedEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorAddedEventV1ProtoMsg): OperatorAddedEventV1 {
+    return OperatorAddedEventV1.decode(message.value);
+  },
+  toProto(message: OperatorAddedEventV1): Uint8Array {
+    return OperatorAddedEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorAddedEventV1): OperatorAddedEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.OperatorAddedEventV1",
+      value: OperatorAddedEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorRemovedEventV1(): OperatorRemovedEventV1 {
+  return {
+    operatorAddress: "",
+    removedBy: ""
+  };
+}
+export const OperatorRemovedEventV1 = {
+  typeUrl: "/h2x.indexer.events.OperatorRemovedEventV1",
+  encode(message: OperatorRemovedEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+    if (message.removedBy !== "") {
+      writer.uint32(18).string(message.removedBy);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorRemovedEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorRemovedEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+        case 2:
+          message.removedBy = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorRemovedEventV1>): OperatorRemovedEventV1 {
+    const message = createBaseOperatorRemovedEventV1();
+    message.operatorAddress = object.operatorAddress ?? "";
+    message.removedBy = object.removedBy ?? "";
+    return message;
+  },
+  fromAmino(object: OperatorRemovedEventV1Amino): OperatorRemovedEventV1 {
+    const message = createBaseOperatorRemovedEventV1();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    if (object.removed_by !== undefined && object.removed_by !== null) {
+      message.removedBy = object.removed_by;
+    }
+    return message;
+  },
+  toAmino(message: OperatorRemovedEventV1): OperatorRemovedEventV1Amino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress === "" ? undefined : message.operatorAddress;
+    obj.removed_by = message.removedBy === "" ? undefined : message.removedBy;
+    return obj;
+  },
+  fromAminoMsg(object: OperatorRemovedEventV1AminoMsg): OperatorRemovedEventV1 {
+    return OperatorRemovedEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorRemovedEventV1ProtoMsg): OperatorRemovedEventV1 {
+    return OperatorRemovedEventV1.decode(message.value);
+  },
+  toProto(message: OperatorRemovedEventV1): Uint8Array {
+    return OperatorRemovedEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorRemovedEventV1): OperatorRemovedEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.OperatorRemovedEventV1",
+      value: OperatorRemovedEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorPermissionsUpdatedEventV1(): OperatorPermissionsUpdatedEventV1 {
+  return {
+    operatorAddress: "",
+    updatedBy: "",
+    oldPermissions: [],
+    newPermissions: []
+  };
+}
+export const OperatorPermissionsUpdatedEventV1 = {
+  typeUrl: "/h2x.indexer.events.OperatorPermissionsUpdatedEventV1",
+  encode(message: OperatorPermissionsUpdatedEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+    if (message.updatedBy !== "") {
+      writer.uint32(18).string(message.updatedBy);
+    }
+    writer.uint32(26).fork();
+    for (const v of message.oldPermissions) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(34).fork();
+    for (const v of message.newPermissions) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorPermissionsUpdatedEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorPermissionsUpdatedEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+        case 2:
+          message.updatedBy = reader.string();
+          break;
+        case 3:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.oldPermissions.push(reader.uint32());
+            }
+          } else {
+            message.oldPermissions.push(reader.uint32());
+          }
+          break;
+        case 4:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.newPermissions.push(reader.uint32());
+            }
+          } else {
+            message.newPermissions.push(reader.uint32());
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorPermissionsUpdatedEventV1>): OperatorPermissionsUpdatedEventV1 {
+    const message = createBaseOperatorPermissionsUpdatedEventV1();
+    message.operatorAddress = object.operatorAddress ?? "";
+    message.updatedBy = object.updatedBy ?? "";
+    message.oldPermissions = object.oldPermissions?.map(e => e) || [];
+    message.newPermissions = object.newPermissions?.map(e => e) || [];
+    return message;
+  },
+  fromAmino(object: OperatorPermissionsUpdatedEventV1Amino): OperatorPermissionsUpdatedEventV1 {
+    const message = createBaseOperatorPermissionsUpdatedEventV1();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    if (object.updated_by !== undefined && object.updated_by !== null) {
+      message.updatedBy = object.updated_by;
+    }
+    message.oldPermissions = object.old_permissions?.map(e => e) || [];
+    message.newPermissions = object.new_permissions?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: OperatorPermissionsUpdatedEventV1): OperatorPermissionsUpdatedEventV1Amino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress === "" ? undefined : message.operatorAddress;
+    obj.updated_by = message.updatedBy === "" ? undefined : message.updatedBy;
+    if (message.oldPermissions) {
+      obj.old_permissions = message.oldPermissions.map(e => e);
+    } else {
+      obj.old_permissions = message.oldPermissions;
+    }
+    if (message.newPermissions) {
+      obj.new_permissions = message.newPermissions.map(e => e);
+    } else {
+      obj.new_permissions = message.newPermissions;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: OperatorPermissionsUpdatedEventV1AminoMsg): OperatorPermissionsUpdatedEventV1 {
+    return OperatorPermissionsUpdatedEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorPermissionsUpdatedEventV1ProtoMsg): OperatorPermissionsUpdatedEventV1 {
+    return OperatorPermissionsUpdatedEventV1.decode(message.value);
+  },
+  toProto(message: OperatorPermissionsUpdatedEventV1): Uint8Array {
+    return OperatorPermissionsUpdatedEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorPermissionsUpdatedEventV1): OperatorPermissionsUpdatedEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.OperatorPermissionsUpdatedEventV1",
+      value: OperatorPermissionsUpdatedEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseOperatorActionEventV1(): OperatorActionEventV1 {
+  return {
+    actionType: 0,
+    triggeredBy: "",
+    resourceId: 0
+  };
+}
+export const OperatorActionEventV1 = {
+  typeUrl: "/h2x.indexer.events.OperatorActionEventV1",
+  encode(message: OperatorActionEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.actionType !== 0) {
+      writer.uint32(8).int32(message.actionType);
+    }
+    if (message.triggeredBy !== "") {
+      writer.uint32(18).string(message.triggeredBy);
+    }
+    if (message.resourceId !== 0) {
+      writer.uint32(24).uint32(message.resourceId);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): OperatorActionEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperatorActionEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.actionType = reader.int32() as any;
+          break;
+        case 2:
+          message.triggeredBy = reader.string();
+          break;
+        case 3:
+          message.resourceId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<OperatorActionEventV1>): OperatorActionEventV1 {
+    const message = createBaseOperatorActionEventV1();
+    message.actionType = object.actionType ?? 0;
+    message.triggeredBy = object.triggeredBy ?? "";
+    message.resourceId = object.resourceId ?? 0;
+    return message;
+  },
+  fromAmino(object: OperatorActionEventV1Amino): OperatorActionEventV1 {
+    const message = createBaseOperatorActionEventV1();
+    if (object.action_type !== undefined && object.action_type !== null) {
+      message.actionType = object.action_type;
+    }
+    if (object.triggered_by !== undefined && object.triggered_by !== null) {
+      message.triggeredBy = object.triggered_by;
+    }
+    if (object.resource_id !== undefined && object.resource_id !== null) {
+      message.resourceId = object.resource_id;
+    }
+    return message;
+  },
+  toAmino(message: OperatorActionEventV1): OperatorActionEventV1Amino {
+    const obj: any = {};
+    obj.action_type = message.actionType === 0 ? undefined : message.actionType;
+    obj.triggered_by = message.triggeredBy === "" ? undefined : message.triggeredBy;
+    obj.resource_id = message.resourceId === 0 ? undefined : message.resourceId;
+    return obj;
+  },
+  fromAminoMsg(object: OperatorActionEventV1AminoMsg): OperatorActionEventV1 {
+    return OperatorActionEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OperatorActionEventV1ProtoMsg): OperatorActionEventV1 {
+    return OperatorActionEventV1.decode(message.value);
+  },
+  toProto(message: OperatorActionEventV1): Uint8Array {
+    return OperatorActionEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: OperatorActionEventV1): OperatorActionEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.OperatorActionEventV1",
+      value: OperatorActionEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseAgentRegisteredEventV1(): AgentRegisteredEventV1 {
+  return {
+    masterAddress: "",
+    agentAddress: "",
+    name: "",
+    expiryTimestamp: BigInt(0)
+  };
+}
+export const AgentRegisteredEventV1 = {
+  typeUrl: "/h2x.indexer.events.AgentRegisteredEventV1",
+  encode(message: AgentRegisteredEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.masterAddress !== "") {
+      writer.uint32(10).string(message.masterAddress);
+    }
+    if (message.agentAddress !== "") {
+      writer.uint32(18).string(message.agentAddress);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.expiryTimestamp !== BigInt(0)) {
+      writer.uint32(32).uint64(message.expiryTimestamp);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): AgentRegisteredEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAgentRegisteredEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.masterAddress = reader.string();
+          break;
+        case 2:
+          message.agentAddress = reader.string();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        case 4:
+          message.expiryTimestamp = reader.uint64();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<AgentRegisteredEventV1>): AgentRegisteredEventV1 {
+    const message = createBaseAgentRegisteredEventV1();
+    message.masterAddress = object.masterAddress ?? "";
+    message.agentAddress = object.agentAddress ?? "";
+    message.name = object.name ?? "";
+    message.expiryTimestamp = object.expiryTimestamp !== undefined && object.expiryTimestamp !== null ? BigInt(object.expiryTimestamp.toString()) : BigInt(0);
+    return message;
+  },
+  fromAmino(object: AgentRegisteredEventV1Amino): AgentRegisteredEventV1 {
+    const message = createBaseAgentRegisteredEventV1();
+    if (object.master_address !== undefined && object.master_address !== null) {
+      message.masterAddress = object.master_address;
+    }
+    if (object.agent_address !== undefined && object.agent_address !== null) {
+      message.agentAddress = object.agent_address;
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.expiry_timestamp !== undefined && object.expiry_timestamp !== null) {
+      message.expiryTimestamp = BigInt(object.expiry_timestamp);
+    }
+    return message;
+  },
+  toAmino(message: AgentRegisteredEventV1): AgentRegisteredEventV1Amino {
+    const obj: any = {};
+    obj.master_address = message.masterAddress === "" ? undefined : message.masterAddress;
+    obj.agent_address = message.agentAddress === "" ? undefined : message.agentAddress;
+    obj.name = message.name === "" ? undefined : message.name;
+    obj.expiry_timestamp = message.expiryTimestamp !== BigInt(0) ? message.expiryTimestamp?.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AgentRegisteredEventV1AminoMsg): AgentRegisteredEventV1 {
+    return AgentRegisteredEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AgentRegisteredEventV1ProtoMsg): AgentRegisteredEventV1 {
+    return AgentRegisteredEventV1.decode(message.value);
+  },
+  toProto(message: AgentRegisteredEventV1): Uint8Array {
+    return AgentRegisteredEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: AgentRegisteredEventV1): AgentRegisteredEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.AgentRegisteredEventV1",
+      value: AgentRegisteredEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseAgentRemovedEventV1(): AgentRemovedEventV1 {
+  return {
+    masterAddress: "",
+    agentAddress: "",
+    removalType: 0
+  };
+}
+export const AgentRemovedEventV1 = {
+  typeUrl: "/h2x.indexer.events.AgentRemovedEventV1",
+  encode(message: AgentRemovedEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.masterAddress !== "") {
+      writer.uint32(10).string(message.masterAddress);
+    }
+    if (message.agentAddress !== "") {
+      writer.uint32(18).string(message.agentAddress);
+    }
+    if (message.removalType !== 0) {
+      writer.uint32(24).int32(message.removalType);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): AgentRemovedEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAgentRemovedEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.masterAddress = reader.string();
+          break;
+        case 2:
+          message.agentAddress = reader.string();
+          break;
+        case 3:
+          message.removalType = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<AgentRemovedEventV1>): AgentRemovedEventV1 {
+    const message = createBaseAgentRemovedEventV1();
+    message.masterAddress = object.masterAddress ?? "";
+    message.agentAddress = object.agentAddress ?? "";
+    message.removalType = object.removalType ?? 0;
+    return message;
+  },
+  fromAmino(object: AgentRemovedEventV1Amino): AgentRemovedEventV1 {
+    const message = createBaseAgentRemovedEventV1();
+    if (object.master_address !== undefined && object.master_address !== null) {
+      message.masterAddress = object.master_address;
+    }
+    if (object.agent_address !== undefined && object.agent_address !== null) {
+      message.agentAddress = object.agent_address;
+    }
+    if (object.removal_type !== undefined && object.removal_type !== null) {
+      message.removalType = object.removal_type;
+    }
+    return message;
+  },
+  toAmino(message: AgentRemovedEventV1): AgentRemovedEventV1Amino {
+    const obj: any = {};
+    obj.master_address = message.masterAddress === "" ? undefined : message.masterAddress;
+    obj.agent_address = message.agentAddress === "" ? undefined : message.agentAddress;
+    obj.removal_type = message.removalType === 0 ? undefined : message.removalType;
+    return obj;
+  },
+  fromAminoMsg(object: AgentRemovedEventV1AminoMsg): AgentRemovedEventV1 {
+    return AgentRemovedEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AgentRemovedEventV1ProtoMsg): AgentRemovedEventV1 {
+    return AgentRemovedEventV1.decode(message.value);
+  },
+  toProto(message: AgentRemovedEventV1): Uint8Array {
+    return AgentRemovedEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: AgentRemovedEventV1): AgentRemovedEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.AgentRemovedEventV1",
+      value: AgentRemovedEventV1.encode(message).finish()
+    };
+  }
+};
+function createBaseBlacklistEventV1(): BlacklistEventV1 {
+  return {
+    address: "",
+    reason: "",
+    blockedAt: 0,
+    isBlocked: false
+  };
+}
+export const BlacklistEventV1 = {
+  typeUrl: "/h2x.indexer.events.BlacklistEventV1",
+  encode(message: BlacklistEventV1, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.reason !== "") {
+      writer.uint32(18).string(message.reason);
+    }
+    if (message.blockedAt !== 0) {
+      writer.uint32(24).uint32(message.blockedAt);
+    }
+    if (message.isBlocked === true) {
+      writer.uint32(32).bool(message.isBlocked);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): BlacklistEventV1 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlacklistEventV1();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.reason = reader.string();
+          break;
+        case 3:
+          message.blockedAt = reader.uint32();
+          break;
+        case 4:
+          message.isBlocked = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<BlacklistEventV1>): BlacklistEventV1 {
+    const message = createBaseBlacklistEventV1();
+    message.address = object.address ?? "";
+    message.reason = object.reason ?? "";
+    message.blockedAt = object.blockedAt ?? 0;
+    message.isBlocked = object.isBlocked ?? false;
+    return message;
+  },
+  fromAmino(object: BlacklistEventV1Amino): BlacklistEventV1 {
+    const message = createBaseBlacklistEventV1();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.reason !== undefined && object.reason !== null) {
+      message.reason = object.reason;
+    }
+    if (object.blocked_at !== undefined && object.blocked_at !== null) {
+      message.blockedAt = object.blocked_at;
+    }
+    if (object.is_blocked !== undefined && object.is_blocked !== null) {
+      message.isBlocked = object.is_blocked;
+    }
+    return message;
+  },
+  toAmino(message: BlacklistEventV1): BlacklistEventV1Amino {
+    const obj: any = {};
+    obj.address = message.address === "" ? undefined : message.address;
+    obj.reason = message.reason === "" ? undefined : message.reason;
+    obj.blocked_at = message.blockedAt === 0 ? undefined : message.blockedAt;
+    obj.is_blocked = message.isBlocked === false ? undefined : message.isBlocked;
+    return obj;
+  },
+  fromAminoMsg(object: BlacklistEventV1AminoMsg): BlacklistEventV1 {
+    return BlacklistEventV1.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BlacklistEventV1ProtoMsg): BlacklistEventV1 {
+    return BlacklistEventV1.decode(message.value);
+  },
+  toProto(message: BlacklistEventV1): Uint8Array {
+    return BlacklistEventV1.encode(message).finish();
+  },
+  toProtoMsg(message: BlacklistEventV1): BlacklistEventV1ProtoMsg {
+    return {
+      typeUrl: "/h2x.indexer.events.BlacklistEventV1",
+      value: BlacklistEventV1.encode(message).finish()
     };
   }
 };

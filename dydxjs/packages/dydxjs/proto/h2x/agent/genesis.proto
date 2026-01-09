@@ -1,0 +1,15 @@
+syntax = "proto3";
+package h2x.agent;
+
+import "gogoproto/gogo.proto";
+import "h2x/agent/agent.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/agent/types";
+
+// GenesisState defines the agent module's genesis state.
+message GenesisState {
+  // Module parameters.
+  AgentParams params = 1 [(gogoproto.nullable) = false];
+  // List of all registered agents.
+  repeated AgentInfo agents = 2 [(gogoproto.nullable) = false];
+}

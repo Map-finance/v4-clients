@@ -124,6 +124,10 @@ export const TYPE_URL_MSG_WITHDRAW_DELEGATOR_REWARD =
 export const TYPE_URL_MSG_ADD_AUTHENTICATOR = '/h2x.accountplus.MsgAddAuthenticator';
 export const TYPE_URL_MSG_REMOVE_AUTHENTICATOR = '/h2x.accountplus.MsgRemoveAuthenticator';
 
+// x/agent
+export const TYPE_URL_MSG_REGISTER_AGENT = '/h2x.agent.MsgRegisterAgent';
+export const TYPE_URL_MSG_REMOVE_AGENT = '/h2x.agent.MsgRemoveAgent';
+
 // ------------ Chain Constants ------------
 // The following are same across different networks / deployments.
 export const GOV_MODULE_ADDRESS = 'dydx10d07y265gmmuvt4z0w9aw880jnsr700jnmapky';
@@ -264,6 +268,7 @@ export class ValidatorConfig {
   public defaultClientMemo?: string;
   public useTimestampNonce?: boolean;
   public timestampNonceOffsetMs?: number;
+  public proxy?: AxiosProxyConfig;
 
   constructor(
     restEndpoint: string,
@@ -273,6 +278,7 @@ export class ValidatorConfig {
     defaultClientMemo?: string,
     useTimestampNonce?: boolean,
     timestampNonceOffsetMs?: number,
+    proxy?: AxiosProxyConfig,
   ) {
     this.restEndpoint = restEndpoint?.endsWith('/') ? restEndpoint.slice(0, -1) : restEndpoint;
     this.chainId = chainId;
@@ -282,6 +288,7 @@ export class ValidatorConfig {
     this.defaultClientMemo = defaultClientMemo;
     this.useTimestampNonce = useTimestampNonce;
     this.timestampNonceOffsetMs = timestampNonceOffsetMs;
+    this.proxy = proxy;
   }
 }
 

@@ -1,8 +1,8 @@
 //@ts-nocheck
-import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount } from "./transfer";
+import { MsgCreateBridgeTransfer, MsgDepositToSubaccount, MsgWithdrawFromSubaccount, MsgSendFromModuleToAccount, MsgCreateCtfBridgeTransfer } from "./transfer";
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
 import { MsgCreateTransfer } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/h2x.sending.MsgCreateBridgeTransfer", MsgCreateBridgeTransfer], ["/h2x.sending.MsgCreateTransfer", MsgCreateTransfer], ["/h2x.sending.MsgDepositToSubaccount", MsgDepositToSubaccount], ["/h2x.sending.MsgWithdrawFromSubaccount", MsgWithdrawFromSubaccount], ["/h2x.sending.MsgSendFromModuleToAccount", MsgSendFromModuleToAccount]];
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/h2x.sending.MsgCreateBridgeTransfer", MsgCreateBridgeTransfer], ["/h2x.sending.MsgCreateTransfer", MsgCreateTransfer], ["/h2x.sending.MsgDepositToSubaccount", MsgDepositToSubaccount], ["/h2x.sending.MsgWithdrawFromSubaccount", MsgWithdrawFromSubaccount], ["/h2x.sending.MsgSendFromModuleToAccount", MsgSendFromModuleToAccount], ["/h2x.sending.MsgCreateCtfBridgeTransfer", MsgCreateCtfBridgeTransfer]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -39,6 +39,12 @@ export const MessageComposer = {
         typeUrl: "/h2x.sending.MsgSendFromModuleToAccount",
         value: MsgSendFromModuleToAccount.encode(value).finish()
       };
+    },
+    createCtfBridgeTransfer(value: MsgCreateCtfBridgeTransfer) {
+      return {
+        typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer",
+        value: MsgCreateCtfBridgeTransfer.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -69,6 +75,12 @@ export const MessageComposer = {
     sendFromModuleToAccount(value: MsgSendFromModuleToAccount) {
       return {
         typeUrl: "/h2x.sending.MsgSendFromModuleToAccount",
+        value
+      };
+    },
+    createCtfBridgeTransfer(value: MsgCreateCtfBridgeTransfer) {
+      return {
+        typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer",
         value
       };
     }
@@ -102,6 +114,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/h2x.sending.MsgSendFromModuleToAccount",
         value: MsgSendFromModuleToAccount.fromPartial(value)
+      };
+    },
+    createCtfBridgeTransfer(value: MsgCreateCtfBridgeTransfer) {
+      return {
+        typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer",
+        value: MsgCreateCtfBridgeTransfer.fromPartial(value)
       };
     }
   }

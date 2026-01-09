@@ -428,6 +428,17 @@ message AssetCreateEventV1 {
   // then an `asset_position` with `base_quantums = 1e8` is equivalent to
   // a position size of one full coin.
   sint32 atomic_resolution = 5;
+
+  // The on-chain denomination of the asset (e.g. `uusdc`, `ibc/xxx`).
+  string denom = 6;
+
+  // The exponent for converting the smallest on-chain unit to a human readable
+  // amount. For example, if `denom_exponent = -6`, then 1e6 on-chain units
+  // equals 1 human readable unit (like USDC with 6 decimals).
+  sint32 denom_exponent = 7;
+
+  // Asset type for categorization. Default is 0.
+  uint32 asset_type = 8;
 }
 
 // SpotMarketCreateEventV1 message contains all the information about a
@@ -919,4 +930,151 @@ message UpsertVaultEventV1 {
 
   // Status of the vault.
   h2x.indexer.protocol.v1.VaultStatus status = 3;
+}
+
+// OperatorAddedEventV1 运营账户添加事件。
+// 当通过治理投票添加新的运营账户时触发。
+message OperatorAddedEventV1 {
+  // 被添加的运营账户地址
+  string operator_address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 添加该运营账户的地址（通常是治理模块地址）
+  string added_by = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 授予的权限列表。
+  // 权限值说明：
+  //   0 = ALL（全部权限）
+  //   1 = CREATE_ASSET（创建资产权限）
+  //   2 = UPDATE_ASSET（更新资产权限）
+  //   3 = CREATE_CLOB_PAIR（创建交易对权限）
+  //   4 = UPDATE_CLOB_PAIR（更新交易对权限）
+  //   5 = DELIST_CLOB_PAIR（下架交易对权限）
+  //   6 = CREATE_ORACLE_MARKET（创建预言机市场权限）
+  //   7 = UPDATE_ORACLE_MARKET（更新预言机市场权限）
+  repeated uint32 permissions = 3;
+}
+
+// OperatorRemovedEventV1 运营账户移除事件。
+// 当通过治理投票移除运营账户时触发。
+message OperatorRemovedEventV1 {
+  // 被移除的运营账户地址
+  string operator_address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 移除该运营账户的地址（通常是治理模块地址）
+  string removed_by = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+}
+
+// OperatorPermissionsUpdatedEventV1 运营账户权限更新事件。
+// 当通过治理投票修改运营账户权限时触发。
+message OperatorPermissionsUpdatedEventV1 {
+  // 被更新权限的运营账户地址
+  string operator_address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 更新该运营账户权限的地址（通常是治理模块地址）
+  string updated_by = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 更新前的权限列表
+  repeated uint32 old_permissions = 3;
+
+  // 更新后的权限列表
+  repeated uint32 new_permissions = 4;
+}
+
+// OperatorActionEventV1 运营账户操作事件。
+// 当运营账户执行添加/下架资产或交易对等操作时触发。
+message OperatorActionEventV1 {
+  // ActionType 定义运营账户可以执行的操作类型。
+  enum ActionType {
+    // 未指定
+    ACTION_TYPE_UNSPECIFIED = 0;
+    // 添加资产
+    ACTION_TYPE_ADD_ASSET = 1;
+    // 添加永续合约交易对
+    ACTION_TYPE_ADD_PERPETUAL = 2;
+    // 添加现货交易对
+    ACTION_TYPE_ADD_SPOT_MARKET = 3;
+    // 下架永续合约交易对
+    ACTION_TYPE_DELIST_PERPETUAL = 4;
+    // 下架现货交易对
+    ACTION_TYPE_DELIST_SPOT_MARKET = 5;
+    // 添加预言机价格市场
+    ACTION_TYPE_ADD_ORACLE_MARKET = 6;
+    // 更新预言机价格市场
+    ACTION_TYPE_UPDATE_ORACLE_MARKET = 7;
+  }
+
+  // 执行的操作类型
+  ActionType action_type = 1;
+
+  // 执行此操作的运营账户地址
+  string triggered_by = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 与此操作关联的资源 ID（asset_id、perpetual_id 或 clob_pair_id、market_id）
+  uint32 resource_id = 3;
+}
+
+// =============================================================================
+// Agent (代理钱包) 事件
+// 用于跟踪代理钱包的授权和移除操作
+// =============================================================================
+
+// AgentRegisteredEventV1 代理钱包注册事件。
+// 当主钱包授权一个新的代理钱包时触发。
+message AgentRegisteredEventV1 {
+  // 主钱包地址（授权方）
+  string master_address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 代理钱包地址（被授权方）
+  string agent_address = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 代理名称（可选，最多20个字符）
+  string name = 3;
+
+  // 授权过期时间戳（Unix 秒）
+  uint64 expiry_timestamp = 4;
+}
+
+// AgentRemovalType 代理钱包移除类型
+enum AgentRemovalType {
+  // 未指定
+  AGENT_REMOVAL_TYPE_UNSPECIFIED = 0;
+  // 用户手动移除
+  AGENT_REMOVAL_TYPE_MANUAL = 1;
+  // 过期自动移除（EndBlocker 清理）
+  AGENT_REMOVAL_TYPE_EXPIRED = 2;
+}
+
+// AgentRemovedEventV1 代理钱包移除事件。
+// 当主钱包移除一个代理钱包的授权时触发。
+message AgentRemovedEventV1 {
+  // 主钱包地址
+  string master_address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 被移除授权的代理钱包地址
+  string agent_address = 2 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 移除类型：手动移除 或 过期自动移除
+  AgentRemovalType removal_type = 3;
+}
+
+// =============================================================================
+// Blacklist (黑名单) 事件
+// 用于跟踪地址的封禁和解封操作
+// =============================================================================
+
+// BlacklistEventV1 黑名单事件。
+// 当地址被添加到黑名单或从黑名单移除时触发。
+message BlacklistEventV1 {
+  // 被操作的地址
+  string address = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+
+  // 封禁/解封原因
+  string reason = 2;
+
+  // 操作时间戳（Unix 秒）
+  // 封禁时为 blocked_at，解封时为 unblocked_at
+  uint32 blocked_at = 3;
+
+  // 操作类型：true = 封禁，false = 解封
+  bool is_blocked = 4;
 }

@@ -1,0 +1,104 @@
+syntax = "proto3";
+package h2x.operators;
+
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "h2x/operators/operators.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/operators/types";
+
+// Msg 定义运营账户模块的消息服务。
+// 所有消息都需要治理模块的授权才能执行。
+service Msg {
+  // AddOperators 添加一个或多个运营账户及其权限。
+  // 只有治理模块可以调用此方法。
+  rpc AddOperators(MsgAddOperators) returns (MsgAddOperatorsResponse);
+
+  // RemoveOperators 移除一个或多个运营账户。
+  // 只有治理模块可以调用此方法。
+  rpc RemoveOperators(MsgRemoveOperators) returns (MsgRemoveOperatorsResponse);
+
+  // UpdateOperatorPermissions 更新已存在运营账户的权限。
+  // 只有治理模块可以调用此方法。
+  // 可以用于增加或减少运营账户的权限。
+  rpc UpdateOperatorPermissions(MsgUpdateOperatorPermissions)
+      returns (MsgUpdateOperatorPermissionsResponse);
+}
+
+// OperatorToAdd 表示要添加的运营账户及其权限。
+// 用于批量添加运营账户时指定每个账户的权限。
+message OperatorToAdd {
+  // 运营账户的链上地址（bech32 格式）
+  string address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 要授予的权限列表。
+  // 使用 OperatorPermission 枚举值的数组。
+  // 例如：
+  //   permissions = [0] 表示全部权限
+  //   permissions = [1, 3, 6] 表示只能创建资产、创建交易对、创建预言机市场
+  repeated uint32 permissions = 2;
+}
+
+// MsgAddOperators 是添加运营账户的请求消息。
+// 支持两种方式添加运营账户：
+// 1. 使用 operator_addresses（已弃用）：添加的运营账户拥有全部权限
+// 2. 使用 operators_to_add（推荐）：可以为每个运营账户指定不同的权限
+message MsgAddOperators {
+  // 授权地址（必须是治理模块地址）
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 要添加的运营账户地址列表（已弃用，使用全部权限）。
+  // 已弃用：请使用 operators_to_add 代替。
+  // 为了向后兼容保留此字段。
+  repeated string operator_addresses = 2;
+
+  // 要添加的运营账户列表（包含地址和权限）。
+  // 推荐使用此字段，可以为每个运营账户指定具体权限。
+  repeated OperatorToAdd operators_to_add = 3;
+}
+
+// MsgAddOperatorsResponse 是添加运营账户的响应消息。
+message MsgAddOperatorsResponse {}
+
+// MsgRemoveOperators 是移除运营账户的请求消息。
+// 移除后该地址将失去所有运营权限。
+message MsgRemoveOperators {
+  // 授权地址（必须是治理模块地址）
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 要移除的运营账户地址列表。
+  // 如果地址不存在，将返回错误。
+  repeated string operator_addresses = 2;
+}
+
+// MsgRemoveOperatorsResponse 是移除运营账户的响应消息。
+message MsgRemoveOperatorsResponse {}
+
+// MsgUpdateOperatorPermissions 是更新运营账户权限的请求消息。
+// 可以用于：
+// 1. 增加权限：在数组中添加新的权限值
+// 2. 减少权限：移除数组中的某些权限值
+// 3. 完全替换权限：直接设置新的权限数组
+message MsgUpdateOperatorPermissions {
+  // 授权地址（必须是治理模块地址）
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 要更新权限的运营账户地址。
+  // 该地址必须已经是运营账户，否则返回错误。
+  string operator_address = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 新的权限列表，将完全替换原有权限。
+  // 使用 OperatorPermission 枚举值的数组。
+  // 例如：
+  //   permissions = [0]：全部权限
+  //   permissions = [1, 2]：只有创建资产和更新资产权限
+  //   permissions = [1, 3, 6]：只能创建资产、创建交易对、创建预言机市场
+  //   permissions = []：移除所有权限（但仍保留运营账户身份）
+  repeated uint32 permissions = 3;
+}
+
+// MsgUpdateOperatorPermissionsResponse 是更新权限的响应消息。
+message MsgUpdateOperatorPermissionsResponse {}

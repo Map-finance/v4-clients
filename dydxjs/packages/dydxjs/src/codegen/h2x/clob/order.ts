@@ -695,6 +695,17 @@ export interface Order {
    * order.
    */
   orderRouterAddress: string;
+  /**
+   * agent_address is the address of the agent wallet that is placing this order
+   * on behalf of the master wallet (subaccount owner).
+   * - If empty: normal order, signer must be the subaccount owner
+   * - If non-empty: agent order, signer must be this agent address, and the
+   *   CLOB keeper will validate the agent-master relationship
+   * 代理钱包地址：
+   * - 为空：普通订单，签名者必须是 subaccount owner
+   * - 非空：代理订单，签名者必须是该地址，且需验证代理授权关系
+   */
+  agentAddress: string;
 }
 export interface OrderProtoMsg {
   typeUrl: "/h2x.clob.Order";
@@ -786,6 +797,17 @@ export interface OrderAmino {
    * order.
    */
   order_router_address?: string;
+  /**
+   * agent_address is the address of the agent wallet that is placing this order
+   * on behalf of the master wallet (subaccount owner).
+   * - If empty: normal order, signer must be the subaccount owner
+   * - If non-empty: agent order, signer must be this agent address, and the
+   *   CLOB keeper will validate the agent-master relationship
+   * 代理钱包地址：
+   * - 为空：普通订单，签名者必须是 subaccount owner
+   * - 非空：代理订单，签名者必须是该地址，且需验证代理授权关系
+   */
+  agent_address?: string;
 }
 export interface OrderAminoMsg {
   type: "/h2x.clob.Order";
@@ -810,6 +832,7 @@ export interface OrderSDKType {
   twap_parameters?: TwapParametersSDKType;
   builder_code_parameters?: BuilderCodeParametersSDKType;
   order_router_address: string;
+  agent_address: string;
 }
 /** TwapParameters represents the necessary configuration for a TWAP order. */
 export interface TwapParameters {
@@ -1678,7 +1701,8 @@ function createBaseOrder(): Order {
     conditionalOrderTriggerSubticks: new Uint8Array(),
     twapParameters: undefined,
     builderCodeParameters: undefined,
-    orderRouterAddress: ""
+    orderRouterAddress: "",
+    agentAddress: ""
   };
 }
 export const Order = {
@@ -1725,6 +1749,9 @@ export const Order = {
     }
     if (message.orderRouterAddress !== "") {
       writer.uint32(114).string(message.orderRouterAddress);
+    }
+    if (message.agentAddress !== "") {
+      writer.uint32(122).string(message.agentAddress);
     }
     return writer;
   },
@@ -1777,6 +1804,9 @@ export const Order = {
         case 14:
           message.orderRouterAddress = reader.string();
           break;
+        case 15:
+          message.agentAddress = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1800,6 +1830,7 @@ export const Order = {
     message.twapParameters = object.twapParameters !== undefined && object.twapParameters !== null ? TwapParameters.fromPartial(object.twapParameters) : undefined;
     message.builderCodeParameters = object.builderCodeParameters !== undefined && object.builderCodeParameters !== null ? BuilderCodeParameters.fromPartial(object.builderCodeParameters) : undefined;
     message.orderRouterAddress = object.orderRouterAddress ?? "";
+    message.agentAddress = object.agentAddress ?? "";
     return message;
   },
   fromAmino(object: OrderAmino): Order {
@@ -1846,6 +1877,9 @@ export const Order = {
     if (object.order_router_address !== undefined && object.order_router_address !== null) {
       message.orderRouterAddress = object.order_router_address;
     }
+    if (object.agent_address !== undefined && object.agent_address !== null) {
+      message.agentAddress = object.agent_address;
+    }
     return message;
   },
   toAmino(message: Order): OrderAmino {
@@ -1864,6 +1898,7 @@ export const Order = {
     obj.twap_parameters = message.twapParameters ? TwapParameters.toAmino(message.twapParameters) : undefined;
     obj.builder_code_parameters = message.builderCodeParameters ? BuilderCodeParameters.toAmino(message.builderCodeParameters) : undefined;
     obj.order_router_address = message.orderRouterAddress === "" ? undefined : message.orderRouterAddress;
+    obj.agent_address = message.agentAddress === "" ? undefined : message.agentAddress;
     return obj;
   },
   fromAminoMsg(object: OrderAminoMsg): Order {

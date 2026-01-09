@@ -46,7 +46,8 @@ import { UserError } from './lib/errors';
 import { generateRegistry } from './lib/registry';
 import LocalWallet from './modules/local-wallet';
 import { SubaccountInfo } from './subaccount';
-import { BroadcastMode, OrderBatch } from './types';
+import { BroadcastMode } from './types';
+import { OrderBatch } from '@dydxprotocol/v4-proto/src/codegen/h2x/clob/tx';
 import { ValidatorClient } from './validator-client';
 
 // Required for encoding and decoding queries that are of type Long.
@@ -456,6 +457,7 @@ export class CompositeClient {
         marketInfo,
         currentHeight,
         goodTilBlock,
+        undefined, // agentAddress - not used for normal orders
       );
       msg
         .then((it) => {
@@ -564,6 +566,7 @@ export class CompositeClient {
     marketInfo?: MarketInfo,
     currentHeight?: number,
     goodTilBlock?: number,
+    agentAddress?: string,
   ): Promise<EncodeObject> {
     const orderFlags = calculateOrderFlags(type, timeInForce);
 
@@ -619,6 +622,10 @@ export class CompositeClient {
       clientMetadata,
       conditionalType,
       conditionalOrderTriggerSubticks,
+      undefined, // twapParameters
+      undefined, // builderCodeParameters
+      '', // orderRouterAddress
+      agentAddress || '',
     );
   }
 
@@ -1223,6 +1230,11 @@ export class CompositeClient {
         execution,
         postOnly,
         reduceOnly,
+        undefined, // triggerPrice
+        undefined, // marketInfo
+        undefined, // currentHeight
+        undefined, // goodTilBlock
+        undefined, // agentAddress
       );
       msg
         .then((it) => resolve([it]))
@@ -1242,6 +1254,7 @@ export class CompositeClient {
     clobPairId: number,
     goodTilBlock: number,
     goodTilBlockTime: number,
+    agentAddress?: string,
   ): Promise<string> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.validatorClient.post.composer.composeMsgCancelOrder(
@@ -1252,12 +1265,197 @@ export class CompositeClient {
         orderFlags,
         goodTilBlock,
         goodTilBlockTime,
+        agentAddress || '',
       );
       resolve([msg]);
     });
     const signature = await this.sign(subaccount, () => msgs, true);
 
     return Buffer.from(signature).toString('base64');
+  }
+
+  /**
+   * @description Register an agent wallet for the master wallet.
+   *
+   * @param masterSubaccount The master wallet subaccount (must be subaccount 0)
+   * @param agentAddress The agent wallet address to authorize
+   * @param agentName Optional name for the agent (max 20 characters)
+   * @param expiryTimestamp Optional custom expiry timestamp (Unix timestamp in seconds). If 0, uses default (180 days)
+   * @param broadcastMode Optional broadcast mode
+   * @returns The transaction hash.
+   */
+  async registerAgent(
+    masterSubaccount: SubaccountInfo,
+    agentAddress: string,
+    agentName: string = '',
+    expiryTimestamp: Long = Long.ZERO,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    return this.validatorClient.post.registerAgent(
+      masterSubaccount,
+      agentAddress,
+      agentName,
+      expiryTimestamp,
+      broadcastMode,
+    );
+  }
+
+  /**
+   * @description Remove an agent wallet authorization.
+   *
+   * @param masterSubaccount The master wallet subaccount (must be subaccount 0)
+   * @param agentAddress The agent wallet address to remove
+   * @param broadcastMode Optional broadcast mode
+   * @returns The transaction hash.
+   */
+  async removeAgent(
+    masterSubaccount: SubaccountInfo,
+    agentAddress: string,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    return this.validatorClient.post.removeAgent(masterSubaccount, agentAddress, broadcastMode);
+  }
+
+  /**
+   * @description Place an order using an agent wallet.
+   *
+   * @param masterSubaccount The master wallet subaccount (order will be placed on this subaccount)
+   * @param agentSubaccount The agent wallet subaccount (must be registered and active)
+   * @param marketId The market to place the order on
+   * @param type The order type
+   * @param side The order side
+   * @param price The order price
+   * @param size The order size
+   * @param clientId The client id
+   * @param timeInForce The time in force
+   * @param goodTilTimeInSeconds The good til time in seconds (for stateful orders)
+   * @param execution The execution type
+   * @param postOnly Whether the order is post only
+   * @param reduceOnly Whether the order is reduce only
+   * @param broadcastMode Optional broadcast mode
+   * @returns The transaction hash.
+   */
+  async placeOrderWithAgent(
+    masterSubaccount: SubaccountInfo,
+    agentSubaccount: SubaccountInfo,
+    marketId: string,
+    type: OrderType,
+    side: OrderSide,
+    price: number,
+    size: number,
+    clientId: number,
+    timeInForce: OrderTimeInForce,
+    goodTilTimeInSeconds: number,
+    execution: OrderExecution,
+    postOnly: boolean,
+    reduceOnly: boolean,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    return this.validatorClient.post.send(
+      agentSubaccount,
+      async () => {
+        const msg = await this.placeOrderMessage(
+          masterSubaccount,
+          marketId,
+          type,
+          side,
+          price,
+          size,
+          clientId,
+          timeInForce,
+          goodTilTimeInSeconds,
+          execution,
+          postOnly,
+          reduceOnly,
+          undefined, // triggerPrice
+          undefined, // marketInfo
+          undefined, // currentHeight
+          undefined, // goodTilBlock
+          agentSubaccount.address,
+        );
+        return [msg];
+      },
+      true,
+      undefined,
+      undefined,
+      broadcastMode,
+    );
+  }
+
+  /**
+   * @description Cancel an order using an agent wallet.
+   *
+   * @param masterSubaccount The master wallet subaccount (order belongs to this subaccount)
+   * @param agentSubaccount The agent wallet subaccount (must be registered and active)
+   * @param clientId The client id of the order to cancel
+   * @param orderFlags The order flags of the order to cancel
+   * @param marketId The market to cancel the order on
+   * @param goodTilBlock The goodTilBlock of the order to cancel (for SHORT_TERM orders)
+   * @param goodTilTimeInSeconds The goodTilTimeInSeconds of the order to cancel (for stateful orders)
+   * @param broadcastMode Optional broadcast mode
+   * @returns The transaction hash.
+   */
+  async cancelOrderWithAgent(
+    masterSubaccount: SubaccountInfo,
+    agentSubaccount: SubaccountInfo,
+    clientId: number,
+    orderFlags: OrderFlags,
+    marketId: string,
+    goodTilBlock?: number,
+    goodTilTimeInSeconds?: number,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const marketsResponse = await this.indexerClient.markets.getPerpetualMarkets(marketId);
+    const market = marketsResponse.markets[marketId];
+    const clobPairId = market.clobPairId;
+
+    if (!verifyOrderFlags(orderFlags)) {
+      throw new Error(`Invalid order flags: ${orderFlags}`);
+    }
+
+    let goodTilBlockTime: number | undefined;
+    if (isStatefulOrder(orderFlags)) {
+      if (goodTilTimeInSeconds === undefined || goodTilTimeInSeconds === 0) {
+        throw new Error('goodTilTimeInSeconds must be set for LONG_TERM or CONDITIONAL order');
+      }
+      if (goodTilBlock !== 0) {
+        throw new Error(
+          'goodTilBlock should be zero since LONG_TERM or CONDITIONAL orders ' +
+            'use goodTilTimeInSeconds instead of goodTilBlock.',
+        );
+      }
+      goodTilBlockTime = this.calculateGoodTilBlockTime(goodTilTimeInSeconds);
+    } else {
+      if (goodTilBlock === undefined || goodTilBlock === 0) {
+        throw new Error('goodTilBlock must be non-zero for SHORT_TERM orders');
+      }
+      if (goodTilTimeInSeconds !== undefined && goodTilTimeInSeconds !== 0) {
+        throw new Error(
+          'goodTilTimeInSeconds should be zero since SHORT_TERM orders use goodTilBlock instead of goodTilTimeInSeconds.',
+        );
+      }
+    }
+
+    return this.validatorClient.post.send(
+      agentSubaccount,
+      async () => {
+        const msg = await this.validatorClient.post.cancelOrderMsg(
+          masterSubaccount.address,
+          masterSubaccount.subaccountNumber,
+          clientId,
+          orderFlags,
+          clobPairId,
+          goodTilBlock,
+          goodTilBlockTime,
+          agentSubaccount.address,
+        );
+        return [msg];
+      },
+      true,
+      undefined,
+      undefined,
+      broadcastMode,
+    );
   }
 
   async bulkCancelAndTransferAndPlaceStatefulOrders(
@@ -1336,6 +1534,7 @@ export class CompositeClient {
           placePayload.marketInfo,
           placePayload.currentHeight,
           placePayload.goodTilBlock,
+          undefined, // agentAddress - not supported in bulk operations
         );
       });
 

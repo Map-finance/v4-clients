@@ -1,0 +1,70 @@
+syntax = "proto3";
+package h2x.operators;
+
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/operators/types";
+
+// OperatorPermission 定义运营账户可以拥有的细粒度权限类型。
+// 权限使用数组存储，允许精确控制每个操作。
+// 权限值 0 代表拥有全部权限（超级管理员）。
+//
+// 权限分类：
+// - 资产管理：CREATE_ASSET(1), UPDATE_ASSET(2)
+// - 交易对管理：CREATE_CLOB_PAIR(3), UPDATE_CLOB_PAIR(4), DELIST_CLOB_PAIR(5)
+// - 预言机市场管理：CREATE_ORACLE_MARKET(6), UPDATE_ORACLE_MARKET(7)
+enum OperatorPermission {
+  // 全部权限（超级管理员）
+  // 当 permissions 数组包含 0 时，代表拥有所有权限
+  OPERATOR_PERMISSION_ALL = 0;
+
+  // 创建资产权限：允许添加新的资产（如 USDC）
+  // 对应操作：MsgCreateAsset
+  OPERATOR_PERMISSION_CREATE_ASSET = 1;
+
+  // 更新资产权限：允许修改现有资产的参数
+  // 对应操作：MsgUpdateAsset（如果有）
+  OPERATOR_PERMISSION_UPDATE_ASSET = 2;
+
+  // 创建交易对权限：允许添加新的永续合约或现货交易对
+  // 对应操作：MsgCreateClobPair
+  // 注意：创建交易对时同时会创建对应的 Perpetual
+  OPERATOR_PERMISSION_CREATE_CLOB_PAIR = 3;
+
+  // 更新交易对权限：允许修改现有交易对的参数
+  // 对应操作：MsgUpdateClobPair（不包括下架操作）
+  OPERATOR_PERMISSION_UPDATE_CLOB_PAIR = 4;
+
+  // 下架交易对权限：允许将交易对状态设为 FINAL_SETTLEMENT
+  // 对应操作：MsgUpdateClobPair（仅限状态变更为下架）
+  OPERATOR_PERMISSION_DELIST_CLOB_PAIR = 5;
+
+  // 创建预言机市场权限：允许添加新的预言机价格市场
+  // 对应操作：MsgCreateOracleMarket
+  OPERATOR_PERMISSION_CREATE_ORACLE_MARKET = 6;
+
+  // 更新预言机市场权限：允许修改预言机市场参数
+  // 对应操作：MsgUpdateMarketParam
+  OPERATOR_PERMISSION_UPDATE_ORACLE_MARKET = 7;
+}
+
+// Operator 表示一个拥有特殊权限的运营账户。
+// 运营账户可以执行原本只有治理模块才能执行的操作，
+// 但权限受到 permissions 数组的限制。
+message Operator {
+  // 运营账户的链上地址（bech32 格式）
+  string address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 添加运营账户时的区块高度
+  int64 added_at = 2;
+
+  // 添加该运营账户的地址（通常是治理模块地址）
+  string added_by = 3 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // 权限列表。
+  // 使用 OperatorPermission 枚举值的数组。
+  // - 如果数组包含 0，表示拥有全部权限
+  // - 如果数组为 [1, 2]，表示只有创建资产和更新资产的权限
+  // - 如果数组为 [0, 1, 2]，仍然表示全部权限（0 会覆盖其他值）
+  repeated uint32 permissions = 4;
+}

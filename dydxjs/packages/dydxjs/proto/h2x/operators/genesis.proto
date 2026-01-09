@@ -1,0 +1,12 @@
+syntax = "proto3";
+package h2x.operators;
+
+import "h2x/operators/operators.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/operators/types";
+
+// GenesisState defines the operators module's genesis state.
+message GenesisState {
+  // List of operators.
+  repeated Operator operators = 1;
+}

@@ -4,7 +4,9 @@ import { defaultRegistryTypes, AminoTypes, SigningStargateClient } from "@cosmjs
 import { HttpEndpoint } from "@cosmjs/tendermint-rpc";
 import * as h2xAccountplusTxRegistry from "./accountplus/tx.registry";
 import * as h2xAffiliatesTxRegistry from "./affiliates/tx.registry";
+import * as h2xAgentTxRegistry from "./agent/tx.registry";
 import * as h2xAssetsTxRegistry from "./assets/tx.registry";
+import * as h2xBlacklistTxRegistry from "./blacklist/tx.registry";
 import * as h2xBlocktimeTxRegistry from "./blocktime/tx.registry";
 import * as h2xBridgeTxRegistry from "./bridge/tx.registry";
 import * as h2xClobTxRegistry from "./clob/tx.registry";
@@ -12,6 +14,7 @@ import * as h2xDelaymsgTxRegistry from "./delaymsg/tx.registry";
 import * as h2xFeetiersTxRegistry from "./feetiers/tx.registry";
 import * as h2xGovplusTxRegistry from "./govplus/tx.registry";
 import * as h2xListingTxRegistry from "./listing/tx.registry";
+import * as h2xOperatorsTxRegistry from "./operators/tx.registry";
 import * as h2xPerpetualsTxRegistry from "./perpetuals/tx.registry";
 import * as h2xPricesTxRegistry from "./prices/tx.registry";
 import * as h2xRatelimitTxRegistry from "./ratelimit/tx.registry";
@@ -24,7 +27,9 @@ import * as h2xVaultTxRegistry from "./vault/tx.registry";
 import * as h2xVestTxRegistry from "./vest/tx.registry";
 import * as h2xAccountplusTxAmino from "./accountplus/tx.amino";
 import * as h2xAffiliatesTxAmino from "./affiliates/tx.amino";
+import * as h2xAgentTxAmino from "./agent/tx.amino";
 import * as h2xAssetsTxAmino from "./assets/tx.amino";
+import * as h2xBlacklistTxAmino from "./blacklist/tx.amino";
 import * as h2xBlocktimeTxAmino from "./blocktime/tx.amino";
 import * as h2xBridgeTxAmino from "./bridge/tx.amino";
 import * as h2xClobTxAmino from "./clob/tx.amino";
@@ -32,6 +37,7 @@ import * as h2xDelaymsgTxAmino from "./delaymsg/tx.amino";
 import * as h2xFeetiersTxAmino from "./feetiers/tx.amino";
 import * as h2xGovplusTxAmino from "./govplus/tx.amino";
 import * as h2xListingTxAmino from "./listing/tx.amino";
+import * as h2xOperatorsTxAmino from "./operators/tx.amino";
 import * as h2xPerpetualsTxAmino from "./perpetuals/tx.amino";
 import * as h2xPricesTxAmino from "./prices/tx.amino";
 import * as h2xRatelimitTxAmino from "./ratelimit/tx.amino";
@@ -45,7 +51,9 @@ import * as h2xVestTxAmino from "./vest/tx.amino";
 export const h2xAminoConverters = {
   ...h2xAccountplusTxAmino.AminoConverter,
   ...h2xAffiliatesTxAmino.AminoConverter,
+  ...h2xAgentTxAmino.AminoConverter,
   ...h2xAssetsTxAmino.AminoConverter,
+  ...h2xBlacklistTxAmino.AminoConverter,
   ...h2xBlocktimeTxAmino.AminoConverter,
   ...h2xBridgeTxAmino.AminoConverter,
   ...h2xClobTxAmino.AminoConverter,
@@ -53,6 +61,7 @@ export const h2xAminoConverters = {
   ...h2xFeetiersTxAmino.AminoConverter,
   ...h2xGovplusTxAmino.AminoConverter,
   ...h2xListingTxAmino.AminoConverter,
+  ...h2xOperatorsTxAmino.AminoConverter,
   ...h2xPerpetualsTxAmino.AminoConverter,
   ...h2xPricesTxAmino.AminoConverter,
   ...h2xRatelimitTxAmino.AminoConverter,
@@ -64,7 +73,7 @@ export const h2xAminoConverters = {
   ...h2xVaultTxAmino.AminoConverter,
   ...h2xVestTxAmino.AminoConverter
 };
-export const h2xProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...h2xAccountplusTxRegistry.registry, ...h2xAffiliatesTxRegistry.registry, ...h2xAssetsTxRegistry.registry, ...h2xBlocktimeTxRegistry.registry, ...h2xBridgeTxRegistry.registry, ...h2xClobTxRegistry.registry, ...h2xDelaymsgTxRegistry.registry, ...h2xFeetiersTxRegistry.registry, ...h2xGovplusTxRegistry.registry, ...h2xListingTxRegistry.registry, ...h2xPerpetualsTxRegistry.registry, ...h2xPricesTxRegistry.registry, ...h2xRatelimitTxRegistry.registry, ...h2xRevshareTxRegistry.registry, ...h2xRewardsTxRegistry.registry, ...h2xSendingTxRegistry.registry, ...h2xStatsTxRegistry.registry, ...h2xSubaccountsTxRegistry.registry, ...h2xVaultTxRegistry.registry, ...h2xVestTxRegistry.registry];
+export const h2xProtoRegistry: ReadonlyArray<[string, GeneratedType]> = [...h2xAccountplusTxRegistry.registry, ...h2xAffiliatesTxRegistry.registry, ...h2xAgentTxRegistry.registry, ...h2xAssetsTxRegistry.registry, ...h2xBlacklistTxRegistry.registry, ...h2xBlocktimeTxRegistry.registry, ...h2xBridgeTxRegistry.registry, ...h2xClobTxRegistry.registry, ...h2xDelaymsgTxRegistry.registry, ...h2xFeetiersTxRegistry.registry, ...h2xGovplusTxRegistry.registry, ...h2xListingTxRegistry.registry, ...h2xOperatorsTxRegistry.registry, ...h2xPerpetualsTxRegistry.registry, ...h2xPricesTxRegistry.registry, ...h2xRatelimitTxRegistry.registry, ...h2xRevshareTxRegistry.registry, ...h2xRewardsTxRegistry.registry, ...h2xSendingTxRegistry.registry, ...h2xStatsTxRegistry.registry, ...h2xSubaccountsTxRegistry.registry, ...h2xVaultTxRegistry.registry, ...h2xVestTxRegistry.registry];
 export const getSigningH2xClientOptions = ({
   defaultTypes = defaultRegistryTypes
 }: {

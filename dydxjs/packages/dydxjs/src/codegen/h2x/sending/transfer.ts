@@ -303,6 +303,67 @@ export interface MsgCreateBridgeTransferSDKType {
   chain_id: string;
   receive_address: string;
 }
+export interface MsgCreateCtfBridgeTransfer {
+  senderAddress: string;
+  /** The sender subaccount ID. */
+  sender: SubaccountId;
+  /** Id of the asset to transfer. */
+  assetId1: number;
+  assetId2: number;
+  positions: number;
+  /**
+   * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
+   */
+  quantums1: Uint8Array;
+  quantums2: Uint8Array;
+  receiveAddress: string;
+}
+export interface MsgCreateCtfBridgeTransferProtoMsg {
+  typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer";
+  value: Uint8Array;
+}
+/**
+ * @name MsgCreateCtfBridgeTransferAmino
+ * @package h2x.sending
+ * @see proto type: h2x.sending.MsgCreateCtfBridgeTransfer
+ */
+export interface MsgCreateCtfBridgeTransferAmino {
+  sender_address?: string;
+  /**
+   * The sender subaccount ID.
+   */
+  sender?: SubaccountIdAmino;
+  /**
+   * Id of the asset to transfer.
+   */
+  asset_id1?: number;
+  asset_id2?: number;
+  positions?: number;
+  /**
+   * The number of quantums of asset to transfer.
+   * Supports arbitrary precision for tokens with high decimal places (e.g., 18
+   * decimals)
+   */
+  quantums1?: string;
+  quantums2?: string;
+  receive_address?: string;
+}
+export interface MsgCreateCtfBridgeTransferAminoMsg {
+  type: "/h2x.sending.MsgCreateCtfBridgeTransfer";
+  value: MsgCreateCtfBridgeTransferAmino;
+}
+export interface MsgCreateCtfBridgeTransferSDKType {
+  sender_address: string;
+  sender: SubaccountIdSDKType;
+  asset_id1: number;
+  asset_id2: number;
+  positions: number;
+  quantums1: Uint8Array;
+  quantums2: Uint8Array;
+  receive_address: string;
+}
 function createBaseTransfer(): Transfer {
   return {
     sender: SubaccountId.fromPartial({}),
@@ -819,6 +880,153 @@ export const MsgCreateBridgeTransfer = {
     return {
       typeUrl: "/h2x.sending.MsgCreateBridgeTransfer",
       value: MsgCreateBridgeTransfer.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCreateCtfBridgeTransfer(): MsgCreateCtfBridgeTransfer {
+  return {
+    senderAddress: "",
+    sender: SubaccountId.fromPartial({}),
+    assetId1: 0,
+    assetId2: 0,
+    positions: 0,
+    quantums1: new Uint8Array(),
+    quantums2: new Uint8Array(),
+    receiveAddress: ""
+  };
+}
+export const MsgCreateCtfBridgeTransfer = {
+  typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer",
+  encode(message: MsgCreateCtfBridgeTransfer, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.senderAddress !== "") {
+      writer.uint32(10).string(message.senderAddress);
+    }
+    if (message.sender !== undefined) {
+      SubaccountId.encode(message.sender, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.assetId1 !== 0) {
+      writer.uint32(24).int32(message.assetId1);
+    }
+    if (message.assetId2 !== 0) {
+      writer.uint32(32).int32(message.assetId2);
+    }
+    if (message.positions !== 0) {
+      writer.uint32(40).int32(message.positions);
+    }
+    if (message.quantums1.length !== 0) {
+      writer.uint32(50).bytes(message.quantums1);
+    }
+    if (message.quantums2.length !== 0) {
+      writer.uint32(58).bytes(message.quantums2);
+    }
+    if (message.receiveAddress !== "") {
+      writer.uint32(66).string(message.receiveAddress);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateCtfBridgeTransfer {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreateCtfBridgeTransfer();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.senderAddress = reader.string();
+          break;
+        case 2:
+          message.sender = SubaccountId.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.assetId1 = reader.int32();
+          break;
+        case 4:
+          message.assetId2 = reader.int32();
+          break;
+        case 5:
+          message.positions = reader.int32();
+          break;
+        case 6:
+          message.quantums1 = reader.bytes();
+          break;
+        case 7:
+          message.quantums2 = reader.bytes();
+          break;
+        case 8:
+          message.receiveAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<MsgCreateCtfBridgeTransfer>): MsgCreateCtfBridgeTransfer {
+    const message = createBaseMsgCreateCtfBridgeTransfer();
+    message.senderAddress = object.senderAddress ?? "";
+    message.sender = object.sender !== undefined && object.sender !== null ? SubaccountId.fromPartial(object.sender) : undefined;
+    message.assetId1 = object.assetId1 ?? 0;
+    message.assetId2 = object.assetId2 ?? 0;
+    message.positions = object.positions ?? 0;
+    message.quantums1 = object.quantums1 ?? new Uint8Array();
+    message.quantums2 = object.quantums2 ?? new Uint8Array();
+    message.receiveAddress = object.receiveAddress ?? "";
+    return message;
+  },
+  fromAmino(object: MsgCreateCtfBridgeTransferAmino): MsgCreateCtfBridgeTransfer {
+    const message = createBaseMsgCreateCtfBridgeTransfer();
+    if (object.sender_address !== undefined && object.sender_address !== null) {
+      message.senderAddress = object.sender_address;
+    }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = SubaccountId.fromAmino(object.sender);
+    }
+    if (object.asset_id1 !== undefined && object.asset_id1 !== null) {
+      message.assetId1 = object.asset_id1;
+    }
+    if (object.asset_id2 !== undefined && object.asset_id2 !== null) {
+      message.assetId2 = object.asset_id2;
+    }
+    if (object.positions !== undefined && object.positions !== null) {
+      message.positions = object.positions;
+    }
+    if (object.quantums1 !== undefined && object.quantums1 !== null) {
+      message.quantums1 = bytesFromBase64(object.quantums1);
+    }
+    if (object.quantums2 !== undefined && object.quantums2 !== null) {
+      message.quantums2 = bytesFromBase64(object.quantums2);
+    }
+    if (object.receive_address !== undefined && object.receive_address !== null) {
+      message.receiveAddress = object.receive_address;
+    }
+    return message;
+  },
+  toAmino(message: MsgCreateCtfBridgeTransfer): MsgCreateCtfBridgeTransferAmino {
+    const obj: any = {};
+    obj.sender_address = message.senderAddress === "" ? undefined : message.senderAddress;
+    obj.sender = message.sender ? SubaccountId.toAmino(message.sender) : undefined;
+    obj.asset_id1 = message.assetId1 === 0 ? undefined : message.assetId1;
+    obj.asset_id2 = message.assetId2 === 0 ? undefined : message.assetId2;
+    obj.positions = message.positions === 0 ? undefined : message.positions;
+    obj.quantums1 = message.quantums1 ? base64FromBytes(message.quantums1) : undefined;
+    obj.quantums2 = message.quantums2 ? base64FromBytes(message.quantums2) : undefined;
+    obj.receive_address = message.receiveAddress === "" ? undefined : message.receiveAddress;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateCtfBridgeTransferAminoMsg): MsgCreateCtfBridgeTransfer {
+    return MsgCreateCtfBridgeTransfer.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateCtfBridgeTransferProtoMsg): MsgCreateCtfBridgeTransfer {
+    return MsgCreateCtfBridgeTransfer.decode(message.value);
+  },
+  toProto(message: MsgCreateCtfBridgeTransfer): Uint8Array {
+    return MsgCreateCtfBridgeTransfer.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateCtfBridgeTransfer): MsgCreateCtfBridgeTransferProtoMsg {
+    return {
+      typeUrl: "/h2x.sending.MsgCreateCtfBridgeTransfer",
+      value: MsgCreateCtfBridgeTransfer.encode(message).finish()
     };
   }
 };

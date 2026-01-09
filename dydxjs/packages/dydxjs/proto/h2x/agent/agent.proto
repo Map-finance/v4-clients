@@ -1,0 +1,45 @@
+syntax = "proto3";
+package h2x.agent;
+
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/h2x/v4-chain/protocol/x/agent/types";
+
+// AgentInfo stores the information about a registered agent.
+message AgentInfo {
+  // The address of the agent wallet.
+  string agent_address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // The address of the master wallet that authorized this agent.
+  string master_address = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // Unix timestamp when this agent authorization expires.
+  uint64 expiry_timestamp = 3;
+  // Optional name for the agent (max 20 characters).
+  string name = 4;
+}
+
+// MasterAgentList stores the list of agent addresses for a master wallet.
+// Used for efficient lookup of all agents belonging to a master address.
+// 存储主钱包的代理地址列表，用于高效查找主钱包下的所有代理
+message MasterAgentList {
+  // List of agent addresses registered by this master wallet.
+  // 该主钱包注册的代理地址列表
+  repeated string agent_addresses = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+}
+
+// AgentParams defines the parameters for the agent module.
+// 代理模块参数定义
+// Agent 模块只负责维护代理注册表，不做消息类型限制
+message AgentParams {
+  // Maximum number of agents allowed per master account (default: 4).
+  // 每个主钱包允许的最大代理数量（默认：4个）
+  uint32 max_agents_per_master = 1;
+
+  // Default expiry duration in seconds (default: 180 days = 15552000).
+  // 代理授权的默认有效期（秒）（默认：180天 = 15552000秒）
+  uint64 default_expiry_duration = 2;
+
+  // Whether the agent feature is enabled (governance controlled).
+  // 是否启用代理功能（通过治理控制）
+  bool enabled = 3;
+}

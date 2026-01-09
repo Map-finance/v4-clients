@@ -51,7 +51,9 @@ export const createRPCQueryClient = async ({
     h2x: {
       accountplus: (await import("./accountplus/query.rpc.Query")).createRpcQueryExtension(client),
       affiliates: (await import("./affiliates/query.rpc.Query")).createRpcQueryExtension(client),
+      agent: (await import("./agent/query.rpc.Query")).createRpcQueryExtension(client),
       assets: (await import("./assets/query.rpc.Query")).createRpcQueryExtension(client),
+      blacklist: (await import("./blacklist/query.rpc.Query")).createRpcQueryExtension(client),
       blocktime: (await import("./blocktime/query.rpc.Query")).createRpcQueryExtension(client),
       bridge: (await import("./bridge/query.rpc.Query")).createRpcQueryExtension(client),
       clob: (await import("./clob/query.rpc.Query")).createRpcQueryExtension(client),
@@ -60,6 +62,7 @@ export const createRPCQueryClient = async ({
       feetiers: (await import("./feetiers/query.rpc.Query")).createRpcQueryExtension(client),
       govplus: (await import("./govplus/query.rpc.Query")).createRpcQueryExtension(client),
       listing: (await import("./listing/query.rpc.Query")).createRpcQueryExtension(client),
+      operators: (await import("./operators/query.rpc.Query")).createRpcQueryExtension(client),
       perpetuals: (await import("./perpetuals/query.rpc.Query")).createRpcQueryExtension(client),
       prices: (await import("./prices/query.rpc.Query")).createRpcQueryExtension(client),
       ratelimit: (await import("./ratelimit/query.rpc.Query")).createRpcQueryExtension(client),
