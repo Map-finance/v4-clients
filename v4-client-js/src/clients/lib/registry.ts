@@ -26,7 +26,12 @@ import {
   MsgWithdrawFromSubaccount,
   MsgDepositToSubaccount,
 } from '@dydxprotocol/v4-proto/src/codegen/h2x/sending/transfer';
-import { MsgCreateBridgeTransfer, Transfer, MsgCreateTransfer } from '../modules/composer';
+import {
+  MsgCreateBridgeTransfer,
+  Transfer,
+  MsgCreateTransfer,
+  MsgCreateCtfBridgeTransfer,
+} from '../modules/composer';
 import {
   MsgDepositToMegavault,
   MsgWithdrawFromMegavault,
@@ -53,6 +58,7 @@ import {
   TYPE_URL_MSG_ADD_AUTHENTICATOR,
   TYPE_URL_MSG_REMOVE_AUTHENTICATOR,
   TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
+  TYPE_URL_MSG_CREATE_CTF_BRIDGE_TRANSFER,
 } from '../constants';
 import { Long } from '../../lib/long';
 import { bigIntToBytes } from '../../lib/helpers';
@@ -197,6 +203,100 @@ const MsgCreateBridgeTransferCodec = {
     assetId: object.assetId ?? 0,
     quantums: object.quantums ?? Long.fromInt(0),
     chainId: object.chainId ?? '',
+    receiveAddress: object.receiveAddress ?? '',
+  }),
+} as any;
+
+// MsgCreateCtfBridgeTransfer 编码解码器
+const MsgCreateCtfBridgeTransferCodec = {
+  encode(
+    message: MsgCreateCtfBridgeTransfer,
+    writer: BinaryWriter = BinaryWriter.create(),
+  ): BinaryWriter {
+    // 编码 senderAddress (field 1, string)
+    if (message.senderAddress) {
+      writer.uint32(10).string(message.senderAddress);
+    }
+
+    // 编码 sender (field 2, SubaccountId)
+    if (message.sender) {
+      const senderWriter = writer.uint32(18).fork();
+      if (message.sender.owner) {
+        senderWriter.uint32(10).string(message.sender.owner);
+      }
+      if (message.sender.number !== undefined) {
+        senderWriter.uint32(16).uint32(message.sender.number);
+      }
+      senderWriter.ldelim();
+    }
+
+    // 编码 assetId1 (field 3, uint32)
+    if (message.assetId1 !== undefined) {
+      writer.uint32(24).uint32(message.assetId1);
+    }
+
+    // 编码 assetId2 (field 4, uint32)
+    if (message.assetId2 !== undefined) {
+      writer.uint32(32).uint32(message.assetId2);
+    }
+
+    // 编码 positions (field 5, uint32)
+    if (message.positions !== undefined) {
+      writer.uint32(40).uint32(message.positions);
+    }
+
+    // 编码 quantums1 (field 6, bytes)
+    if (message.quantums1 !== undefined && message.quantums1 !== null) {
+      let quantumsBigInt: bigint;
+      if (typeof message.quantums1 === 'bigint') {
+        quantumsBigInt = message.quantums1;
+      } else if (typeof message.quantums1 === 'string') {
+        quantumsBigInt = BigInt(message.quantums1);
+      } else if (typeof message.quantums1 === 'object' && 'toString' in message.quantums1) {
+        quantumsBigInt = BigInt(message.quantums1.toString());
+      } else {
+        quantumsBigInt = BigInt(message.quantums1);
+      }
+      const quantumsBytes = bigIntToBytes(quantumsBigInt);
+      writer.uint32(50).bytes(quantumsBytes);
+    } else {
+      writer.uint32(50).bytes(bigIntToBytes(BigInt(0)));
+    }
+
+    // 编码 quantums2 (field 7, bytes)
+    if (message.quantums2 !== undefined && message.quantums2 !== null) {
+      let quantumsBigInt: bigint;
+      if (typeof message.quantums2 === 'bigint') {
+        quantumsBigInt = message.quantums2;
+      } else if (typeof message.quantums2 === 'string') {
+        quantumsBigInt = BigInt(message.quantums2);
+      } else if (typeof message.quantums2 === 'object' && 'toString' in message.quantums2) {
+        quantumsBigInt = BigInt(message.quantums2.toString());
+      } else {
+        quantumsBigInt = BigInt(message.quantums2);
+      }
+      const quantumsBytes = bigIntToBytes(quantumsBigInt);
+      writer.uint32(58).bytes(quantumsBytes);
+    } else {
+      writer.uint32(58).bytes(bigIntToBytes(BigInt(0)));
+    }
+
+    // 编码 receiveAddress (field 8, string)
+    if (message.receiveAddress) {
+      writer.uint32(66).string(message.receiveAddress);
+    }
+
+    return writer;
+  },
+  decode: (input: any) => input as MsgCreateCtfBridgeTransfer,
+  fromPartial: (object: Partial<MsgCreateCtfBridgeTransfer>) => ({
+    senderAddress: object.senderAddress ?? '',
+    sender: object.sender ?? { owner: '', number: 0 },
+    assetId1: object.assetId1 ?? 0,
+    assetId2: object.assetId2 ?? 0,
+    positions: object.positions ?? 0,
+    quantums1: object.quantums1 ?? Long.fromInt(0),
+    quantums2: object.quantums2 ?? Long.fromInt(0),
     receiveAddress: object.receiveAddress ?? '',
   }),
 } as any;
@@ -436,6 +536,7 @@ export function generateRegistry(): Registry {
     [TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT, MsgWithdrawFromSubaccount as GeneratedType],
     [TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT, MsgDepositToSubaccount as GeneratedType],
     [TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER, MsgCreateBridgeTransferCodec as GeneratedType],
+    [TYPE_URL_MSG_CREATE_CTF_BRIDGE_TRANSFER, MsgCreateCtfBridgeTransferCodec as GeneratedType],
 
     // affiliates
     [TYPE_URL_MSG_REGISTER_AFFILIATE, MsgRegisterAffiliate as GeneratedType],

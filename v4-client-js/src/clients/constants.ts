@@ -104,6 +104,7 @@ export const TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT = '/h2x.sending.MsgDepositToSuba
 
 // x/bridge (cross-chain transfer)
 export const TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER = '/h2x.sending.MsgCreateBridgeTransfer';
+export const TYPE_URL_MSG_CREATE_CTF_BRIDGE_TRANSFER = '/h2x.sending.MsgCreateCtfBridgeTransfer';
 
 // x/affiliates
 export const TYPE_URL_MSG_REGISTER_AFFILIATE = '/h2x.affiliates.MsgRegisterAffiliate';
@@ -235,9 +236,9 @@ export const DEFAULT_API_TIMEOUT: number = 3_000;
 
 export const MAX_MEMO_CHARACTERS: number = 256;
 
-export const SHORT_BLOCK_WINDOW: number = 20;
+export const SHORT_BLOCK_WINDOW: number = 100;
 
-export const SHORT_BLOCK_FORWARD: number = 15;
+export const SHORT_BLOCK_FORWARD: number = 75;
 
 // Querying
 export const PAGE_REQUEST: PageRequest = {
@@ -268,7 +269,6 @@ export class ValidatorConfig {
   public defaultClientMemo?: string;
   public useTimestampNonce?: boolean;
   public timestampNonceOffsetMs?: number;
-  public proxy?: AxiosProxyConfig;
 
   constructor(
     restEndpoint: string,
@@ -278,7 +278,6 @@ export class ValidatorConfig {
     defaultClientMemo?: string,
     useTimestampNonce?: boolean,
     timestampNonceOffsetMs?: number,
-    proxy?: AxiosProxyConfig,
   ) {
     this.restEndpoint = restEndpoint?.endsWith('/') ? restEndpoint.slice(0, -1) : restEndpoint;
     this.chainId = chainId;
@@ -288,7 +287,6 @@ export class ValidatorConfig {
     this.defaultClientMemo = defaultClientMemo;
     this.useTimestampNonce = useTimestampNonce;
     this.timestampNonceOffsetMs = timestampNonceOffsetMs;
-    this.proxy = proxy;
   }
 }
 
@@ -297,7 +295,7 @@ export class Network {
     public env: string,
     public indexerConfig: IndexerConfig,
     public validatorConfig: ValidatorConfig,
-  ) {}
+  ) { }
 
   static testnet(): Network {
     const indexerConfig = new IndexerConfig(IndexerApiHost.TESTNET, IndexerWSHost.TESTNET);

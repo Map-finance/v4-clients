@@ -53,6 +53,7 @@ import {
   TYPE_URL_MSG_WITHDRAW_FROM_SUBACCOUNT,
   TYPE_URL_MSG_DEPOSIT_TO_SUBACCOUNT,
   TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
+  TYPE_URL_MSG_CREATE_CTF_BRIDGE_TRANSFER,
   TYPE_URL_MSG_DELEGATE,
   TYPE_URL_MSG_UNDELEGATE,
   TYPE_URL_MSG_WITHDRAW_DELEGATOR_REWARD,
@@ -109,6 +110,18 @@ export interface MsgCreateBridgeTransfer {
   assetId: number;
   quantums: Long;
   chainId: string;
+  receiveAddress: string;
+}
+
+// Manual type definition for MsgCreateCtfBridgeTransfer
+export interface MsgCreateCtfBridgeTransfer {
+  senderAddress: string;
+  sender: SubaccountId;
+  assetId1: number;
+  assetId2: number;
+  positions: number; // 1=merge, 2=redeem
+  quantums1: Long;
+  quantums2: Long;
   receiveAddress: string;
 }
 
@@ -424,6 +437,51 @@ export class Composer {
 
     return {
       typeUrl: TYPE_URL_MSG_CREATE_BRIDGE_TRANSFER,
+      value: msg,
+    };
+  }
+
+  /**
+   * Compose a message to create a CTF bridge transfer
+   *
+   * @param senderAddress - The sender's address
+   * @param subaccountNumber - The sender's subaccount number
+   * @param assetId1 - The first asset ID
+   * @param assetId2 - The second asset ID
+   * @param positions - 1 for merge, 2 for redeem
+   * @param quantums1 - The amount for first asset
+   * @param quantums2 - The amount for second asset
+   * @param receiveAddress - The receiving address on the destination chain
+   * @returns EncodeObject ready to be sent
+   */
+  public composeMsgCtfBridgeTransfer(
+    senderAddress: string,
+    subaccountNumber: number,
+    assetId1: number,
+    assetId2: number,
+    positions: number, // 1=merge, 2=redeem
+    quantums1: Long,
+    quantums2: Long,
+    receiveAddress: string,
+  ): EncodeObject {
+    const sender: SubaccountId = {
+      owner: senderAddress,
+      number: subaccountNumber,
+    };
+
+    const msg: MsgCreateCtfBridgeTransfer = {
+      senderAddress,
+      sender,
+      assetId1,
+      assetId2,
+      positions,
+      quantums1,
+      quantums2,
+      receiveAddress,
+    };
+
+    return {
+      typeUrl: TYPE_URL_MSG_CREATE_CTF_BRIDGE_TRANSFER,
       value: msg,
     };
   }

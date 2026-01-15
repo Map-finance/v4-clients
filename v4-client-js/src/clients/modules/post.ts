@@ -78,10 +78,9 @@ export class Post {
       denoms.USDT_GAS_DENOM ?? denoms.USDT_DENOM ?? denoms.USDC_GAS_DENOM ?? denoms.USDC_DENOM;
     this.defaultGasPrice = GasPrice.fromString(`0.025${quoteGasDenom}`);
     this.defaultDydxGasPrice = GasPrice.fromString(
-      `25000000000${
-        denoms.CHAINTOKEN_GAS_DENOM !== undefined
-          ? denoms.CHAINTOKEN_GAS_DENOM
-          : denoms.CHAINTOKEN_DENOM
+      `25000000000${denoms.CHAINTOKEN_GAS_DENOM !== undefined
+        ? denoms.CHAINTOKEN_GAS_DENOM
+        : denoms.CHAINTOKEN_DENOM
       }`,
     );
     if (useTimestampNonce === true) {
@@ -259,17 +258,17 @@ export class Post {
     // Simulate transaction if no fee is specified.
     const fee: StdFee = zeroFee
       ? {
-          amount: [],
-          gas: '1000000',
-        }
+        amount: [],
+        gas: '1000000',
+      }
       : await this.simulateTransaction(
-          subaccount.signingWallet.pubKey!,
-          sequence,
-          messages,
-          gasPrice,
-          memo,
-          gasAdjustment,
-        );
+        subaccount.signingWallet.pubKey!,
+        sequence,
+        messages,
+        gasPrice,
+        memo,
+        gasAdjustment,
+      );
 
     const txOptions: TransactionOptions = {
       sequence,

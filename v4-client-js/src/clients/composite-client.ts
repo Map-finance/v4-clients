@@ -789,7 +789,7 @@ export class CompositeClient {
       if (goodTilBlock !== 0) {
         throw new Error(
           'goodTilBlock should be zero since LONG_TERM or CONDITIONAL orders ' +
-            'use goodTilTimeInSeconds instead of goodTilBlock.',
+          'use goodTilTimeInSeconds instead of goodTilBlock.',
         );
       }
       goodTilBlockTime = this.calculateGoodTilBlockTime(goodTilTimeInSeconds);
@@ -1167,6 +1167,99 @@ export class CompositeClient {
   }
 
   /**
+   * @description CTF Bridge transfer (cross-chain transfer) from subaccount to another chain
+   *
+   * @param subaccount The subaccount to transfer from
+   * @param recipientAddress The receiving address on the destination chain
+   * @param assetId1 The first asset ID
+   * @param assetId2 The second asset ID
+   * @param positions 1 for merge, 2 for redeem
+   * @param quantums1 The amount for first asset (raw quantums as string)
+   * @param quantums2 The amount for second asset (raw quantums as string)
+   * @param memo Optional memo for the transaction
+   * @param broadcastMode Broadcast mode (default: BroadcastTxCommit)
+   *
+   * @throws UnexpectedClientError if a malformed response is returned with no GRPC error
+   * @returns The transaction response
+   */
+  async ctfBridgeTransfer(
+    subaccount: SubaccountInfo,
+    recipientAddress: string,
+    assetId1: number,
+    assetId2: number,
+    positions: number, // 1=merge, 2=redeem
+    quantums1: string,
+    quantums2: string,
+    memo?: string,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
+      const msg = this.ctfBridgeTransferMessage(
+        subaccount,
+        recipientAddress,
+        assetId1,
+        assetId2,
+        positions,
+        quantums1,
+        quantums2,
+      );
+      resolve([msg]);
+    });
+    return this.send(
+      subaccount,
+      () => msgs,
+      false,
+      undefined,
+      memo,
+      broadcastMode ?? Method.BroadcastTxCommit,
+    );
+  }
+
+  /**
+   * @description Create message for CTF bridge transfer (cross-chain transfer)
+   *
+   * @param subaccount The subaccount to transfer from
+   * @param receiveAddress The receiving address on the destination chain
+   * @param assetId1 The first asset ID
+   * @param assetId2 The second asset ID
+   * @param positions 1 for merge, 2 for redeem
+   * @param quantums1 The amount for first asset (raw quantums as string)
+   * @param quantums2 The amount for second asset (raw quantums as string)
+   *
+   * @throws Error if validatorClient is not set
+   * @returns The encoded message
+   */
+  ctfBridgeTransferMessage(
+    subaccount: SubaccountInfo,
+    receiveAddress: string,
+    assetId1: number,
+    assetId2: number,
+    positions: number, // 1=merge, 2=redeem
+    quantums1: string,
+    quantums2: string,
+  ): EncodeObject {
+    const validatorClient = this._validatorClient;
+    if (validatorClient === undefined) {
+      throw new Error('validatorClient not set');
+    }
+
+    // Convert string to Long
+    const q1 = Long.fromString(quantums1);
+    const q2 = Long.fromString(quantums2);
+
+    return this.validatorClient.post.composer.composeMsgCtfBridgeTransfer(
+      subaccount.address,
+      subaccount.subaccountNumber,
+      assetId1,
+      assetId2,
+      positions,
+      q1,
+      q2,
+      receiveAddress,
+    );
+  }
+
+  /**
    * @description Create message to send chain token from subaccount to wallet
    * with human readable input.
    *
@@ -1421,7 +1514,7 @@ export class CompositeClient {
       if (goodTilBlock !== 0) {
         throw new Error(
           'goodTilBlock should be zero since LONG_TERM or CONDITIONAL orders ' +
-            'use goodTilTimeInSeconds instead of goodTilBlock.',
+          'use goodTilTimeInSeconds instead of goodTilBlock.',
         );
       }
       goodTilBlockTime = this.calculateGoodTilBlockTime(goodTilTimeInSeconds);
