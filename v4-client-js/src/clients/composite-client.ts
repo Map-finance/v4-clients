@@ -1071,6 +1071,7 @@ export class CompositeClient {
    * @param amount The amount to transfer (human readable, e.g., "100.50")
    * @param assetId The asset ID to transfer (required)
    * @param atomicResolution The atomic resolution for quantums conversion (required, e.g., -6 for USDC, -8 for most other assets)
+   * @param chain_id The destination chain ID (e.g., 'ethereum-1', 'arbitrum-1')
    * @param memo Optional memo for the transaction
    * @param broadcastMode Broadcast mode (default: BroadcastTxCommit)
    *
@@ -1084,6 +1085,7 @@ export class CompositeClient {
     amount: string,
     assetId: number,
     atomicResolution: number,
+    chain_id: string,
     memo?: string,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
@@ -1095,6 +1097,7 @@ export class CompositeClient {
         amount,
         assetId,
         atomicResolution,
+        chain_id,
       });
 
       const msg = this.bridgeTransferMessage(
@@ -1104,6 +1107,7 @@ export class CompositeClient {
         amount,
         assetId,
         atomicResolution,
+        chain_id,
       );
 
       console.log('bridgeTransferMessage', msg);
@@ -1130,6 +1134,7 @@ export class CompositeClient {
    * @param assetId The asset ID to transfer (required)
    * @param atomicResolution The atomic resolution for quantums conversion (required, e.g., -6 for USDC, -8 for most other assets)
    *                         Example: atomicResolution = -6 means 10^6 quantums = 1 unit
+   * @param chain_id The destination chain ID
    *
    * @throws Error if validatorClient is not set or amount is invalid
    * @returns The encoded message
@@ -1141,6 +1146,7 @@ export class CompositeClient {
     amount: string,
     assetId: number,
     atomicResolution: number,
+    chain_id: string,
   ): EncodeObject {
     const validatorClient = this._validatorClient;
     if (validatorClient === undefined) {
@@ -1161,7 +1167,7 @@ export class CompositeClient {
       subaccount.subaccountNumber,
       assetId,
       Long.fromString(quantums.toString()), // 将 BigInt 转换为字符串，然后转换为 Long
-      destinationChainId,
+      chain_id,
       receiveAddress,
     );
   }
@@ -1173,9 +1179,10 @@ export class CompositeClient {
    * @param recipientAddress The receiving address on the destination chain
    * @param assetId1 The first asset ID
    * @param assetId2 The second asset ID
-   * @param positions 1 for merge, 2 for redeem
+   * @param positions 1 for merge, 2 for redeem, 3 for split
    * @param quantums1 The amount for first asset (raw quantums as string)
    * @param quantums2 The amount for second asset (raw quantums as string)
+   * @param chain_id The destination chain ID
    * @param memo Optional memo for the transaction
    * @param broadcastMode Broadcast mode (default: BroadcastTxCommit)
    *
@@ -1187,9 +1194,10 @@ export class CompositeClient {
     recipientAddress: string,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem
+    positions: number, // 1=merge, 2=redeem, 3=split
     quantums1: string,
     quantums2: string,
+    chain_id: string,
     memo?: string,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
@@ -1202,6 +1210,7 @@ export class CompositeClient {
         positions,
         quantums1,
         quantums2,
+        chain_id,
       );
       resolve([msg]);
     });
@@ -1222,9 +1231,10 @@ export class CompositeClient {
    * @param receiveAddress The receiving address on the destination chain
    * @param assetId1 The first asset ID
    * @param assetId2 The second asset ID
-   * @param positions 1 for merge, 2 for redeem
+   * @param positions 1 for merge, 2 for redeem, 3 for split
    * @param quantums1 The amount for first asset (raw quantums as string)
    * @param quantums2 The amount for second asset (raw quantums as string)
+   * @param chain_id The destination chain ID
    *
    * @throws Error if validatorClient is not set
    * @returns The encoded message
@@ -1234,9 +1244,10 @@ export class CompositeClient {
     receiveAddress: string,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem
+    positions: number, // 1=merge, 2=redeem, 3=split
     quantums1: string,
     quantums2: string,
+    chain_id: string,
   ): EncodeObject {
     const validatorClient = this._validatorClient;
     if (validatorClient === undefined) {
@@ -1255,6 +1266,7 @@ export class CompositeClient {
       positions,
       q1,
       q2,
+      chain_id,
       receiveAddress,
     );
   }

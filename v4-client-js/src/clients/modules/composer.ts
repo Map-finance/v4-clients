@@ -119,9 +119,10 @@ export interface MsgCreateCtfBridgeTransfer {
   sender: SubaccountId;
   assetId1: number;
   assetId2: number;
-  positions: number; // 1=merge, 2=redeem
+  positions: number; // 1=merge, 2=redeem, 3=split
   quantums1: Long;
   quantums2: Long;
+  chainId: string;
   receiveAddress: string;
 }
 
@@ -459,9 +460,10 @@ export class Composer {
     subaccountNumber: number,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem
+    positions: number, // 1=merge, 2=redeem, 3=split
     quantums1: Long,
     quantums2: Long,
+    chainId: string,
     receiveAddress: string,
   ): EncodeObject {
     const sender: SubaccountId = {
@@ -477,6 +479,7 @@ export class Composer {
       positions,
       quantums1,
       quantums2,
+      chainId,
       receiveAddress,
     };
 

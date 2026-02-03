@@ -166,7 +166,7 @@ export default class AccountClient extends RestClient {
   async getParentSubaccountNumberOrders(
     address: string,
     parentSubaccountNumber: number,
-    ticker?: string | null,
+    market?: string | null,
     side?: OrderSide | null,
     status?: OrderStatus | null,
     type?: OrderType | null,
@@ -180,7 +180,7 @@ export default class AccountClient extends RestClient {
     return this.get(uri, {
       address,
       parentSubaccountNumber,
-      ticker,
+      market,
       side,
       status,
       type,
@@ -238,8 +238,8 @@ export default class AccountClient extends RestClient {
   async getParentSubaccountNumberFills(
     address: string,
     parentSubaccountNumber: number,
-    ticker?: string | null,
-    tickerType: TickerType = TickerType.PERPETUAL,
+    market?: string | null,
+    marketType: TickerType = TickerType.PERPETUAL,
     limit?: number | null,
     createdBeforeOrAtHeight?: number | null,
     createdBeforeOrAt?: string | null,
@@ -249,8 +249,8 @@ export default class AccountClient extends RestClient {
     return this.get(uri, {
       address,
       parentSubaccountNumber,
-      ticker,
-      tickerType,
+      market,
+      marketType,
       limit,
       createdBeforeOrAtHeight,
       createdBeforeOrAt,
