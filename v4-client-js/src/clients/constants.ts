@@ -7,6 +7,23 @@ import { BroadcastOptions, DenomConfig } from './types';
 export * from '../lib/constants';
 
 /**
+ * 将 Validator RPC 的 restEndpoint 标准化为可用的完整 URL。
+ * - 相对路径（以单斜杠 "/" 开头且不以 "//" 开头）：在浏览器环境下补全为 origin + path，在 Node 下原样返回。
+ * - 末尾斜杠：不做裁剪，保留调用方传入形式，以便服务端必须带末尾斜杠时配置 "/rpc/" 即可生效。
+ */
+function normalizeValidatorRestEndpoint(restEndpoint: string): string {
+  if (!restEndpoint || typeof restEndpoint !== 'string') return restEndpoint;
+  const trimmed = restEndpoint.trim();
+  // 相对路径：以 "/" 开头且不以 "//" 开头（避免把 "//host" 当成相对路径）
+  const isRelativePath = trimmed.startsWith('/') && !trimmed.startsWith('//');
+  if (isRelativePath && typeof globalThis !== 'undefined' && (globalThis as any).location?.origin) {
+    const origin = (globalThis as any).location.origin as string;
+    return origin + (trimmed.startsWith('/') ? trimmed : `/${trimmed}`);
+  }
+  return trimmed;
+}
+
+/**
  * Disclaimer: Note that as of the date hereof, the testnet and dYdX Chain deployment by DYDX
  * token holders are the only known deployments of the dYdX v4 software, and other deployment
  * options may be added.
@@ -279,7 +296,8 @@ export class ValidatorConfig {
     useTimestampNonce?: boolean,
     timestampNonceOffsetMs?: number,
   ) {
-    this.restEndpoint = restEndpoint?.endsWith('/') ? restEndpoint.slice(0, -1) : restEndpoint;
+    // 动态标准化：相对路径补全为完整 URL；保留末尾斜杠，配置 "/rpc/" 时请求会发往 "/rpc/"
+    this.restEndpoint = normalizeValidatorRestEndpoint(restEndpoint ?? '');
     this.chainId = chainId;
 
     this.denoms = denoms;

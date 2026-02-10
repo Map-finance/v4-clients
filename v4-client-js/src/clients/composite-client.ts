@@ -1173,44 +1173,83 @@ export class CompositeClient {
   }
 
   /**
-   * @description CTF Bridge transfer (cross-chain transfer) from subaccount to another chain
+   * 创建 CTF 跨链转账（create-ctf-bridge-transfer）
+   * 与接口 create-ctf-bridge-transfer 对应，参数与接口说明一致。
    *
-   * @param subaccount The subaccount to transfer from
-   * @param recipientAddress The receiving address on the destination chain
-   * @param assetId1 The first asset ID
-   * @param assetId2 The second asset ID
-   * @param positions 1 for merge, 2 for redeem, 3 for split
-   * @param quantums1 The amount for first asset (raw quantums as string)
-   * @param quantums2 The amount for second asset (raw quantums as string)
-   * @param chain_id The destination chain ID
-   * @param memo Optional memo for the transaction
-   * @param broadcastMode Broadcast mode (default: BroadcastTxCommit)
+   * @param subaccount - 发送人子账户（包含 sender_address 与 sender 子账户索引）
+   * @param assetId1 - ctf资产id1 asset_id1
+   * @param assetId2 - ctf资产id2 asset_id2
+   * @param positions - Split=0, merge=1, redeem=2
+   * @param quantums1 - ctf资产id1的跨链数量 quantums1（字符串格式）
+   * @param quantums2 - ctf资产id2的跨链数量 quantums2（字符串格式）
+   * @param receiveAddress - 跨链接收地址 receive_address
+   * @param chainId - 目标链 ID chain_id
+   * @param memo - 可选交易备注
+   * @param broadcastMode - 广播模式，默认 BroadcastTxCommit
+   * @returns 交易响应
+   */
+  async createCtfBridgeTransfer(
+    subaccount: SubaccountInfo,
+    assetId1: number,
+    assetId2: number,
+    positions: number,
+    quantums1: string,
+    quantums2: string,
+    receiveAddress: string,
+    chainId: string,
+    memo?: string,
+    broadcastMode?: BroadcastMode,
+  ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
+    return this.ctfBridgeTransfer(
+      subaccount,
+      assetId1,
+      assetId2,
+      positions,
+      quantums1,
+      quantums2,
+      receiveAddress,
+      chainId,
+      memo,
+      broadcastMode,
+    );
+  }
+
+  /**
+   * CTF 跨链转账（内部实现，含 chain_id）
    *
-   * @throws UnexpectedClientError if a malformed response is returned with no GRPC error
-   * @returns The transaction response
+   * @param subaccount - 发送子账户
+   * @param assetId1 - 第一个 CTF 资产 ID
+   * @param assetId2 - 第二个 CTF 资产 ID
+   * @param positions - Split=0, merge=1, redeem=2
+   * @param quantums1 - 第一个资产跨链数量（字符串）
+   * @param quantums2 - 第二个资产跨链数量（字符串）
+   * @param receiveAddress - 跨链接收地址 receive_address
+   * @param chainId - 目标链 ID chain_id
+   * @param memo - 可选备注
+   * @param broadcastMode - 广播模式
    */
   async ctfBridgeTransfer(
     subaccount: SubaccountInfo,
-    recipientAddress: string,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem, 3=split
+    positions: number,
     quantums1: string,
     quantums2: string,
-    chain_id: string,
+    receiveAddress: string,
+    chainId: string,
     memo?: string,
     broadcastMode?: BroadcastMode,
   ): Promise<BroadcastTxAsyncResponse | BroadcastTxSyncResponse | IndexedTx> {
     const msgs: Promise<EncodeObject[]> = new Promise((resolve) => {
       const msg = this.ctfBridgeTransferMessage(
         subaccount,
-        recipientAddress,
         assetId1,
         assetId2,
         positions,
         quantums1,
         quantums2,
-        chain_id,
+        receiveAddress,
+        chainId,
       );
       resolve([msg]);
     });
@@ -1225,36 +1264,32 @@ export class CompositeClient {
   }
 
   /**
-   * @description Create message for CTF bridge transfer (cross-chain transfer)
+   * 构造 CTF 跨链转账消息（含 chain_id 与 receive_address）
    *
-   * @param subaccount The subaccount to transfer from
-   * @param receiveAddress The receiving address on the destination chain
-   * @param assetId1 The first asset ID
-   * @param assetId2 The second asset ID
-   * @param positions 1 for merge, 2 for redeem, 3 for split
-   * @param quantums1 The amount for first asset (raw quantums as string)
-   * @param quantums2 The amount for second asset (raw quantums as string)
-   * @param chain_id The destination chain ID
-   *
-   * @throws Error if validatorClient is not set
-   * @returns The encoded message
+   * @param subaccount - 发送子账户
+   * @param assetId1 - ctf资产id1
+   * @param assetId2 - ctf资产id2
+   * @param positions - Split=0, merge=1, redeem=2
+   * @param quantums1 - 第一个资产跨链数量（字符串）
+   * @param quantums2 - 第二个资产跨链数量（字符串）
+   * @param receiveAddress - 跨链接收地址
+   * @param chainId - 目标链 ID
    */
   ctfBridgeTransferMessage(
     subaccount: SubaccountInfo,
-    receiveAddress: string,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem, 3=split
+    positions: number,
     quantums1: string,
     quantums2: string,
-    chain_id: string,
+    receiveAddress: string,
+    chainId: string,
   ): EncodeObject {
     const validatorClient = this._validatorClient;
     if (validatorClient === undefined) {
       throw new Error('validatorClient not set');
     }
 
-    // Convert string to Long
     const q1 = Long.fromString(quantums1);
     const q2 = Long.fromString(quantums2);
 
@@ -1266,7 +1301,7 @@ export class CompositeClient {
       positions,
       q1,
       q2,
-      chain_id,
+      chainId,
       receiveAddress,
     );
   }

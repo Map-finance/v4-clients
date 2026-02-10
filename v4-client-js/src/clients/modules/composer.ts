@@ -114,15 +114,25 @@ export interface MsgCreateBridgeTransfer {
 }
 
 // Manual type definition for MsgCreateCtfBridgeTransfer
+// 对应接口 create-ctf-bridge-transfer
 export interface MsgCreateCtfBridgeTransfer {
+  /** 发送人地址 sender_address */
   senderAddress: string;
+  /** 子账户索引 sender (SubaccountId) */
   sender: SubaccountId;
+  /** ctf资产id1 asset_id1 */
   assetId1: number;
+  /** ctf资产id2 asset_id2 */
   assetId2: number;
-  positions: number; // 1=merge, 2=redeem, 3=split
+  /** Split=0, merge=1, redeem=2 */
+  positions: number;
+  /** ctf资产id1的跨链数量 quantums1 */
   quantums1: Long;
+  /** ctf资产id2的跨链数量 quantums2 */
   quantums2: Long;
+  /** 目标链 ID chain_id */
   chainId: string;
+  /** 跨链接收地址 receive_address */
   receiveAddress: string;
 }
 
@@ -443,24 +453,25 @@ export class Composer {
   }
 
   /**
-   * Compose a message to create a CTF bridge transfer
+   * 构造 create-ctf-bridge-transfer 消息
    *
-   * @param senderAddress - The sender's address
-   * @param subaccountNumber - The sender's subaccount number
-   * @param assetId1 - The first asset ID
-   * @param assetId2 - The second asset ID
-   * @param positions - 1 for merge, 2 for redeem
-   * @param quantums1 - The amount for first asset
-   * @param quantums2 - The amount for second asset
-   * @param receiveAddress - The receiving address on the destination chain
-   * @returns EncodeObject ready to be sent
+   * @param senderAddress - 发送人地址 sender_address
+   * @param subaccountNumber - 子账户索引 sender
+   * @param assetId1 - ctf资产id1 asset_id1
+   * @param assetId2 - ctf资产id2 asset_id2
+   * @param positions - Split=0, merge=1, redeem=2
+   * @param quantums1 - ctf资产id1的跨链数量 quantums1
+   * @param quantums2 - ctf资产id2的跨链数量 quantums2
+   * @param chainId - 目标链 ID chain_id
+   * @param receiveAddress - 跨链接收地址 receive_address
+   * @returns EncodeObject 编码后的消息对象
    */
   public composeMsgCtfBridgeTransfer(
     senderAddress: string,
     subaccountNumber: number,
     assetId1: number,
     assetId2: number,
-    positions: number, // 1=merge, 2=redeem, 3=split
+    positions: number,
     quantums1: Long,
     quantums2: Long,
     chainId: string,

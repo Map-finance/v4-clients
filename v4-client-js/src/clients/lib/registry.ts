@@ -286,6 +286,11 @@ const MsgCreateCtfBridgeTransferCodec = {
       writer.uint32(66).string(message.receiveAddress);
     }
 
+    // 编码 chainId (field 9, string) 目标链 ID
+    if (message.chainId) {
+      writer.uint32(74).string(message.chainId);
+    }
+
     return writer;
   },
   decode: (input: any) => input as MsgCreateCtfBridgeTransfer,
@@ -298,6 +303,7 @@ const MsgCreateCtfBridgeTransferCodec = {
     quantums1: object.quantums1 ?? Long.fromInt(0),
     quantums2: object.quantums2 ?? Long.fromInt(0),
     receiveAddress: object.receiveAddress ?? '',
+    chainId: object.chainId ?? '',
   }),
 } as any;
 
